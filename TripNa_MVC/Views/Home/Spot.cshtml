@@ -1,0 +1,239 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+
+@{
+    ViewData["Title"] = "Spot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+ @using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor hca
+@{
+
+    string memberId = hca.HttpContext.Session.GetString("memberId");
+}
+
+
+
+
+
+
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a href="myorder.html"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a href="mycoupon.html"><img src="~/_img/png/coupon.png" alt=""></a>
+            <a href="mycollect.html"><img src="~/_img/png/likelist.png" alt=""></a>
+            <a href="/mydata.html"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a href="/sign.html"><img src="~/_img/png/sign.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+
+    
+
+    <Table>
+
+
+        <tr>
+            <h1>@ViewData["Message"]</h1>
+
+            @foreach (var item in Model)
+            {
+
+                string img = @item.SpotName+".jpg";
+                string city = @item.SpotCity;
+              
+                <form asp-action="Spot" method="post">
+                    <input type="hidden" name="spotId" value="@item.SpotId" />
+                    <input type="hidden" name="spotName" value="@item.SpotName" />
+                    <input type="hidden" name="spotCity" value="@item.SpotCity" />
+                    <input type="hidden" name="spotIntro" value="@item.SpotIntro" />
+                    <input type="hidden" name="memberId" value="@memberId" /> <!--獲取本使用者的ID -->
+
+
+
+                <td class="text-center" style="width: 300px;">
+                    <span class="List">
+                        <img src="~/景點圖片/宜蘭/@img" width="100px" height="100px">
+                        <p>@item.SpotName</p>
+                        <p>@item.SpotIntro</p>
+                    </span>
+                    <button type="submit" class="btn btn-default btnCollect" style="background-color:#4e5482 ; color: #dee0fb"
+                            data-spot-id="@item.SpotId" data-spot-name="@item.SpotName" data-spot-city="@item.SpotCity"
+                             data-spot-intro="@item.SpotIntro" data-member-id="@memberId">
+                        <span class="bi bi-heart"></span>收藏
+                    </button>
+                </td>
+
+                </form>
+                @*  <div>
+            <p>@item.SpotId</p>
+            <p>@item.SpotName</p>
+            <p>@memberId</p>
+            </div> *@
+            }
+        </tr>
+
+    </Table>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+
+
+            $(".btnCollect").click(function () {
+
+
+                const spotId = this.getAttribute('data-spot-id');
+                const spotName = this.getAttribute('data-spot-name');
+                const spotCity = this.getAttribute('data-spot-city');
+                const spotIntro = this.getAttribute('data-spot-intro');
+                const memberId = this.getAttribute('data-member-id');
+
+
+                if (!memberId) {
+                    alert('請先登入');
+                    return;
+                }
+
+                fetch(`/Members/UserCollect`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        spotId,
+                        spotName,
+                        spotCity,
+                        spotIntro,
+                        memberId
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+
+
+
+                // fetch(`/Members/UserCollect/${spotId}`, {
+                //     method: 'POST',
+                //     body: {
+                //         spotId,
+                //         spotName,
+                //         spotCity,
+                //         spotIntro,
+                //         memberId
+                //     },
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                //     }
+                // })
+                //     .then(response => {
+                //         if (response.ok) {
+                //             alert('收藏成功');
+                //             window.location.reload();
+                //         } else {
+                //             alert('收藏失敗');
+                //             console.error('收藏失敗:', response.status, response.statusText);
+                //         }
+                //     })
+                //     .catch(error => {
+                //         console.error('Error:', error);
+                //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // $.ajax({
+                //     url: `/Members/UserCollect/${spotId}`,
+                //     type: 'POST',
+                //     data: {
+                //         spotId: spotId,
+                //         spotName: spotName,
+                //         spotIntro: spotIntro
+                //     },
+                //     success: function (response) {
+                //         alert('收藏成功！');
+                //     },
+                //     error: function (xhr, status, error) {
+                //         alert('收藏失败，請重試。');
+                //     }
+                // });
+
+
+                // $.post('@Url.Action("Spot", "Spot")', formData, function (response) {
+                //     alert(response.message);
+                // });
+
+
+
+
+
+
+
+
+            });
+        });
+    </script>
+}

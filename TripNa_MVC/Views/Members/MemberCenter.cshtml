@@ -1,0 +1,183 @@
+﻿@model TripNa_MVC.Models.Member
+
+@{
+    ViewData["Title"] = "MemberCenter";
+}
+
+
+<div class="container">
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/click_mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+    <br>
+    <br>
+
+    <div class="row">
+
+        <div class="col-sm-2">
+        </div>
+
+        <div class="col-sm-4">
+
+            <div style='border:1px solid #3A326D ; padding-top:10px; padding-left: 10px;'>
+                <p>12月內累積消費金額</p>
+                <p>NT$_________</p>
+                <p>(普通會員)</p>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+
+
+            @if (Model != null)
+            {
+                <form method="post" asp-action="MemberCenter" asp-controller="Members">
+
+                    <div id="userData"
+                         style='border:1px solid #3A326D ; padding-top:10px; padding-left:10px; padding-bottom:10px;'>
+
+
+                        <label for="memberName">姓名</label>
+                        <br>
+                        <input type="text" id="memberName" name="memberName" style="resize:none; height: 30px ; width:90% ;"
+                               value="@Model.MemberName">
+
+
+                        <br>
+
+                        <label for="userEmail">E-mail</label>
+                        <br>
+                        <input type="text" id="MemberEmail" name="MemberEmail" style="resize:none; height: 30px ; width:90% ;"
+                               value="@Model.MemberEmail" readonly>
+
+                        <br>
+
+                        <label for="userPhone">行動電話</label>
+                        <br>
+                        <input type="text" id="MemberPhone" name="MemberPhone" style="resize:none; height: 30px ; width:90% ;"
+                               value="@Model.MemberPhone">
+
+                        <br>
+                        <label for="userBirthday">生日</label>
+                        <br>
+                        <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 30px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
+
+                        <br>
+                        <br>
+
+                        <a href="javascript:"
+                           onclick="document.all.fullContent.style.display=(document.all.fullContent.style.display=='none')?'':'none';document.all.smallContent.style.display=(document.all.smallContent.style.display=='none')?'':'none'">修改密碼</a>
+
+
+
+                        <div class="block" id="fullContent" style="display:none;">
+                            <label asp-for="MemberPassword">重設密碼(不修改則不需輸入)</label>
+                            <br>
+                            <input type="password" id="MemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <br>
+                            <label asp-for="MemberPassword">請再輸入一次密碼</label>
+                            <br>
+                            @*                             <input type="text" asp-for="MemberPassword" class="form-control" />
+                        *@
+                            <input type="password" id="ReMemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <br>
+                        </div>
+
+
+                        <br>
+                        <br>
+                        <div class="text-center" style=" margin-right:10px; ">
+                            <button onclick="validatePasswords()" id="submitBtn" class="btn" style="width: 130px;background-color: #4e5482 ;color: #e8eafe;">修改✓</button>
+                        </div>
+
+
+                    </div>
+                </form>
+
+            }
+
+            else
+            {
+                <div>用户信息加载失败。</div>
+            }
+        </div>
+
+        <div class="col-sm-2">
+        </div>
+
+    </div>
+
+</div>
+<br>
+
+<script>
+
+    document.querySelector("form").addEventListener("submit", function (event) {
+        var password = document.getElementById("MemberPassword").value;
+        var confirmPassword = document.getElementById("ReMemberPassword").value;
+        if (password !== confirmPassword) {
+            alert("两次输入的密码不一致，请重新输入。");
+            event.preventDefault();
+        }
+    });
+
+
+
+    var getUrl = "./_file/member.json";
+
+
+    $("#userName,#userEmail,#userPhone,#userBirthday").val("");
+    // $("#userName,#userEmail,#userPhone,#userBirthday").empty();
+
+    $.get(getUrl, function (e) {
+
+        var a = 0;
+        $("#userName").val(e[a].Name);
+        $("#userEmail").val(e[a]["E-mail"]);
+        $("#userPhone").val(e[a].PhoneNumber);
+        $("#userBirthday").val(e[a].Birthday);
+
+
+    })
+
+
+    // 綁定輸入的姓名 信箱 電話  並且顯示到alert上面 以便確認有綁定
+    var Name = document.getElementById("userName").value;
+    var Email = document.getElementById("userEmail").value;
+    var Phone = document.getElementById("userPhone").value;
+
+
+    var submitBtn = document.getElementById("submitBtn");
+
+    function submitdata() {
+        var str = "";
+        var submitValue = name.value;
+        str = submitValue;
+        alert(`${Name}+${Email}+${Phone}`);
+    }
+
+    submitBtn.addEventListener("click", submitdata);
+</script>

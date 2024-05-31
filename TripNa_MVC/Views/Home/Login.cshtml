@@ -1,0 +1,163 @@
+﻿@{
+    ViewData["Title"] = "LOGIN TripNa";
+
+}
+<style>
+    .border-custom {
+        border: 1px solid lightgray;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px #d6d6d6;
+        background-color: rgb(245, 244, 244);
+    }
+
+    #code {
+        cursor: pointer;
+        font-family: Arial;
+        font-style: italic;
+        font-weight: bold;
+        border: 0;
+        letter-spacing: 2px;
+        color: blue;
+        background-color: red;
+        padding: 4px;
+        width: 100%;
+        height: auto;
+        text-align: center
+    }
+</style>
+
+<div class="row mb-5 m-3 mt-5">
+    <div class="container mt-5 col-sm-6 border-custom">
+        <h1 class="mb-1 text-center">LOGIN TripNa</h1>
+        <h4 class="mb-5 text-center ">會員登入</h4>
+        <p class="form-text-5 mb-4 text-end">
+            尚未加入會員?<a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="SignUp">點此註冊</a>
+
+        </p>
+
+        <form method="post" asp-action="Login" asp-controller="Home">
+            @Html.AntiForgeryToken() <!-- 防偽標示 -->
+
+            <p class="form-text mb-3" style="color:red">@ViewData["Message"]</p>
+            <input type="email" class="form-control form-floating mb-5" id="memberEmail"
+                   placeholder="E-mail" name="memberEmail" required>
+
+            <input type="password" class="form-control" id="memberPassword"
+                   placeholder="密碼" name="memberPassword" required>
+            <p class="form-text mb-5"><a class="text-decoration-none" href="ResetPW.html">忘記密碼?</a></p>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputCode" placeholder="請輸入驗證碼，不分大小寫">
+                    <p class="form-text mb-3">&#10148;若看不清楚可點擊圖片重新產生驗證碼</p>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <p id="code"></p>
+                </div>
+            </div>
+
+            <label class="form-check-label">
+                <input class="form-check-input mb-5" type="checkbox" name="remember"> 記住我的電子信箱
+            </label>
+
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Login | 登 入" id="validate" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<script>
+    //全域變數 紀錄驗證碼
+    var code = "";
+    //
+    var checkCode = document.getElementById("code");
+
+    //顏色組
+    function randomNum(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+    var fontColor = function randomColor(min, max) {
+        let r = randomNum(min, max);
+        let g = randomNum(min, max);
+        let b = randomNum(min, max);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    var bgColor = function randomColor(min, max) {
+        let r = randomNum(min, max);
+        let g = randomNum(min, max);
+        let b = randomNum(min, max);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    var ls = ["-2px", "-1px", "0px", "1px", "2px", "3px", "4px", "5px", "6px",];
+
+    var iColor;
+
+    //隨機設定顏色組合
+    function randColor() {
+        iColor = Math.floor(Math.random() * (ls.length));
+        return iColor;
+    }
+    function createCode() {
+        var ci = randColor()
+        console.log(ci);
+        checkCode.style['color'] = fontColor(0, 255);
+        checkCode.style['background-color'] = bgColor(0, 255);
+        checkCode.style['letter-spacing'] = ls[ci];
+
+        // alert (ci);
+        code = "";
+        var codeLength = 4;//驗證碼的長度
+        var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//隨機數
+        for (var i = 0; i < codeLength; i++) {
+            var index = Math.floor(Math.random() * 36);//取得隨機數的索引（0~35）
+            code += random[index];//根據索引取得隨機數加到code上
+        }
+        checkCode.innerHTML = code;//把code值賦給驗證碼
+        console.log(code);
+    }
+
+
+
+    //點擊更新驗證碼
+    checkCode.addEventListener("click", function (e) {
+        createCode();
+        document.getElementById("inputCode").value = "";//清空文字框
+        e.preventDefault();
+    });
+
+    //驗證
+    var validate = document.getElementById('validate');
+    validate.addEventListener("click", function (e) {
+        var inputCode = document.getElementById("inputCode").value.toUpperCase(); //取得輸入的驗證碼並轉化為大寫
+        if (inputCode.length <= 0) { //若輸入的驗證碼長度為0
+            alert("請輸入驗證碼！"); //則彈出請輸入驗證碼
+        }
+        else if (inputCode !== code) { //若輸入的驗證碼與產生的驗證碼不一致時
+            alert("驗證碼輸入錯誤"); //則彈出驗證碼輸入錯誤
+            createCode();//重新整理驗證碼
+        }
+        else { //輸入正確時
+            // alert("登入成功!"); //彈出^-^
+            createCode();//重新整理驗證碼
+        }
+    });
+
+    createCode();
+
+    // --------------- Demo  --------------------
+    // $("#memberEmail").on("click", function () { $("#memberEmail").val("demo@gmail.com") });
+    // $("#MemberPassword").on("click", function () { $("#MemberPassword").val("123456") });
+    $("#inputCode").on("click", function () { $("#inputCode").val(code) });
+</script>

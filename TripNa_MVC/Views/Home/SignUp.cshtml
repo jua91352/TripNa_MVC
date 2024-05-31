@@ -1,0 +1,94 @@
+﻿@model TripNa_MVC.Models.Member
+
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<style>
+    .border-custom {
+        border: 1px solid lightgray;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px #d6d6d6;
+        background-color: rgb(245, 244, 244);
+    }
+
+</style>
+
+
+<div class="row mb-5 m-3 mt-5">
+    <div class="container mt-5 col-sm-6 border-custom">
+        <h1 class="mb-1 text-center">JOIN TripNa</h1>
+        <h4 class="mb-5 text-center ">註冊會員</h4>
+        <p class="form-text-5 mb-4 text-end">
+            已經是會員了？<a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Login">點此登入</a>
+
+        </p>
+
+        <form asp-action="SignUp">
+
+            <div class="form-group">
+                <p class="form-text mb-3" style="color:red">@ViewData["Message"]</p>
+                <input asp-for="MemberEmail" class="form-control form-floating " placeholder="E-mail" />
+                <span asp-validation-for="MemberEmail" class="text-danger" required></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <input asp-for="MemberName" class="form-control form-floating" placeholder="姓名" />
+                <span asp-validation-for="MemberName" class="text-danger" required></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <input asp-for="MemberBirthDate" class="form-control form-floating" placeholder="BirthDate" type="date" />
+                <span asp-validation-for="MemberBirthDate" class="text-danger" required></span>
+            </div>
+            <br />
+
+
+
+
+            <div class="form-group">
+                <input asp-for="MemberPhone" class="form-control form-floating" placeholder="行動電話" />
+                <span asp-validation-for="MemberPhone" class="text-danger" required></span>
+            </div>
+            <br />
+
+
+
+            <div class="form-group d-flex justify-content-center">
+                <input asp-for="MemberPassword" class="form-control form-floating " placeholder="密碼" />
+                <span asp-validation-for="MemberPassword" class="text-danger"></span>
+            </div>
+            <br />
+
+
+
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="JOIN | 註冊" id="validate" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

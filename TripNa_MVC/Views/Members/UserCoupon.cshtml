@@ -1,0 +1,187 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Coupon>
+
+@{
+    ViewData["Title"] = "UserCoupon";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* 翻轉頁面樣式設定 */
+    .flip-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* 控制項目之間的間距 */
+    }
+
+
+    .flip-box {
+        background-color: transparent;
+        width: 100%;
+        height: 200px;
+        border: 1px solid #f1f1f1;
+        perspective: 1000px;
+    }
+
+    .flip-box-inner, .flip-box-back {
+        color: #4e5482;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-box:hover .flip-box-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-box-front,
+    .flip-box-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .flip-box-front {
+        background-color: #e8eafe;
+    }
+
+    .flip-box-back {
+        background-color: #e8eafe;
+        transform: rotateY(180deg);
+    }
+</style>
+
+
+
+<div class="container">
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/click_coupon.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="row">
+
+        <div class="col-sm-2">
+        </div>
+
+        <div class="col-sm-8">
+
+            @{
+
+
+                if (Model == null || !Model.Any())
+                {
+                    <!--沒有評價 的畫面-->
+
+                    <div style=' background-color: #e8eafe'>
+
+                        <div id="mycollect" style='background-color: #e8eafe' class="rounded shadow ">
+
+                            <br>
+                            <p class="text-center">
+                                <img src="~/_img/png/coupon_ticket.png"
+                                     style="width: 200px; height: 70px;object-fit: cover;">
+                            </p>
+                            <p class="text-center" style="color: #4e5482;">您目前沒有可使用的優惠券</p>
+                            <br>
+                        </div>
+                    </div>
+
+                }
+
+               foreach (var item in Model)
+                {
+                    <!--有評價 的畫面 且全部秀出來-->
+
+                    <div class="flip-box rounded shadow d-flex">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <br><br>
+                                <img src="~/_img/coupon.png" style="width:300px;height:100px">
+                                <h6>@item.CouponFrom</h6>
+                                <h6 class="text-end bi bi-hand-index-thumb" style="margin-right: 13px; font-size: 13px;">查看</h6>
+                            </div>
+                            <div class="flip-box-back">
+                                <br><br><br>
+                                <h6 class="text-center" style="color: #4e5482;">
+                                    優惠碼: <span>@item.CouponCode</span>
+                                    <span class="bi bi-clipboard" id="copyimg" onclick="copyCode(this)" style="cursor: pointer;"></span>
+
+                                </h6>
+                                <h6 class="text-center" style="color: #4e5482;">期限 @item.CouponDueDate</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            }
+
+            <br>
+
+
+        </div>
+
+        <div class="col-sm-2">
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<script>
+    function copyCode(element) {
+        var couponCode = element.previousElementSibling.innerText; // 获取優惠碼
+        navigator.clipboard.writeText(couponCode); // 將優惠碼複製到剪貼板
+        element.classList.remove("bi-clipboard"); // 刪除 clipboard 圖標 class
+        element.classList.add("bi-check2"); // 添加 check2 圖標 class
+    }
+
+
+
+
+
+    function createCode() {
+        code = "";
+        var codeLength = 8;//驗證碼的長度
+        var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//隨機數
+        for (var i = 0; i < codeLength; i++) {
+            var index = Math.floor(Math.random() * 36);//取得隨機數的索引（0~35）
+            code += random[index];//根據索引取得隨機數加到code上
+        }
+        $("#code").html(`${code}`);//把code值賦給驗證碼
+    }
+    createCode();
+
+
+</script>
