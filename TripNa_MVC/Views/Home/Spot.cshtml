@@ -60,7 +60,6 @@
             {
 
                 string img = @item.SpotName+".jpg";
-                string city = @item.SpotCity;
               
                 <form asp-action="Spot" method="post">
                     <input type="hidden" name="spotId" value="@item.SpotId" />
@@ -73,7 +72,7 @@
 
                 <td class="text-center" style="width: 300px;">
                     <span class="List">
-                        <img src="~/景點圖片/宜蘭/@img" width="100px" height="100px">
+                        <img src="~/景點圖片/@item.SpotCity/@img" width="100px" height="100px">
                         <p>@item.SpotName</p>
                         <p>@item.SpotIntro</p>
                     </span>
