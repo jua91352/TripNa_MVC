@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+﻿@model PaginatedList2<TripNa_MVC.Models.Spot>
 
 @{
     ViewData["Title"] = "Spot";
@@ -11,24 +11,94 @@
 @{
 
     string memberId = hca.HttpContext.Session.GetString("memberId");
-}
+
+    var distinctCities = Model.Select(m => m.SpotCity).Distinct();
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link href="/css/information.css" rel="stylesheet" />
 
 
+@* 
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
 
-<div class="container">
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
 
-    <div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script> *@
+
+
+    <!-- 字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body id="body">
+
+    @* <div class="container" > *@
+
+        @*   <div>
         <h1 class="text-center">TripNa Member Center</h1>
 
         <h4 id="title" class="text-center"> 會員中心</h4>
-    </div>
+        </div>
+
+        *@
+
+        <br>
+        <div class="container-fluid px-0 ">
+
+            <div class="row row-cols-1">
+                <div class="col">
+                    <div class="col fixed-top">
+                        <!-- 固定上方 -->
+
+                        <nav class="navbar navbar-expand-sm " id="head" ;>
+                            <img src="/images/logo.png" alt="" width="300px;">
+                            <div class="container-fluid justify-content-end  px-0">
+
+
+                             
+
+                                <!-- 頁首 -->
+                                <ul class="navbar-nav ">
+
+                                    <li class="nav-item nav-travel">
+                                        <a class="nav-link" asp-area="" asp-controller="Travel" asp-action="weather">旅遊資訊</a>
+                                        <ul class="nav-intro">
+                                            <li><a class="nav-link_1" asp-area="" asp-controller="Spots" asp-action="Index">景點介紹</a></li></br>
+                                            <li><a class="nav-link_1" asp-area="" asp-controller="Travel" asp-action="Index">美食導覽</a></li>
+                                        </ul>
+                                    </li>
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">自訂行程</a>
+                                    </li>
 
 
 
-    <br>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">會員登入</a>
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" href="#">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </nav>
 
     <div id="topIcon" class="row">
 
@@ -45,65 +115,170 @@
 
         <div class="col-sm-2 text-center"></div>
 
-    </div>
-    <hr style='background-color:#3A326D; height:1px; border:none;'>
+                    </div>
+                    <hr style='background-color:#3A326D; height:1px; border:none;'> *@
+
+
+                    <div id="food-guide" style="width:95%; margin-top:8rem;">
+                        <div class="guide-content">
+                            <h2 style="margin-left:8px;">景點介紹</h2>
+                            <br />  <br />
+
+                        </div>
+
+
+                        <form asp-action="spot" method="get">
+                            <div class="form-actions no-color" style="margin-left:20px;">
+                                <p style="width:auto;">
+
+                                    <input type="text" name="SearchString" @* value="@ViewData["CurrentFilter"]" *@ placeholder="開始探索景點" id="search" />
+                                    <input type="submit" value="搜尋" class="back" /> |
+                                    <a asp-action="spot" class="backserch">回到景點總覽</a>
+                                </p>
+                            </div>
+                        </form>
+
+                        <div class="sidebar_spot">
+                            <a asp-action="Spot" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" id="locabtn">根據縣市排序</a>
+                            <button class="btn btn-light " type="button" data-bs-toggle="collapse" data-bs-target="#regionCollapse" aria-expanded="false" aria-controls="regionCollapse" style="width:100px;margin-bottom:5px" id="filter">
+                                <img src="~/images/篩選 (2).png" alt="Alternate Text" width="20px" height="20px" style="margin-right:5px;" />  篩選
+                            </button>
+                            <div class="collapse" id="regionCollapse" style="position:relative;">
+                                <p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇區域</p>
+                                <ul id="selectedregion-spot">
+                    @* ------------------------------------------------------------------- *@
+                    @foreach (var spotcity in ViewBag.SpotCity)
+                    {
+                                        <li>
+                                            <input type="checkbox" name="selectedRegions" value="@spotcity" id="region-@spotcity" class="spotcity-checkbox" />
+                                            <label for="spotcity-@spotcity">@spotcity</label>
+                                        </li>
+                    }
+
+
+                                </ul>
+
+                                <li style="list-style-type:none"><a href="javascript:void(0)" id="cancel"><img src="/images/取消.png" alt="Alternate Text" width="20px" height="20px" /></a></li>
+                            </div>
+                        </div>
+                        <br /><br />
+                        <p id="topic">精選主題</p>
+                        <ul id="selectedregion-spot_topic">
+
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="夜市">夜市</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="海洋">海邊</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="老街">老街</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="漁港">漁港</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="農場">農場</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="溫泉">溫泉</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="教堂">教堂</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="風景區">風景區</a>
+                            <a asp-action="Spot" asp-controller="Home" asp-route-searchString="國家公園">國家公園</a>
+
+
+                        </ul>
+
+                        <div class="main" style="position:relative;">
+                            <h3 style="margin-left:30px;">景點列表</h3>
+
+            @* ------------------------------分頁按鈕---------------------------- *@
+
+               <div class="btn" style="position:absolute; right:30px;top:0;margin:10px">
+
+                            @{
+                            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                            }
+
+                            <a asp-action="Spot"
+                            asp-route-sortOrder="@ViewData["CurrentSort"]"
+                            asp-route-pageNumber="@(Model.PageIndex - 1)"
+                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                            class="btn btn-outline-secondary  @prevDisabled" style="margin-right:8px;">
+                            <img src="/images/arrow_back_ios_20dp_FILL0_wght400_GRAD0_opsz20.svg" alt="Alternate Text" style="margin-left:5px;margin-bottom:3px;" />
+                            </a>
+                            <a asp-action="Spot"
+                            asp-route-sortOrder="@ViewData["CurrentSort"]"
+                            asp-route-pageNumber="@(Model.PageIndex + 1)"
+                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                            class="btn btn-outline-secondary @nextDisabled">
+                            <img src="/images/arrow_forward_ios_20dp_FILL0_wght400_GRAD0_opsz20.png" width="20px" height="20px" alt="Alternate Text" style="margin-left:5px;margin-bottom:3px;" />
+                            </a>
+                            </div>
+                           
+
+            @* ----------------------------------------------------------------------- *@
+                            <ul id="spotcity-list" style="padding:10px;">
+
+                                <!-- 這裡將顯示篩選後的餐廳結果 -->
+                                <partial name="_spotlist" />
+
+                            </ul>
+
+
+
+                        </div>
+                    </div>
+
 
     
 
     <Table>
 
 
-        <tr>
-            <h1>@ViewData["Message"]</h1>
+                        <tr>
+                            <h1>@ViewData["Message"]</h1>
 
             @foreach (var item in Model)
             {
 
-                string img = @item.SpotName+".jpg";
-              
-                <form asp-action="Spot" method="post">
-                    <input type="hidden" name="spotId" value="@item.SpotId" />
-                    <input type="hidden" name="spotName" value="@item.SpotName" />
-                    <input type="hidden" name="spotCity" value="@item.SpotCity" />
-                    <input type="hidden" name="spotIntro" value="@item.SpotIntro" />
-                    <input type="hidden" name="memberId" value="@memberId" /> <!--獲取本使用者的ID -->
+                string img = @item.SpotName + ".jpg";
+
+                                <form asp-action="Spot" method="post">
+                                    <input type="hidden" name="spotId" value="@item.SpotId" />
+                                    <input type="hidden" name="spotName" value="@item.SpotName" />
+                                    <input type="hidden" name="spotCity" value="@item.SpotCity" />
+                                    <input type="hidden" name="spotIntro" value="@item.SpotIntro" />
+                                    <input type="hidden" name="memberId" value="@memberId" /> <!--獲取本使用者的ID -->
 
 
 
-                <td class="text-center" style="width: 300px;">
-                    <span class="List">
-                        <img src="~/景點圖片/@item.SpotCity/@img" width="100px" height="100px">
-                        <p>@item.SpotName</p>
-                        <p>@item.SpotIntro</p>
-                    </span>
-                    <button type="submit" class="btn btn-default btnCollect" style="background-color:#4e5482 ; color: #dee0fb"
-                            data-spot-id="@item.SpotId" data-spot-name="@item.SpotName" data-spot-city="@item.SpotCity"
-                             data-spot-intro="@item.SpotIntro" data-member-id="@memberId">
-                        <span class="bi bi-heart"></span>收藏
-                    </button>
-                </td>
+                                <td class="text-center" style="width: 300px;">
+                                    <span class="List">
+                                        <img src="~/景點圖片/@item.SpotCity/@img" width="100px" height="100px">
+                                        <p>@item.SpotName</p>
+                                        <p>@item.SpotIntro</p>
+                                    </span>
+                                    <button type="submit" class="btn btn-default btnCollect" style="background-color:#4e5482 ; color: #dee0fb"
+                                            data-spot-id="@item.SpotId" data-spot-name="@item.SpotName" data-spot-city="@item.SpotCity"
+                                            data-spot-intro="@item.SpotIntro" data-member-id="@memberId">
+                                        <span class="bi bi-heart"></span>收藏
+                                    </button>
+                                </td>
 
-                </form>
+                                </form>
                 @*  <div>
-            <p>@item.SpotId</p>
-            <p>@item.SpotName</p>
-            <p>@memberId</p>
-            </div> *@
-            }
-        </tr>
+                            <p>@item.SpotId</p>
+                            <p>@item.SpotName</p>
+                            <p>@memberId</p>
+                            </div> *@
+   } 
+                        </tr>
 
-    </Table>
+                    </Table>
 
-</div>
-<br>
-<br>
-<br>
-<br>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
 
+    @section Scripts {
+        @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+                @* <script src="/js/jquery-3.7.1.js"></script> *@
 
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+                <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -112,43 +287,43 @@
 
 
 
-            $(".btnCollect").click(function () {
+                        $(".btnCollect").click(function () {
 
 
-                const spotId = this.getAttribute('data-spot-id');
-                const spotName = this.getAttribute('data-spot-name');
-                const spotCity = this.getAttribute('data-spot-city');
-                const spotIntro = this.getAttribute('data-spot-intro');
-                const memberId = this.getAttribute('data-member-id');
+                            const spotId = this.getAttribute('data-spot-id');
+                            const spotName = this.getAttribute('data-spot-name');
+                            const spotCity = this.getAttribute('data-spot-city');
+                            const spotIntro = this.getAttribute('data-spot-intro');
+                            const memberId = this.getAttribute('data-member-id');
 
 
-                if (!memberId) {
-                    alert('請先登入');
-                    return;
-                }
+                            if (!memberId) {
+                                alert('請先登入');
+                                return;
+                            }
 
-                fetch(`/Members/UserCollect`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        spotId,
-                        spotName,
-                        spotCity,
-                        spotIntro,
-                        memberId
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        window.location.reload();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                            fetch(`/Members/UserCollect`, {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    spotId,
+                                    spotName,
+                                    spotCity,
+                                    spotIntro,
+                                    memberId
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    alert(data.message);
+                                    window.location.reload();
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
 
 
 
@@ -204,35 +379,130 @@
 
 
 
-                // $.ajax({
-                //     url: `/Members/UserCollect/${spotId}`,
-                //     type: 'POST',
-                //     data: {
-                //         spotId: spotId,
-                //         spotName: spotName,
-                //         spotIntro: spotIntro
-                //     },
-                //     success: function (response) {
-                //         alert('收藏成功！');
-                //     },
-                //     error: function (xhr, status, error) {
-                //         alert('收藏失败，請重試。');
-                //     }
-                // });
+                            // $.ajax({
+                            //     url: `/Members/UserCollect/${spotId}`,
+                            //     type: 'POST',
+                            //     data: {
+                            //         spotId: spotId,
+                            //         spotName: spotName,
+                            //         spotIntro: spotIntro
+                            //     },
+                            //     success: function (response) {
+                            //         alert('收藏成功！');
+                            //     },
+                            //     error: function (xhr, status, error) {
+                            //         alert('收藏失败，請重試。');
+                            //     }
+                            // });
 
 
-                // $.post('@Url.Action("Spot", "Spot")', formData, function (response) {
-                //     alert(response.message);
-                // });
-
-
-
+                            // $.post('@Url.Action("Spot", "Spot")', formData, function (response) {
+                            //     alert(response.message);
+                            // });
 
 
 
 
 
-            });
-        });
-    </script>
-}
+
+
+
+                        });
+                    });
+
+
+
+
+
+
+
+                    $(function () {
+                        // 當複選框的狀態改變時
+                        $('input.spotcity-checkbox').change(function () {
+                            var selectedRegions = $('input.spotcity-checkbox:checked').map(function () {
+                                return this.value;
+                            }).get();
+
+                            // 發送 AJAX 請求
+                            $.ajax({
+                                url: '@Url.Action("GetFilteredSpots", "Home")', // 控制器動作方法的 URL
+                                type: 'POST',
+                                dataType: 'html',
+                                data: { spotcity: selectedRegions },
+                                success: function (result) {
+                                    $('#spotcity-list').html(result); // 更新餐廳列表
+                                    $("#result").hide();
+
+                                },
+                                error: function () {
+                                    console.log('發生錯誤');
+                                }
+                            });
+                        });
+                    });
+
+                    $(function () {
+                        // 當複選框的狀態改變時
+                        $('input.cityareas-checkbox').change(function () {
+                            var selectedRegions = $('input.cityareas-checkbox:checked').map(function () {
+                                return this.value;
+                            }).get();
+
+                            // 發送 AJAX 請求
+                            $.ajax({
+                            url: '@Url.Action("GetFilteredSpots", "Home")', // 控制器動作方法的 URL
+                                type: 'POST',
+                                dataType: 'html',
+                                data: { cityareas: selectedcityareas },
+                                success: function (result) {
+                                    $('#spotcity-list').html(result); // 更新餐廳列表
+                                    $("#result").hide();
+
+                                },
+                                error: function () {
+                                    console.log('發生錯誤');
+                                }
+                            });
+                        });
+                    });
+
+
+
+                    $("#filter").click(function () {
+                        $(this).hide();
+                        $("#locabtn").hide();
+                        $("#regionCollapse").show();
+
+                    });
+
+                    $("#cancel").click(function () {
+                        $("#regionCollapse").toggle();
+                        $("#filter").toggle();
+                        $("#locabtn").toggle();
+                    });
+
+                    const imgContainers = document.querySelectorAll('.img-container');
+
+                    imgContainers.forEach(container => {
+                        const img = container.querySelector('img');
+
+                        container.addEventListener('click', () => {
+                            container.classList.toggle('zoomed');
+
+                            if (container.classList.contains('zoomed')) {
+                                // 立即將圖片放大並移到更高層級
+                                img.style.transform = 'scale(1.5)';
+                                img.style.position = 'relative';
+                                img.style.zIndex = '1';
+                            } else {
+                                // 還原圖片大小和層級
+                                img.style.transform = 'none';
+                                img.style.position = 'static';
+                                img.style.zIndex = 'auto';
+                            }
+                        });
+                    });
+                </script>
+    }
+</body>
+</html>

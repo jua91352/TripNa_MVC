@@ -25,15 +25,137 @@ namespace TripNa_MVC.Controllers
         public IActionResult Index()
         {
             return View();
-        }
+        } 
 
         public IActionResult Privacy()
         {
             return View();
         }
 
+        public async Task<IActionResult> Spot(string sortOrder,
+          string currentFilter,
+          string searchString,
+          string selectfood,
+          string filterfood,
 
-        public IActionResult Spot(string memberEmail)
+          int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            ViewData["SERCH"] = selectfood;
+            ViewData["SERCHreign"] = filterfood;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var students = from s in _context.Spots
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                students = students.Where(s => s.SpotName.Contains(searchString)
+                                    || s.SpotCity.Contains(searchString));
+            }
+
+            // 檢查搜索結果是否為空
+            var searchResult = students.ToList();
+            if (searchResult.Count == 0)
+            {
+                // 如果搜索結果為空,將"找不到"添加到 ViewBag
+                ViewBag.NoResult = "沒有相關資訊";
+            }
+
+
+            // 計算搜索結果的總數
+            int searchCount = searchResult.Count;
+            ViewData["SearchCount"] = searchCount;
+
+            // 計算總數
+            int totalCount = (from t in _context.Spots
+                              select t).Count();
+            ViewData["TotalCount"] = totalCount;
+
+            ViewData["CurrentFilter"] = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.SpotName);
+                    break;
+                case "Date":
+                    students = students.OrderBy(s => s.SpotCity);
+                    break;
+                case "date_desc":
+                    students = students.OrderByDescending(s => s.SpotCity);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.SpotName);
+                    break;
+            }
+
+            var spots = _context.Spots.AsQueryable();
+            var cityarea = _context.Cityareas.AsQueryable();
+
+            // 根據選擇的 FoodType 進行篩選
+            if (!string.IsNullOrEmpty(selectfood))
+            {
+                spots = spots.Where(r => r.SpotCity == selectfood);
+            }
+            else if (!string.IsNullOrEmpty(searchString))
+            {
+                pageNumber = 1;
+                spots = spots.Where(r => r.SpotName.Contains(searchString) || r.SpotIntro.Contains(searchString));
+            }
+            else
+            {
+                searchString = currentFilter;
+            };
+
+            var cityareas = _context.Cityareas.Select(r => r.Area).Distinct().ToList();
+            ViewBag.Area = cityareas;
+
+            var spotcity = _context.Spots.Select(r => r.SpotCity).Distinct().ToList();
+            ViewBag.SpotCity = spotcity;
+
+            var spotname = _context.Spots.Select(r => r.SpotName).Distinct().ToList();
+            ViewBag.SpotName = spotname;
+
+
+
+            int pageSize = 32;
+            return View(await PaginatedList2<Spot>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+        }
+
+		[HttpPost]
+		public IActionResult GetFilteredSpots(List<string> spotcity)
+		{
+			// Start with all spots and city areas
+			IQueryable<Spot> filteredspots = _context.Spots;
+
+
+			if (spotcity != null && spotcity.Count > 0)
+			{
+				filteredspots = filteredspots.Where(r => spotcity.Contains(r.SpotCity));
+			}
+
+			// Get the counts of the filtered results
+			int filteredCount = filteredspots.Count();
+			ViewData["FilteredCount"] = filteredCount;
+
+
+
+			return PartialView("_spotlist", filteredspots.ToList());
+		}
+
+
+		public IActionResult createSpot(string memberEmail)
         {
 
             var query = from o in _context.Spots

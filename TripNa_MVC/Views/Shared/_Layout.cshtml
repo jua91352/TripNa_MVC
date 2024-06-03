@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿﻿@using Microsoft.AspNetCore.Http
     @inject Microsoft.AspNetCore.Http.IHttpContextAccessor hca
 @{
     string memberEmail = hca.HttpContext.Session.GetString("memberEmail") ?? "Guest";
@@ -36,25 +36,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
     <style>
         body {
             background-color: #dee0fb;
-            background-size: 100%;
-            font-family: "Noto Serif TC", serif;
+            height: 100vh; /* 適用於現代瀏覽器 */
         }
-
-        #topIcon > div > a > img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-        }
-
-        header {
-            padding: 10px;
-            margin-top: 100px;
-        }
-
 
         .navbar-nav > li > a {
             margin-left: 10px;
@@ -89,71 +75,55 @@
                         <!-- 固定上方 -->
 
 
-                        <nav class="navbar navbar-expand-sm " id="head">
-                            <a asp-controller="Home" asp-action="Index"><img src="~/_img/logo.png" alt="" width="200px"></a>
-                            <div class="container-fluid justify-content-end  px-0">
-                                <!-- 大小切換 -->
-                                <button type="button" class="btn btn-outline-secondary m-1" id="big">大</button>
-                                <button type="button" class="btn btn-outline-secondary m-2" id="sm">小</button>
-                                <!-- 頁首 -->
-                                <ul class="navbar-nav ">
 
+@*<body background="./景點圖片/pexels-karolina-grabowska-5705989.jpg"
+      style="background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); /* 模糊效果 */"> *@
+<!-- 頁首 -->
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light" id="head" style="background-color:rgba(78, 84, 130, 0.4); color: #dee0fb;
+">
+        <div class="container-fluid">
+            <a asp-controller="Home" asp-action="Index"><img src="~/_img/logo.png" alt="" width="200px"></a>
+            <!-- 按鈕 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--  -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+               
+                <div class="text-center">
+                    <ul class="navbar-nav justify-content-center text-center m-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">旅遊資訊</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light " asp-area="" asp-controller="Home" asp-action="Privacy">自訂行程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Spot">景點介紹</a>
+                        </li>
+                        @{
+                            if (memberEmail == "Guest")
+                            {
+                                <li class="nav-item">
 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">旅遊資訊</a>
-                                    </li>
-
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">自訂行程</a>
-                                    </li>
-
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Spot">景點介紹</a>
-                                    </li>
-
-
-
-
-
-
-                                    @{
-                                        if (memberEmail == "Guest")
-                                        {
-                                            <li class="nav-item">
-
-                                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">會員登入</a>
-                                            </li>
-
-                                        }
-                                        else
-                                        {
-                                            <li class="nav-item">
-                                                <a class="nav-link" asp-area="" asp-controller="Members" asp-action="MemberCenter">HI @username</a>
-                                            </li>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Login">會員登入</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Members" asp-action="MemberCenter">HI @username</a>
+                                </li>
 
                                             <li class="nav-item">
 
-                                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
-                                            </li>
-
-
-
-
-                                        }
-                                    }
-
-
-
-
-
-
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Logout">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
+                                </li>
+                            }
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
@@ -163,11 +133,11 @@
 
 
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<div class="">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
 
 
 
@@ -193,17 +163,14 @@
                     <li class="mb-1">Email: 8bXrN@example.com</li>
                 </ul>
             </div>
-            <div class="col-3">
-                <h5>社群媒體</h5>
-                <hr>
-                <ul class="list-unstyled">
-                    <li class="mb-1">Facebook</li>
-                    <li class="mb-1">Twitter</li>
-                    <li class="mb-1">Instagram</li>
-                </ul>
-            </div>
         </div>
-    </footer>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2024 版權所有:
+        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">趣哪.com</a>
+    </div>
+</footer>
+<!-- Footer -->
 
 
 
