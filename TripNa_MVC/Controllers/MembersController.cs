@@ -83,26 +83,56 @@ namespace TripNa_MVC.Controllers
             }
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            //var query = from o in _context.FavoriteSpots
-            //            where o.MemberId == member.MemberId
-            //            select o;
 
-            var favoriteSpots = _context.FavoriteSpots
-                                .Where(f => f.MemberId == member.MemberId)
-                                .Select(f => f.SpotId)
-                                .ToList();
 
-            var favoriteSpotDetails = _context.Spots
-                                              .Where(s => favoriteSpots.Contains(s.SpotId))
-                                              .ToList();
+            var favoriteSpots = from fs in _context.FavoriteSpots
+                                join m in _context.Members on fs.MemberId equals m.MemberId
+                                join s in _context.Spots on fs.SpotId equals s.SpotId
+                                where fs.MemberId == member.MemberId
+                                select new
+                                {
+                                    fs.FavoriteSpotId,
+                                    fs.MemberId,
+                                    fs.SpotId,
+                                    s.SpotCity,
+                                    s.SpotName,
+                                    s.SpotIntro
+                                };
 
-            
+            // 將查詢結果轉換為列表
+            var favoriteSpotList = favoriteSpots.ToList();
+
+            // 構建 SpotViewModel
             var model = new SpotViewModel
             {
-                FavoriteSpots = favoriteSpotDetails
-                //MemberId = memberId
-            };
+                FavoriteSpots = favoriteSpotList.Select(fs => new FavoriteSpot
+                {
 
+                    FavoriteSpotId = fs.FavoriteSpotId,
+                    MemberId = fs.MemberId,
+                    SpotId = fs.SpotId,
+
+                    Spot = new Spot
+                    {
+                        SpotId = fs.SpotId,
+                        SpotCity = fs.SpotCity,
+                        SpotName = fs.SpotName,
+                        SpotIntro = fs.SpotIntro
+                    }
+
+                }).ToList(),
+
+                Spots = favoriteSpotList.Select(fs => new Spot
+                {
+                    SpotId = fs.SpotId,
+                    SpotCity = fs.SpotCity,
+                    SpotName = fs.SpotName,
+                    SpotIntro = fs.SpotIntro
+
+                }).ToList(),
+
+                MemberId = member.MemberId
+            };
             return View(model);
         }
 
@@ -121,6 +151,8 @@ namespace TripNa_MVC.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("UserCollect", "Members");
         }
+
+
 
 
 
