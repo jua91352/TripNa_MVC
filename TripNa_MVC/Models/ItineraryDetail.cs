@@ -11,7 +11,7 @@ public partial class ItineraryDetail
 
     public int? SpotId { get; set; }
 
-    public DateOnly ItineraryDate { get; set; }
+    public DateTime ItineraryDate { get; set; }
 
     public byte? VisitOrder { get; set; }
 

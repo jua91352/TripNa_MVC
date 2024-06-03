@@ -5,6 +5,8 @@ namespace TripNa_MVC.Models;
 
 public partial class Orderlist
 {
+    internal Coupon Coupon;
+
     public int OrderId { get; set; }
 
     public int MemberId { get; set; }
@@ -15,7 +17,7 @@ public partial class Orderlist
 
     public int? OrderNumber { get; set; }
 
-    public DateOnly? OrderDate { get; set; }
+    public DateTime OrderDate { get; set; }
 
     public byte? OrderPeopleNo { get; set; }
 

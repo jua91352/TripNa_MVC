@@ -190,17 +190,61 @@ namespace TripNa_MVC.Controllers
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Home"); // 如果Session 裡面沒有東西 重導回主頁
             }
-
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            if (member == null)
-            {
-                return NotFound();
-            }
 
-            return View();
+            var orderDetails = from o in _context.Orderlists
+                               join m in _context.Members on o.MemberId equals m.MemberId
+                               join g in _context.Guiders on o.GuiderId equals g.GuiderId
+                               join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join c in _context.Coupons on o.MemberId equals c.MemberId
+                               where o.MemberId == member.MemberId
+                               select new
+                               {
+                                   o.OrderNumber,
+                                   o.OrderDate,
+                                   i.ItineraryStartDate,
+                                   o.OrderTotalPrice,
+                                   o.OrderStatus,
+                                   o.OrderMatchStatus,
+                                   c.CouponCode
+                               };
+
+            // 將查詢結果轉換為列表
+            var orderDetailsList = orderDetails.ToList();
+
+            // 構建 OrderDetail
+            var model = new OrderDetail
+            {
+
+                Orders = orderDetailsList.Select(o => new Orderlist
+                {
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderStatus = o.OrderStatus,
+                    OrderMatchStatus = o.OrderMatchStatus,
+
+                    Itinerary = new Itinerary
+                     {
+                         ItineraryStartDate = o.ItineraryStartDate
+                     },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+
+                    }
+
+                }).ToList(),
+
+               
+
+                MemberId = member.MemberId
+            };
+
+            return View(model);
         }
 
 

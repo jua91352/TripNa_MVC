@@ -9,7 +9,7 @@ public partial class Itinerary
 
     public string ItineraryName { get; set; } = null!;
 
-    public DateOnly ItineraryStartDate { get; set; }
+    public DateTime ItineraryStartDate { get; set; }
 
     public virtual ICollection<ItineraryDetail> ItineraryDetails { get; set; } = new List<ItineraryDetail>();
 

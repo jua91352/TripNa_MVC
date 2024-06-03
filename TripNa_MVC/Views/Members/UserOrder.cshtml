@@ -1,0 +1,285 @@
+﻿@model TripNa_MVC.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "UserOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .page-normal a {
+        border: 1px solid #C7CF98;
+        padding: 5px 7px;
+        color: #3A326D;
+        margin-left: 20px;
+        text-decoration: none;
+    }
+
+        .page-normal a:hover {
+            background-color: #c4c9fc;
+        }
+
+    .page-normal {
+        color: #4e5482;
+        text-align: center;
+    }
+
+
+        .page-normal .page-current {
+            color: #e8eafe;
+            background-color: #4e5482
+        }
+
+
+        .page-normal .page-prev {
+            color: #4e5482;
+        }
+
+
+        .page-normal a,
+        .page-normal a:hover,
+        .page-normal .page-prev,
+        .page-normal .page-current {
+            border: 1px solid #4e5482;
+            padding: 5px 7px;
+        }
+</style>
+
+
+
+<div class="container">
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Members" asp-action="UserOrder"><img src="~/_img/png/click_myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+   @{
+       if (Model.Orders == null || !Model.Orders.Any())
+    {
+         <div class="row">
+
+        <div class="col-sm-2">
+        </div>
+
+        <div class="col-sm-8">
+
+
+        <!-- 收藏裡面  沒有東西 -->
+
+        <div id="mycollect" style='background-color: #e8eafe ' class="rounded shadow ">
+
+
+            <div style="">
+                <p class="text-center">
+
+                        <span class="bi bi-card-list" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+
+                </p>
+
+            </div>
+
+            <p class="text-center">收藏清單中沒有景點</p>
+            <div class="text-center" style=" margin-right:10px; ">
+
+                    <a class="btn" asp-area="" asp-controller="Home" asp-action="Privacy"
+                   style="width: 150px; background-color: #4e5482 ;color: #e8eafe;">前往自訂行程→</a>
+                <br>
+                <br>
+            </div>
+
+        </div>
+
+          </div>
+
+        <div class="col-sm-2">
+        </div>
+
+    </div>
+
+
+
+    }
+
+    else
+    {
+
+            <table id="listtable" class="table table-striped table-hover">
+
+                <thead>
+                    <tr id="trTitle">
+                        <th class="text-center">
+                            訂單編號
+                        </th>
+                        <th class="text-center">
+                            下單日期
+                        </th>
+                        <th class="text-center">
+                            出發日期
+                        </th>
+                        <th class="text-center">
+                            金額
+                        </th>
+                        <th class="text-center">
+                            訂單狀態
+                        </th>
+                        <th class="text-center">
+                            媒合狀態
+                        </th>
+                        <th class="text-center">
+                            問與答
+                        </th>
+                        <th class="text-center">
+                            優惠碼
+                        </th>
+
+                        <th class="text-center">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr id="trContent" >
+                        <td class="text-center" width="100px" >
+                                @order.OrderNumber
+                        </td>
+
+                        <td class="text-center" width="100px">
+
+                                @(order.OrderDate.ToString("yyyy/MM/dd"))
+                        </td>
+
+
+                        <td class="text-center" width="100px">
+                                @(order.Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd"))
+
+                        </td>
+
+
+                        <td class="text-center" width="100px">
+                            NT$@order.OrderTotalPrice.ToString("N0")
+                        </td>
+
+                        <td class="text-center" width="100px">
+                                @order.OrderStatus
+                        </td>
+
+                        <td class="text-center" width="100px">
+                                @order.OrderMatchStatus
+                        </td>
+
+
+                        <td class="text-center" width="70px">
+                            <a href="myQA.html" onclick="doscore(${k})"> <span class="bi bi-chat-text-fill" style="color: #545454; font-size: 20px;"></span></a>
+
+                        </td>
+
+                        <td class="text-center" width="80px">
+                                @order.Coupon.CouponCode
+                        </td>
+
+                        <td class="text-center" width="100px">
+                            <a href="/OrderDetails.html" onclick="doscore(${k})"><button type="button" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">查看訂單</button></a>
+                        </td>
+
+                    </tr>
+                    }
+
+
+
+
+                </tbody>
+            </table>
+
+            <br>
+            <!-- 下方選擇頁數區域-->
+            <div class="page-normal">
+
+                <!-- 數字1 代表當前頁面-->
+                <span class="page-prev">1</span>
+              
+            </div>
+            <!-- 下方選擇頁數區域-->
+
+            <br>
+            <br>
+
+    }
+
+}
+
+
+
+    
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
