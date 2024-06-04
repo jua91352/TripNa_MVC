@@ -158,7 +158,7 @@ namespace TripNa_MVC.Controllers
 
 
         // GET: /Members/UserCoupon
-        public async Task<IActionResult> UserCoupon()
+        public IActionResult UserCoupon()
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
@@ -167,7 +167,7 @@ namespace TripNa_MVC.Controllers
             }
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-           
+
             if (member == null)
             {
                 return NotFound();
@@ -183,17 +183,25 @@ namespace TripNa_MVC.Controllers
                             c.CouponDueDate,
                             i.ItineraryName
                         };
+            // 將查詢結果轉換為列表
+            var result = query.ToList();
 
-            var result = await query.ToListAsync();
-
-            var model = result.Select(x => new UserCoupon
+            // 構建 OrderDetail
+            var model = new UserCoupon
             {
-                CouponCode = x.CouponCode,
-                CouponDueDate = x.CouponDueDate,
-                ItineraryName = x.ItineraryName
 
-            }).ToList();
+                Coupon = result.Select(x => new Coupon
+                {
+                    CouponCode = x.CouponCode,
+                    CouponDueDate = x.CouponDueDate,
 
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryName = x.ItineraryName
+                    }
+
+                }).ToList(),
+            };
 
             return View(model);
         }
@@ -224,7 +232,7 @@ namespace TripNa_MVC.Controllers
                                    o.OrderTotalPrice,
                                    o.OrderStatus,
                                    o.OrderMatchStatus,
-                                   CouponCode = c.CouponCode
+                                   c.CouponCode
                                };
 
 
@@ -257,6 +265,9 @@ namespace TripNa_MVC.Controllers
 
             return View(model);
         }
+
+
+
 
 
 
@@ -269,12 +280,19 @@ namespace TripNa_MVC.Controllers
             }
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            //var query = from j in _context.ItineraryDetails
+            //            join s in _context.Spots on j.SpotId equals s.SpotId
+            //            select j;
+
             var orderDetails = from o in _context.Orderlists
                                join m in _context.Members on o.MemberId equals m.MemberId
                                join g in _context.Guiders on o.GuiderId equals g.GuiderId
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                join c in _context.Coupons on o.MemberId equals c.MemberId
                                where o.MemberId == member.MemberId
+                               from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                               join s in _context.Spots on j.SpotId equals s.SpotId
                                select new
                                {
                                    o.OrderNumber,
@@ -283,7 +301,15 @@ namespace TripNa_MVC.Controllers
                                    o.OrderTotalPrice,
                                    o.OrderStatus,
                                    o.OrderMatchStatus,
-                                   c.CouponCode
+                                   c.CouponCode,
+                                   g.GuiderNickname,
+                                   i.ItineraryName,
+                                   o.OrderPeopleNo,
+                                   m.MemberName,
+                                   m.MemberEmail,
+                                   m.MemberPhone,
+                                   ItineraryDetails = j,
+                                   Spot = s
                                };
 
             // 將查詢結果轉換為列表
@@ -300,26 +326,36 @@ namespace TripNa_MVC.Controllers
                     OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
-
+                    OrderPeopleNo = o.OrderPeopleNo,
                     Itinerary = new Itinerary
                     {
-                        ItineraryStartDate = o.ItineraryStartDate
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
                     },
                     Coupon = new Coupon
                     {
                         CouponCode = o.CouponCode
-
-                    }
-
+                    } ,
+                    Guider = new Guider
+                    {
+                        GuiderNickname = o.GuiderNickname
+                    },
+					 Member = new Member
+					 {
+						 MemberName = o.MemberName,
+						 MemberEmail = o.MemberEmail,
+						 MemberPhone = o.MemberPhone
+					 },
+                    Spots = o.Spot
                 }).ToList(),
-
-
-
                 MemberId = member.MemberId
             };
 
+
             return View(model);
         }
+
 
 
 

@@ -2,8 +2,7 @@
 {
     public class UserCoupon
     {
-        public string CouponCode { get; set; }
-        public DateTime DueDate { get; set; }
-        public string ItineraryName { get; set; }
+        public List<Coupon> Coupon { get; set; }
+        public List<Itinerary> Itineraries { get; set; }
     }
 }

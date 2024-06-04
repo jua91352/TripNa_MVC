@@ -6,6 +6,7 @@ namespace TripNa_MVC.Models;
 public partial class Orderlist
 {
     internal Coupon Coupon;
+    internal Spot Spots;
 
     public int OrderId { get; set; }
 

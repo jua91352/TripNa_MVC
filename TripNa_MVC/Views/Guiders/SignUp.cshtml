@@ -7,22 +7,232 @@
 
 <h1>SignUp</h1>
 
+<style>
+ .border-custom {
+      border: 1px solid lightgray;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 10px #d6d6d6;
+      background-color: rgb(245, 244, 244);
+    }
+
+    #code {
+      cursor: pointer;
+      font-family: Arial;
+      font-style: italic;
+      font-weight: bold;
+      border: 0;
+      letter-spacing: 2px;
+      color: blue;
+      background-color: red;
+      padding: 4px;
+      width: 100%;
+      height: auto;
+      text-align: center
+    }
+
+    .navbar-nav>li>a{
+      margin-left: 10px;
+      color:#dee0fb ;
+     }
+     .navbar-nav{
+       margin-right: 2rem;
+      background-color: #4e5482;
+      padding: .3rem 1rem;
+      border-radius: 30px;
+      box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.3), 4px 1px 2px 3px #4e5482 inset;
+     }
+  </style>
+
+
+  <div class="row mb-5 m-3 mt-5">
+    <div class="container mt-5 col-sm-6 border-custom">
+      <h1 class="mb-1 text-center">TripNa Guider</h1>
+      <h4 class="mb-4 text-center">成為導遊</h4>
+
+        <form asp-action="SignUp">
+
+
+        <input type="text" class="form-control mb-4" id="guiderEmail" placeholder="會員信箱" required disabled>
+        
+        
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GuiderNickname" class="control-label"></label>
+                <input asp-for="GuiderNickname" class="form-control" placeholder="請輸入您的暱稱/綽號" required />
+                <span asp-validation-for="GuiderNickname" class="text-danger"></span>
+            </div>
+
+
+
+
+            <div class="form-group">
+
+                <select class="form-select mb-4" id="guiderGender" name="GuiderGender" required>
+                    <option asp-for="GuiderGender"  value="default" selected disabled hidden>請選擇生理性別</option>
+                    <option asp-for="GuiderGender" class="form-control" value="male">男性</option>
+                    <option asp-for="GuiderGender" class="form-control"  value="female">女性</option>
+                   </select>
+
+            </div>
+
+
+
+           @*  <div class="form-group">
+                <label asp-for="GuiderGender" class="control-label"></label>
+                <input asp-for="GuiderGender" class="form-control" />
+                <span asp-validation-for="GuiderGender" class="text-danger"></span>
+            </div> *@
+
+
+
+
+
+
+
+
+
+
+        <p class="form-text-5">請勾選服務地區:</p>
+
+        <input type="radio" class="form-check-input" id="northArea" name="area" value="northArea">
+        <label for="northArea" class="form-check-label">北部地區</label>
+
+        <input type="radio" class="form-check-input" id="centralArea" name="area" value="centralArea">
+        <label for="centralArea" class="form-check-label">中部地區</label>
+
+        <input type="radio" class="form-check-input" id="southArea" name="area" value="southArea">
+        <label for="southArea" class="form-check-label">南部地區</label>
+
+        <input type="radio" class="form-check-input" id="eastArea" name="area" value="eastArea">
+        <label for="eastArea" class="form-check-label mb-4">東部地區</label>
+
+        <input type="radio" class="form-check-input" id="outerArea" name="area" value="outerArea">
+        <label for="outerArea" class="form-check-label mb-4">離島地區</label>
+
+
+        <input type="date" class="form-control" id="guiderStartDate" required>
+        <p class="form-text mb-4">&#10148;請輸入成為導遊的起始日期</p>
+
+        <input type="file" class="form-control" name="guiderImage" accept="image/*" id="guiderImage" required>
+        <p class="form-text mb-4">&#10148;請上傳近期且清晰的正面照片</p>
+
+        <input type="file" class="form-control" name="guiderVert" accept="image/*" id="guiderVert" required>
+        <p class="form-text mb-4">&#10148;請上傳清晰的導遊證/領隊證</p>
+
+        <textarea class="form-control" id="guiderIntro" rows="5" placeholder="請輸入導遊簡介" style="resize: none"></textarea>
+        <p class="form-text mb-4">&#10148;簡介可在會員中心頁面修改</p>
+
+        <!-- 驗證碼 -->
+
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="inputCode" placeholder="請輸入驗證碼，不分大小寫">
+            <p class="form-text mb-4">&#10148;若看不清楚可點擊圖片重新產生驗證碼</p>
+          </div>
+          <div class="col-sm-3">
+            <p id="code"></p>
+            <!-- <a href="#" id="recode"></a> -->
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" id="validate">成 為 導 遊</button>
+        </div>
+        </form>
+
+    </div>
+
+
+  </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h4>Guider</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SignUp">
+
+
+@* 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GuiderNickname" class="control-label"></label>
                 <input asp-for="GuiderNickname" class="form-control" />
                 <span asp-validation-for="GuiderNickname" class="text-danger"></span>
             </div>
+
+
+
+
+
+
+
+
             <div class="form-group">
                 <label asp-for="GuiderGender" class="control-label"></label>
                 <input asp-for="GuiderGender" class="form-control" />
                 <span asp-validation-for="GuiderGender" class="text-danger"></span>
             </div>
+
+
+ *@
+
+
+
+
+
+
+
+
+
+
             <div class="form-group">
                 <label asp-for="GuiderArea" class="control-label"></label>
                 <input asp-for="GuiderArea" class="form-control" />
@@ -30,7 +240,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="GuiderStartDate" class="control-label"></label>
-                <input asp-for="GuiderStartDate" class="form-control" />
+                <input type="date" asp-for="GuiderStartDate" class="form-control" />
                 <span asp-validation-for="GuiderStartDate" class="text-danger"></span>
             </div>
             <div class="form-group">

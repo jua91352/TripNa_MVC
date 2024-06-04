@@ -21,31 +21,81 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult SignUp()
         {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("MemberId,MemberEmail,MemberName,MemberBirthDate,MemberPhone,MemberPassword,MemberCoupon,MemberOrderList,MemberFavorites")] Member member)
+        public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider)
         {
-            if (ModelState.IsValid)
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
             {
-                // Check if the email already exists in the database
-                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberPassword);
-
-                if (existingMember != null)
-                {
-                    ViewData["Message"] = "此帳號已存在";
-                    return View();
-                }
-
-                _context.Add(member);
-                await _context.SaveChangesAsync();
-                return Redirect("/home/Login");
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
 
-            return View("home");
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+
+
+
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(guider);
+                await _context.SaveChangesAsync();
+                return Redirect("/Members/MemberCenter");
+
+    }
+            return Redirect("/Home/Login");
         }
+
+
+
+
+
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Check if the email already exists in the database
+        //        var existingGuider = await _context.Guiders.FirstOrDefaultAsync(m => m.GuiderId == guider.GuiderId);
+
+        //        if (existingGuider != null)
+        //        {
+        //            ViewData["Message"] = "此帳號已存在";
+        //            return View();
+        //        }
+
+        //        _context.Add(guider);
+        //        await _context.SaveChangesAsync();
+        //        return Redirect("/Members/MemberCenter");
+        //    }
+        //    return View();
+        //}
 
 
 
