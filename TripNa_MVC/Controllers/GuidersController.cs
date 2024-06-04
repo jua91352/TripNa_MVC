@@ -21,15 +21,39 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult SignUp()
         {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("MemberId,MemberEmail,MemberName,MemberBirthDate,MemberPhone,MemberPassword,MemberCoupon,MemberOrderList,MemberFavorites")] Member member)
+        public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider)
         {
             if (ModelState.IsValid)
             {
+                var memberEmail = HttpContext.Session.GetString("memberEmail");
+                if (string.IsNullOrEmpty(memberEmail))
+                {
+                    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+                }
+
+                var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+                if (member == null)
+                {
+                    return NotFound();
+                }
                 // Check if the email already exists in the database
                 var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberPassword);
 
@@ -39,29 +63,15 @@ namespace TripNa_MVC.Controllers
                     return View();
                 }
 
-                _context.Add(member);
+                _context.Add(guider);
+               
+               
                 await _context.SaveChangesAsync();
-                return Redirect("/home/Login");
+                return Redirect("/member/index");
             }
-
+            
             return View("home");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // GET: Guiders
         public async Task<IActionResult> Index()

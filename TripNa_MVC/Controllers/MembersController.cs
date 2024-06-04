@@ -189,7 +189,6 @@ namespace TripNa_MVC.Controllers
             var model = result.Select(x => new UserCoupon
             {
                 CouponCode = x.CouponCode,
-                CouponDueDate = x.CouponDueDate,
                 ItineraryName = x.ItineraryName
 
             }).ToList();
