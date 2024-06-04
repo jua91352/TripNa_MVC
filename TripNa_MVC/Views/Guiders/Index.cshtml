@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Guider>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GuiderNickname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuiderGender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuiderArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuiderStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuiderIntro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiderNickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiderGender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiderArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiderStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiderIntro)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.GuiderId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GuiderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GuiderId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

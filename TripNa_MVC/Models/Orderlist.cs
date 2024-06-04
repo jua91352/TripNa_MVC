@@ -12,6 +12,7 @@ public partial class Orderlist
     public int MemberId { get; set; }
 
     public int? GuiderId { get; set; }
+    public int? CouponId { get; set; }
 
     public int ItineraryId { get; set; }
 
