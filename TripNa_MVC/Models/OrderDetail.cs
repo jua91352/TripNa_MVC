@@ -13,8 +13,9 @@
         public List<Spot> Spots { get; set; }
 
         public List<ItineraryDetail> ItineraryDetails { get; set; }
-        //public Orderlist Order { get; internal set; }
         public int OrderId { get; set; }
+        public List<MemberQuestion> MemberQuestions { get; set; }
+        public List<GuiderAnswer> GuiderAnswers { get; set; }
 
     }
 }

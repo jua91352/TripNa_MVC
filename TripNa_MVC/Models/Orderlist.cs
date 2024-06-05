@@ -8,6 +8,8 @@ public partial class Orderlist
     internal Coupon Coupon;
     internal Spot Spots;
     internal ItineraryDetail ItineraryDetail;
+    internal MemberQuestion MemberQuestion;
+    internal GuiderAnswer GuiderAnswer;
 
     public int OrderId { get; set; }
 
@@ -43,9 +45,4 @@ public partial class Orderlist
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<SelectGuider> SelectGuiders { get; set; } = new List<SelectGuider>();
-
-    public static implicit operator List<object>(Orderlist v)
-    {
-        throw new NotImplementedException();
-    }
 }

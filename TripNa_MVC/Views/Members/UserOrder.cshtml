@@ -198,11 +198,23 @@
                                 @order.OrderMatchStatus
                         </td>
 
+                        @if(order.OrderMatchStatus == "媒合中")
+                           {
 
+                                <td class="text-center align-middle">
+
+                                </td>
+                           }
+                           else
+                          {
                             <td class="text-center align-middle" width="70px">
-                            <a href="myQA.html" onclick="doscore(${k})"> <span class="bi bi-chat-text-fill" style="color: #545454; font-size: 20px;"></span></a>
-
-                        </td>
+                                <a asp-area="" asp-controller="Members" asp-action="MemberQA" asp-route-orderID="@order.OrderId"
+                                   onclick="doscore(@order.OrderId)">
+                                    <span class="bi bi-chat-text-fill" style="color: #545454; font-size: 20px;"></span>
+                                </a>
+                            </td>
+                          }
+                           
 
                             <td class="text-center align-middle" width="80px">
                                 @order.Coupon.CouponCode
