@@ -8,6 +8,8 @@
     int groupSize = 4;
     int day = 0;
     string p = ".jpg";   
+    int ratingStars = order.Rating.RatingStars;
+
 }
 
 
@@ -32,9 +34,6 @@
         margin: 0;
     }
 
-        #star:hover {
-            cursor: pointer;
-        }
 
     .rank-rated {
         color: #f6be00;
@@ -209,12 +208,11 @@
                     @for (int j = i; j < i + groupSize && j < Math.Sqrt(orderCount); j++)
                     {
                         string g = ".jpg";
-                        <td class="text-center">
+                        <td class="text-center align-middle">
                             <br>
                             <img src="~/景點圖片/@(Model.Orders[j].Itinerary.ItineraryName.Substring(0, 2))/@Model.Orders[j].Spots.SpotName@g" height="100px " width="100px">
                             <br>
                             <p>@Model.Orders[j].Spots.SpotName</p>
-                            <br>
 
                         </td>
 
@@ -295,7 +293,7 @@
     {
         
     }
-    else
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "尚未出發")
     {
         <div id="scorezone">
             <h3 class="text-center">評價導遊</h3>
@@ -325,21 +323,60 @@
 
                 <div class="col-10 text-center"></div>
 
-
                 <div class="col-2 text-end">
                     <button id="submitBtn " class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
 
                 </div>
 
             </div>
-
-
-
         </div>
 
 
     }
-    
+    //已經評論過了 
+    else
+    {
+        <div id="scorezone">
+            <h3 class="text-center">本次導遊評價</h3>
+            <div id="myscore">
+                <br>
+                <span style="margin: 10px;">導遊評價：</span>
+
+
+                <span id="star">
+                    @for (int i = 0; i < ratingStars; i++)
+                    {
+                        <span class="rank-rated">&#128970;</span>
+                    }
+
+                    @* <span id="score" style="color: #3A326D; font-size: 15px;"></span> *@
+                </span>  
+                <span>@ratingStars 顆星</span>
+                <br>
+                <br>
+
+             @*    <textarea type="text" placeholder="輸入您的評價" id="write" disabled
+                          style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">@order.Rating.RatingComment</textarea>
+ *@
+                <div style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">
+                    <span style="margin: 10px;">
+                        @order.Rating.RatingComment
+                        </span>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    }
+
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>

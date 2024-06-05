@@ -292,6 +292,7 @@ namespace TripNa_MVC.Controllers
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                               join r in _context.Ratings on o.MemberId equals r.MemberId
                                where  o.MemberId == member.MemberId  && o.OrderId == orderID
                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                join s in _context.Spots on j.SpotId equals s.SpotId
@@ -315,7 +316,9 @@ namespace TripNa_MVC.Controllers
                                    o.ItineraryId,
                                    a.VisitOrder,
                                    g.GuiderArea,
-                                   o.OrderId
+                                   o.OrderId,
+                                   r.RatingComment,
+                                   r.RatingStars
                                });
 
             // 將查詢結果轉換為列表
@@ -354,6 +357,11 @@ namespace TripNa_MVC.Controllers
                     {
                         GuiderNickname = o.GuiderNickname,
                         GuiderArea = o.GuiderArea
+                    },
+                    Rating = new Rating
+                    {
+                        RatingComment = o.RatingComment,
+                        RatingStars = o.RatingStars
                     },
                     Member = new Member
                     {
