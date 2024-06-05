@@ -58,7 +58,7 @@
 
 
             <div class="form-group d-flex justify-content-center">
-                <input asp-for="MemberPassword" class="form-control form-floating " placeholder="密碼" />
+                <input asp-for="MemberPassword" class="form-control form-floating " type="password" placeholder="密碼" />
                 <span asp-validation-for="MemberPassword" class="text-danger"></span>
             </div>
             <br />
@@ -74,8 +74,13 @@
 </div>
 
 
-
-
+@if (ViewData["Success"] != null)
+{
+    <script>
+        alert("註冊成功！");
+        window.location.href = '@Url.Action("Login", "Home")';
+    </script>
+}
 
 
 

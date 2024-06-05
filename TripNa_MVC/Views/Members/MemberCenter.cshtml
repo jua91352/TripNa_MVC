@@ -139,45 +139,15 @@
         var password = document.getElementById("MemberPassword").value;
         var confirmPassword = document.getElementById("ReMemberPassword").value;
         if (password !== confirmPassword) {
-            alert("两次输入的密码不一致，请重新输入。");
+            alert("兩次輸入的密碼不一致，請重新輸入。");
             event.preventDefault();
+        }
+        else {
+            alert("修改成功！");
+
         }
     });
 
 
 
-    var getUrl = "./_file/member.json";
-
-
-    $("#userName,#userEmail,#userPhone,#userBirthday").val("");
-    // $("#userName,#userEmail,#userPhone,#userBirthday").empty();
-
-    $.get(getUrl, function (e) {
-
-        var a = 0;
-        $("#userName").val(e[a].Name);
-        $("#userEmail").val(e[a]["E-mail"]);
-        $("#userPhone").val(e[a].PhoneNumber);
-        $("#userBirthday").val(e[a].Birthday);
-
-
-    })
-
-
-    // 綁定輸入的姓名 信箱 電話  並且顯示到alert上面 以便確認有綁定
-    var Name = document.getElementById("userName").value;
-    var Email = document.getElementById("userEmail").value;
-    var Phone = document.getElementById("userPhone").value;
-
-
-    var submitBtn = document.getElementById("submitBtn");
-
-    function submitdata() {
-        var str = "";
-        var submitValue = name.value;
-        str = submitValue;
-        alert(`${Name}+${Email}+${Phone}`);
-    }
-
-    submitBtn.addEventListener("click", submitdata);
 </script>
