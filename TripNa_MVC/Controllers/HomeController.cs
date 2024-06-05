@@ -27,6 +27,8 @@ namespace TripNa_MVC.Controllers
             return View();
         }
 
+
+        //黃浩維的不要動
         public IActionResult Privacy()
         {
             return View();

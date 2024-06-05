@@ -1,10 +1,12 @@
-﻿@{
+﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+@{
     ViewData["Title"] = "Privacy Policy";
 }
 <head>
     <!--自訂-->
     <link rel="stylesheet" href="~/css/Privacy.css">
 </head>
+
 
 
 <div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
@@ -154,7 +156,6 @@
             <div class="row justify-content-center">
                 <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
                 <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-
                 <div class="col-md-8" style="background-color: #f8e8ff;">
                     <ul id="gallery" class="gallery list-unstyled"></ul>
                 </div>
@@ -202,21 +203,21 @@
         //假資料 假設是由資料庫轉過來的
         var spots = {
             taipei: [
-                { "name": "台北101", "img": "~", "alt": "Taipei 101" },
-                { "name": "故宮博物院", "img": "./景點圖片/台北/故宮博物院.jpg", "alt": "National Palace Museum" },
-                { "name": "士林夜市", "img": "./景點圖片/台北/士林夜市.jpg", "alt": "Shilin Night Market" },
-                { "name": "陽明山公園", "img": "./景點圖片/台北/陽明山國家公園.jpg", "alt": "Yangmingshan National Park" },
-                { "name": "龍山寺", "img": "./景點圖片/台北/龍山寺.jpg", "alt": "Longshan Temple" },
-                { "name": "中正紀念堂", "img": "./景點圖片/台北/中正紀念堂.jpg", "alt": "National Chiang Kai-shek Memorial Hall" },
-                { "name": "台北動物園", "img": "./景點圖片/台北/台北動物園.jpg", "alt": "Taipei Zoo" },
-                { "name": "國父紀念館", "img": "./景點圖片/台北/國父紀念館.jpg", "alt": "Sun Yat-sen Memorial Hall" },
-                { "name": "象山", "img": "./景點圖片/台北/象山.jpg", "alt": "Xiangshan" },
-                { "name": "迪化街", "img": "./景點圖片/台北/迪化街.jpg", "alt": "Dihua Street" },
-                { "name": "松山文創園區", "img": "./景點圖片/台北/松山文創園區.jpg", "alt": "Songshan Cultural and Creative Park" },
-                { "name": "北投溫泉區", "img": "./景點圖片/台北/北投溫泉區.jpg", "alt": "Beitou Hot Spring Area" },
-                { "name": "淡水老街", "img": "./景點圖片/台北/淡水老街.jpg", "alt": "Tamsui Old Street" },
-                { "name": "華山文創園區", "img": "./景點圖片/台北/華山1914文化創意產業園區.jpg", "alt": "Huashan 1914 Creative Park" },
-                { "name": "寶藏巖藝術村", "img": "./景點圖片/台北/寶藏巖國際藝術村.jpg", "alt": "Treasure Hill Artist Village" },
+                { "name": "台北101", "img": "../../景點圖片/台北/台北101.jpg", "alt": "Taipei 101" },
+                { "name": "故宮博物院", "img": "../../景點圖片/台北/故宮博物院.jpg", "alt": "National Palace Museum" },
+                { "name": "士林夜市", "img": "../../景點圖片/台北/士林夜市.jpg", "alt": "Shilin Night Market" },
+                { "name": "陽明山公園", "img": "../../景點圖片/台北/陽明山國家公園.jpg", "alt": "Yangmingshan National Park" },
+                { "name": "龍山寺", "img": "../../景點圖片/台北/龍山寺.jpg", "alt": "Longshan Temple" },
+                { "name": "中正紀念堂", "img": "../../景點圖片/台北/中正紀念堂.jpg", "alt": "National Chiang Kai-shek Memorial Hall" },
+                { "name": "台北動物園", "img": "../../景點圖片/台北/台北動物園.jpg", "alt": "Taipei Zoo" },
+                { "name": "國父紀念館", "img": "../../景點圖片/台北/國父紀念館.jpg", "alt": "Sun Yat-sen Memorial Hall" },
+                { "name": "象山", "img": "../../景點圖片/台北/象山.jpg", "alt": "Xiangshan" },
+                { "name": "迪化街", "img": "../../景點圖片/台北/迪化街.jpg", "alt": "Dihua Street" },
+                { "name": "松山文創園區", "img": "../../景點圖片/台北/松山文創園區.jpg", "alt": "Songshan Cultural and Creative Park" },
+                { "name": "北投溫泉區", "img": "../../景點圖片/台北/北投溫泉區.jpg", "alt": "Beitou Hot Spring Area" },
+                { "name": "淡水老街", "img": "../../景點圖片/台北/淡水老街.jpg", "alt": "Tamsui Old Street" },
+                { "name": "華山文創園區", "img": "../../景點圖片/台北/華山1914文化創意產業園區.jpg", "alt": "Huashan 1914 Creative Park" },
+                { "name": "寶藏巖藝術村", "img": "../../景點圖片/台北/寶藏巖國際藝術村.jpg", "alt": "Treasure Hill Artist Village" },
             ],
             newtaipei: [
                 { "name": "九份老街", "img": "./景點圖片/新北/九份老街.jpg", "alt": "Jiufen Old Street" },
@@ -557,7 +558,7 @@
 
         // 初始化可拖動功能的函數
         function initializeDraggable() {
-            $("#景點", "#gallery").draggable({
+            $("li", "#gallery").draggable({
                 cancel: "a.ui-icon",
                 revert: "invalid",
                 containment: "document",
@@ -630,7 +631,7 @@
             }
 
             $firstDayAreas.droppable({
-                accept: "#gallery > #景點",
+                accept: "#gallery > li",
                 classes: {
                     "ui-droppable-active": "ui-state-highlight"
                 },
@@ -707,7 +708,7 @@
             if (location) {
                 spots[location].forEach(spot => {
                     var listItem = `
-                        <li class="ui-widget-content ui-corner-tr" id="景點">
+                        <li class="ui-widget-content ui-corner-tr">
                             <h5 class="ui-widget-header">${spot.name}</h5>
                             <img src="${spot.img}" alt="${spot.alt}" width="96" height="72">
                             <br>
@@ -723,7 +724,7 @@
         $('#locationSelect').change(clearSchedule);
 
         // 點擊圖庫項目的事件監聽器
-        $("#景點").on("click", function (event) {
+        $("li").on("click", function (event) {
             var $item = $(this),
                 $target = $(event.target);
 
@@ -863,7 +864,6 @@
         daysSelect.addEventListener('change', updateCheckboxState);
         datepicker.addEventListener('change', updateCheckboxState);
 
-
         // 初始化手風琴
         var acc = document.getElementsByClassName("accordion");
         var panels = document.getElementsByClassName("panel");
@@ -927,6 +927,29 @@
                 behavior: 'smooth'
             });
         }
+
+
+
+
+        // 定義調整字體大小的函式
+        function adjustFontSize(size) {
+            // 調整根元素的字體大小
+            document.documentElement.style.fontSize = size;
+        }
+
+        // 獲取按鈕元素
+        var bigBtn = document.getElementById('big');
+        var smallBtn = document.getElementById('sm');
+
+        // 添加點擊事件監聽器，調整字體大小
+        bigBtn.addEventListener('click', function () {
+            adjustFontSize('20px'); // 設置大字體大小
+        });
+
+        smallBtn.addEventListener('click', function () {
+            adjustFontSize('16px'); // 設置小字體大小
+        });
+
     });
 
 
@@ -936,7 +959,6 @@
             $("#navbarNav").toggleClass("show");
         });
     });
-
 
 
     //
@@ -960,6 +982,37 @@
             }
         });
     });
+
+    function updateItinerary() {
+        var itinerary = {};
+
+        // 遍歷所有放置區域，收集數據
+        $(".ui-widget-content").each(function () {
+            var id = $(this).attr('id');
+            var activities = [];
+
+            $(this).find("li").each(function () {
+                activities.push($(this).text());
+            });
+
+            itinerary[id] = activities;
+        });
+
+        // 使用 AJAX 發送數據到 MVC 控制器
+        $.ajax({
+            type: "POST",
+            url: "/Itinerary/Update",
+            data: JSON.stringify(itinerary),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log("行程更新成功:", response);
+            },
+            error: function (error) {
+                console.error("行程更新失敗:", error);
+            }
+        });
+    }
 </script>
 
 
