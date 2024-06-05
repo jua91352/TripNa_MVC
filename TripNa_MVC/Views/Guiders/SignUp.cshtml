@@ -70,11 +70,12 @@
         <div class="container mt-5 col-sm-6 border-custom">
             <h1 class="mb-1 text-center">TripNa Guider</h1>
             <h4 class="mb-4 text-center">成為導遊</h4>
-            <form>
+
+            <form asp-action="SignUp">
                 
                 <input type="text" class="form-control mb-4" id="guiderEmail" placeholder="會員信箱" value="@memberEmail" required disabled>
 
-                <input asp-for=GuiderNickname type="text" class="form-control mb-4" id="guiderNickname" placeholder="請輸入您的暱稱/綽號" required>
+                <input asp-for= "GuiderNickname" type="text" class="form-control mb-4" id="guiderNickname" placeholder="請輸入您的暱稱/綽號" required>
 
 
                 <select asp-for="GuiderGender" class="form-select mb-4" id="guiderGender" required>
@@ -190,14 +191,6 @@
             checkCode.innerHTML = code;//把code值賦給驗證碼
             console.log(code);
         }
-
-        // //更新驗證碼
-        // var recode = document.getElementById('recode');
-        // recode.addEventListener("click", function (e) {
-        //   createCode();
-        //   document.getElementById("input").value = "";//清空文字框
-        //   e.preventDefault();
-        // });
 
         //點擊更新驗證碼
         checkCode.addEventListener("click", function (e) {

@@ -19,6 +19,7 @@ namespace TripNa_MVC.Controllers
         }
 
 
+
         public IActionResult SignUp()
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -35,6 +36,7 @@ namespace TripNa_MVC.Controllers
             }
             return View();
         }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,31 +44,23 @@ namespace TripNa_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                int guiderID = Convert.ToInt32(Guid.NewGuid());
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
-                if (string.IsNullOrEmpty(memberEmail))
+
+                var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+                if (memberContext != null)
                 {
-                    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+                    // 2. Update Member Record with GuiderID
+                    memberContext.GuiderId = guiderID;
+
+                    // 3. Save Changes
+                    _context.Add(guider);
+                    await _context.SaveChangesAsync();
+
+
                 }
 
-                var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-                if (member == null)
-                {
-                    return NotFound();
-                }
-                // Check if the email already exists in the database
-                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberPassword);
-
-                if (existingMember != null)
-                {
-                    ViewData["Message"] = "此帳號已存在";
-                    return View();
-                }
-
-                _context.Add(guider);
-               
-               
-                await _context.SaveChangesAsync();
                 return Redirect("/member/index");
             }
             
