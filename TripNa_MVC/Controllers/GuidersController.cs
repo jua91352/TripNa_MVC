@@ -44,20 +44,18 @@ namespace TripNa_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                int guiderID = Convert.ToInt32(Guid.NewGuid());
+                
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
 
                 var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
                 if (memberContext != null)
                 {
-                    // 2. Update Member Record with GuiderID
-                    memberContext.GuiderId = guiderID;
 
-                    // 3. Save Changes
                     _context.Add(guider);
                     await _context.SaveChangesAsync();
-
+                    memberContext.GuiderId = guider.GuiderId;
+                    await _context.SaveChangesAsync();
 
                 }
 
