@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "UserOrder";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <style>
@@ -43,7 +44,6 @@
             padding: 5px 7px;
         }
 </style>
-
 
 
 <div class="container">
@@ -165,55 +165,59 @@
 
 
                 <tbody>
-
                     @foreach (var order in Model.Orders)
                     {
-                        <tr id="trContent" >
-                        <td class="text-center" width="100px" >
+                        <tr id="trContent align-middle">
+                            <td class="text-center align-middle" width="100px">
                                 @order.OrderNumber
+                                @order.OrderId
 
                         </td>
 
-                        <td class="text-center" width="100px">
+                            <td class="text-center align-middle" width="100px">
 
                                 @(order.OrderDate.ToString("yyyy/MM/dd"))
                         </td>
 
 
-                        <td class="text-center" width="100px">
+                            <td class="text-center align-middle" width="100px">
                                 @(order.Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd"))
 
                         </td>
 
 
-                        <td class="text-center" width="100px">
+                            <td class="text-center align-middle" width="100px">
                             NT$@order.OrderTotalPrice.ToString("N0")
                         </td>
 
-                        <td class="text-center" width="100px">
+                            <td class="text-center align-middle" width="100px">
                                 @order.OrderStatus
                         </td>
 
-                        <td class="text-center" width="100px">
+                            <td class="text-center align-middle" width="100px">
                                 @order.OrderMatchStatus
                         </td>
 
 
-                        <td class="text-center" width="70px">
+                            <td class="text-center align-middle" width="70px">
                             <a href="myQA.html" onclick="doscore(${k})"> <span class="bi bi-chat-text-fill" style="color: #545454; font-size: 20px;"></span></a>
 
                         </td>
 
-                        <td class="text-center" width="80px">
+                            <td class="text-center align-middle" width="80px">
                                 @order.Coupon.CouponCode
+                                
+
                         </td>
 
-                        <td class="text-center" width="100px">
-                                <a asp-area="" asp-controller="Members" asp-action="UserOrderDetails"
-                                   asp-route-orderID="@order.OrderId"
-                                onclick="doscore(${k})"><button type="button" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">查看訂單</button></a>
-                        </td>
-
+                            <td class="text-center align-middle" width="100px">
+                                <a asp-area="" asp-controller="Members" asp-action="UserOrderDetails" asp-route-orderID="@order.OrderId"
+                                   onclick="doscore(@order.OrderId)">
+                                    <button type="button" class="btn" style="background-color: #4e5482; color: #e8eafe;">查看訂單</button>
+                                </a>
+                            </td>
+                          
+                           
                     </tr>
                     }
 
@@ -239,7 +243,7 @@
     }
 
 }
-
+</div>
 
 
     

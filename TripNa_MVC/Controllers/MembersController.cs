@@ -232,7 +232,8 @@ namespace TripNa_MVC.Controllers
                                    o.OrderTotalPrice,
                                    o.OrderStatus,
                                    o.OrderMatchStatus,
-                                   c.CouponCode
+                                   c.CouponCode,
+                                   o.OrderId
                                };
 
 
@@ -250,6 +251,7 @@ namespace TripNa_MVC.Controllers
                     OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
+                    OrderId = o.OrderId,
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate
@@ -271,8 +273,9 @@ namespace TripNa_MVC.Controllers
 
 
 
-        public IActionResult UserOrderDetails()
+        public IActionResult UserOrderDetails(int orderID)
         {
+
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -280,17 +283,15 @@ namespace TripNa_MVC.Controllers
             }
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-            //var query = from j in _context.ItineraryDetails
-            //            join s in _context.Spots on j.SpotId equals s.SpotId
-            //            select j;
+            var OrderId = _context.Orderlists.FirstOrDefault(i => i.OrderId == orderID);
 
             var orderDetails = from o in _context.Orderlists
                                join m in _context.Members on o.MemberId equals m.MemberId
                                join g in _context.Guiders on o.GuiderId equals g.GuiderId
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
                                join c in _context.Coupons on o.MemberId equals c.MemberId
-                               where o.MemberId == member.MemberId
+                               where o.MemberId == member.MemberId && o.OrderId == orderID
                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                join s in _context.Spots on j.SpotId equals s.SpotId
                                select new
@@ -309,11 +310,22 @@ namespace TripNa_MVC.Controllers
                                    m.MemberEmail,
                                    m.MemberPhone,
                                    ItineraryDetails = j,
-                                   Spot = s
+                                   Spot = s,
+                                   o.ItineraryId,
+                                   a.VisitOrder,
+                                   g.GuiderArea,
+                                   o.OrderId
                                };
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
+
+            if (orderDetailsList == null)
+            {
+                return NotFound();
+            }
+
+
 
             // 構建 OrderDetail
             var model = new OrderDetail
@@ -321,12 +333,14 @@ namespace TripNa_MVC.Controllers
 
                 Orders = orderDetailsList.Select(o => new Orderlist
                 {
+
                     OrderNumber = o.OrderNumber,
                     OrderDate = o.OrderDate,
                     OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderPeopleNo = o.OrderPeopleNo,
+                    OrderId = o.OrderId,
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
@@ -336,22 +350,31 @@ namespace TripNa_MVC.Controllers
                     Coupon = new Coupon
                     {
                         CouponCode = o.CouponCode
-                    } ,
+                    },
                     Guider = new Guider
                     {
-                        GuiderNickname = o.GuiderNickname
+                        GuiderNickname = o.GuiderNickname,
+                        GuiderArea = o.GuiderArea
                     },
-					 Member = new Member
-					 {
-						 MemberName = o.MemberName,
-						 MemberEmail = o.MemberEmail,
-						 MemberPhone = o.MemberPhone
-					 },
-                    Spots = o.Spot
+                    Member = new Member
+                    {
+                        MemberName = o.MemberName,
+                        MemberEmail = o.MemberEmail,
+                        MemberPhone = o.MemberPhone
+                    },
+                    Spots = o.Spot,
+                    ItineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = o.ItineraryId,
+                        VisitOrder = o.VisitOrder
+                    }
                 }).ToList(),
                 MemberId = member.MemberId
             };
+            Console.WriteLine("--------------------");
 
+            Console.WriteLine(orderID.ToString());
+            Console.WriteLine("--------------------");
 
             return View(model);
         }
@@ -359,6 +382,131 @@ namespace TripNa_MVC.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public IActionResult UserOrderDetails(int orderID)
+        //{
+        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
+        //    if (string.IsNullOrEmpty(memberEmail))
+        //    {
+        //        return RedirectToAction("Login", "Home"); // 如果会话中没有用户信息，重定向到登录页面
+        //    }
+
+        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var orderDetails = from o in _context.Orderlists
+        //                       join m in _context.Members on o.MemberId equals m.MemberId
+        //                       join g in _context.Guiders on o.GuiderId equals g.GuiderId
+        //                       join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+        //                       join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+        //                       join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+        //                       from c in couponGroup.DefaultIfEmpty() // left join
+        //                       join s in _context.Spots on a.SpotId equals s.SpotId
+        //                       where o.MemberId == member.MemberId && o.OrderId == orderID
+        //                       select new
+        //                       {
+        //                           o.OrderNumber,
+        //                           o.OrderDate,
+        //                           i.ItineraryStartDate,
+        //                           o.OrderTotalPrice,
+        //                           o.OrderStatus,
+        //                           o.OrderMatchStatus,
+        //                           c.CouponCode,
+        //                           g.GuiderNickname,
+        //                           i.ItineraryName,
+        //                           o.OrderPeopleNo,
+        //                           m.MemberName,
+        //                           m.MemberEmail,
+        //                           m.MemberPhone,
+        //                           ItineraryDetails = a,
+        //                           Spot = s,
+        //                           o.ItineraryId,
+        //                           a.VisitOrder,
+        //                           o.OrderId
+        //                       };
+
+        //    var orderDetailsList = orderDetails.ToList();
+
+        //    var model = new OrderDetail
+        //    {
+        //        Orders = orderDetailsList.Select(o => new Orderlist
+        //        {
+        //            OrderNumber = o.OrderNumber,
+        //            OrderDate = o.OrderDate,
+        //            OrderTotalPrice = o.OrderTotalPrice,
+        //            OrderStatus = o.OrderStatus,
+        //            OrderMatchStatus = o.OrderMatchStatus,
+        //            OrderPeopleNo = o.OrderPeopleNo,
+        //            OrderId = o.OrderId,
+        //            Itinerary = new Itinerary
+        //            {
+        //                ItineraryStartDate = o.ItineraryStartDate,
+        //                ItineraryName = o.ItineraryName,
+        //                ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
+        //            },
+        //            Coupon = new Coupon
+        //            {
+        //                CouponCode = o.CouponCode
+        //            },
+        //            Guider = new Guider
+        //            {
+        //                GuiderNickname = o.GuiderNickname
+        //            },
+        //            Member = new Member
+        //            {
+        //                MemberName = o.MemberName,
+        //                MemberEmail = o.MemberEmail,
+        //                MemberPhone = o.MemberPhone
+        //            },
+        //            Spots = o.Spot,
+        //            ItineraryDetail = new ItineraryDetail
+        //            {
+        //                ItineraryId = o.ItineraryId,
+        //                VisitOrder = o.VisitOrder
+        //            }
+        //        }).ToList(),
+        //        MemberId = member.MemberId
+        //    };
+
+        //    return View(model);
+        //}
 
 
 
