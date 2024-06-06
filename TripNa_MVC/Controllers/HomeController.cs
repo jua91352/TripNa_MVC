@@ -110,7 +110,7 @@ namespace TripNa_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ResetPassword(string memberEmail, string verificationCode)
+        public async Task<ActionResult> ResetPassword(string memberEmail)
         {
             Console.WriteLine(123123);
             if (!string.IsNullOrEmpty(memberEmail))
@@ -124,17 +124,20 @@ namespace TripNa_MVC.Controllers
                
                 if (result != null)
                 {
-                    Console.WriteLine("HAERIN");
                     // Member found! Proceed with password reset logic...
                     // (Generate password reset token, send email, etc.)
-                    
+
                     // 寄送驗證碼到電子郵件
-                    await SendVerificationEmail(memberEmail, verificationCode);
+                    string verificationCode = GenerateVerificationCode();
+                    Console.WriteLine(verificationCode);
+                    // await SendVerificationEmail(memberEmail, verificationCode);
+                    ViewData["Message"] = "已寄送驗證碼到您的信箱。";
+
 
                     // 你可以在這裡添加其他邏輯，比如保存驗證碼到數據庫
 
-                    return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
-                    
+                    //return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
+
                 }
                 else
                 {
@@ -144,12 +147,16 @@ namespace TripNa_MVC.Controllers
             }
             else
             {
-                Console.WriteLine(123);
                 // Invalid or empty email address
                 ModelState.AddModelError("memberEmail", "Please enter a valid email address.");
             }
-            Console.WriteLine("DANI");
-            return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
+            
+            return View();
+        }
+        private string GenerateVerificationCode()
+        {
+            // 生成6位數驗證碼
+            return new Random().Next(100000, 999999).ToString();
         }
 
         private async Task SendVerificationEmail(string email, string verificationCode)
@@ -157,13 +164,13 @@ namespace TripNa_MVC.Controllers
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("msit59tripna@gmail.com", "tripnapassword"),
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
                 EnableSsl = true,
             };
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("msit59tripna@gmail.com"),
+                From = new MailAddress("missingyou520x@gmail.com"),
                 Subject = "TripNa 驗證碼",
                 Body = $"您的驗證碼是 {verificationCode}",
                 IsBodyHtml = true,
