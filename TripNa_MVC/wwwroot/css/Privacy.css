@@ -1,4 +1,6 @@
-﻿/* 標題 */
+﻿
+
+/* 標題 */
 .nav-center {
     text-align: center;
     font-size: 1.2rem;
@@ -184,8 +186,7 @@ button {
     transition: max-height 0.2s ease-out;
 }
 
-.container {
-    max-height: 300px;
+#mark {
     overflow-y: auto;
 }
 

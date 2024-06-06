@@ -42,16 +42,13 @@
     <link rel="stylesheet" href="~/css/淡出淡入.css">
 
     <style>
-        html {
-            height: 100%;
-        }
+      
 
         body {
             font-family: "Noto Serif TC", serif;
             background-color: #dee0fb;
+            height: 100vh; /* 適用於現代瀏覽器 */
         }
-
-
         .navbar-nav > li > a {
             margin-left: 10px;
             color: #dee0fb;
@@ -175,7 +172,7 @@
 
 
 
-<div class="container">
+<div class="">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>

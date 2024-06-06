@@ -6,6 +6,8 @@ namespace TripNa_MVC.Models;
 
 public partial class TripNaContext : DbContext
 {
+
+
     public TripNaContext()
     {
     }

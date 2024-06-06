@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using TripNa_MVC.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TripNa_MVC.Controllers
 {
@@ -29,10 +30,24 @@ namespace TripNa_MVC.Controllers
 
 
         //黃浩維的不要動
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            public IActionResult Privacy()
+            {
+
+            var spot = from o in _context.Spots
+                       select o;
+            var spotsList = spot.ToList();
+
+            // 獲取所有 SpotCity 並去重
+            var cities = _context.Spots
+                .Select(s => s.SpotCity)
+                .Distinct()
+                .ToList();
+
+            // 將 cities 傳遞到 View
+            ViewBag.Cities = cities;
+
+            return View(spotsList);
+            }
 
 
         public IActionResult Spot(string memberEmail)
