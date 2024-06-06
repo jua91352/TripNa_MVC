@@ -71,7 +71,7 @@
             <h1 class="mb-1 text-center">TripNa Guider</h1>
             <h4 class="mb-4 text-center">成為導遊</h4>
 
-            <form asp-action="SignUp">
+            <form asp-action="SignUp" method="post" enctype="multipart/form-data">
                 
                 <input type="text" class="form-control mb-4" id="guiderEmail" placeholder="會員信箱" value="@memberEmail" required disabled>
 

@@ -7,6 +7,9 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using TripNa_MVC.Models;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace TripNa_MVC.Controllers
 {
@@ -19,7 +22,6 @@ namespace TripNa_MVC.Controllers
         {
             _logger = logger;
             _context = context;
-
         }
 
         public IActionResult Index()
@@ -102,6 +104,74 @@ namespace TripNa_MVC.Controllers
 
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(string memberEmail, string verificationCode)
+        {
+            Console.WriteLine(123123);
+            if (!string.IsNullOrEmpty(memberEmail))
+            {
+                // Check if memberEmail exists in the database
+                var query = from o in _context.Members
+                            where o.MemberEmail == memberEmail
+                            select o;
+
+                var result = query.FirstOrDefault();
+               
+                if (result != null)
+                {
+                    Console.WriteLine("HAERIN");
+                    // Member found! Proceed with password reset logic...
+                    // (Generate password reset token, send email, etc.)
+                    
+                    // 寄送驗證碼到電子郵件
+                    await SendVerificationEmail(memberEmail, verificationCode);
+
+                    // 你可以在這裡添加其他邏輯，比如保存驗證碼到數據庫
+
+                    return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
+                    
+                }
+                else
+                {
+                    ViewData["Message"] = "信箱輸入錯誤，請確認此信箱為註冊時輸入的信箱。";
+                    return View();
+                }
+            }
+            else
+            {
+                Console.WriteLine(123);
+                // Invalid or empty email address
+                ModelState.AddModelError("memberEmail", "Please enter a valid email address.");
+            }
+            Console.WriteLine("DANI");
+            return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
+        }
+
+        private async Task SendVerificationEmail(string email, string verificationCode)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("msit59tripna@gmail.com", "tripnapassword"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("msit59tripna@gmail.com"),
+                Subject = "TripNa 驗證碼",
+                Body = $"您的驗證碼是 {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(email);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
 
         public IActionResult Logout()
         {
