@@ -8,6 +8,9 @@
     int groupSize = 4;
     int day = 0;
     string p = ".jpg";
+
+    int questionCount = ViewData["QuestionCount"] != null ? (int)ViewData["QuestionCount"] : 0;
+
 }
 
 <style>
@@ -17,6 +20,11 @@
         height: 100px;
     }
 </style>
+
+
+
+
+
 
 
 
@@ -166,10 +174,7 @@
             {
                 day++;
                 <tr id="trOrderList">
-
-
                     <td class="align-middle  text-center">Day @day</td>
-
                     @for (int j = i; j < i + groupSize && j < Math.Sqrt(orderCount); j++)
                     {
                         string g = ".jpg";
@@ -179,17 +184,10 @@
                             <br>
                             <p>@Model.Orders[j].Spots.SpotName</p>
                             <br>
-
                         </td>
-
                     }
-
-
                 </tr>
             }
-
-
-
 
         </table>
     </div>
@@ -198,38 +196,45 @@
 
     <!-- 與導遊溝通的地方 -->
     <h3 class="text-center">訂單問與答</h3>
-    <div id="userQA">
-        <span class="bi bi-person-circle" style="color: #545454; font-size: 20px;"></span>
-        <span>@order.Member.MemberName:</span>
-        <div>
-            @order.MemberQuestion.QuestionContent
+
+
+    @foreach (var qa in Model.Questions)
+    {
+        <div id="userQA">
+            <span class="bi bi-person-circle" style="color: #545454; font-size: 20px;"></span>
+            <span>@order.Member.MemberName:</span>
+            <div>@qa.QuestionContent</div>
+            <span style="font-size: 12px; color: #a2a2a2;">@qa.QuestionTime</span>
         </div>
+        <br>
+        if (@qa.QuestionTime < qa.AnswerTime)
+        {
+            <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
+                <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
+                <span>導遊-@order.Guider.GuiderNickname:</span>
+                <div>@qa.AnswerContent</div>
+                <span style="font-size: 12px; color: #a2a2a2;">@qa.AnswerTime</span>
+            </div>
+            <br>
+        }
+    }
 
-        <a id="show22" onclick="show22()" href="javascript:;">回覆</a>
-        <span style="font-size: 12px; color: #a2a2a2;">@order.MemberQuestion.QuestionTime:</span>
 
 
-    </div>
+
+
+
+
     <br>
-    <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
-        <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
-        <span>導遊-@order.Guider.GuiderNickname:</span>
-        <div>
-            @order.GuiderAnswer.AnswerContent
-        </div>
-        <a id="show22" onclick="show22()" href="javascript:;">回覆</a>
-        <span style="font-size: 12px; color: #a2a2a2;">@order.GuiderAnswer.AnswerTime:</span>
 
-    </div>
-
-    <br>
-
-    <div id="hide22" style="display: none;">
+    <div >
         <span class="bi bi-person-circle" style="color: #545454; font-size: 20px;"></span>
         <span>@order.Member.MemberName:</span>
         <br>
-        <input type="text" style="height: 50px ;width:100% ;">
 
+
+
+        <textarea type="text" placeholder="請在此輸入您的問題..." id="questionInput" style="resize:none; height: 110px; width:100%;"></textarea>
 
         <br>
         <br>
@@ -253,56 +258,43 @@
         </div>
 
     </div>
-
-
-
-
     <br>
     <br>
-
-    <div>
-        <textarea type="text" placeholder="請在此輸入您的問題..." id="write"
-                  style="resize:none; height: 110px ; width:100% ;"></textarea>
-
-
-        <br>
-        <br>
-
-        <div id="" class="row">
-
-            <div class="col-sm-10 text-center"></div>
-
-            <div class="col-sm-2 text-end">
-                <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
-
-            </div>
-        </div>
-
-    </div>
-
     <br>
     <br>
     <br>
     <br>
     <br>
 
-
+@section Scripts {
     <script>
+                $(function () {
+                $("#submitBtn").click(function () {
+                    var question = $("#questionInput").val();
+                    var orderId = @Model.OrderId; // 獲取訂單 ID
 
-        var isShow = false;
-        function show22() {
-            if (!isShow) {
-                isShow = true;
-                document.getElementById('hide22').style.display = '';
-                document.getElementById('show22').innerText = "回覆";
-            }
-            else {
-                isShow = false;
-                document.getElementById('hide22').style.display = 'none';
-                document.getElementById('show22').innerText = "回覆";
-            }
-        }
+                    if (question.trim() === "") {
+                        alert("請輸入問題內容。");
+                        return;
+                    }
 
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SubmitQuestion", "Members")",
+                        data: { question: question, orderId: orderId },
+                        success: function (response) {
+                            alert(response);
+                            $("#questionInput").val(""); // 清空輸入框
+                            location.reload(); // 重新加載當前頁面
+
+                        },
+                        error: function (xhr, status, error) {
+                            alert("提交問題時發生錯誤: " + xhr.responseText);
+                        }
+                    });
+                });
+            });
 
 
         </script>
+        }

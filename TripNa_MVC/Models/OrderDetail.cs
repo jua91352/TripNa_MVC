@@ -16,6 +16,7 @@
         public int OrderId { get; set; }
         public List<MemberQuestion> MemberQuestions { get; set; }
         public List<GuiderAnswer> GuiderAnswers { get; set; }
+        public List<QuestionAnswer> Questions { get; set; }
 
     }
 }

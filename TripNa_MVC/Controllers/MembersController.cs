@@ -396,9 +396,7 @@ namespace TripNa_MVC.Controllers
             var orderDetails = (from o in _context.Orderlists
                                 join m in _context.Members on o.MemberId equals m.MemberId
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
-                                join q in _context.MemberQuestions on o.MemberId equals q.MemberId
-                                from ga in _context.GuiderAnswers.Where(gg => gg.GuiderId == (int?)o.GuiderId).DefaultIfEmpty() 
-                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
                                 join c in _context.Coupons on o.MemberId equals c.MemberId
                                 where o.MemberId == member.MemberId && o.OrderId == orderID
@@ -424,12 +422,10 @@ namespace TripNa_MVC.Controllers
                                     o.ItineraryId,
                                     a.VisitOrder,
                                     g.GuiderArea,
-                                    o.OrderId,
-                                    q.QuestionContent,
-                                    q.QuestionTime,
-                                    ga.AnswerContent,
-                                    ga.AnswerTime
+                                    o.OrderId                            
                                 });
+
+
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
@@ -438,6 +434,35 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
+
+
+
+            //join q in _context.MemberQuestions on o.MemberId equals q.MemberId
+
+
+            var questions = from q in _context.MemberQuestions
+                            from ga in _context.GuiderAnswers.Where(g => g.OrderId == (int?)q.OrderId).DefaultIfEmpty()
+                            where q.MemberId == member.MemberId && q.OrderId == orderID
+                            //.Where(q => q.OrderId == orderID)
+                            select new
+                            {
+                                q.QuestionContent,
+                                q.QuestionTime,
+                                ga.AnswerContent,
+                                ga.AnswerTime
+                            };
+
+
+            int questionCount = _context.MemberQuestions
+                               .Where(mq => mq.OrderId == orderID)
+                               .Count();
+
+            // 顯示結果
+            Console.WriteLine($"OrderID = {orderID} 的 QuestionContent 筆數為: {questionCount}");
+
+            //將問答筆數傳給HTML
+            ViewData["QuestionCount"] = questionCount;
+
 
             // 構建 OrderDetail
             var model = new OrderDetail
@@ -453,6 +478,18 @@ namespace TripNa_MVC.Controllers
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderPeopleNo = o.OrderPeopleNo,
                     OrderId = o.OrderId,
+                    //MemberQuestion = questions.FirstOrDefault(q => q.QuestionContent != null) == null ? null : new MemberQuestion
+                    //{
+                    //    QuestionContent = questions.FirstOrDefault(q => q.QuestionContent != null).QuestionContent,
+                    //    QuestionTime = questions.FirstOrDefault(q => q.QuestionContent != null).QuestionTime
+                    //},
+                    //GuiderAnswer = questions.FirstOrDefault(q => q.AnswerContent != null) == null ? null : new GuiderAnswer
+                    //{
+                    //    AnswerContent = questions.FirstOrDefault(q => q.AnswerContent != null).AnswerContent,
+                    //    AnswerTime = questions.FirstOrDefault(q => q.AnswerContent != null).AnswerTime
+                    //},
+
+
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
@@ -474,16 +511,7 @@ namespace TripNa_MVC.Controllers
                         MemberEmail = o.MemberEmail,
                         MemberPhone = o.MemberPhone
                     },
-                    MemberQuestion = new MemberQuestion
-                    {
-                        QuestionContent = o.QuestionContent,
-                        QuestionTime = o.QuestionTime
-                    },
-                    GuiderAnswer = new GuiderAnswer
-                    {
-                        AnswerContent = o.AnswerContent,
-                        AnswerTime = o.AnswerTime
-                    },
+                   
                     Spots = o.Spot,                    
                     ItineraryDetail = new ItineraryDetail
                     {
@@ -491,12 +519,92 @@ namespace TripNa_MVC.Controllers
                         VisitOrder = o.VisitOrder
                     }
                 }).ToList(),
+                Questions = questions.Select(q => new QuestionAnswer
+                {
+                    QuestionContent = q.QuestionContent,
+                    QuestionTime = (DateTime)q.QuestionTime,
+                    AnswerContent = q.AnswerContent,
+                    AnswerTime = q.AnswerTime
+                }).ToList(),              
                 MemberId = member.MemberId,
                 OrderId = orderID
             };
 
             return View(model);
         }
+
+
+
+
+
+        [HttpPost]
+        public IActionResult SubmitQuestion(string question, int orderId)
+        {
+            // 檢查輸入資料的有效性
+            if (string.IsNullOrWhiteSpace(question))
+            {
+                return BadRequest("問題內容不能為空白。");
+            }
+
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+
+
+
+
+            // 建立新的 MemberQuestion 實體並儲存到資料庫
+            var newQuestion = new MemberQuestion
+            {
+                MemberId = member.MemberId,
+                OrderId = orderId,
+                QuestionContent = question,
+                QuestionTime = DateTime.Now
+            };
+
+
+            _context.MemberQuestions.Add(newQuestion);
+            _context.SaveChanges();
+
+            return Ok("問題提交成功。");
+            //return RedirectToAction("MemberQA", "Members");
+            //return RedirectToAction("MemberQA", new { orderID = orderId });
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

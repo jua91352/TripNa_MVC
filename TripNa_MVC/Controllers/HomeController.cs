@@ -68,6 +68,12 @@ namespace TripNa_MVC.Controllers
 
 
 
+        //public IActionResult Spot(string city)
+        //{
+        //    var spots = _context.Spots;
+        //    return View();
+        //}
+
 
         public IActionResult Login()
         {

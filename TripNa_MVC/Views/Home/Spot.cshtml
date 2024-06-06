@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Spot";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
  @using Microsoft.AspNetCore.Http
@@ -11,9 +10,10 @@
 @{
 
     string memberId = hca.HttpContext.Session.GetString("memberId");
+ 
+    var distinctCities = Model.Select(m => m.SpotCity).Distinct();
+
 }
-
-
 
 
 
@@ -48,7 +48,22 @@
     </div>
     <hr style='background-color:#3A326D; height:1px; border:none;'>
 
+
     
+       
+    <select id="spots">
+        @foreach (var city in distinctCities)
+        {
+            <option value="@city">@city</option>
+        }
+        </select>
+
+    <div id="selectedCity"></div>
+
+    <div id="spotImages"></div>
+
+
+
 
     <Table>
 
@@ -106,6 +121,51 @@
 
 
     <script>
+        $(function () {
+            $('#spots').change(function () {
+                var selectedCity = $(this).find('option:selected').text();
+                $('#selectedCity').text(selectedCity);
+
+                // 清空之前的圖片
+                $('#spotImages').empty();
+
+                // 發送 AJAX 請求獲取該城市的景點數據
+                $.ajax({
+                    url: '@Url.Action("GetSpotsByCity", "YourController")',
+                    type: 'GET',
+                    data: { city: selectedCity },
+                    success: function (data) {
+                        // 遍歷返回的景點數據,創建 <img> 元素並添加到容器中
+                        $.each(data, function (index, item) {
+                            var imgSrc = '@Url.Content("~/景點圖片/")' + selectedCity + '/' + '大坑'+ '.jpg';
+                            var imgElement = $('<img>').attr('src', imgSrc).attr('width', '100').attr('height', '100');
+                            $('#spotImages').append(imgElement);
+                        });
+                    },
+                    error: function () {
+                        alert('獲取景點數據失敗');
+                    }
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         $(document).ready(function () {
 
 
