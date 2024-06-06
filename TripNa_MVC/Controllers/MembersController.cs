@@ -318,7 +318,7 @@ namespace TripNa_MVC.Controllers
                                    g.GuiderArea,
                                    o.OrderId,
                                    r.RatingComment,
-                                   r.RatingStars
+                                   r.RatingStars,
                                });
 
             // 將查詢結果轉換為列表
@@ -422,7 +422,7 @@ namespace TripNa_MVC.Controllers
                                     o.ItineraryId,
                                     a.VisitOrder,
                                     g.GuiderArea,
-                                    o.OrderId                            
+                                    o.OrderId
                                 });
 
 
@@ -478,18 +478,6 @@ namespace TripNa_MVC.Controllers
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderPeopleNo = o.OrderPeopleNo,
                     OrderId = o.OrderId,
-                    //MemberQuestion = questions.FirstOrDefault(q => q.QuestionContent != null) == null ? null : new MemberQuestion
-                    //{
-                    //    QuestionContent = questions.FirstOrDefault(q => q.QuestionContent != null).QuestionContent,
-                    //    QuestionTime = questions.FirstOrDefault(q => q.QuestionContent != null).QuestionTime
-                    //},
-                    //GuiderAnswer = questions.FirstOrDefault(q => q.AnswerContent != null) == null ? null : new GuiderAnswer
-                    //{
-                    //    AnswerContent = questions.FirstOrDefault(q => q.AnswerContent != null).AnswerContent,
-                    //    AnswerTime = questions.FirstOrDefault(q => q.AnswerContent != null).AnswerTime
-                    //},
-
-
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,

@@ -6,6 +6,7 @@
         public List<Itinerary> Itineraries { get; set; }
         public List<Coupon> Coupons { get; set; }
         public List<Guider> Guiders { get; set; }
+        public int?  GuiderID { get; set; }
 
         public int MemberId { get; set; }
 		public List<Member> Members { get; set; }

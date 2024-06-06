@@ -31,4 +31,10 @@
     <None Include="wwwroot\景點圖片\彰化\魔菇部落生態休閒農場.webp" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\導遊\大頭照\離島地區\" />
+    <Folder Include="wwwroot\導遊\大頭照\東部地區\" />
+    <Folder Include="wwwroot\導遊\大頭照\南部地區\" />
+  </ItemGroup>
+
 </Project>
