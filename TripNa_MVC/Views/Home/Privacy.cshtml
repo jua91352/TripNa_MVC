@@ -165,10 +165,10 @@
                     <ul id="gallery" class="gallery list-unstyled">
                         @foreach (var spot in Model)
                         {
-                            string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + ".jpg";
+                            string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + spot.SpotId + ".jpg";
                             <li class="ui-widget-content ui-corner-tr">
                                 <h5 class="ui-widget-header">@spot.SpotName</h5>
-                                <img src="@Url.Content(imgPath)" alt="@spot.SpotName" width="96" height="72">
+                                <img src="@Url.Content(imgPath)" alt="@spot.SpotName" id="@spot.SpotId" width="96" height="72">
                                 <br>
                                 <a href="@Url.Content(imgPath)" title="查看較大的圖片" class="ui-icon ui-icon-zoomin">查看較大</a>
                             </li>
@@ -410,8 +410,9 @@
                 });
             }
         }
+
         // 對地點選擇下拉菜單變更的事件監聽器
-        $('#locationSelect').change(clearSchedule);
+       
 
         // 點擊圖庫項目的事件監聽器
         $("li").on("click", function (event) {
