@@ -10,6 +10,7 @@ using TripNa_MVC.Models;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
 
 namespace TripNa_MVC.Controllers
 {
@@ -129,6 +130,9 @@ namespace TripNa_MVC.Controllers
 
                     // 寄送驗證碼到電子郵件
                     string verificationCode = GenerateVerificationCode();
+                    TempData["VerificationCode"] = verificationCode;
+                    TempData["MemberEmail"] = memberEmail;
+
                     Console.WriteLine(verificationCode);
                     // await SendVerificationEmail(memberEmail, verificationCode);
                     ViewData["Message"] = "已寄送驗證碼到您的信箱。";
@@ -178,6 +182,32 @@ namespace TripNa_MVC.Controllers
             mailMessage.To.Add(email);
 
             await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        public IActionResult EmailVertification()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailVerification(string verificationCode, string newPassword)
+        {
+            var storedCode = TempData["VerificationCode"]?.ToString();
+            var memberEmail = TempData["MemberEmail"]?.ToString();
+
+   
+            if (storedCode != verificationCode)
+            {
+                ViewData["Message"] = "驗證碼不正確!" ;
+            }
+
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == memberEmail);
+
+            // 更新密碼
+            member.MemberPassword = newPassword;
+            await _context.SaveChangesAsync();
+
+            return Redirect("/Home/Login");
         }
 
         public IActionResult Logout()
