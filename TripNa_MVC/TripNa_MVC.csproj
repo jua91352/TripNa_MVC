@@ -32,9 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\導遊\大頭照\離島地區\" />
-    <Folder Include="wwwroot\導遊\大頭照\東部地區\" />
-    <Folder Include="wwwroot\導遊\大頭照\南部地區\" />
+    <Folder Include="wwwroot\導遊\大頭照\南部地區\NewFolder\" />
+    <Folder Include="wwwroot\導遊\大頭照\東部地區\NewFolder\" />
+    <Folder Include="wwwroot\導遊\大頭照\離島地區\NewFolder\" />
+    <Folder Include="wwwroot\導遊\證照\南部地區\NewFolder\" />
   </ItemGroup>
 
 </Project>

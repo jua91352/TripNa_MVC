@@ -42,6 +42,24 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
+
+
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
+
+
+
+
+
             return View(member);
         }
 
@@ -85,7 +103,17 @@ namespace TripNa_MVC.Controllers
             }
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
 
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
 
             var favoriteSpots = from fs in _context.FavoriteSpots
                                 join m in _context.Members on fs.MemberId equals m.MemberId
@@ -169,6 +197,17 @@ namespace TripNa_MVC.Controllers
             }
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
 
             if (member == null)
             {
@@ -220,6 +259,17 @@ namespace TripNa_MVC.Controllers
             }
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
 
             var orderDetails = from o in _context.Orderlists
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
@@ -285,6 +335,18 @@ namespace TripNa_MVC.Controllers
             }
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
 
             var orderDetails =( from o in _context.Orderlists
                                join m in _context.Members on o.MemberId equals m.MemberId

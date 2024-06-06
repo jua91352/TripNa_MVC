@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewData["Title"] = "GuiderCenter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string p = ".jpg";
+}
+
+<h1>GuiderCenter</h1>
+
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a href="TouristGuide_ Match.html"><img src="~/_img/png/match.png" alt=""></a>
+            <a href="TouristGuide_order.html"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a href="/TouristGuide_data.html"><img src="~/_img/png/click_mydata.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+
+    <div class="text-end">
+        <a href="TouristGuide_introduce.html" style="text-decoration: none;">
+
+            <span class="bi bi-eye" style="color: #545454; font-size: 18px;"></span>
+            <span style="color: #4e5482 ">檢視自介</span>
+        </a>
+
+
+    </div>
+
+    <div class="row">
+
+
+
+
+        <div class="col-sm-4 text-center">
+
+            <img id="display_img" src="~/導遊/大頭照/離島地區/阿婷.jpg" style="border-radius: 50%;object-fit: cover;" height="150px " width="150px">
+@*             <img src="~/導遊/大頭照/@order.Guider.GuiderArea/@order.Guider.GuiderNickname@p" style="border-radius: 50%; object-fit= cover" height="50px " width="50px">
+ *@
+            <br>
+            <br>
+            <label class="btn " style="background-color: #4e5482 ;color: #e8eafe;">
+                <input id="upload_img" style="display:none;" type="file">
+                <i class="fa fa-photo"></i> 上傳圖片
+            </label>
+
+
+
+
+            <br>
+            <br>
+
+
+
+
+            <div style='background-color: #e8eafe'>
+
+                <br>
+
+                <b style="font-size: 15px;">導遊證</b>
+                <br>
+
+                <img src="./_img/Certificate.jpg" height="260px " width="185px" style="object-fit: cover;">
+
+
+                <br>
+                <br>
+
+
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div style='padding-top:10px; padding-left:10px; padding-bottom:10px;'>
+
+                <label for="TouristGuideName">暱稱</label>
+                <br>
+                <input type="text" id="TouristGuideName" name="TouristGuideName" value="派大星"
+                       style="resize:none; height: 30px ; width:90%;" />
+                <br>
+
+
+                <label for="ServerDate">服務起始日</label>
+                <br>
+                <input type="date" id="ServerDate" name="ServerDate" value="2019-05-22"
+                       style="resize:none; height: 30px ; width:90% ;" />
+
+                <br>
+
+
+
+
+
+                <label for="userEmail">地區</label>
+                <br>
+                <input type="checkbox" checked>北部
+                <input type="checkbox" checked>中部
+                <input type="checkbox">南部
+                <input type="checkbox">東部
+
+
+                <br>
+                <label for="Gender">性別</label>
+                <br>
+                <input type="text" id="Gender" name="Gender" style="resize:none; height: 30px ; width:90% ;"
+                       disabled="disabled" value="男">
+
+                <br>
+
+
+                <label for="Introduce">自我介紹</label>
+                <br>
+
+                <textarea id="Introduce" name="Introduce" style="resize:none; height: 150px; width:90% ;">精通中文與日文，
+在歷史和文化方面可以提供客戶詳細的講解。
+除此之外，平時愛好攝影，也喜歡美食探店，
+可以滿足顧客其他方面的多種需求。</textarea>
+                <br>
+                <br>
+
+
+
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-4">
+
+
+            <div id="userData" style='padding-top:10px; padding-left:10px; padding-bottom:10px;'>
+
+
+                <label for="userName">姓名</label>
+                <br>
+                <input type="text" id="userName" name="userName" style="resize:none; height: 30px ; width:90% ;"
+                       value="游婷婷">
+
+
+                <br>
+
+                <label for="userEmail">E-mail</label>
+                <br>
+                <input type="text" id="userEmail" name="userEmail" style="resize:none; height: 30px ; width:90% ;"
+                       value="jua78958@gmail.com">
+
+                <br>
+
+                <label for="userPhone">行動電話</label>
+                <br>
+                <input type="text" id="userPhone" name="userPhone" style="resize:none; height: 30px ; width:90% ;"
+                       value="0932259451">
+
+                <br>
+                <label for="userBirthday">生日</label>
+                <br>
+                <input type="date" id="userBirthday" name="userBirthday"
+                       style="resize:none; height: 30px ; width:90% ;" disabled="disabled" value="1998-05-02">
+
+                <br>
+                <br>
+
+
+                <a href="javascript:"
+                   onclick="document.all.fullContent.style.display=(document.all.fullContent.style.display=='none')?'':'none';document.all.smallContent.style.display=(document.all.smallContent.style.display=='none')?'':'none'">修改密碼</a>
+
+                <div class="block" id="fullContent" style="display:none;">
+
+                    <br>
+
+                    <label for="userPassword">重設密碼(不修改則不需輸入)</label>
+                    <br>
+                    <input type="text" id="userPassword" name="userPassword"
+                           style="resize:none; height: 30px ; width:90% ;" value="********">
+
+                    <br>
+                    <label for="userRePassword">請再輸入一次密碼</label>
+                    <br>
+                    <input type="text" id="userPassword" name="userPassword"
+                           style="resize:none; height: 30px ; width:90% ;" value="********">
+                    <br>
+
+                    <br>
+                </div>
+
+            </div>
+
+            <br>
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+    <div class=" text-end">
+        <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">完成修改並儲存</button>
+
+    </div>
+
+</div>

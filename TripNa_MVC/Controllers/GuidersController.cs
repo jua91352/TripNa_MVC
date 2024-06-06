@@ -58,41 +58,55 @@ namespace TripNa_MVC.Controllers
 
                 var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-                if (memberContext != null)
+                var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
+
+                if (memberContext != null && memberContext.GuiderId == null)
                 {
+                    // GuiderID 為空,可以註冊
+                    ViewData["Message"] = "前往註冊";
+
 
                     _context.Add(guider);
                     await _context.SaveChangesAsync();
                     memberContext.GuiderId = guider.GuiderId;
                     await _context.SaveChangesAsync();
 
-                    string guiderImageFileName = $"{guider.GuiderNickname}{guider.GuiderId}.jpg";
+                    string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
                     string guiderVertFileName = $"{guider.GuiderNickname}{guider.GuiderId}.jpg"; // 導遊證文件名
 
 
                     // 保存正面照片
                     if (guiderImage != null && guiderImage.Length > 0)
                     {
-                        var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}/", guiderImageFileName);
-                        using (var stream = new FileStream(imagePath, FileMode.Create))
-                        {
-                            await guiderImage.CopyToAsync(stream);
-                        }
+                        Console.WriteLine("111111111111111111111");
+                        var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}", guiderImageFileName);
+                        //using (var stream = new FileStream(imagePath, FileMode.Create))
+                        //{
+                        //    await guiderImage.CopyToAsync(stream);
+                        //}
+                        Console.WriteLine("2222222222222222222222");
+
                     }
 
                     // 保存導遊證
                     if (guiderVert != null && guiderVert.Length > 0)
                     {
-                        var vertPath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/證照/{guider.GuiderArea}/", guiderVertFileName);
-                        using (var stream = new FileStream(vertPath, FileMode.Create))
-                        {
-                            await guiderVert.CopyToAsync(stream);
-                        }
+                        var vertPath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/證照/{guider.GuiderArea}", guiderVertFileName);
+                        //using (var stream = new FileStream(vertPath, FileMode.Create))
+                        //{
+                        //    await guiderVert.CopyToAsync(stream);
+                        //}
                     }
 
+                    return Redirect("/Guiders/GuiderCenter");
+
+                }
+                else
+                {
+                    // GuiderID 不為空,不能註冊,前往導遊會員中心
+                    return Redirect("/Guiders/GuiderCenter");
                 }
 
-                return Redirect("/members/membercenter");
             }
 
             return View("home");
@@ -108,6 +122,7 @@ namespace TripNa_MVC.Controllers
                 return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
 
+
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
             if (member == null)
@@ -118,33 +133,33 @@ namespace TripNa_MVC.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult GuiderCenter(Member updatedMember)
-        {
-            var memberEmail = HttpContext.Session.GetString("memberEmail");
-            if (string.IsNullOrEmpty(memberEmail))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        //[HttpPost]
+        //public IActionResult GuiderCenter(Member updatedMember)
+        //{
+        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
+        //    if (string.IsNullOrEmpty(memberEmail))
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
 
-            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            if (member == null)
-            {
-                return NotFound();
-            }
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            // 更新會員的資訊
-            member.MemberName = updatedMember.MemberName;
-            member.MemberPhone = updatedMember.MemberPhone;
-            if (!string.IsNullOrEmpty(updatedMember.MemberPassword))
-            {
-                member.MemberPassword = updatedMember.MemberPassword;
-            }
+        //    // 更新會員的資訊
+        //    member.MemberName = updatedMember.MemberName;
+        //    member.MemberPhone = updatedMember.MemberPhone;
+        //    if (!string.IsNullOrEmpty(updatedMember.MemberPassword))
+        //    {
+        //        member.MemberPassword = updatedMember.MemberPassword;
+        //    }
 
-            _context.SaveChanges();
-            return RedirectToAction("MemberCenter");
-        }
+        //    _context.SaveChanges();
+        //    return RedirectToAction("MemberCenter");
+        //}
 
 
 

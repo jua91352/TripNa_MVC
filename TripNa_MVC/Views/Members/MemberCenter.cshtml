@@ -22,7 +22,18 @@
             <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/click_mydata.png" alt=""></a>
-            <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+            
+
+            @if (ViewData["Message"] != null)
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/center.png" alt=""></a>
+
+            }
         </div>
 
 
