@@ -56,10 +56,6 @@ namespace TripNa_MVC.Controllers
                 // GuiderID 不為空,不能註冊
             }
 
-
-
-
-
             return View(member);
         }
 
@@ -316,11 +312,8 @@ namespace TripNa_MVC.Controllers
                 MemberId = member.MemberId
             };
 
-
             return View(model);
         }
-
-
 
 
 
@@ -621,8 +614,6 @@ namespace TripNa_MVC.Controllers
             _context.SaveChanges();
 
             return Ok("問題提交成功。");
-            //return RedirectToAction("MemberQA", "Members");
-            //return RedirectToAction("MemberQA", new { orderID = orderId });
 
         }
 

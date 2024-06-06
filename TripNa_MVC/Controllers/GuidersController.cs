@@ -121,7 +121,9 @@ namespace TripNa_MVC.Controllers
             {
                 return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
+            var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
@@ -129,8 +131,86 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
-            return View(member);
+
+
+            var guidermember = from g in _context.Guiders
+                               join m in _context.Members on g.GuiderId equals m.GuiderId into membersGroup
+                               from m in membersGroup.DefaultIfEmpty()
+                               where g.GuiderId == memberContext.GuiderId
+                               select new
+                               {
+                                   Guider = g,
+                                   Member = m
+                               };
+
+            //var guidermemberlist = guidermember.ToList();
+
+            var guidermemberList = guidermember.Select(x => new guidermemberlist
+            {
+                Guider = x.Guider,
+                Member = x.Member
+            }).ToList();
+
+
+
+
+
+
+
+
+            return View(guidermemberList);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //var model = new guidermemberlist
+        //{
+
+        //    guidermemberlists = guidermember.Select(o => new guidermemberlist
+        //    {
+        //        Guiders = new Guider
+        //        {
+        //            Guider = o.Guider
+        //        },
+        //        Members = new Member
+        //        {
+        //            Member = o.Member
+        //        }
+
+        //    }).ToList(),
+        //    MemberId = MemberId
+        //    GuiderId = g.
+        //};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //[HttpPost]
