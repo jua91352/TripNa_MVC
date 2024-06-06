@@ -143,20 +143,11 @@ namespace TripNa_MVC.Controllers
                                    Member = m
                                };
 
-            //var guidermemberlist = guidermember.ToList();
-
             var guidermemberList = guidermember.Select(x => new guidermemberlist
             {
                 Guider = x.Guider,
                 Member = x.Member
             }).ToList();
-
-
-
-
-
-
-
 
             return View(guidermemberList);
         }
@@ -164,85 +155,90 @@ namespace TripNa_MVC.Controllers
 
 
 
+        [HttpPost]
+        public IActionResult GuiderCenter(Guider updatedGuider)
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == member.GuiderId);
+
+            Console.WriteLine(member.GuiderId+ "----------------------------------------------");
+			Console.WriteLine(guider.GuiderNickname + "----------------------------------------------");
+			Console.WriteLine("----------------------------------------------" + updatedGuider.GuiderNickname + "----------------------------------------------");
+
+			// 更新會員的資訊
+			// 檢查 GuiderNickname 是否被修改過
+			if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
+			{
+				guider.GuiderNickname = updatedGuider.GuiderNickname;
+			}
+
+			// 檢查 GuiderArea 是否被修改過
+			if (updatedGuider.GuiderArea != null && updatedGuider.GuiderArea != guider.GuiderArea)
+			{
+				guider.GuiderArea = updatedGuider.GuiderArea;
+			}
+
+			// 檢查 GuiderIntro 是否被修改過
+			if (updatedGuider.GuiderIntro != null && updatedGuider.GuiderIntro != guider.GuiderIntro)
+			{
+				guider.GuiderIntro = updatedGuider.GuiderIntro;
+			}
+
+			// 如果有任何欄位被修改過，就儲存變更
+			if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null)
+			{
+				_context.SaveChanges();
+			}
+
+			return RedirectToAction("GuiderCenter");
+		}
 
 
 
+        public IActionResult Guiderintroduce()
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+            var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
 
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            if (member == null)
+            {
+                return NotFound();
+            }
 
+            var guidermember = from g in _context.Guiders
+                               join m in _context.Members on g.GuiderId equals m.GuiderId into membersGroup
+                               from m in membersGroup.DefaultIfEmpty()
+                               where g.GuiderId == memberContext.GuiderId
+                               select new
+                               {
+                                   Guider = g,
+                                   Member = m
+                               };
 
+            var guidermemberList = guidermember.Select(x => new guidermemberlist
+            {
+                Guider = x.Guider,
+                Member = x.Member
+            }).ToList();
 
-
-        //var model = new guidermemberlist
-        //{
-
-        //    guidermemberlists = guidermember.Select(o => new guidermemberlist
-        //    {
-        //        Guiders = new Guider
-        //        {
-        //            Guider = o.Guider
-        //        },
-        //        Members = new Member
-        //        {
-        //            Member = o.Member
-        //        }
-
-        //    }).ToList(),
-        //    MemberId = MemberId
-        //    GuiderId = g.
-        //};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //[HttpPost]
-        //public IActionResult GuiderCenter(Member updatedMember)
-        //{
-        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
-        //    if (string.IsNullOrEmpty(memberEmail))
-        //    {
-        //        return RedirectToAction("Login", "Home");
-        //    }
-
-        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-        //    if (member == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // 更新會員的資訊
-        //    member.MemberName = updatedMember.MemberName;
-        //    member.MemberPhone = updatedMember.MemberPhone;
-        //    if (!string.IsNullOrEmpty(updatedMember.MemberPassword))
-        //    {
-        //        member.MemberPassword = updatedMember.MemberPassword;
-        //    }
-
-        //    _context.SaveChanges();
-        //    return RedirectToAction("MemberCenter");
-        //}
-
-
-
+            return View(guidermemberList);
+        }
 
 
 

@@ -43,20 +43,33 @@
     <br>
 
 
-    <div class="text-end">
-        <a href="TouristGuide_introduce.html" style="text-decoration: none;">
-
+    <div class="text-end">   
+        <a asp-action="Guiderintroduce" asp-controller="Guiders" style="text-decoration: none;">
             <span class="bi bi-eye" style="color: #545454; font-size: 18px;"></span>
             <span style="color: #4e5482 ">檢視自介</span>
         </a>
 
+      @*   <a href="TouristGuide_introduce.html" style="text-decoration: none;">
+
+            
+        </a> *@
+
 
     </div>
+
+
+
+    <form method="post" asp-action="GuiderCenter" asp-controller="Guiders">
+
 
     <div class="row">
 
         <div class="col-sm-2">
         </div>
+       
+        
+        
+        
 
         <div class="col-sm-4 text-center">
 
@@ -107,10 +120,10 @@
 
                 <div style='padding-top:10px; padding-left:10px; padding-bottom:10px;'>
 
-                <label for="TouristGuideName">暱稱</label>
+                        <label for="GuiderNickname">暱稱</label>
                 <br>
 
-                <input type="text" id="TouristGuideName" name="TouristGuideName" value="@item.Guider.GuiderNickname"style="resize:none; height: 30px ; width:90%;" />
+                        <input type="text" id="TouristGuideName" name="GuiderNickname" value="@item.Guider.GuiderNickname" style="resize:none; height: 30px ; width:90%;" />
 
                 <br>
 
@@ -126,13 +139,13 @@
 
 
 
-                    <label for="userEmail">地區</label>
+                        <label for="GuiderArea">地區</label>
                     <br>
-                    <input type="radio" name="area" value="北部" @(item.Guider.GuiderArea == "北部地區" ? "checked" : "")>北部
-                    <input type="radio" name="area" value="中部" @(item.Guider.GuiderArea == "中部地區" ? "checked" : "")>中部
-                    <input type="radio" name="area" value="南部" @(item.Guider.GuiderArea == "南部地區" ? "checked" : "")>南部
-                    <input type="radio" name="area" value="東部" @(item.Guider.GuiderArea == "東部地區" ? "checked" : "")>東部
-                    <input type="radio" name="area" value="離島" @(item.Guider.GuiderArea == "離島地區" ? "checked" : "")>離島
+                        <input type="radio" name="GuiderArea" value="北部地區" @(item.Guider.GuiderArea == "北部地區" ? "checked" : "")>北部
+                        <input type="radio" name="GuiderArea" value="中部地區" @(item.Guider.GuiderArea == "中部地區" ? "checked" : "")>中部
+                        <input type="radio" name="GuiderArea" value="南部地區" @(item.Guider.GuiderArea == "南部地區" ? "checked" : "")>南部
+                        <input type="radio" name="GuiderArea" value="東部地區" @(item.Guider.GuiderArea == "東部地區" ? "checked" : "")>東部
+                        <input type="radio" name="GuiderArea" value="離島地區" @(item.Guider.GuiderArea == "離島地區" ? "checked" : "")>離島
 
                 <br>
                 <label for="Gender">性別</label>
@@ -142,10 +155,10 @@
                 <br>
 
 
-                <label for="Introduce">自我介紹</label>
+                        <label for="GuiderIntro">自我介紹</label>
                 <br>
 
-                <textarea id="Introduce" name="Introduce" style="resize:none; height: 250px; width:90% ;">@item.Guider.GuiderIntro</textarea>
+                        <textarea id="Introduce" name="GuiderIntro" style="resize:none; height: 250px; width:90% ;">@item.Guider.GuiderIntro</textarea>
                 <br>
                 <br>
 
@@ -164,8 +177,10 @@
             <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">完成修改並儲存✓</button>
         </div>
 
-
+        
 </div>
+
+	</form>
 
 <br>
 <br>
@@ -186,6 +201,14 @@
             reader.readAsDataURL(file);
         }
     });
+
+
+        document.querySelector("form").addEventListener("submit", function (event) {
+          
+           
+                alert("修改成功！");
+            
+        });
 
 
     </script>
