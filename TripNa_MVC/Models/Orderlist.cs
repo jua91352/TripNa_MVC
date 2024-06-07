@@ -10,7 +10,7 @@ public partial class Orderlist
     internal ItineraryDetail ItineraryDetail;
     internal MemberQuestion MemberQuestion;
     internal GuiderAnswer GuiderAnswer;
-    internal Rating Rating;
+    internal Rating Rating { get; set; } = null!;
 
     public int OrderId { get; set; }
 

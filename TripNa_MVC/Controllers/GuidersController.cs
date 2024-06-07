@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TripNa_MVC.Models;
+using static NuGet.Packaging.PackagingConstants;
+using static TripNa_MVC.Models.GuiderRating;
 
 namespace TripNa_MVC.Controllers
 {
@@ -26,10 +29,7 @@ namespace TripNa_MVC.Controllers
         {
             {".jpg", "image/jpg"}
         };
-
-
-
-
+        private Member Members;
         public IActionResult SignUp()
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -116,6 +116,13 @@ namespace TripNa_MVC.Controllers
             var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+
+            var GuiderId = memberContext.GuiderId;
+
+            Console.WriteLine(GuiderId + "----------------------------------------------");
+
+            HttpContext.Session.SetString("GuiderId", GuiderId.ToString());
 
             if (member == null)
             {
@@ -209,45 +216,134 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult Guiderintroduce()
         {
+            var GuiderId = HttpContext.Session.GetString("GuiderId");
+            //HttpContext.Session.SetString("GuiderId", GuiderId.ToString());
+
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
                 return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
 
-
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
             var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+            var MemberName = _context.Members.FirstOrDefault(m => m.MemberName == member.MemberName);
+            //var GuiderId = _context.Guiders.FirstOrDefault(g => g.GuiderId == member.GuiderId);
 
             if (member == null)
             {
                 return NotFound();
             }
 
-
             var guider = from g in _context.Guiders
-                        join o in _context.Orderlists on g.GuiderId equals o.GuiderId into OrderGroup
-                        from o in OrderGroup.DefaultIfEmpty()
-                        join r in _context.Ratings on g.GuiderId equals r.GuiderId into RatingGroup
-                        from r in RatingGroup.DefaultIfEmpty()
-                        where g.GuiderId == member.GuiderId
-                        select r;
+                                           join o in _context.Orderlists on g.GuiderId equals o.GuiderId into OrderGroup
+                                           from o in OrderGroup.DefaultIfEmpty()
+                                           join r in _context.Ratings on g.GuiderId equals r.GuiderId into RatingGroup
+                                           from r in RatingGroup.DefaultIfEmpty()
+                                           join m in _context.Members on g.GuiderId equals m.GuiderId into MemberGroup
+                                           from m in MemberGroup.DefaultIfEmpty()
+                                           where g.GuiderId == member.GuiderId
+                                           select new
+                                           {
+                                               g.GuiderNickname,
+                                               g.GuiderId,
+                                               g.GuiderGender,
+                                               g.GuiderArea,
+                                               g.GuiderStartDate,
+                                               g.GuiderIntro,
+                                               r.RatingComment,
+                                               r.RatingStars,
+                                               m.MemberName,
+                                               m.MemberId,                                   
+                                               Order = o
+                                           };
 
 
-            //var rate = from r in _context.Ratings 
-            //           join m in _context.Members on r.MemberId equals m.MemberId
-            //           join g in _context.Guiders on r.GuiderId equals g.GuiderId 
-            //           select r;
+            var guiderList = guider.ToList();
 
 
 
+            var ratings = from q in _context.Ratings
+                            join m in _context.Members on q.MemberId equals m.MemberId
+                            join g in _context.Guiders on q.GuiderId equals g.GuiderId
+                            where q.GuiderId == member.GuiderId 
+                            select new
+                            {
+                                g.GuiderNickname,
+                                m.MemberName,
+                                q.RatingComment,
+                                q.RatingStars
+                            };
 
 
 
+            // 構建 GuiderRating
+            var model = new GuiderRating
+            {
+                Guiders = guiderList.Select(g => new Guider
+
+                {
+                    GuiderId = g.GuiderId,
+                    GuiderNickname = g.GuiderNickname,
+                    GuiderGender = g.GuiderGender,
+                    GuiderArea = g.GuiderArea,
+                    GuiderStartDate = g.GuiderStartDate,
+                    GuiderIntro = g.GuiderIntro,
+                    Rating = new Rating
+                    {
+                        RatingComment = g.RatingComment,
+                        RatingStars = g.RatingStars
+                    },
+                    Members = new Member
+                    {
+                        MemberName = g.MemberName,
+                        MemberId = g.MemberId
+                    }
+                }).ToList(),
+
+                Rates = ratings.Select(q => new GuiderRatingData
+                {
+                    GuiderNickname = q.GuiderNickname,
+                    MemberName = q.MemberName,
+                    RatingComment = q.RatingComment,
+                    RatingStars = q.RatingStars
+                }).ToList(),
+
+            };
+
+            //計算該導遊總共有幾筆訂單
+            int orderCount = _context.Orderlists.Count(o => (o.GuiderId.HasValue ? o.GuiderId.Value.ToString() : string.Empty) == GuiderId);
+
+            //計算該導遊總共有幾筆評價
+            int ratingCount = _context.Ratings.Count(r => r.GuiderId == Convert.ToInt32(GuiderId));
+            //(r.GuiderId.HasValue ? r.GuiderId.Value.ToString() : string.Empty) == GuiderId);
+            //(o => (o.GuiderId.HasValue ? o.GuiderId.Value.ToString() : string.Empty) == GuiderId);
 
 
-            return View();
+            Console.WriteLine("orderCount為:"+orderCount + "----------------------------------------------");
+            Console.WriteLine("ratingCount:" + ratingCount + "----------------------------------------------");
+
+            //將該導遊總共有幾筆評價筆數傳給HTML
+            ViewData["ratingCount"] = ratingCount;
+
+            //將該導遊總共有幾筆訂單筆數傳給HTML
+            ViewData["orderCount"] = orderCount;
+
+            return View(model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,6 +5,9 @@ namespace TripNa_MVC.Models;
 
 public partial class Guider
 {
+    internal Member Members { get; set; } = null!;
+    //internal Rating Ratings { get; set; } = null!;
+
     public int GuiderId { get; set; }
 
     public string GuiderNickname { get; set; } = null!;
@@ -13,7 +16,7 @@ public partial class Guider
 
     public string GuiderArea { get; set; } = null!;
 
-    public DateOnly GuiderStartDate { get; set; }
+    public DateTime GuiderStartDate { get; set; }
 
     public string GuiderIntro { get; set; } = null!;
 
@@ -24,4 +27,5 @@ public partial class Guider
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<SelectGuider> SelectGuiders { get; set; } = new List<SelectGuider>();
+    public Rating Rating { get; internal set; }
 }

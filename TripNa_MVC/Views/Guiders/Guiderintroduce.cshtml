@@ -1,8 +1,38 @@
-﻿
+﻿@model TripNa_MVC.Models.GuiderRating;
+
 @{
     ViewData["Title"] = "Guiderintroduce";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string p = ".jpg";
+    int ratingCount = ViewData["ratingCount"] != null ? (int)ViewData["ratingCount"] : 0;
+    int orderCount = ViewData["orderCount"] != null ? (int)ViewData["orderCount"] : 0;
+
 }
+
+@functions {
+    public static string CalculateExperience(DateTime startDate)
+    {
+        DateTime currentDate = DateTime.Now;
+        TimeSpan experience = currentDate - startDate;
+
+        int years = experience.Days / 365;
+        int months = (experience.Days % 365) / 30;
+
+        if (years > 0)
+        {
+            return $"{years}年";
+        }
+        else if (months > 0)
+        {
+            return $"{months}個月";
+        }
+        else
+        {
+            return "新手導遊";
+        }
+    }
+}
+
 
 <style>
 
@@ -43,14 +73,7 @@
         <span style="color: #4e5482 ">返回導遊會員中心</span>
     </a>
 
-    @*   <a href="TouristGuide_introduce.html" style="text-decoration: none;">
-
-
-    </a> *@
-
-
 </div>
-
 
 
 <!-- 標題 -->
@@ -59,25 +82,24 @@
 </div>
 
 
+
+@foreach (var g in Model.Guiders)
+{
+
 <div class="row">
 
     <div class="col-5 text-end">
-
-        <img id="display_img" src="./_img/png/導遊.png" style="border-radius: 50%;" height="185px " width="185px">
-
+        <img id="display_img" src="~/導遊/大頭照/@g.GuiderArea/@g.GuiderNickname@p" style="border-radius: 50% ; object-fit: cover;"  height="170px " width="170px">
         <br>
         <br>
-
         <div style='background-color: #e8eafe'>
         </div>
-
-
     </div>
 
 
 
     <div class="col-7 text-start">
-        <h1>派大星</h1>
+            <h1>@g.GuiderNickname</h1>
         <span style="color: #f6be00;">4.6</span>
 
         <span id="star">
@@ -89,18 +111,25 @@
             <span class="rank-half-rated " data-rating="5">&#128970;</span>
             <span id="score" style="color: #3A326D; font-size: 15px;"></span>
         </span>
-        <span style="color: #a2a2a2;">(5)</span>
+            <span style="color: #a2a2a2;">(@ratingCount)</span>
         <br>
+       
 
-        <span class="bi bi-trophy" style="color: #a2a2a2; font-size: 15px;">10次雇用</span>
+
+
+
+
+            <span class="bi bi-trophy" style="color: #a2a2a2; font-size: 15px;">@(orderCount)次雇用</span>
+
+
 
         <br>
         <span>
-            性別:男生
+            性別:@(g.GuiderGender == "F" ? "女" : "男")
             <br>
-            導遊年資:5年
+            導遊年資:@CalculateExperience(g.GuiderStartDate)
             <br>
-            主要服務地區:北部、中部
+            主要服務地區:@g.GuiderArea
             <br>
 
         </span>
@@ -118,11 +147,7 @@
         <hr>
         <br>
         <p style="font-size: 17px;">
-            精通中文與日文，在歷史和文化方面可以提供客戶詳細的講解。
-            <br>
-            除此之外，平時愛好攝影，也喜歡美食探店，
-            <br>
-            可以滿足顧客其他方面的多種需求。
+           @g.GuiderIntro
         </p>
 
         <br>
@@ -134,6 +159,13 @@
     </div>
 </div>
 
+}
+
+
+
+
+
+
 
 <br>
 <div style="width: 50%; margin: 0 auto">
@@ -144,116 +176,40 @@
 
         <br>
 
-        <span class="text-start">
-            小瓜:
-            <span class="text-start" style="color: #f6be00;">
-                4.0
-                <span class="rank-rated" data-rating="1">&#128970;</span>
-                <span class="rank-rated" data-rating="2">&#128970;</span>
-                <span class="rank-rated" data-rating="3">&#128970;</span>
-                <span class="rank-rated" data-rating="4">&#128970;</span>
-                <span class="rank-not-rated" data-rating="5">&#128970;</span>
+
+        @foreach (var item in Model.Rates)
+        {
+            <span class="text-start">
+                @item.MemberName
+                <span class="text-start" style="color: #f6be00;">
+                    @item.RatingStars
+
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= item.RatingStars)
+                        {
+                            <span class="rank-rated" data-rating="@i">&#128970;</span>
+                        }
+                        else
+                        {
+                            <span class="rank-not-rated" data-rating="@i">&#128970;</span>
+                        }
+                    }
+                </span>
+                <br>
+                <span class="text-start" style="font-size:20px;">@item.RatingComment</span>
             </span>
             <br>
-
-            <span class="text-start" style="font-size:20px;">超讚~~~~</span>
-        </span>
-        <br>
-
-        <br>
-        <br>
-        <hr>
-
-        <br>
-
-        <span class="text-start">
-            章魚:
-            <span class="text-start" style="color: #f6be00;">
-                5.0
-                <span class="rank-rated" data-rating="1">&#128970;</span>
-                <span class="rank-rated" data-rating="2">&#128970;</span>
-                <span class="rank-rated" data-rating="3">&#128970;</span>
-                <span class="rank-rated" data-rating="4">&#128970;</span>
-                <span class="rank-rated" data-rating="5">&#128970;</span>
-            </span>
             <br>
-
-            <span class="text-start" style="font-size:20px;">派大星服務周到，解說也很詳細，讓我體驗一場深度文化之旅</span>
-        </span>
-        <br>
-
-        <br>
-        <br>
-        <hr>
-
-        <br>
-
-        <span class="text-start">
-            寶寶:
-            <span class="text-start" style="color: #f6be00;">
-                5.0
-                <span class="rank-rated" data-rating="1">&#128970;</span>
-                <span class="rank-rated" data-rating="2">&#128970;</span>
-                <span class="rank-rated" data-rating="3">&#128970;</span>
-                <span class="rank-rated" data-rating="4">&#128970;</span>
-                <span class="rank-rated" data-rating="5">&#128970;</span>
-            </span>
             <br>
-
-            <span class="text-start" style="font-size:20px;">下次還要找派大星</span>
-        </span>
-        <br>
-
-        <br>
-        <br>
-        <hr>
-
-        <br>
-
-        <span class="text-start">
-            泡芙:
-            <span class="text-start" style="color: #f6be00;">
-                4.0
-                <span class="rank-rated" data-rating="1">&#128970;</span>
-                <span class="rank-rated" data-rating="2">&#128970;</span>
-                <span class="rank-rated" data-rating="3">&#128970;</span>
-                <span class="rank-rated" data-rating="4">&#128970;</span>
-                <span class="rank-not-rated" data-rating="5">&#128970;</span>
-            </span>
+            <hr>
             <br>
-
-            <span class="text-start" style="font-size:20px;">專業知識沒話說，但唯一缺點是會抽菸</span>
-        </span>
-        <br>
-
-        <br>
-        <br>
-        <hr>
-
-        <br>
-
-        <span class="text-start">
-            小皮:
-            <span class="text-start" style="color: #f6be00;">
-                5.0
-                <span class="rank-rated" data-rating="1">&#128970;</span>
-                <span class="rank-rated" data-rating="2">&#128970;</span>
-                <span class="rank-rated" data-rating="3">&#128970;</span>
-                <span class="rank-rated" data-rating="4">&#128970;</span>
-                <span class="rank-rated" data-rating="5">&#128970;</span>
-            </span>
-            <br>
-
-            <span class="text-start" style="font-size:20px;">最愛派大星</span>
-        </span>
-        <br>
-
-        <br>
-        <br>
-
+        }
 
     </div>
 </div>
+
+
 <br>
 <br>
 <br>
