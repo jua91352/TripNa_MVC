@@ -8,9 +8,25 @@
 
   <ItemGroup>
     <Compile Remove="123\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
     <Content Remove="123\**" />
+    <Content Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
     <EmbeddedResource Remove="123\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
     <None Remove="123\**" />
+    <None Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,10 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\導遊\大頭照\南部地區\NewFolder\" />
-    <Folder Include="wwwroot\導遊\大頭照\東部地區\NewFolder\" />
-    <Folder Include="wwwroot\導遊\大頭照\離島地區\NewFolder\" />
-    <Folder Include="wwwroot\導遊\證照\南部地區\NewFolder\" />
+    <Folder Include="wwwroot\導遊\證照\離島地區\" />
+    <Folder Include="wwwroot\導遊\證照\北部地區\" />
+    <Folder Include="wwwroot\導遊\證照\南部地區\" />
   </ItemGroup>
 
 </Project>

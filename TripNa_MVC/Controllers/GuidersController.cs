@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TripNa_MVC.Models;
 
 namespace TripNa_MVC.Controllers
@@ -47,6 +48,7 @@ namespace TripNa_MVC.Controllers
         }
 
 
+                      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider, IFormFile guiderImage, IFormFile guiderVert)
@@ -56,61 +58,49 @@ namespace TripNa_MVC.Controllers
 
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
 
-                var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+                var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-                var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
-
-                if (memberContext != null && memberContext.GuiderId == null)
+                if (member != null && member.GuiderId == null)
                 {
-                    // GuiderID 為空,可以註冊
-                    ViewData["Message"] = "前往註冊";
-
 
                     _context.Add(guider);
                     await _context.SaveChangesAsync();
-                    memberContext.GuiderId = guider.GuiderId;
+                    member.GuiderId = guider.GuiderId;
                     await _context.SaveChangesAsync();
 
                     string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
-                    string guiderVertFileName = $"{guider.GuiderNickname}{guider.GuiderId}.jpg"; // 導遊證文件名
+                    string guiderVertFileName = $"{guider.GuiderNickname}.jpg"; // 導遊證文件名
 
 
                     // 保存正面照片
                     if (guiderImage != null && guiderImage.Length > 0)
                     {
-                        Console.WriteLine("111111111111111111111");
                         var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}", guiderImageFileName);
-                        //using (var stream = new FileStream(imagePath, FileMode.Create))
-                        //{
-                        //    await guiderImage.CopyToAsync(stream);
-                        //}
-                        Console.WriteLine("2222222222222222222222");
-
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await guiderImage.CopyToAsync(stream);
+                        }
                     }
 
                     // 保存導遊證
                     if (guiderVert != null && guiderVert.Length > 0)
                     {
                         var vertPath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/證照/{guider.GuiderArea}", guiderVertFileName);
-                        //using (var stream = new FileStream(vertPath, FileMode.Create))
-                        //{
-                        //    await guiderVert.CopyToAsync(stream);
-                        //}
+                        using (var stream = new FileStream(vertPath, FileMode.Create))
+                        {
+                            await guiderVert.CopyToAsync(stream);
+                        }
                     }
 
-                    return Redirect("/Guiders/GuiderCenter");
-
-                }
-                else
-                {
-                    // GuiderID 不為空,不能註冊,前往導遊會員中心
-                    return Redirect("/Guiders/GuiderCenter");
                 }
 
+                // GuiderID 不為空,不能註冊,前往導遊會員中心
+                return Redirect("/Guiders/GuiderCenter");
             }
 
             return View("home");
         }
+
 
 
         // GET: /Members/MemberCenter
@@ -130,6 +120,13 @@ namespace TripNa_MVC.Controllers
             if (member == null)
             {
                 return NotFound();
+            }
+
+
+
+            if (memberContext.GuiderId == null)
+            {
+                return Redirect("/Members/MemberCenter"); // 如果該使用者沒有，重定向到會員中心頁面
             }
 
 
@@ -173,9 +170,16 @@ namespace TripNa_MVC.Controllers
 			Console.WriteLine(guider.GuiderNickname + "----------------------------------------------");
 			Console.WriteLine("----------------------------------------------" + updatedGuider.GuiderNickname + "----------------------------------------------");
 
-			// 更新會員的資訊
-			// 檢查 GuiderNickname 是否被修改過
-			if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
+
+            if( member.GuiderId == null)
+            {
+                return Redirect("/Members/MemberCenter"); // 如果該使用者沒有，重定向到會員中心頁面
+            }
+
+
+            // 更新會員的資訊
+            // 檢查 GuiderNickname 是否被修改過
+            if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
 			{
 				guider.GuiderNickname = updatedGuider.GuiderNickname;
 			}
@@ -210,34 +214,39 @@ namespace TripNa_MVC.Controllers
             {
                 return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
-            var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == memberContext.MemberId);
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
 
             if (member == null)
             {
                 return NotFound();
             }
 
-            var guidermember = from g in _context.Guiders
-                               join m in _context.Members on g.GuiderId equals m.GuiderId into membersGroup
-                               from m in membersGroup.DefaultIfEmpty()
-                               where g.GuiderId == memberContext.GuiderId
-                               select new
-                               {
-                                   Guider = g,
-                                   Member = m
-                               };
 
-            var guidermemberList = guidermember.Select(x => new guidermemberlist
-            {
-                Guider = x.Guider,
-                Member = x.Member
-            }).ToList();
+            var guider = from g in _context.Guiders
+                        join o in _context.Orderlists on g.GuiderId equals o.GuiderId into OrderGroup
+                        from o in OrderGroup.DefaultIfEmpty()
+                        join r in _context.Ratings on g.GuiderId equals r.GuiderId into RatingGroup
+                        from r in RatingGroup.DefaultIfEmpty()
+                        where g.GuiderId == member.GuiderId
+                        select r;
 
-            return View(guidermemberList);
+
+            //var rate = from r in _context.Ratings 
+            //           join m in _context.Members on r.MemberId equals m.MemberId
+            //           join g in _context.Guiders on r.GuiderId equals g.GuiderId 
+            //           select r;
+
+
+
+
+
+
+
+
+            return View();
         }
 
 
