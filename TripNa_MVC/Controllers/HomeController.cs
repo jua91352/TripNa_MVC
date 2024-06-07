@@ -62,11 +62,9 @@ namespace TripNa_MVC.Controllers
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
         // 徐庭軒加的---------------------------
-        //[Bind("ItineraryDetailsId,ItineraryId,SpotId,ItineraryDate,VisitOrder")]
-        //ItineraryDetail itineraryDetail,
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateItinerary(ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary,  int DayCount, string itineraryCity)
+        public async Task<IActionResult> CreateItinerary(ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary, int DayCount, [FromBody] List<ItineraryViewModel> itineraryDetails)
         {
             string DaycountInName;
             if (DayCount == 1)
@@ -81,33 +79,33 @@ namespace TripNa_MVC.Controllers
             {
                 DaycountInName = "三日遊";
             };
-            itinerary.ItineraryName = $"{itineraryCity}" + $"{DaycountInName}" + "暢玩行程";
-            Console.WriteLine(itinerary.ItineraryName);
-            Console.WriteLine(ModelState.IsValid);
+            itinerary.ItineraryName += $"{DaycountInName}" + "暢玩行程";
+            //Console.WriteLine(itinerary.ItineraryName);
+            //Console.WriteLine(ModelState.IsValid);
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                    if (error.Exception != null)
-                    {
-                        Console.WriteLine(error.Exception);
-                    }
-                }
-                // 將錯誤訊息添加到 ViewData 或 ViewBag
-                ViewData["Message"] = "表單資料有誤，請檢查並重新提交。";
-                return View();
-            }
-            else
-            {
-                _context.Add(viewModel.Itinerary);
+                _context.Add(itinerary);
                 await _context.SaveChangesAsync();
-                return Redirect("/Members/MemberCenter");
-            }
-        }
+                foreach (var detail in itineraryDetails)
+                {
+                    var itineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = itinerary.ItineraryId, // 你需要動態設置或傳遞這個值
+                        SpotId = int.Parse(detail.SpotId),
+                        ItineraryDate = DateTime.Parse(detail.ItineraryDate),
+                        VisitOrder = detail.VisitOrder
+                    };
 
+                    _context.ItineraryDetails.Add(itineraryDetail);
+                    await _context.SaveChangesAsync();
+                    return Redirect("/Members/MemberCenter");
+                }
+
+                return View(viewModel);
+            }
+            return View(viewModel);
+        }
 
 
 
