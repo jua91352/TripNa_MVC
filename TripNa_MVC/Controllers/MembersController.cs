@@ -362,7 +362,7 @@ namespace TripNa_MVC.Controllers
                                    c.CouponCode,
                                    g.GuiderNickname,
                                    i.ItineraryName,
-                                   o.OrderPeopleNo,
+                                   i.ItineraryPeopleNo,
                                    m.MemberName,
                                    m.MemberEmail,
                                    m.MemberPhone,
@@ -384,6 +384,15 @@ namespace TripNa_MVC.Controllers
                 return NotFound();
             }
 
+
+            var odp = from o in _context.Orderlists
+                      join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                      select o;
+
+
+
+
+
             // 構建 OrderDetail
             var model = new OrderDetail
             {
@@ -396,12 +405,13 @@ namespace TripNa_MVC.Controllers
                     OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
-                    OrderPeopleNo = o.OrderPeopleNo,
                     OrderId = o.OrderId,
+  
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
                         ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
                         ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
                     },
                     Coupon = new Coupon
@@ -431,6 +441,8 @@ namespace TripNa_MVC.Controllers
                         VisitOrder = o.VisitOrder
                     }
                 }).ToList(),
+
+
                 MemberId = member.MemberId,
                 OrderId = orderID
             };
@@ -468,7 +480,7 @@ namespace TripNa_MVC.Controllers
                                     c.CouponCode,
                                     g.GuiderNickname,
                                     i.ItineraryName,
-                                    o.OrderPeopleNo,
+                                    i.ItineraryPeopleNo,
                                     m.MemberName,
                                     m.MemberEmail,
                                     m.MemberPhone,
@@ -531,12 +543,12 @@ namespace TripNa_MVC.Controllers
                     OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
-                    OrderPeopleNo = o.OrderPeopleNo,
                     OrderId = o.OrderId,
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
                         ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
                         ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
                     },
                     Coupon = new Coupon

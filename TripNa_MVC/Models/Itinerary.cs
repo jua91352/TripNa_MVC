@@ -11,6 +11,9 @@ public partial class Itinerary
 
     public DateTime ItineraryStartDate { get; set; }
 
+    public short ItineraryPeopleNo { get; set; }
+
+
     public virtual ICollection<ItineraryDetail> ItineraryDetails { get; set; } = new List<ItineraryDetail>();
 
     public virtual ICollection<Orderlist> Orderlists { get; set; } = new List<Orderlist>();

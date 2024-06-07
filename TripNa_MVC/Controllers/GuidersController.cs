@@ -253,8 +253,9 @@ namespace TripNa_MVC.Controllers
                                                r.RatingComment,
                                                r.RatingStars,
                                                m.MemberName,
-                                               m.MemberId,                                   
-                                               Order = o
+                                               m.MemberId
+                                               //,                                   
+                                               //Order = o
                                            };
 
 
@@ -359,9 +360,7 @@ namespace TripNa_MVC.Controllers
 
             var orderDetails = from o in _context.Orderlists
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                               join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
-                               from c in couponGroup.DefaultIfEmpty() // left join
-                               where o.MemberId == member.MemberId
+                               where o.GuiderId == member.GuiderId
                                select new
                                {
                                    o.OrderNumber,
@@ -370,7 +369,6 @@ namespace TripNa_MVC.Controllers
                                    o.OrderTotalPrice,
                                    o.OrderStatus,
                                    o.OrderMatchStatus,
-                                   c.CouponCode,
                                    o.OrderId
                                };
 
@@ -393,11 +391,7 @@ namespace TripNa_MVC.Controllers
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate
-                    },
-                    Coupon = new Coupon
-                    {
-                        CouponCode = o.CouponCode
-                    }
+                    },                  
                 }).ToList(),
                 MemberId = member.MemberId
             };
@@ -417,5 +411,167 @@ namespace TripNa_MVC.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         public IActionResult GuiderQA(int orderID)
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+            var orderDetails = (from o in _context.Orderlists
+                                join m in _context.Members on o.MemberId equals m.MemberId
+                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
+                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                where o.GuiderId == member.GuiderId && o.OrderId == orderID
+                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                                join s in _context.Spots on j.SpotId equals s.SpotId
+                                select new
+                                {
+                                    o.OrderNumber,
+                                    o.OrderDate,
+                                    i.ItineraryStartDate,
+                                    o.OrderTotalPrice,
+                                    o.OrderStatus,
+                                    o.OrderMatchStatus,
+                                    c.CouponCode,
+                                    g.GuiderNickname,
+                                    i.ItineraryName,
+                                    i.ItineraryPeopleNo,
+                                    m.MemberName,
+                                    m.MemberEmail,
+                                    m.MemberPhone,
+                                    ItineraryDetails = j,
+                                    Spot = s,
+                                    o.ItineraryId,
+                                    a.VisitOrder,
+                                    g.GuiderArea,
+                                    o.OrderId
+                                });
+
+
+
+            // 將查詢結果轉換為列表
+            var orderDetailsList = orderDetails.ToList();
+
+            if (orderDetailsList == null)
+            {
+                return NotFound();
+            }
+
+
+
+            //join q in _context.MemberQuestions on o.MemberId equals q.MemberId
+
+
+            var questions = from ga in _context.GuiderAnswers
+                            join g in _context.Guiders on ga.GuiderId equals g.GuiderId
+                            from q in _context.MemberQuestions.Where(g => g.OrderId == (int?)ga.OrderId).DefaultIfEmpty()
+                            where g.GuiderId == member.GuiderId && q.OrderId == orderID
+                            //.Where(q => q.OrderId == orderID)
+                            select new
+                            {
+                                q.QuestionContent,
+                                q.QuestionTime,
+                                ga.AnswerContent,
+                                ga.AnswerTime
+                            };
+
+
+            //int questionCount = _context.MemberQuestions
+            //                   .Where(mq => mq.OrderId == orderID)
+            //                   .Count();
+
+            int answerCount = _context.GuiderAnswers
+                               .Where(a => a.OrderId == orderID)
+                               .Count();
+
+
+            // 顯示結果
+            Console.WriteLine($"OrderID = {orderID} 的 AnswerCount 筆數為: {answerCount}");
+
+            //將問答筆數傳給HTML
+            ViewData["AnswerCount"] = answerCount;
+
+
+            // 構建 OrderDetail
+            var model = new OrderDetail
+            {
+
+                Orders = orderDetailsList.Select(o => new Orderlist
+                {
+
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderStatus = o.OrderStatus,
+                    OrderMatchStatus = o.OrderMatchStatus,
+                    OrderId = o.OrderId,
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
+                        ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
+                    },
+                    Guider = new Guider
+                    {
+                        GuiderNickname = o.GuiderNickname,
+                        GuiderArea = o.GuiderArea
+                    },
+                    Member = new Member
+                    {
+                        MemberName = o.MemberName
+                    },
+
+                    Spots = o.Spot,
+                    ItineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = o.ItineraryId,
+                        VisitOrder = o.VisitOrder
+                    }
+                }).ToList(),
+                Questions = questions.Select(q => new QuestionAnswer
+                {
+                    QuestionContent = q.QuestionContent,
+                    QuestionTime = (DateTime)q.QuestionTime,
+                    AnswerContent = q.AnswerContent,
+                    AnswerTime = q.AnswerTime
+                }).ToList(),
+                MemberId = member.MemberId,
+                OrderId = orderID
+            };
+
+            return View(model);
         }
+
+
+
+
+    }
 }

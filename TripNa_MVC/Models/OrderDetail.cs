@@ -19,5 +19,27 @@
         public List<GuiderAnswer> GuiderAnswers { get; set; }
         public List<QuestionAnswer> Questions { get; set; }
 
+
+        public IEnumerable<Order> Order { get; set; }
+     
+
     }
+
+    public class Order
+    {
+        public string MemberName { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal OrderTotalPrice { get; set; }
+        public string OrderStatus { get; set; } = null!;
+        public string OrderMatchStatus { get; set; } = null!;
+
+        public short ItineraryPeopleNo { get; set; }
+        public DateTime ItineraryStartDate { get; set; }
+        public string ItineraryName { get; set; } = null!;
+
+    }
+
+
+
+
 }

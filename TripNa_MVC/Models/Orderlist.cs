@@ -10,6 +10,9 @@ public partial class Orderlist
     internal ItineraryDetail ItineraryDetail;
     internal MemberQuestion MemberQuestion;
     internal GuiderAnswer GuiderAnswer;
+    internal DateTime ItineraryStartDate;
+    internal short ItineraryPeopleNo;
+
     internal Rating Rating { get; set; } = null!;
 
     public int OrderId { get; set; }
@@ -25,7 +28,6 @@ public partial class Orderlist
 
     public DateTime OrderDate { get; set; }
 
-    public byte? OrderPeopleNo { get; set; }
 
     public string OrderStatus { get; set; } = null!;
 
@@ -46,4 +48,5 @@ public partial class Orderlist
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<SelectGuider> SelectGuiders { get; set; } = new List<SelectGuider>();
+    public string ItineraryName { get; internal set; }
 }
