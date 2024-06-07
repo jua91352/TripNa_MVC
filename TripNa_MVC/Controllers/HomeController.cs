@@ -30,8 +30,14 @@ namespace TripNa_MVC.Controllers
 
 
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
-            public IActionResult Privacy()
+            public IActionResult CreateItinerary()
             {
+            var viewModel = new ItineraryViewModel
+            {
+                Itinerary = new Itinerary(),
+                Spot = _context.Spots.ToList(),
+                ItineraryDetail = new List<ItineraryDetail>() // 初始化視圖模型的屬性
+            };
 
             var spot = from o in _context.Spots
                        select o;
@@ -49,17 +55,67 @@ namespace TripNa_MVC.Controllers
             // 將 cities 傳遞到 View
             ViewBag.Cities = cities;
 
-            return View(spotsList);
+            
+            return View(viewModel);
             }
-
-
-
-
 
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
+        // 徐庭軒加的---------------------------
+        //[Bind("ItineraryDetailsId,ItineraryId,SpotId,ItineraryDate,VisitOrder")]
+        //ItineraryDetail itineraryDetail,
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateItinerary(ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary,  int DayCount, string itineraryCity)
+        {
+            string DaycountInName;
+            if (DayCount == 1)
+            {
+                DaycountInName = "一日遊";
+            }
+            else if (DayCount == 2)
+            {
+                DaycountInName = "二日遊";
+            }
+            else
+            {
+                DaycountInName = "三日遊";
+            };
+            itinerary.ItineraryName = $"{itineraryCity}" + $"{DaycountInName}" + "暢玩行程";
+            Console.WriteLine(itinerary.ItineraryName);
+            Console.WriteLine(ModelState.IsValid);
 
-        public IActionResult Spot(string memberEmail)
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                    if (error.Exception != null)
+                    {
+                        Console.WriteLine(error.Exception);
+                    }
+                }
+                // 將錯誤訊息添加到 ViewData 或 ViewBag
+                ViewData["Message"] = "表單資料有誤，請檢查並重新提交。";
+                return View();
+            }
+            else
+            {
+                _context.Add(viewModel.Itinerary);
+                await _context.SaveChangesAsync();
+                return Redirect("/Members/MemberCenter");
+            }
+        }
+
+
+
+
+
+
+            // 徐庭軒加的---------------------------
+
+            public IActionResult Spot(string memberEmail)
         {
 
             var query = from o in _context.Spots

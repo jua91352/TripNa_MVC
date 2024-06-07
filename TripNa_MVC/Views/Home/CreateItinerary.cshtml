@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+﻿@model TripNa_MVC.Models.ItineraryViewModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
@@ -18,11 +18,12 @@
 </div>
 <!-- -------------------------------------------------------------------------------------------------------- -->
 <!-- 行程  生成訂單給會員-->
+    <form asp-action="CreateItinerary" asp-controller="Home">
 <div class="row justify-content-center align-items-center m-3">
     <!-- 地點 要控制景點-->
     <div class="col-md-auto">
-        <select class="form-select" id="locationSelect">
-            <option value="">地點</option>
+                <select class="form-select" id="locationSelect" name="itineraryCity">
+            <option value="" selected disabled hidden>地點</option>
             @if (cities != null)
             {
                 foreach (var city in cities)
@@ -36,18 +37,22 @@
 
     <!-- 人數 -->
     <div class="col-md-auto">
-        <select class="form-select" id="peopleSelect">
-            <option value="">人數</option>
-            <option value="1">3</option>
-            <option value="2">4</option>
-            <option value="3">5</option>
+                <select class="form-select" id="peopleSelect" name="ItineraryPeopleNo">
+                    <option value="" selected disabled hidden>人數</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+
         </select>
     </div>
 
     <!-- 天數 要控制時間選擇 -->
     <div class="col-md-auto col-sm-5">
-        <select class="form-select" id="themeSelect">
-            <option value="">出遊天數</option>
+        <select class="form-select" id="themeSelect" name="DayCount">
+            <option value="" selected disabled hidden>出遊天數</option>
             <option value="1">一日遊</option>
             <option value="2">二日遊</option>
             <option value="3">三日遊</option>
@@ -57,147 +62,149 @@
     <!-- 日期選擇器 -->
     <label for="from" class="col-md-auto col-sm-2 col-3" id="from1">出發日:</label>
     <input type="text" id="datepicker" class="form-control col-md-auto  col-sm-10 col-7 text-center"
-     style="width: auto;">
+                   style="width: auto;" name="ItineraryStartDate">
 </div>
 
 
 
 @* 行程日程安排 *@
-<div class="row align-items-center m-3 text-center">
-    <div class="col-lg-1 "></div>
-    <div id="accordionContainer" class="col-lg-6 col-md-6 col-sm-6 col-7" style="top: 150px; bottom:100px;">
-        <button class="accordion disabled" id="day1" disabled>第一天的景點安排</button>
-        <div class="panel" id="panel1">
-            <div class="row justify-content-center m-3 text-center">
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
-                    <div id="first-day-morning" class="ui-widget-content ui-state-default"></div>
+    <div class="row align-items-center m-3 text-center">
+        <div class="col-lg-1 "></div>
+        <div id="accordionContainer" class="col-lg-6 col-md-6 col-sm-6 col-7" style="top: 150px; bottom:100px;">
+            <button type="button" class="accordion disabled" id="day1" disabled>第一天的景點安排</button>
+            <div class="panel" id="panel1">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="first-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="first-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="first-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="first-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
-                    <div id="first-day-afternoon" class="ui-widget-content ui-state-default"></div>
+            </div>
+            <br>
+            <div id="firstDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="firstDayConfirmCheckbox" disabled> 我已確定第一天行程
+            </div>
+
+
+
+                <button type="button" class="accordion disabled" id="day2" disabled>第二天的景點安排</button>
+            <div class="panel" id="panel2">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="second-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="second-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="second-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="second-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
-                    <div id="first-day-evening" class="ui-widget-content ui-state-default"></div>
+            </div>
+            <br>
+            <div id="secondDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="secondDayConfirmCheckbox" disabled> 我已確定第二天行程
+            </div>
+
+
+                <button type ="button" class="accordion disabled" id="day3" disabled>第三天的景點安排</button>
+            <div class="panel" id="panel3">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="third-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="third-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="third-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="third-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
-                    <div id="first-day-night" class="ui-widget-content ui-state-default"></div>
+            </div>
+            <br>
+            <div id="thirdDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="thirdDayConfirmCheckbox" disabled> 我已確定第三天行程
+            </div>
+        </div>
+
+        <!-- 景點照片 -->
+        <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
+            <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
+                <div class="row justify-content-center">
+                    <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
+                    <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                    <div class="col-md-8" style="background-color: #f8e8ff;">
+                        <ul id="gallery" class="gallery list-unstyled">
+                                @if (Model != null && Model.Spot != null)
+                                {
+                                    @foreach (var spot in Model.Spot)
+                                {
+                                string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + ".jpg";
+                                <li class="ui-widget-content ui-corner-tr" data-city="@spot.SpotCity.ToLower()">
+                                    <h5 class="ui-widget-header">@spot.SpotName</h5>
+                                    <img src="@Url.Content(imgPath)" id="@spot.SpotId" alt="@spot.SpotName" width="96" height="72">
+                                    <br>
+                                    <a href="@Url.Content(imgPath)" title="查看較大的圖片" class="ui-icon ui-icon-zoomin">查看較大</a>
+                                </li>
+                                 }
+                                }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        <br>
-        <div id="firstDayContainer" class="checkbox-container col-12">
-            <input type="checkbox" id="firstDayConfirmCheckbox" disabled> 我已確定第一天行程
-        </div>
 
-
-
-        <button class="accordion disabled" id="day2" disabled>第二天的景點安排</button>
-        <div class="panel" id="panel2">
-            <div class="row justify-content-center m-3 text-center">
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
-                    <div id="second-day-morning" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
-                    <div id="second-day-afternoon" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
-                    <div id="second-day-evening" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
-                    <div id="second-day-night" class="ui-widget-content ui-state-default"></div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div id="secondDayContainer" class="checkbox-container col-12">
-            <input type="checkbox" id="secondDayConfirmCheckbox" disabled> 我已確定第二天行程
-        </div>
-
-
-        <button class="accordion disabled" id="day3" disabled>第三天的景點安排</button>
-        <div class="panel" id="panel3">
-            <div class="row justify-content-center m-3 text-center">
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
-                    <div id="third-day-morning" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
-                    <div id="third-day-afternoon" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
-                    <div id="third-day-evening" class="ui-widget-content ui-state-default"></div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                    <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
-                    <div id="third-day-night" class="ui-widget-content ui-state-default"></div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div id="thirdDayContainer" class="checkbox-container col-12">
-            <input type="checkbox" id="thirdDayConfirmCheckbox" disabled> 我已確定第三天行程
-        </div>
-    </div>
-
-    <!-- 景點照片 -->
-    <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
-        <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
-            <div class="row justify-content-center">
-                <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
-                <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-                <div class="col-md-8" style="background-color: #f8e8ff;">
-                    <ul id="gallery" class="gallery list-unstyled">
-                        @foreach (var spot in Model)
-                        {
-                            string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + ".jpg";
-                            <li class="ui-widget-content ui-corner-tr" data-city="@spot.SpotCity.ToLower()">
-                                <h5 class="ui-widget-header">@spot.SpotName</h5>
-                                <img src="@Url.Content(imgPath)" id="@spot.SpotId" alt="@spot.SpotName" width="96" height="72">
-                                <br>
-                                <a href="@Url.Content(imgPath)" title="查看較大的圖片" class="ui-icon ui-icon-zoomin">查看較大</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-1"></div>
+        <div class="col-lg-1"></div>
  
-</div>
+    </div>
    
 <!-- -------------------------------------------------------------------------------------------------------- -->
 
 
 
-
-<br>
 <!-- 找導遊按鈕 -->
-<div class="row m-3">
-    <div class="col-1"></div>
-    <div class="col-12 col-md-4 col-sm-12">
-        <input class="form-check-input" type="checkbox" value="" id="confirmCheckbox" disabled>
-        <label class="form-check-label" for="confirmCheckbox">
-            我已確定行程，可開始尋找導遊
-        </label>
-    </div>
-</div>
-<div class="row m-3">
-    <div class="col-8"></div>
-    <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">尋找導遊</button>
-    <div class="col-2"></div>
-</div>
+        <div class="row m-3">
+            <div class="col-1"></div>
+            <div class="col-12 col-md-4 col-sm-12">
+                <input class="form-check-input" type="checkbox" value="" id="confirmCheckbox" disabled>
+                <label class="form-check-label" for="confirmCheckbox">
+                    我已確定行程，可開始尋找導遊
+                </label>
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-8"></div>
+            <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">尋找導遊</button>
+            <div class="col-2"></div>
+        </div>
 
+</form>
 <br>
 <br>
 <br>
@@ -421,6 +428,8 @@
             }
         });
 
+
+        // 送出按鈕
         document.getElementById("findbtn").addEventListener("click", function () {
             const confirmCheckbox = document.getElementById("confirmCheckbox");
             const firstDayConfirmCheckbox = document.getElementById("firstDayConfirmCheckbox");

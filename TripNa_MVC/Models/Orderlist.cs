@@ -21,8 +21,6 @@ public partial class Orderlist
 
     public DateTime OrderDate { get; set; }
 
-    public byte? OrderPeopleNo { get; set; }
-
     public string OrderStatus { get; set; } = null!;
 
     public string OrderMatchStatus { get; set; } = null!;

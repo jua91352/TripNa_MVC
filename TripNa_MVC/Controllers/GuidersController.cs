@@ -64,9 +64,9 @@ namespace TripNa_MVC.Controllers
                 await _context.SaveChangesAsync();
                 return Redirect("/Members/MemberCenter");
 
-    }
-            return Redirect("/Home/Login");
         }
+            return Redirect("/Home/Login");
+    }
 
 
 
