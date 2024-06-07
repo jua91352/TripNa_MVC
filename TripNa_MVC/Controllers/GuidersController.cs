@@ -48,7 +48,7 @@ namespace TripNa_MVC.Controllers
         }
 
 
-                      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider, IFormFile guiderImage, IFormFile guiderVert)
@@ -57,15 +57,15 @@ namespace TripNa_MVC.Controllers
             {
 
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
+                var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+                Console.WriteLine("---------------------"+memberContext+ "---------------------");
 
-                var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-                if (member != null && member.GuiderId == null)
+                if (memberContext != null )
                 {
 
                     _context.Add(guider);
                     await _context.SaveChangesAsync();
-                    member.GuiderId = guider.GuiderId;
+                    memberContext.GuiderId = guider.GuiderId;
                     await _context.SaveChangesAsync();
 
                     string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
@@ -94,13 +94,12 @@ namespace TripNa_MVC.Controllers
 
                 }
 
-                // GuiderID 不為空,不能註冊,前往導遊會員中心
                 return Redirect("/Guiders/GuiderCenter");
             }
 
-            return View("home");
-        }
 
+            return Redirect("/Guiders/SignUp");
+        }
 
 
         // GET: /Members/MemberCenter
@@ -337,15 +336,86 @@ namespace TripNa_MVC.Controllers
 
 
 
+        public IActionResult GuiderOrder()
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果Session 裡面沒有東西 重導回主頁
+            }
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
+
+            var orderDetails = from o in _context.Orderlists
+                               join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+                               from c in couponGroup.DefaultIfEmpty() // left join
+                               where o.MemberId == member.MemberId
+                               select new
+                               {
+                                   o.OrderNumber,
+                                   o.OrderDate,
+                                   i.ItineraryStartDate,
+                                   o.OrderTotalPrice,
+                                   o.OrderStatus,
+                                   o.OrderMatchStatus,
+                                   c.CouponCode,
+                                   o.OrderId
+                               };
+
+
+            // 將查詢結果轉換為列表
+            var orderDetailsList = orderDetails.ToList();
+
+            // 構建 OrderDetail
+            var model = new OrderDetail
+            {
+
+                Orders = orderDetailsList.Select(o => new Orderlist
+                {
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderStatus = o.OrderStatus,
+                    OrderMatchStatus = o.OrderMatchStatus,
+                    OrderId = o.OrderId,
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate
+                    },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+                    }
+                }).ToList(),
+                MemberId = member.MemberId
+            };
+
+            return View(model);
+        }
 
 
 
 
 
+        public IActionResult GuiderMatch()
+        {
+            return View();
+        }
 
 
 
 
-
-    }
+        }
 }

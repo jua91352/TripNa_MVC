@@ -8,15 +8,12 @@
 
 <style>
     .page-normal a {
-        border: 1px solid #C7CF98;
-        padding: 5px 7px;
-        color: #3A326D;
-        margin-left: 20px;
         text-decoration: none;
     }
 
         .page-normal a:hover {
-            background-color: #c4c9fc;
+            background-color: #dadae0;
+            color: #3A326D;
         }
 
     .page-normal {
@@ -24,21 +21,14 @@
         text-align: center;
     }
 
-
         .page-normal .page-current {
             color: #e8eafe;
             background-color: #4e5482
         }
 
 
-        .page-normal .page-prev {
-            color: #4e5482;
-        }
-
-
         .page-normal a,
         .page-normal a:hover,
-        .page-normal .page-prev,
         .page-normal .page-current {
             border: 1px solid #4e5482;
             padding: 5px 7px;
@@ -249,14 +239,13 @@
             </table>
 
             <br>
-            <!-- 下方選擇頁數區域-->
+            <!-- 顯示頁面的地方 -->
             <div class="page-normal">
-
                 <!-- 數字1 代表當前頁面-->
-                <span class="page-prev">1</span>
-              
+                <a href="#" class="page-current">1</a>
             </div>
-            <!-- 下方選擇頁數區域-->
+            <!-- 顯示頁面的地方 -->
+
 
             <br>
             <br>
