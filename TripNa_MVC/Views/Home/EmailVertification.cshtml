@@ -37,17 +37,15 @@
         <div class="container mt-5 col-sm-6 border-custom">
             <h1 class="mb-1 text-center">LOGIN TripNa</h1>
             <h4 class="mb-5 text-center ">忘記密碼</h4>
-            <form id="resetPasswordForm" asp-action="EmailVertification" asp-controller="Home" method="post">
+            <form id="resetPasswordForm" method="post">
                 <p class="form-text mb-3" style="color:red">@ViewData["Message"]</p>
-                <input type="email" class="form-control" id="verifyCode" name="verificationCode" placeholder="請輸入信箱收到之驗證碼" required>
+                <input type="text" class="form-control" id="verifyCode" name="verificationCode" placeholder="請輸入信箱收到之驗證碼" required>
                 <p class="form-text" id="code"></p>
-                <p class="form-text">&#10148;若未收到驗證碼請點此:<a class="text-decoration-none" onclick="createCode()" style="cursor: pointer;" asp-action="SendVerificationEmail">重新發送驗證碼</a></p>
-                <input type="password" class="form-control mb-4" id="resetPW" placeholder="設定新密碼" required>
-                <input type="password" class="form-control" id="confirmPW" placeholder="新密碼確認" required>
-                <p class="form-text mb-4 text-danger" id="PWtext"></p>
+                <p class="form-text"><a class="text-decoration-none" onclick="createCode()" style="cursor: pointer;" href="/home/ResetPassword">&#10148若未收到驗證碼，請點此重新操作，並確認您的信箱輸入正確!</a></p>
+                 <p class="form-text mb-4 text-danger" id="PWtext"></p>
 
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" id="sendCode" onclick="sendCode()">傳送驗證碼</button>
+                    <button type="button" class="btn btn-primary" id="vertifyEmail">會員信箱驗證</button>
                 </div>
             </form>
         </div>
@@ -65,94 +63,87 @@
 
     <script>
 
-        function createCode() {
-            code = "";
-            var codeLength = 6;//驗證碼的長度
-            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//隨機數
-            for (var i = 0; i < codeLength; i++) {
-                var index = Math.floor(Math.random() * 36);//取得隨機數的索引（0~35）
-                code += random[index];//根據索引取得隨機數加到code上
+        // function sendCode() {
+        //     event.preventDefault();
+        //     if ($("#memberEmail").val() != "") {
+        //         $("form").append(`
+        //               <input type="email" class="form-control" id="verifyCode" placeholder="請輸入信箱收到之驗證碼" required>
+        //               <p class="form-text" id="code"></p>
+        //               <p class="form-text">&#10148;若60秒內未收到驗證碼請點此:<a class="text-decoration-none" onclick="createCode()" style="cursor: pointer;">重新發送驗證碼</a></p>
+        //               `);
+        //         $("#sendCode").remove();
+        //         $(".container").append('<div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" id="vertifyMember">驗證身分</button></div>');
+
+
+        //         alert("驗證碼已發送至您的信箱，請查收");
+
+        //         createCode();
+
+
+        //         var validate = document.getElementById('vertifyMember');
+        //         validate.addEventListener("click", function (e) {
+        //             if (inputCode.length <= 0) { //若輸入的驗證碼長度為0
+        //                 alert("請輸入驗證碼！"); //則彈出請輸入驗證碼
+        //             }
+        //             else if (inputCode !== @TempData["VerificationCode"];) { //若輸入的驗證碼與產生的驗證碼不一致時
+        //                 alert("驗證碼輸入錯誤"); //則彈出驗證碼輸入錯誤
+        //             }
+        //             else { //輸入正確時
+        //                 alert("驗證成功，請輸入新密碼");
+        //                 vertifyMember();
+        //             }
+        //         });
+
+        //     }
+        //     else {
+        //         alert("請輸入正確的信箱");
+        //     }
+        // }
+
+
+        $("#vertifyEmail").on("click", function () {
+
+            $("#resetPasswordForm").addClass( ' asp-action="EmailVertification" ' )
+            $("#resetPasswordForm").addClass( '  asp-controller="Home" ')
+
+            if ($("#verifyCode").val().length <= 0) { //若輸入的驗證碼長度為0
+                alert("請輸入驗證碼！"); //則彈出請輸入驗證碼
             }
-            $("#code").html(`驗證碼:${code}`);//把code值賦給驗證碼
-            $("#verifyCode").on("click", function () { $("#verifyCode").val(code) });
+            else if ($("#verifyCode").val() != @TempData["VerificationCode"] ) { //若輸入的驗證碼與產生的驗證碼不一致時
+                alert("驗證碼輸入錯誤"); //則彈出驗證碼輸入錯誤
+            }
+            else { //輸入正確時
+                alert("驗證成功，請輸入新密碼");
+                $("#vertifyEmail").remove();
+                // $(".container").append('<div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" id="changePassword">更改密碼</button></div>');
 
-        }
+                $("#resetPasswordForm").append(`
+                                      <input type="password" class="form-control mb-4" id="resetPW" name="newPassword" placeholder="設定新密碼" required>
+                                      <input type="password" class="form-control" id="confirmPW" placeholder="新密碼確認" required>
+                                      <p class="form-text mb-4 text-danger" id="PWtext"></p>
+                                        <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" id="changePassword">更改密碼</button></div>
+                                        
+                                   `);
 
-
-
-        function sendCode() {
-            event.preventDefault();
-            if ($("#memberEmail").val() != "") {
-                $("form").append(`
-                      <input type="email" class="form-control" id="verifyCode" placeholder="請輸入信箱收到之驗證碼" required>
-                      <p class="form-text" id="code"></p>
-                      <p class="form-text">&#10148;若60秒內未收到驗證碼請點此:<a class="text-decoration-none" onclick="createCode()" style="cursor: pointer;">重新發送驗證碼</a></p>
-                      `);
-                $("#sendCode").remove();
-                $(".container").append('<div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" id="vertifyMember">驗證身分</button></div>');
-
-
-                alert("驗證碼已發送至您的信箱，請查收");
-
-                createCode();
-
-
-                var validate = document.getElementById('vertifyMember');
-                validate.addEventListener("click", function (e) {
-                    var inputCode = document.getElementById("verifyCode").value.toUpperCase(); //取得輸入的驗證碼並轉化為大寫
-                    if (inputCode.length <= 0) { //若輸入的驗證碼長度為0
-                        alert("請輸入驗證碼！"); //則彈出請輸入驗證碼
-                    }
-                    else if (inputCode !== code) { //若輸入的驗證碼與產生的驗證碼不一致時
-                        alert("驗證碼輸入錯誤"); //則彈出驗證碼輸入錯誤
-                    }
-                    else { //輸入正確時
-                        alert("驗證成功，請輸入新密碼");
-                        vertifyMember();
+                resetPW.addEventListener("change", function (e) {
+                    if (resetPW.value != confirmPW.value) {
+                        $("#PWtext").html(`<i class="bi bi-exclamation-triangle-fill"> </i> 密碼不一致`);
                     }
                 });
 
+                confirmPW.addEventListener("change", function (e) {
+                    if (resetPW.value != confirmPW.value) {
+                        $("#PWtext").html(`<i class="bi bi-exclamation-triangle-fill"> </i>密碼不一致`);
+                    } else {
+                        $("#PWtext").html("");
+                    }
+                });
             }
-            else {
-                alert("請輸入正確的信箱");
-            }
-        }
-        function vertifyMember() {
-            $("#vertifyMember").remove();
-            $(".container").append('<div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" id="changePassword">更改密碼</button></div>');
-
-            $("form").append(`
-                      <input type="password" class="form-control mb-4" id="resetPW" placeholder="設定新密碼" required>
-                      <input type="password" class="form-control" id="confirmPW" placeholder="新密碼確認" required>
-                      <p class="form-text mb-4 text-danger" id="PWtext"></p>`);
-
-            resetPW.addEventListener("change", function (e) {
-                if (resetPW.value != confirmPW.value) {
-                    $("#PWtext").html(`<i class="bi bi-exclamation-triangle-fill"> </i> 密碼不一致`);
-                }
-            });
-
-            confirmPW.addEventListener("change", function (e) {
-                if (resetPW.value != confirmPW.value) {
-                    $("#PWtext").html(`<i class="bi bi-exclamation-triangle-fill"> </i>密碼不一致`);
-                } else {
-                    $("#PWtext").html("");
-                }
-            });
-            $("#resetPW").on("click", function () { $("#resetPW").val("123456") });
 
             $("#changePassword").on("click", function changePW() {
                 alert("密碼更改成功!");
-                window.location.href = "memberLogin.html";
             });
-        }
-
-
-        // --------------- Demo  --------------------
-        $("#memberEmail").on("click", function () { $("#memberEmail").val("demo@gmail.com") });
-
-
-
+        });
 
     </script>
 </body>

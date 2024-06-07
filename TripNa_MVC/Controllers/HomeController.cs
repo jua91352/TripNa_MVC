@@ -113,7 +113,6 @@ namespace TripNa_MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> ResetPassword(string memberEmail)
         {
-            Console.WriteLine(123123);
             if (!string.IsNullOrEmpty(memberEmail))
             {
                 // Check if memberEmail exists in the database
@@ -134,13 +133,8 @@ namespace TripNa_MVC.Controllers
                     TempData["MemberEmail"] = memberEmail;
 
                     Console.WriteLine(verificationCode);
-                    // await SendVerificationEmail(memberEmail, verificationCode);
+                    await SendVerificationEmail(memberEmail, verificationCode);
                     ViewData["Message"] = "已寄送驗證碼到您的信箱。";
-
-
-                    // 你可以在這裡添加其他邏輯，比如保存驗證碼到數據庫
-
-                    //return Ok(new { Message = "驗證碼已寄送到您的電子郵件。" });
 
                 }
                 else
@@ -155,7 +149,7 @@ namespace TripNa_MVC.Controllers
                 ModelState.AddModelError("memberEmail", "Please enter a valid email address.");
             }
             
-            return View();
+            return Redirect("/home/EmailVertification");
         }
         private string GenerateVerificationCode()
         {
@@ -184,22 +178,39 @@ namespace TripNa_MVC.Controllers
             await smtpClient.SendMailAsync(mailMessage);
         }
 
-        public IActionResult EmailVertification()
+        private async Task ReSendVerificationEmail()
+        {
+            string verificationCode = GenerateVerificationCode();
+            TempData["VerificationCode"] = verificationCode;
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "TripNa 驗證碼",
+                Body = $"您的驗證碼是 {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(TempData["MemberEmail"].ToString());
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+            public IActionResult EmailVertification()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> EmailVerification(string verificationCode, string newPassword)
+        public async Task<IActionResult> EmailVertification(string newPassword)
         {
-            var storedCode = TempData["VerificationCode"]?.ToString();
-            var memberEmail = TempData["MemberEmail"]?.ToString();
 
-   
-            if (storedCode != verificationCode)
-            {
-                ViewData["Message"] = "驗證碼不正確!" ;
-            }
+            var memberEmail = TempData["MemberEmail"]?.ToString();
+            
 
             var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == memberEmail);
 
@@ -207,7 +218,7 @@ namespace TripNa_MVC.Controllers
             member.MemberPassword = newPassword;
             await _context.SaveChangesAsync();
 
-            return Redirect("/Home/Login");
+            return Redirect("/home/Login");
         }
 
         public IActionResult Logout()
