@@ -29,13 +29,16 @@ namespace TripNa_MVC.Controllers
         }
 
 
-        //黃浩維的不要動
+        //黃浩維的不要動-------------------------------------------------------------------------------------------------
             public IActionResult Privacy()
             {
 
             var spot = from o in _context.Spots
                        select o;
+            var spotid =from o in _context.Spots
+                        select o.SpotId;
             var spotsList = spot.ToList();
+            
 
             // 獲取所有 SpotCity 並去重
             var cities = _context.Spots
@@ -48,6 +51,12 @@ namespace TripNa_MVC.Controllers
 
             return View(spotsList);
             }
+
+
+
+
+
+        //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
 
         public IActionResult Spot(string memberEmail)

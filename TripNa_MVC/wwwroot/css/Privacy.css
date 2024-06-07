@@ -1,5 +1,4 @@
 ﻿
-
 /* 標題 */
 .nav-center {
     text-align: center;
@@ -155,7 +154,7 @@ button {
 }
 
 #findbtn {
-    animation: fadeIn s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 /* 手風琴樣式 */
