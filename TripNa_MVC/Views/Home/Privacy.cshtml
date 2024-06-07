@@ -154,7 +154,7 @@
             <div class="row justify-content-center">
                 <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
                 <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-                <div class="col-md-8" style="background-color: #f8e8ff;">
+                <div class="col-6" style="background-color: #f8e8ff;">
                     <ul id="gallery" class="gallery list-unstyled">
                         @foreach (var spot in Model)
                         {
@@ -325,7 +325,7 @@
                 });
             }
         }
-
+        //選擇地區會換景點
         $(document).ready(function () {
             initializeDraggable();
 
