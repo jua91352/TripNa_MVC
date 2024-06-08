@@ -190,12 +190,14 @@
                                     </a>
                                 </td>
 
+                   
 
 
 
-                            asp-route-orderID="@order.OrderId"
+
+
                             <td class="text-center align-middle" width="100px">
-                                <a asp-area="" asp-controller="Members" asp-action="UserOrderDetails"   onclick="doscore(@order.OrderId)">
+                                <a asp-area="" asp-controller="Guiders" asp-action="GuiderOrderDetails" asp-route-orderID="@order.OrderId" onclick="doscore(@order.OrderId)">
                                     <button type="button" class="btn" style="background-color: #4e5482; color: #e8eafe;">查看訂單</button>
                                 </a>
                             </td>

@@ -411,6 +411,115 @@ namespace TripNa_MVC.Controllers
 
 
 
+        public IActionResult GuiderOrderDetails(int orderID)
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var orderDetails =  from o in _context.Orderlists
+                                join m in _context.Members on o.MemberId equals m.MemberId
+                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
+                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                join r in _context.Ratings on o.MemberId equals r.MemberId
+                                where o.GuiderId == member.GuiderId && o.OrderId == orderID
+                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                                join s in _context.Spots on j.SpotId equals s.SpotId
+                                select new
+                                {
+                                    o.OrderNumber,
+                                    o.OrderDate,
+                                    i.ItineraryStartDate,
+                                    o.OrderTotalPrice,
+                                    o.OrderStatus,
+                                    o.OrderMatchStatus,
+                                    c.CouponCode,
+                                    g.GuiderNickname,
+                                    i.ItineraryName,
+                                    i.ItineraryPeopleNo,
+                                    m.MemberName,
+                                    m.MemberEmail,
+                                    m.MemberPhone,
+                                    ItineraryDetails = j,
+                                    Spot = s,
+                                    o.ItineraryId,
+                                    a.VisitOrder,
+                                    g.GuiderArea,
+                                    o.OrderId,
+                                    r.RatingComment,
+                                    r.RatingStars,
+                                };
+
+            // 將查詢結果轉換為列表
+            var orderDetailsList = orderDetails.ToList();
+
+            if (orderDetailsList == null)
+            {
+                return NotFound();
+            }
+
+            // 構建 OrderDetail
+            var model = new OrderDetail
+            {
+
+                Orders = orderDetailsList.Select(o => new Orderlist
+                {
+
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderStatus = o.OrderStatus,
+                    OrderMatchStatus = o.OrderMatchStatus,
+                    OrderId = o.OrderId,
+
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
+                        ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
+                    },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+                    },
+                    Guider = new Guider
+                    {
+                        GuiderNickname = o.GuiderNickname,
+                        GuiderArea = o.GuiderArea
+                    },
+                    Rating = new Rating
+                    {
+                        RatingComment = o.RatingComment,
+                        RatingStars = o.RatingStars
+                    },
+                    Member = new Member
+                    {
+                        MemberName = o.MemberName,
+                        MemberEmail = o.MemberEmail,
+                        MemberPhone = o.MemberPhone
+                    },
+                    Spots = o.Spot,
+                    ItineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = o.ItineraryId,
+                        VisitOrder = o.VisitOrder
+                    }
+                }).ToList(),
+
+
+                MemberId = member.MemberId,
+                OrderId = orderID
+            };
+
+            return View(model);
+        }
 
 
 
@@ -433,7 +542,53 @@ namespace TripNa_MVC.Controllers
 
 
 
-         public IActionResult GuiderQA(int orderID)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public IActionResult GuiderQA(int orderID)
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
@@ -569,6 +724,49 @@ namespace TripNa_MVC.Controllers
 
             return View(model);
         }
+
+
+        [HttpPost]
+        public IActionResult SubmitAnswer(string answer, int orderId)
+        {
+            // 檢查輸入資料的有效性
+            if (string.IsNullOrWhiteSpace(answer))
+            {
+                return BadRequest("問題內容不能為空白。");
+            }
+
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+            var guider = member.GuiderId;
+
+            Console.WriteLine("------------------"+ guider + "------------------");
+
+
+            // 建立新的 GuiderAnswer 實體並儲存到資料庫
+            var newAnswer = new GuiderAnswer
+            {
+                GuiderId = (int)guider,
+                OrderId = orderId,
+                AnswerContent = answer,
+                AnswerTime = DateTime.Now
+            };
+
+
+            _context.GuiderAnswers.Add(newAnswer);
+            _context.SaveChanges();
+
+            return Ok("回覆提交成功。");
+
+        }
+
+
+
+
+
 
 
 
