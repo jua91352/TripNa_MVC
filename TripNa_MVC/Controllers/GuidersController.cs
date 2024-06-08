@@ -405,8 +405,72 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult GuiderMatch()
         {
-            return View();
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var query = from s in _context.SelectGuiders
+                        join o in _context.Orderlists on s.OrderId equals o.OrderId
+                        join m in _context.Members on s.MemberId equals m.MemberId
+                        join g in _context.Guiders on s.GuiderId equals g.GuiderId
+                        join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId into leftJoin
+                        from i in leftJoin.DefaultIfEmpty()
+                        join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
+                        join p in _context.Spots on id.SpotId equals p.SpotId
+
+                        where o.OrderMatchStatus == "媒合中" && s.GuiderId == member.GuiderId
+                        select new
+                        {
+                            OrderID = s.OrderId,
+                            GuiderID = s.GuiderId,
+                            ItineraryName = i.ItineraryName,
+                            ItineraryStartDate = i.ItineraryStartDate,
+                            ItineraryPeopleNo = i.ItineraryPeopleNo,
+                            MemberName = m.MemberName,
+                            OrderMatchStatus = o.OrderMatchStatus,
+                            SpotID = id.SpotId,
+                            SpotName = p.SpotName,
+                            SpotCity = p.SpotCity,
+                            VisitOrder = id.VisitOrder
+                        };
+            
+        var results = query.ToList();
+
+            var count = query.Count();
+            ViewData["count"] = count;
+            Console.WriteLine("-----------------------"+ count + "-----------------------");
+
+
+            return View(results);
         }
+
+
+
+        //var model = results.Select(o => new Match
+        //{
+        //    MemberName = o.MemberName,
+        //    OrderMatchStatus = o.OrderMatchStatus,
+        //    GuiderID = o.GuiderID,
+        //    OrderId = o.OrderID,
+        //    ItineraryPeopleNo = o.ItineraryPeopleNo,
+        //    ItineraryStartDate = o.ItineraryStartDate,
+        //    ItineraryName = o.ItineraryName,
+        //    SpotId = (int)o.SpotID,
+        //    VisitOrder = (short)o.VisitOrder
+
+        //}).ToList();
+
+
+
+
+
+
+
+
 
 
 
@@ -522,72 +586,6 @@ namespace TripNa_MVC.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public IActionResult GuiderQA(int orderID)
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -639,16 +637,10 @@ namespace TripNa_MVC.Controllers
                 return NotFound();
             }
 
-
-
-            //join q in _context.MemberQuestions on o.MemberId equals q.MemberId
-
-
             var questions = from ga in _context.GuiderAnswers
                             join g in _context.Guiders on ga.GuiderId equals g.GuiderId
                             from q in _context.MemberQuestions.Where(g => g.OrderId == (int?)ga.OrderId).DefaultIfEmpty()
                             where g.GuiderId == member.GuiderId && q.OrderId == orderID
-                            //.Where(q => q.OrderId == orderID)
                             select new
                             {
                                 q.QuestionContent,
@@ -656,11 +648,6 @@ namespace TripNa_MVC.Controllers
                                 ga.AnswerContent,
                                 ga.AnswerTime
                             };
-
-
-            //int questionCount = _context.MemberQuestions
-            //                   .Where(mq => mq.OrderId == orderID)
-            //                   .Count();
 
             int answerCount = _context.GuiderAnswers
                                .Where(a => a.OrderId == orderID)

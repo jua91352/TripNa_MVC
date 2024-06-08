@@ -17,4 +17,5 @@ public partial class Itinerary
     public virtual ICollection<ItineraryDetail> ItineraryDetails { get; set; } = new List<ItineraryDetail>();
 
     public virtual ICollection<Orderlist> Orderlists { get; set; } = new List<Orderlist>();
+
 }
