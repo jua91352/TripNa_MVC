@@ -471,12 +471,17 @@
 
             // ajax send to Db
                 const dataToSend = {
-                    ItineraryDetails: []
+                    itineraryDetail: []
                 };
 
                 let date1 = $("#datepicker").val();
+                let date2, date3;
+                
+
                 if (date1) {
                     let dateObj = new Date(date1);
+                    date2 = new Date(dateObj);
+                    date3 = new Date(dateObj);
                     date2.setDate(dateObj.getDate() + 1);
                     date3.setDate(dateObj.getDate() + 2);
                     let secondDate = $.datepicker.formatDate('yy-mm-dd', date2);
@@ -488,7 +493,7 @@
                             ItineraryDate: date1,
                         VisitOrder: 1
                     };
-                    dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                 });
 
                 $("#first-day-afternoon li").each(function () {
@@ -497,7 +502,7 @@
                             ItineraryDate: date1,
                         VisitOrder: 2
                     };
-                    dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                 });
 
                 $("#first-day-evening li").each(function () {
@@ -506,7 +511,7 @@
                             ItineraryDate: date1,
                         VisitOrder: 3
                     };
-                    dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                 });
 
                 $("#first-day-night li").each(function () {
@@ -515,7 +520,7 @@
                             ItineraryDate: date1,
                         VisitOrder: 4
                     };
-                    dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                 });
 
                 
@@ -526,7 +531,7 @@
                         ItineraryDate: secondDate,
                         VisitOrder: 1
                     };
-                    dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                 });
 
                     $("#second-day-afternoon li").each(function () {
@@ -536,7 +541,7 @@
                             ItineraryDate: secondDate,
                             VisitOrder: 2
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#second-day-evening li").each(function () {
@@ -545,7 +550,7 @@
                             ItineraryDate: secondDate,
                             VisitOrder: 3
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#second-day-night li").each(function () {
@@ -554,7 +559,7 @@
                             ItineraryDate: date2,
                             VisitOrder: 4
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#third-day-morning li").each(function () {
@@ -563,7 +568,7 @@
                             ItineraryDate: date3,
                             VisitOrder: 1
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#third-day-afternoon li").each(function () {
@@ -572,7 +577,7 @@
                             ItineraryDate: date3,
                             VisitOrder: 2
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#third-day-evening li").each(function () {
@@ -581,7 +586,7 @@
                             ItineraryDate: date3,
                             VisitOrder: 3
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $("#third-day-night li").each(function () {
@@ -590,7 +595,7 @@
                             ItineraryDate: date3,
                             VisitOrder: 4
                         };
-                        dataToSend.push(itineraryDetail);
+                    dataToSend.itineraryDetail.push(itineraryDetail);
                     });
 
                     $.ajax({
@@ -604,8 +609,9 @@
                             console.log("Success", response);
                             // 你可以在這裡處理成功後的回應
                         },
-                        error: function (error) {
-                            console.log("Error", error);
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
+                            console.error("Response Text: ", xhr.responseText);
                             // 你可以在這裡處理錯誤
                         }
                     });

@@ -81,7 +81,7 @@ namespace TripNa_MVC.Controllers
             };
             itinerary.ItineraryName += $"{DaycountInName}" + "ºZª±¦æµ{";
             Console.WriteLine(itinerary.ItineraryName);
-            //Console.WriteLine(ModelState.IsValid);
+            // Console.WriteLine(ModelState.IsValid);
 
             if (ModelState.IsValid)
             {
