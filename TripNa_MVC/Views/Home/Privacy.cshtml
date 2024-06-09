@@ -208,43 +208,43 @@
 @section Scripts {
 <script>
         //------------------------------------------測試把放置後的li裡面的資料放進資料庫裡----------------------------------------------------------------------------
-            $(function () {
-                $(".ui-widget-content").sortable({
-                    connectWith: ".ui-widget-content"
-                }).disableSelection();
+            // $(function () {
+            //     $(".ui-widget-content").sortable({
+            //         connectWith: ".ui-widget-content"
+            //     }).disableSelection();
 
-                $("#firstDayConfirmCheckbox").on("change", function () {
-                    if (this.checked) {
-                        let itineraryDetails = [];
-                        $("#first-day-morning .ui-widget-content").each(function (index) {
-                            let spotId = $(this).data("spotid");
-                            if (spotId) {
-                                itineraryDetails.push({
-                                    ItineraryId: 1,  // 假設第一天行程ID為1，可以動態設置
-                                    SpotId: spotId,
-                                    ItineraryDate: new Date().toISOString(),  // 假設為今天，可以根據需要設置
-                                    VisitOrder: index + 1
-                                });
-                            }
-                        });
+            //     $("#firstDayConfirmCheckbox").on("change", function () {
+            //         if (this.checked) {
+            //             let itineraryDetails = [];
+            //             $("#first-day-morning .ui-widget-content").each(function (index) {
+            //                 let spotId = $(this).data("spotid");
+            //                 if (spotId) {
+            //                     itineraryDetails.push({
+            //                         ItineraryId: 1,  // 假設第一天行程ID為1，可以動態設置
+            //                         SpotId: spotId,
+            //                         ItineraryDate: new Date().toISOString(),  // 假設為今天，可以根據需要設置
+            //                         VisitOrder: index + 1
+            //                     });
+            //                 }
+            //             });
 
-                        // 同理處理其他時間段，如first-day-afternoon, first-day-evening, first-day-night
+            //             // 同理處理其他時間段，如first-day-afternoon, first-day-evening, first-day-night
 
-                        $.ajax({
-                            url: '@Url.Action("SaveItinerary", "Itinerary")',
-                            type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(itineraryDetails),
-                            success: function (response) {
-                                alert(response.message);
-                            },
-                            error: function (response) {
-                                alert("Error: " + response.responseJSON);
-                            }
-                        });
-                    }
-                });
-            });
+            //             $.ajax({
+            //                 url: '@Url.Action("SaveItinerary", "Itinerary")',
+            //                 type: 'POST',
+            //                 contentType: 'application/json',
+            //                 data: JSON.stringify(itineraryDetails),
+            //                 success: function (response) {
+            //                     alert(response.message);
+            //                 },
+            //                 error: function (response) {
+            //                     alert("Error: " + response.responseJSON);
+            //                 }
+            //             });
+            //         }
+            //     });
+            // });
 
         // ---------------------------------------------------------------------------------------------------------------------------------------------------
     $(function () {
