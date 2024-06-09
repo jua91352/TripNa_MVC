@@ -146,6 +146,8 @@
         <div id="thirdDayContainer" class="checkbox-container col-12">
             <input type="checkbox" id="thirdDayConfirmCheckbox" disabled> 我已確定第三天行程
         </div>
+
+
     </div>
 
     <!-- 景點照片 -->
@@ -154,8 +156,8 @@
             <div class="row justify-content-center">
                 <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
                 <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-                <div class="col-6" style="background-color: #f8e8ff;">
-                    <ul id="gallery" class="gallery list-unstyled">
+                <div class="col-9" style="background-color: #f8e8ff;">
+                    <ul id="gallery" class="gallery list-unstyled ui-sortable">
                         @foreach (var spot in Model)
                         {
                             string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + ".jpg";
@@ -203,7 +205,48 @@
 <br>
 <br>
 <br>
+@section Scripts {
 <script>
+        //------------------------------------------測試把放置後的li裡面的資料放進資料庫裡----------------------------------------------------------------------------
+            $(function () {
+                $(".ui-widget-content").sortable({
+                    connectWith: ".ui-widget-content"
+                }).disableSelection();
+
+                $("#firstDayConfirmCheckbox").on("change", function () {
+                    if (this.checked) {
+                        let itineraryDetails = [];
+                        $("#first-day-morning .ui-widget-content").each(function (index) {
+                            let spotId = $(this).data("spotid");
+                            if (spotId) {
+                                itineraryDetails.push({
+                                    ItineraryId: 1,  // 假設第一天行程ID為1，可以動態設置
+                                    SpotId: spotId,
+                                    ItineraryDate: new Date().toISOString(),  // 假設為今天，可以根據需要設置
+                                    VisitOrder: index + 1
+                                });
+                            }
+                        });
+
+                        // 同理處理其他時間段，如first-day-afternoon, first-day-evening, first-day-night
+
+                        $.ajax({
+                            url: '@Url.Action("SaveItinerary", "Itinerary")',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(itineraryDetails),
+                            success: function (response) {
+                                alert(response.message);
+                            },
+                            error: function (response) {
+                                alert("Error: " + response.responseJSON);
+                            }
+                        });
+                    }
+                });
+            });
+
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------
     $(function () {
         // 選日期
         $("#datepicker").datepicker({
@@ -212,11 +255,6 @@
         });
 
 
-        //------------------------------------------假資料 假設是由資料庫轉過來的-----------------------------------------------------------------------------
-
-        
-
-        // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -609,5 +647,6 @@
 
         
 </script>
+}
 </body>
 

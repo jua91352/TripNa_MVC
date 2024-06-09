@@ -32,15 +32,19 @@ namespace TripNa_MVC.Controllers
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
             public IActionResult Privacy()
             {
-
+            // 獲取所有 Spot
             var spot = from o in _context.Spots
                        select o;
             var spotid =from o in _context.Spots
                         select o.SpotId;
             var spotsList = spot.ToList();
-            
+            // 獲取所有 Itinerary
+            var itinerary = from o in _context.Itineraries
+                            select o;
+            var itineraryList = itinerary.ToList();
 
-            // 獲取所有 SpotCity 並去重
+
+            // 獲取所有縣市
             var cities = _context.Spots
                 .Select(s => s.SpotCity)
                 .Distinct()
@@ -51,6 +55,8 @@ namespace TripNa_MVC.Controllers
 
             return View(spotsList);
             }
+            
+
 
 
 
