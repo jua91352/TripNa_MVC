@@ -6,8 +6,8 @@
         public List<Spot>? Spot { get; set; }
         public List<ItineraryDetail>? ItineraryDetail { get; set; }
 
-        public string SpotId { get; set; }
-        public string ItineraryDate { get; set; }
+        public int SpotId { get; set; }
+        public DateTime ItineraryDate { get; set; }
         public Byte VisitOrder { get; set; }
 
     }

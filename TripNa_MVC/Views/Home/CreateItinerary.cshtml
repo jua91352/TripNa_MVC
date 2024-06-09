@@ -470,6 +470,10 @@
             }
 
             // ajax send to Db
+                const dataToSend = {
+                    ItineraryDetails: []
+                };
+
                 let date1 = $("#datepicker").val();
                 if (date1) {
                     let dateObj = new Date(date1);
@@ -514,7 +518,7 @@
                     dataToSend.push(itineraryDetail);
                 });
 
-
+                
                 $("#second-day-morning li").each(function () {
                     
                     var itineraryDetail = {
@@ -590,10 +594,11 @@
                     });
 
                     $.ajax({
+                        
                         type: "POST",
-                        url: "/Home/CreateItinerary", // 替換為你的控制器和動作名稱
+                        url: "/Home/CreateItinerary",
                         data: JSON.stringify(dataToSend),
-                        contentType: "application/json; charset=utf-8",
+                        contentType: "application/json",
                         dataType: "json",
                         success: function (response) {
                             console.log("Success", response);

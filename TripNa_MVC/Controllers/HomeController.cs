@@ -64,7 +64,7 @@ namespace TripNa_MVC.Controllers
         // 徐庭軒加的---------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateItinerary(ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary, int DayCount, [FromBody] List<ItineraryViewModel> itineraryDetails)
+        public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary, int DayCount)
         {
             string DaycountInName;
             if (DayCount == 1)
@@ -80,40 +80,43 @@ namespace TripNa_MVC.Controllers
                 DaycountInName = "三日遊";
             };
             itinerary.ItineraryName += $"{DaycountInName}" + "暢玩行程";
-            //Console.WriteLine(itinerary.ItineraryName);
+            Console.WriteLine(itinerary.ItineraryName);
             //Console.WriteLine(ModelState.IsValid);
 
             if (ModelState.IsValid)
             {
                 _context.Add(itinerary);
                 await _context.SaveChangesAsync();
-                foreach (var detail in itineraryDetails)
+                Console.WriteLine("MinJi");
+                foreach (var detail in viewModel.ItineraryDetail)
                 {
                     var itineraryDetail = new ItineraryDetail
                     {
                         ItineraryId = itinerary.ItineraryId, // 你需要動態設置或傳遞這個值
-                        SpotId = int.Parse(detail.SpotId),
-                        ItineraryDate = DateTime.Parse(detail.ItineraryDate),
+                        SpotId = detail.SpotId,
+                        ItineraryDate = detail.ItineraryDate,
                         VisitOrder = detail.VisitOrder
                     };
 
                     _context.ItineraryDetails.Add(itineraryDetail);
-                    await _context.SaveChangesAsync();
-                    return Redirect("/Members/MemberCenter");
+                    
                 }
 
-                return View(viewModel);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("HANNI");
+                return View("Members/MemberCenter");
             }
-            return View(viewModel);
+            Console.WriteLine("HAERIN");
+            return View();
         }
 
 
+        
 
 
+        // 徐庭軒加的---------------------------
 
-            // 徐庭軒加的---------------------------
-
-            public IActionResult Spot(string memberEmail)
+        public IActionResult Spot(string memberEmail)
         {
 
             var query = from o in _context.Spots
@@ -125,7 +128,14 @@ namespace TripNa_MVC.Controllers
             return View(spotsList);
 
         }
-
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
+        }
 
         [HttpPost]
         public IActionResult Spot(string spotId, string spotName, string spotCity, string spotIntro, string memberId)
