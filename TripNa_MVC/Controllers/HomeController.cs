@@ -87,7 +87,7 @@ namespace TripNa_MVC.Controllers
             {
                 _context.Add(itinerary);
                 await _context.SaveChangesAsync();
-                Console.WriteLine("MinJi");
+                
                 foreach (var detail in viewModel.ItineraryDetail)
                 {
                     var itineraryDetail = new ItineraryDetail
@@ -103,10 +103,10 @@ namespace TripNa_MVC.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                Console.WriteLine("HANNI");
+                
                 return View("Members/MemberCenter");
             }
-            Console.WriteLine("HAERIN");
+            
             return View();
         }
 
