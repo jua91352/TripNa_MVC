@@ -196,7 +196,7 @@
 </div>
 <div class="row m-3">
     <div class="col-8"></div>
-    <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">尋找導遊</button>
+    <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">我要根據縣市選擇要找的地區導遊</button>
     <div class="col-2"></div>
 </div>
 
@@ -476,21 +476,21 @@
             if (themeSelectValue === '3') {
                 // 第三天选择，需要所有复选框都选中
                 if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
+                            window.location.href = "/Home/TouristGuide";
                 } else {
                     alert("你需要勾選《我已確定前三天的行程》");
                 }
             } else if (themeSelectValue === '2') {
                 // 第二天选择，只需要前两天复选框选中
                 if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
+                            window.location.href = "/Home/TouristGuide";
                 } else {
                     alert("你需要勾選《我已確定前兩天的行程》");
                 }
             } else if (themeSelectValue === '1') {
                 // 第一天选择，只需要第一天复选框选中
                 if (firstDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
+                            window.location.href = "/Home/TouristGuide";
                 } else {
                     alert("你需要勾選《我已確定第一天的行程》");
                 }
@@ -642,7 +642,9 @@
             }
         });
     });
-
+            document.getElementById('findGuideBtn').addEventListener('click', function () {
+                window.location.href = '/Home/TouristGuide';
+            });
     
 
         

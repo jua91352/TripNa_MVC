@@ -38,6 +38,8 @@ namespace TripNa_MVC.Controllers
             var spotid =from o in _context.Spots
                         select o.SpotId;
             var spotsList = spot.ToList();
+
+
             // 獲取所有 Itinerary
             var itinerary = from o in _context.Itineraries
                             select o;
@@ -55,8 +57,31 @@ namespace TripNa_MVC.Controllers
 
             return View(spotsList);
             }
-            
 
+        // 按下按鈕到選擇導遊頁面
+        [HttpGet]
+        public IActionResult TouristGuide()
+        {
+            var Guide = from o in _context.Guiders
+                        select o;
+
+            var GuideList = Guide.ToList();
+            var Guidername = from o in _context.Guiders
+                                 select o.GuiderNickname;
+            var GuiderStartDate = from o in _context.Guiders
+                                 select o.GuiderStartDate;
+            var GuiderIntro = from o in _context.Guiders
+                              select o.GuiderIntro;
+            var GuiderArea = from o in _context.Guiders
+                             select o.GuiderArea;
+
+            ViewBag.Guidername = Guidername.ToList();
+            ViewBag.GuiderStartDate = GuiderStartDate.ToList();
+            ViewBag.GuiderIntro = GuiderIntro.ToList();
+            ViewBag.GuiderArea = GuiderArea.ToList();
+
+            return View(Guide);
+        }
 
 
 

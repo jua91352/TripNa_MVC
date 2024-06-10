@@ -1,0 +1,78 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Guider>
+@{
+    ViewData["Title"] = "TouristGuide";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- 標題 -->
+<div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px; margin-top: 5%;">
+    我們為您推薦的導遊
+</div>
+
+<!-- 選擇 -->
+<div class="row justify-content-center" style="width: 100%;" id="select">
+    <div class="col-auto">
+        <select class="form-select" id="gender" onchange="filterGuiders()">
+            <option value="">性別</option>
+            <option value="男生">男生</option>
+            <option value="女生">女生</option>
+            <option value="">不限</option>
+        </select>
+    </div>
+    <!-- 評價 -->
+    <div class="col-auto">
+        <select class="form-select" id="rating" onchange="filterGuiders()">
+            <option value="">評價</option>
+            <option value="5">5星</option>
+            <option value="4">4星</option>
+            <option value="3">3星</option>
+        </select>
+    </div>
+    <!-- 服務經驗 -->
+    <div class="col-auto">
+        <select class="form-select" id="experience" onchange="filterGuiders()">
+            <option value="">服務經驗</option>
+            <option value="1">一年以上</option>
+            <option value="3">三年以上</option>
+            <option value="5">五年以上</option>
+        </select>
+    </div>
+</div>
+<br>
+
+<!-- 動態顯示幾個導遊-->
+@foreach (var Guider in Model)
+{
+    <div style="width: 60%; margin: 0 auto" id="card">
+        <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative">
+            <img src="" alt="@Guider.GuiderNickname" class="card-img-top rounded shadow" style="height: 100px; width: 150px;">
+            <p class="card-text col-7">
+                姓名:@Guider.GuiderNickname<br>
+                性別:@Guider.GuiderGender<br>
+                服務起始:@Guider.GuiderStartDate.ToShortDateString()<br>
+                簡介:@Guider.GuiderIntro<br>
+            </p>
+            <button class="btn btn-primary text-center m-2 p-2 rounded shadow" style="width: 120px; height: 50px;">
+                選擇
+            </button>
+            <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0">
+        </div>
+    </div>
+}
+<br>
+<div class="row justify-content-center m-3">
+    <div class="col-8"></div>
+    <button class="btn btn-primary col-1 text-center rounded shadow m-3">下單去</button>
+    <div class="col-2"></div>
+</div>
+<br>
+
+<!-- 顯示符合條件的導遊數量 -->
+<div class="row">
+    <div class="col-4"></div>
+    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount筆</p>
+    <div class="col-4"></div>
+</div>
+
+<script>
+    
+</script>
