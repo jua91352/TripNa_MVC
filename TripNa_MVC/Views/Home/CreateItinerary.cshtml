@@ -428,6 +428,144 @@
             }
         });
 
+            const dataToSend = {
+                itineraryDetail: []
+            };
+
+        function generateJsonData() {
+
+
+            let date1 = $("#datepicker").val();
+            let date2, date3;
+
+            if (date1) {
+                let dateObj = new Date(date1);
+                date2 = new Date(dateObj);
+                date3 = new Date(dateObj);
+                date2.setDate(dateObj.getDate() + 1);
+                date3.setDate(dateObj.getDate() + 2);
+                date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
+                date2 = $.datepicker.formatDate('yy-mm-dd', date2);
+                date3 = $.datepicker.formatDate('yy-mm-dd', date3);
+            }
+                $("#first-day-morning li").each(function () {
+                var itineraryDetail = {
+                    SpotID: $(this).find("img").attr("id"),
+                    ItineraryDate: date1,
+                    VisitOrder: 1
+                };
+                dataToSend.itineraryDetail.push(itineraryDetail);
+            });
+
+            $("#first-day-afternoon li").each(function () {
+                var itineraryDetail = {
+                    SpotID: $(this).find("img").attr("id"),
+                    ItineraryDate: date1,
+                    VisitOrder: 2
+                };
+                dataToSend.itineraryDetail.push(itineraryDetail);
+            });
+
+            $("#first-day-evening li").each(function () {
+                var itineraryDetail = {
+                    SpotID: $(this).find("img").attr("id"),
+                    ItineraryDate: date1,
+                    VisitOrder: 3
+                };
+                dataToSend.itineraryDetail.push(itineraryDetail);
+            });
+
+            $("#first-day-night li").each(function () {
+                var itineraryDetail = {
+                    SpotID: $(this).find("img").attr("id"),
+                    ItineraryDate: date1,
+                    VisitOrder: 4
+                };
+                dataToSend.itineraryDetail.push(itineraryDetail);
+            });
+                $("#second-day-morning li").each(function () {
+
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: secondDate,
+                        VisitOrder: 1
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#second-day-afternoon li").each(function () {
+
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: secondDate,
+                        VisitOrder: 2
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#second-day-evening li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: secondDate,
+                        VisitOrder: 3
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#second-day-night li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: date2,
+                        VisitOrder: 4
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#third-day-morning li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: date3,
+                        VisitOrder: 1
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#third-day-afternoon li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: date3,
+                        VisitOrder: 2
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#third-day-evening li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: date3,
+                        VisitOrder: 3
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+
+                $("#third-day-night li").each(function () {
+                    var itineraryDetail = {
+                        SpotID: $(this).find("img").attr("id"),
+                        ItineraryDate: date3,
+                        VisitOrder: 4
+                    };
+                    dataToSend.itineraryDetail.push(itineraryDetail);
+                });
+        };
+
+        $("#firstDayConfirmCheckbox").change(function () {
+            if ($(this).is(":checked")) {
+                generateJsonData();
+                console.log(dataToSend);
+            }
+        });
+
+          
 
         // 送出按鈕
         document.getElementById("findbtn").addEventListener("click", function () {
@@ -470,133 +608,133 @@
             }
 
             // ajax send to Db
-                const dataToSend = {
-                    itineraryDetail: []
-                };
+                // const dataToSend = {
+                //     itineraryDetail: []
+                // };
 
-                let date1 = $("#datepicker").val();
-                let date2, date3;
+                // let date1 = $("#datepicker").val();
+                // let date2, date3;
                 
 
-                if (date1) {
-                    let dateObj = new Date(date1);
-                    date2 = new Date(dateObj);
-                    date3 = new Date(dateObj);
-                    date2.setDate(dateObj.getDate() + 1);
-                    date3.setDate(dateObj.getDate() + 2);
-                    let secondDate = $.datepicker.formatDate('yy-mm-dd', date2);
-                    let thirdDate = $.datepicker.formatDate('yy-mm-dd', date3);
-                }
-                $("#first-day-morning li").each(function () {
-                    var itineraryDetail = {
-                        SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date1,
-                        VisitOrder: 1
-                    };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                });
+                // if (date1) {
+                //     let dateObj = new Date(date1);
+                //     date2 = new Date(dateObj);
+                //     date3 = new Date(dateObj);
+                //     date2.setDate(dateObj.getDate() + 1);
+                //     date3.setDate(dateObj.getDate() + 2);
+                //     let secondDate = $.datepicker.formatDate('yy-mm-dd', date2);
+                //     let thirdDate = $.datepicker.formatDate('yy-mm-dd', date3);
+                // }
+                // $("#first-day-morning li").each(function () {
+                //     var itineraryDetail = {
+                //         SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date1,
+                //         VisitOrder: 1
+                //     };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                // });
 
-                $("#first-day-afternoon li").each(function () {
-                    var itineraryDetail = {
-                        SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date1,
-                        VisitOrder: 2
-                    };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                });
+                // $("#first-day-afternoon li").each(function () {
+                //     var itineraryDetail = {
+                //         SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date1,
+                //         VisitOrder: 2
+                //     };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                // });
 
-                $("#first-day-evening li").each(function () {
-                    var itineraryDetail = {
-                        SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date1,
-                        VisitOrder: 3
-                    };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                });
+                // $("#first-day-evening li").each(function () {
+                //     var itineraryDetail = {
+                //         SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date1,
+                //         VisitOrder: 3
+                //     };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                // });
 
-                $("#first-day-night li").each(function () {
-                    var itineraryDetail = {
-                        SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date1,
-                        VisitOrder: 4
-                    };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                });
+                // $("#first-day-night li").each(function () {
+                //     var itineraryDetail = {
+                //         SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date1,
+                //         VisitOrder: 4
+                //     };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                // });
 
                 
-                $("#second-day-morning li").each(function () {
+                // $("#second-day-morning li").each(function () {
                     
-                    var itineraryDetail = {
-                        SpotID: $(this).find("img").attr("id"),
-                        ItineraryDate: secondDate,
-                        VisitOrder: 1
-                    };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                });
+                //     var itineraryDetail = {
+                //         SpotID: $(this).find("img").attr("id"),
+                //         ItineraryDate: secondDate,
+                //         VisitOrder: 1
+                //     };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                // });
 
-                    $("#second-day-afternoon li").each(function () {
+                //     $("#second-day-afternoon li").each(function () {
 
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: secondDate,
-                            VisitOrder: 2
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: secondDate,
+                //             VisitOrder: 2
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#second-day-evening li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: secondDate,
-                            VisitOrder: 3
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#second-day-evening li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: secondDate,
+                //             VisitOrder: 3
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#second-day-night li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date2,
-                            VisitOrder: 4
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#second-day-night li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date2,
+                //             VisitOrder: 4
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#third-day-morning li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date3,
-                            VisitOrder: 1
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#third-day-morning li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date3,
+                //             VisitOrder: 1
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#third-day-afternoon li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date3,
-                            VisitOrder: 2
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#third-day-afternoon li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date3,
+                //             VisitOrder: 2
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#third-day-evening li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date3,
-                            VisitOrder: 3
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#third-day-evening li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date3,
+                //             VisitOrder: 3
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
-                    $("#third-day-night li").each(function () {
-                        var itineraryDetail = {
-                            SpotID: $(this).find("img").attr("id"),
-                            ItineraryDate: date3,
-                            VisitOrder: 4
-                        };
-                    dataToSend.itineraryDetail.push(itineraryDetail);
-                    });
+                //     $("#third-day-night li").each(function () {
+                //         var itineraryDetail = {
+                //             SpotID: $(this).find("img").attr("id"),
+                //             ItineraryDate: date3,
+                //             VisitOrder: 4
+                //         };
+                //     dataToSend.itineraryDetail.push(itineraryDetail);
+                //     });
 
                     $.ajax({
                         
