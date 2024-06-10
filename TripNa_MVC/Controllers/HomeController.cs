@@ -58,29 +58,41 @@ namespace TripNa_MVC.Controllers
             return View(spotsList);
             }
 
-        // 按下按鈕到選擇導遊頁面
         [HttpGet]
-        public IActionResult TouristGuide()
+        public IActionResult TouristGuide(string gender = null)
         {
             var Guide = from o in _context.Guiders
                         select o;
 
+            if (!string.IsNullOrEmpty(gender))
+            {
+                if (gender.ToLower() == "男生")
+                {
+                    Guide = Guide.Where(g => g.GuiderGender == "M");
+                }
+                else if (gender.ToLower() == "女生")
+                {
+                    Guide = Guide.Where(g => g.GuiderGender == "F");
+                }
+            }
+
             var GuideList = Guide.ToList();
-            var Guidername = from o in _context.Guiders
-                                 select o.GuiderNickname;
-            var GuiderStartDate = from o in _context.Guiders
-                                 select o.GuiderStartDate;
-            var GuiderIntro = from o in _context.Guiders
+            var Guidername = from o in GuideList
+                             select o.GuiderNickname;
+            var GuiderStartDate = from o in GuideList
+                                  select o.GuiderStartDate;
+            var GuiderIntro = from o in GuideList
                               select o.GuiderIntro;
-            var GuiderArea = from o in _context.Guiders
+            var GuiderArea = from o in GuideList
                              select o.GuiderArea;
 
             ViewBag.Guidername = Guidername.ToList();
             ViewBag.GuiderStartDate = GuiderStartDate.ToList();
             ViewBag.GuiderIntro = GuiderIntro.ToList();
             ViewBag.GuiderArea = GuiderArea.ToList();
+            ViewBag.GuiderCount = GuideList.Count;
 
-            return View(Guide);
+            return View(GuideList);
         }
 
 
