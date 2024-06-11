@@ -477,6 +477,8 @@ namespace TripNa_MVC.Controllers
 
             var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
 
+
+
             if (member != null && member.GuiderId == null)
             {
                 // GuiderID 為空,可以註冊
@@ -487,22 +489,23 @@ namespace TripNa_MVC.Controllers
                 // GuiderID 不為空,不能註冊
             }
 
+            var orderDetails =  from sg in _context.SelectGuiders
+                                
+                                join o in _context.Orderlists on sg.OrderId equals o.OrderId
+
+                                join m in _context.Members on sg.MemberId equals m.MemberId
 
 
+                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)sg.GuiderId).DefaultIfEmpty()
 
-
-
-            var orderDetails = (from o in _context.Orderlists
-                                join m in _context.Members on o.MemberId equals m.MemberId
-                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId into details
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
-                                join r in _context.Ratings on o.MemberId equals r.MemberId
-                                where o.MemberId == member.MemberId 
 
-                                //where o.OrderMatchStatus == "媒合中" && o.GuiderId == member.GuiderId
+                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId into details
+
+                                where o.OrderMatchStatus == "媒合中" && sg.GuiderId == member.GuiderId
+
                                 from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                                  
                                 join s in _context.Spots on j.SpotId equals s.SpotId
 
                                 select new
@@ -510,25 +513,21 @@ namespace TripNa_MVC.Controllers
                                     o.OrderNumber,
                                     o.OrderDate,
                                     i.ItineraryStartDate,
-                                    o.OrderTotalPrice,
                                     o.OrderStatus,
                                     o.OrderMatchStatus,
-                                    c.CouponCode,
                                     g.GuiderNickname,
                                     i.ItineraryName,
                                     i.ItineraryPeopleNo,
                                     m.MemberName,
                                     m.MemberEmail,
                                     m.MemberPhone,
+                                    m.MemberId,
                                     o.ItineraryId,                                    
                                     g.GuiderArea,
                                     o.OrderId,
-                                    r.RatingComment,
-                                    r.RatingStars,
                                     Spot = s,
                                     ItineraryDetails = details.ToList() // 將 ItineraryDetails 作為子集合
-
-                                });
+                                };
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
@@ -543,19 +542,20 @@ namespace TripNa_MVC.Controllers
                       join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                       select o;
 
-
-
-
             int orderCount = _context.Orderlists
-                         .Where(o => o.MemberId == member.MemberId)
+                         .Where(o => o.GuiderId == member.GuiderId)
                          .Count();
 
+
+
             Console.WriteLine("---------------------------"+ orderCount + "---------------------------");
+            Console.WriteLine("---------------------------" + member.GuiderId + "---------------------------");
+
+            //Console.WriteLine("---------------------------" + memberID + "---------------------------");
 
 
-
-
-
+            //將該導遊總共有幾筆評價筆數傳給HTML
+            ViewData["GuiderId"] = member.GuiderId;
 
 
             // 構建 OrderDetail
@@ -567,7 +567,6 @@ namespace TripNa_MVC.Controllers
 
                     OrderNumber = o.OrderNumber,
                     OrderDate = o.OrderDate,
-                    OrderTotalPrice = o.OrderTotalPrice,
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderId = o.OrderId,
@@ -579,36 +578,21 @@ namespace TripNa_MVC.Controllers
                         ItineraryPeopleNo = o.ItineraryPeopleNo,
                         ItineraryDetails = o.ItineraryDetails // 將 ItineraryDetails 作為子屬性
                     },
-                    Coupon = new Coupon
-                    {
-                        CouponCode = o.CouponCode
-                    },
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
                         GuiderArea = o.GuiderArea
-                    },
-                    Rating = new Rating
-                    {
-                        RatingComment = o.RatingComment,
-                        RatingStars = o.RatingStars
-                    },
+                    },                    
                     Member = new Member
                     {
                         MemberName = o.MemberName,
                         MemberEmail = o.MemberEmail,
-                        MemberPhone = o.MemberPhone
+                        MemberPhone = o.MemberPhone,
+                        MemberId =o.MemberId
                     },
                     Spots = o.Spot
-                    //,
-                    //ItineraryDetail = new ItineraryDetail
-                    //{
-                    //    ItineraryId = o.ItineraryId,
-                    //    VisitOrder = o.VisitOrder
-                    //}
+                    
                 }).ToList(),
-
-
                 MemberId = member.MemberId,
                 
             };
@@ -619,12 +603,105 @@ namespace TripNa_MVC.Controllers
 
 
 
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteMatch(int id)
+        //{
+
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var order = _context.SelectGuiders
+        //        .FirstOrDefault(x => x.OrderId == id);
+
+
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+
+        //    return Redirect("/Guiders/GuiderMatchDetails");
+        //}
+
+
+        // POST: Members/Delete/5
+        //[HttpPost, ActionName("GuiderMatchDetails")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int orderId, int guideId, int memberId, string action)
+        //{
+        //    var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+
+        //    Console.WriteLine(orderId+guideId+memberId);
+
+
+        //    if (order != null)
+        //    {
+        //        if (action == "reject")
+        //        {
+        //            _context.SelectGuiders.Remove(order);
+
+
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            // 執行接受訂單的邏輯
+        //            return Ok("要存到資料庫裡");
+        //            //return Redirect("/Guiders/GuiderOrder");
+
+
+        //        }
+
+
+        //    }
+        //    await _context.SaveChangesAsync();
+        //    return Redirect("/Guiders/GuiderMatchDetails");
+
+
+        //}
 
 
 
 
 
+        // 刪除被選擇的ID 的該筆收藏資料
+        [HttpPost, ActionName("GuiderMatchDetails")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int orderId, int guideId, int memberId, string action)
+        {
+            var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+            var gu = _context.Guiders.FirstOrDefault(m => m.GuiderId == guideId);
+            var ol = _context.Orderlists.FirstOrDefault(s => s.OrderId == orderId);
 
+            if (order != null)
+            {
+                if (action == "reject")
+                {
+                    _context.SelectGuiders.Remove(order);
+                }
+                else if (action == "accept")
+                {
+                    // 更新訂單的 OrderMatchStatus 和 guideId
+                    ol.OrderMatchStatus = "已媒合";
+                    gu.GuiderId = guideId;
+                    _context.SelectGuiders.Update(order);
+                }
+
+                await _context.SaveChangesAsync();
+
+                if (action == "reject")
+                {
+                    return Ok("訂單已婉拒並刪除");
+                }
+                else if (action == "accept")
+                {
+                    return Ok("訂單已接受並更新");
+                }
+            }
+
+            return Redirect("/Guiders/GuiderMatchDetails");
+        }
 
 
 

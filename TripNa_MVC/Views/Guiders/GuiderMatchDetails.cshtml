@@ -3,18 +3,19 @@
 @{
     ViewData["Title"] = "UserOrderDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    // var order = Model.Orders.ToList();
+
+    int GuiderId =ViewData["GuiderId"] != null ? (int)ViewData["GuiderId"] : 0;
 
     int orderCount = Model.Orders.Count;
     string p = ".jpg";  
     var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
+
+
     var displayedSpotNames = new HashSet<string>();
-    
 
     int spotCount = 0;
 
-
-     int currentDay = 1; // 記錄當前天數
+    int currentDay = 1; // 記錄當前天數
     bool isNewOrder = true; // 標記是否為新訂單
     string previousItineraryName = string.Empty; // 記錄上一個訂單的行程名稱
     var displayedDays = new HashSet<string>(); // 記錄已顯示過的天數
@@ -55,6 +56,8 @@
 
 </style>
 
+
+ 
 
 
 
@@ -200,20 +203,42 @@
                                 @orders.First().Member.MemberName
                         </td>
 
-                        <td class="text-center">
-                            <button onclick="deleteOrder('trContent1', 'trOrderList1')" id="submitBtn" class="btn"
-                                    style="background-color: #e8eafe ;color: #4e5482;">
-                                婉拒
-                            </button>
-                            <button id="submitBtn" class="btn"
-                                    style="background-color: #4e5482 ;color: #e8eafe;">
-                                接單
-                            </button>
-                        </td>
+                    @*    <td class="text-center">
+                         <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
+                             <input type="hidden" name="orderId" value="@orderId" />
+
+                             <input type="hidden" name="guideId" value="@GuiderId" />
+
+                             <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
+                             @orders.First().Member.MemberId
+
+
+                             <input type="submit" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId' ,'@GuiderId', '@orders.First().Member.MemberId')"  asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" 
+                             style="background-color: #e8eafe ;color: #4e5482;" />
+                           
+                             <input type="submit" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId' ,'@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId"
+                             style="background-color: #4e5482 ;color: #e8eafe;" /> 
+
+                         </form>
+                         </td> *@
+
+                         <td class="text-center">
+                            <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
+                                <input type="hidden" name="orderId" value="@orderId" />
+                                <input type="hidden" name="guideId" value="@GuiderId" />
+                                <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
+                                <input type="hidden" name="action" id="formAction" value="" />
+                         
+                                <input type="submit" value="婉拒" class="btn" onclick="setAction('reject')" style="background-color: #e8eafe ;color: #4e5482;" />
+                                <input type="submit" value="接單" class="btn" onclick="setAction('accept')" style="background-color: #4e5482 ;color: #e8eafe;" />
+                            </form>
+                            </td>
+
+
+
+
 
                     </tr>
-
-
 
             @foreach (var order in orders)
             {
@@ -309,30 +334,132 @@
 
             }
 
-        </tbody>
- 
+        </tbody> 
         }
 
-
         }
-
-
 
     </table>
-
-
     <br>
-
-
     <br>
-
-    <br>
-
-  
+    <br>  
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
+<script>
+    
+    
+    function testID() {
+
+        console.log("KKK");
+    }
+
+
+    function setAction(action) {
+    document.getElementById('formAction').value = action;
+}
+
+
+    function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
+        fetch(`/Guiders/GuiderMatchDetails`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ orderId, guideId, memberId, action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* 
+  function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
+        if (action === 'reject') {
+            rejectOrder(orderId, guideId, memberId);
+
+            fetch(`/Guiders/GuiderMatchDetails/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('婉拒成功');
+                    window.location.reload();
+                } else {
+                    alert('婉拒成功');
+                    console.error('刪除失敗:', response.status, response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            acceptOrder(orderId, guideId, memberId);
+        }
+    }
+}
+
+
+ *@
+
+
+
+
+
+      @* if (confirm('確定要刪除這個景點嗎？')) {
+
+                    fetch(`/Members/UserCollect/${FavoriteSpotId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        } 
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('刪除成功');
+                                window.location.reload();
+                            } else {
+                                alert('刪除失敗');
+                                console.error('刪除失敗:', response.status, response.statusText);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            *@
+
+</script>

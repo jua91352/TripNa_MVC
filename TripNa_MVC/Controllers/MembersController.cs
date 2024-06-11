@@ -175,7 +175,9 @@ namespace TripNa_MVC.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("UserCollect", "Members");
+            //return RedirectToAction("UserCollect", "Members");
+            return Redirect("/Members/UserCollect");
+
         }
 
 
@@ -755,6 +757,11 @@ namespace TripNa_MVC.Controllers
             return View(member);
         }
 
+
+
+
+
+
         // GET: Members/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -773,6 +780,11 @@ namespace TripNa_MVC.Controllers
             return View(member);
         }
 
+
+
+
+
+
         // POST: Members/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -787,6 +799,10 @@ namespace TripNa_MVC.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
 
         private bool MemberExists(int id)
         {
