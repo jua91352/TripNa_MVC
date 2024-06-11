@@ -4,13 +4,9 @@
 }
 @{
     var cities = ViewBag.Cities as List<string>;
+    
 }
-@if (TempData["message"] != null)
-{
-    <script type="text/javascript">
-        TempData["message"]
-        </script>
-}
+
 <body style="background-image: url('../_img//行程背景.jpg');background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); ">
 <head>
     <!--自訂-->
@@ -23,7 +19,7 @@
 </div>
 <!-- -------------------------------------------------------------------------------------------------------- -->
 <!-- 行程  生成訂單給會員-->
-    <form asp-action="CreateItinerary" asp-controller="Home">
+    
 <div class="row justify-content-center align-items-center m-3">
     <!-- 地點 要控制景點-->
     <div class="col-md-auto">
@@ -209,14 +205,13 @@
             <div class="col-2"></div>
         </div>
 
-</form>
 <br>
 <br>
 <br>
 <br>
 <br>
 <script>
-
+        
         
                 
     $(function () {
@@ -609,8 +604,7 @@
                 };
                 
                 console.log(dataToSend);
-
-                // Send to DB
+                    // Send to DB
                     $.ajax({
                         type: "POST",
                         url: "/Home/CreateItinerary",
@@ -627,6 +621,7 @@
                             // 你可以在這裡處理錯誤
                         }
                     });
+                
                     
                
             }
@@ -670,8 +665,6 @@
             } else {
                 alert("請選擇一個有效的主題");
             }
-
-            
                 
                     
         });
