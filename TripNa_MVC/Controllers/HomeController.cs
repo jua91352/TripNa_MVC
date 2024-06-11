@@ -36,7 +36,7 @@ namespace TripNa_MVC.Controllers
             {
                 Itinerary = new Itinerary(),
                 Spot = _context.Spots.ToList(),
-                ItineraryDetail = new List<ItineraryDetail>() // 初始化視圖模型的屬性
+                ItineraryDetail = new List<ItineraryDetailViewModel>() // 初始化視圖模型的屬性
             };
 
             var spot = from o in _context.Spots
@@ -57,58 +57,54 @@ namespace TripNa_MVC.Controllers
 
             
             return View(viewModel);
-            }
+        }
 
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
         // 徐庭軒加的---------------------------
+        //, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary,
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel viewModel, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary, int DayCount)
+        public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel viewModel)
         {
-            string DaycountInName;
-            if (DayCount == 1)
+            Console.WriteLine(ModelState.IsValid);
+            try
             {
-                DaycountInName = "一日遊";
-            }
-            else if (DayCount == 2)
-            {
-                DaycountInName = "二日遊";
-            }
-            else
-            {
-                DaycountInName = "三日遊";
-            };
-            itinerary.ItineraryName += $"{DaycountInName}" + "暢玩行程";
-            Console.WriteLine(itinerary.ItineraryName);
-            // Console.WriteLine(ModelState.IsValid);
 
-            if (ModelState.IsValid)
-            {
-                _context.Add(itinerary);
-                await _context.SaveChangesAsync();
-                
-                foreach (var detail in viewModel.ItineraryDetail)
+                if (ModelState.IsValid)
                 {
-                    var itineraryDetail = new ItineraryDetail
+                    _context.Add(viewModel.Itinerary);
+                    await _context.SaveChangesAsync();
+
+                    foreach (var detail in viewModel.ItineraryDetail)
                     {
-                        ItineraryId = itinerary.ItineraryId, // 你需要動態設置或傳遞這個值
-                        SpotId = detail.SpotId,
-                        ItineraryDate = detail.ItineraryDate,
-                        VisitOrder = detail.VisitOrder
-                    };
+                        var itineraryDetail = new ItineraryDetail
+                        {
+                            ItineraryId = viewModel.Itinerary.ItineraryId, // 你需要動態設置或傳遞這個值
+                            SpotId = detail.SpotId,
+                            ItineraryDate = detail.ItineraryDate,
+                            VisitOrder = detail.VisitOrder
+                        };
 
-                    _context.ItineraryDetails.Add(itineraryDetail);
-                    
+                        _context.ItineraryDetails.Add(itineraryDetail);
+
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    return View(viewModel);
                 }
-
-                await _context.SaveChangesAsync();
-                
-                return View("Members/MemberCenter");
             }
-            
-            return View();
+            catch (Exception ex)
+            {
+                // 記錄詳細的錯誤信息
+                Console.WriteLine("Exception: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+
+                return StatusCode(500, "Internal server error.");
+            }
+            return Redirect("/Home/Login");
         }
+        
 
 
         
@@ -153,7 +149,7 @@ namespace TripNa_MVC.Controllers
                 return View(spotsList);
             }
 
-            return View(spotsList); ;
+            return View(spotsList) ;
         }
 
 
