@@ -250,8 +250,10 @@ namespace TripNa_MVC.Controllers
                                                g.GuiderArea,
                                                g.GuiderStartDate,
                                                g.GuiderIntro,
-                                               r.RatingComment,
-                                               r.RatingStars,
+                                               //r.RatingComment,
+                                               //r.RatingStars,
+                                               RatingComment = r.RatingComment == null ? "無評論" : r.RatingComment, // 如果 r.RatingComment 為 null,則使用 "無評論" 作為預設值
+                                               RatingStars = r.RatingStars == null ? (byte)0 : r.RatingStars, // 使用三元運算子
                                                m.MemberName,
                                                m.MemberId
                                                //,                                   
@@ -319,15 +321,27 @@ namespace TripNa_MVC.Controllers
             //(r.GuiderId.HasValue ? r.GuiderId.Value.ToString() : string.Empty) == GuiderId);
             //(o => (o.GuiderId.HasValue ? o.GuiderId.Value.ToString() : string.Empty) == GuiderId);
 
+            int ratingAvg = (int)_context.Ratings
+                        .Where(r => r.GuiderId == Convert.ToInt32(GuiderId))
+                        .Select(r => (double)r.RatingStars)
+                        .DefaultIfEmpty()
+                        .Average();
+
+
 
             Console.WriteLine("orderCount為:"+orderCount + "----------------------------------------------");
             Console.WriteLine("ratingCount:" + ratingCount + "----------------------------------------------");
+            Console.WriteLine("ratingAvg:" + ratingAvg + "----------------------------------------------");
+
 
             //將該導遊總共有幾筆評價筆數傳給HTML
             ViewData["ratingCount"] = ratingCount;
 
             //將該導遊總共有幾筆訂單筆數傳給HTML
             ViewData["orderCount"] = orderCount;
+
+            //將該導遊總評價的平均傳給HTML
+            ViewData["ratingAvg"] = ratingAvg;
 
             return View(model);
         }

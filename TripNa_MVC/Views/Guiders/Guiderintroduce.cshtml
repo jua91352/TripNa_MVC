@@ -6,7 +6,9 @@
     string p = ".jpg";
     int ratingCount = ViewData["ratingCount"] != null ? (int)ViewData["ratingCount"] : 0;
     int orderCount = ViewData["orderCount"] != null ? (int)ViewData["orderCount"] : 0;
+    int ratingAvg = ViewData["ratingAvg"] != null ? (int)ViewData["ratingAvg"] : 0;
 
+    // int ratingavg = ;
 }
 
 @functions {
@@ -66,6 +68,7 @@
 
 </style>
 
+<br>
 
 <div class="">
     <a asp-action="GuiderCenter" asp-controller="Guiders" style="text-decoration: none;">
@@ -74,12 +77,15 @@
     </a>
 
 </div>
+<br>
 
 
 <!-- 標題 -->
 <div class="nav-center" id="標題" style="color: #eef1ff; background-color: #4e5482; font-size: 24px;">
     導遊詳細資料
 </div>
+
+<br>
 
 
 
@@ -100,17 +106,23 @@
 
     <div class="col-7 text-start">
             <h1>@g.GuiderNickname</h1>
-        <span style="color: #f6be00;">4.6</span>
 
-        <span id="star">
+            <span class="text-start" style="color: #f6be00;">
+                @ratingAvg
 
-            <span class="rank-rated" data-rating="1">&#128970;</span>
-            <span class="rank-rated" data-rating="2">&#128970;</span>
-            <span class="rank-rated" data-rating="3">&#128970;</span>
-            <span class="rank-rated" data-rating="4">&#128970;</span>
-            <span class="rank-half-rated " data-rating="5">&#128970;</span>
-            <span id="score" style="color: #3A326D; font-size: 15px;"></span>
-        </span>
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= ratingAvg)
+                    {
+                        <span class="rank-rated" data-rating="@i">&#128970;</span>
+                    }
+                    else
+                    {
+                        <span class="rank-not-rated" data-rating="@i">&#128970;</span>
+                    }
+                }
+            </span>
+
             <span style="color: #a2a2a2;">(@ratingCount)</span>
         <br>
        
@@ -127,7 +139,7 @@
         <span>
             性別:@(g.GuiderGender == "F" ? "女" : "男")
             <br>
-            導遊年資:@CalculateExperience(g.GuiderStartDate)
+            服務年資:@CalculateExperience(g.GuiderStartDate)
             <br>
             主要服務地區:@g.GuiderArea
             <br>
@@ -165,10 +177,35 @@
 
 
 
+@if (ratingCount == 0)
+
+    {
+
+    <br />
+                //bg-ligh
+    <div style="width: 50%; margin: 0 auto">
+        <div class="d-flex row justify-content-center m-3 p-3  bg-light rounded shadow text-center " >
+
+                <p class="text-center">
 
 
-<br>
-<div style="width: 50%; margin: 0 auto">
+                    <span class="bi bi-chat-square-dots" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+                 <p class="text-center">目前沒有評價</p>
+
+                </p>           
+
+        </div>
+    </div>
+
+    <br>
+    }
+
+    else
+    {
+        @foreach (var item in Model.Rates)
+       {
+        <br />
+    <div style="width: 50%; margin: 0 auto">
     <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
 
         <h1 class="text-start">評價</h1>
@@ -177,8 +214,7 @@
         <br>
 
 
-        @foreach (var item in Model.Rates)
-        {
+       
             <span class="text-start">
                 @item.MemberName
                 <span class="text-start" style="color: #f6be00;">
@@ -204,15 +240,14 @@
             <br>
             <hr>
             <br>
-        }
-
+       
     </div>
+           
 </div>
+    }
+}
 
 
-<br>
-<br>
-<br>
-<br>
+
 <br>
 

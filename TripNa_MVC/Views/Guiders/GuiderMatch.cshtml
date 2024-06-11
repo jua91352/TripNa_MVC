@@ -11,7 +11,9 @@
     int groupSize = 4;
     int d= 0;
     string p = ".jpg";
-
+     
+     var ordersGroupedByOrderId = Model.GroupBy(item => item.OrderID);
+           
 }
 
 @* 
@@ -76,8 +78,7 @@
             <a asp-area="" asp-controller="Guiders" asp-action="GuiderMatch"><img src="~/_img/png/click_match.png" alt=""></a>
             <a asp-area="" asp-controller="Guiders" asp-action="GuiderOrder"><img src="~/_img/png/myorder.png" alt=""></a>
             <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/mydata.png" alt=""></a>
-            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/membercenter.png" alt=""></a>
-
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/membercenter.png" alt=""></a>
         </div>
 
 
@@ -94,9 +95,55 @@
     <br>
 
 
+     @{
+        if (ordersGroupedByOrderId == null || !ordersGroupedByOrderId.Any())
+        {
+            <div class="row">
+
+                <div class="col-sm-2">
+                </div>
+
+                <div class="col-sm-8">
 
 
-    <table id="listtable" class="table table-striped">
+                    <!-- 收藏裡面  沒有東西 -->
+
+                    <div id="mycollect" style='background-color: #e8eafe ' class="rounded shadow ">
+
+
+                        <div style="">
+                            <p class="text-center">
+
+                                <span class="bi bi-puzzle" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+
+                            </p>
+
+                        </div>
+
+                        <p class="text-center">目前沒有待媒合訂單</p>
+                        <div class="text-center" style=" margin-right:10px; ">
+
+                           
+                            <br>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2">
+                </div>
+
+            </div>
+
+
+
+        }
+        else
+        {
+            
+       
+        <table id="listtable" class="table table-striped">
         <thead>
             <tr id="trTitle">
                 <th class="text-center">
@@ -122,9 +169,7 @@
         </thead>
 
         <tbody>
-            @{
-                var ordersGroupedByOrderId = Model.GroupBy(item => item.OrderID);
-            }
+          
             @foreach (var group in ordersGroupedByOrderId)
             {
                 var orderCount = group.Count();
@@ -193,8 +238,9 @@
         }
     </table>
 
+        }
+    }
 
- 
 
 </div>
 
