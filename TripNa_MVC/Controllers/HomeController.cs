@@ -59,7 +59,7 @@ namespace TripNa_MVC.Controllers
             }
 
         [HttpGet]
-        public IActionResult TouristGuide(string gender = null)
+        public IActionResult TouristGuide(string gender = null, int? experience = null, string location = null)
         {
             var Guide = from o in _context.Guiders
                         select o;
@@ -76,32 +76,34 @@ namespace TripNa_MVC.Controllers
                 }
             }
 
-            var GuideList = Guide.ToList();
-            var Guidername = from o in GuideList
-                             select o.GuiderNickname;
-            var GuiderStartDate = from o in GuideList
-                                  select o.GuiderStartDate;
-            var GuiderIntro = from o in GuideList
-                              select o.GuiderIntro;
-            var GuiderArea = from o in GuideList
-                             select o.GuiderArea;
+            if (experience.HasValue)
+            {
+                DateTime cutoffDate = DateTime.Now.AddYears(-experience.Value);
+                if (experience == 0)
+                {
+                    Guide = Guide.Where(g => g.GuiderStartDate >= DateTime.Now.AddMonths(-6)); // 新手導遊的條件，這裡假設少於6個月
+                }
+                else if (experience == 5)
+                {
+                    Guide = Guide.Where(g => g.GuiderStartDate <= DateTime.Now.AddYears(-5)); // 5年以上的條件
+                }
+                else
+                {
+                    Guide = Guide.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // 指定年資
+                }
+            }
 
-            ViewBag.Guidername = Guidername.ToList();
-            ViewBag.GuiderStartDate = GuiderStartDate.ToList();
-            ViewBag.GuiderIntro = GuiderIntro.ToList();
-            ViewBag.GuiderArea = GuiderArea.ToList();
+            
+
+            var GuideList = Guide.ToList();
             ViewBag.GuiderCount = GuideList.Count;
 
             return View(GuideList);
         }
 
 
-
-
-
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
-
-
+  
         public IActionResult Spot(string memberEmail)
         {
 
@@ -210,30 +212,6 @@ namespace TripNa_MVC.Controllers
 
             return View("home");
         }
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

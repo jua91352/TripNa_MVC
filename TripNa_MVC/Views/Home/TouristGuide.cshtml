@@ -4,13 +4,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head>
+    <!--自訂-->
+    <link rel="stylesheet" href="~/css/Privacy.css">
+</head>
+@functions {
+    public static string CalculateExperience(DateTime startDate)
+    {
+        DateTime currentDate = DateTime.Now;
+        TimeSpan experience = currentDate - startDate;
+
+        int years = experience.Days / 365;
+        int months = (experience.Days % 365) / 30;
+
+        if (years > 0)
+        {
+            return $"{years}年";
+        }
+        else if (months > 0)
+        {
+            return $"{months}個月";
+        }
+        else
+        {
+            return "新手導遊";
+        }
+    }
+}
+
 <div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px; margin-top: 5%;">
     我們為您推薦的導遊
 </div>
-
+<div class="row">
+    <div class="col-4"></div>
+    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
+    <div class="col-4"></div>
+</div>
 <div class="row justify-content-center" style="width: 100%;" id="select">
     <div class="col-auto">
-        <select class="form-select" id="gender" onchange="filterGuiders(this.value)">
+        <select class="form-select" id="gender" onchange="filterGuiders()">
             <option value="">性別</option>
             <option value="男生">男生</option>
             <option value="女生">女生</option>
@@ -29,10 +61,13 @@
     <!-- 服務經驗 -->
     <div class="col-auto">
         <select class="form-select" id="experience" onchange="filterGuiders()">
-            <option value="">服務經驗</option>
-            <option value="1">一年以上</option>
-            <option value="3">三年以上</option>
-            <option value="5">五年以上</option>
+            <option value="">服務年資</option>
+            <option value="0">0年 (新手導遊)</option>
+            <option value="1">1年</option>
+            <option value="2">2年</option>
+            <option value="3">3年</option>
+            <option value="4">4年</option>
+            <option value="5">5年以上</option>
         </select>
     </div>
 </div>
@@ -42,18 +77,16 @@
     @foreach (var guider in Model)
     {
         <div style="width: 60%; margin: 0 auto" id="card">
-            <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative">
-                <img src="" alt="@guider.GuiderNickname" class="card-img-top rounded shadow" style="height: 100px; width: 150px;">
+            <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative" style="align-items: center;">
+                <img src="~/導遊/大頭照/YOOOOOOOOOOOOOOOO.jpg" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
                 <p class="card-text col-7">
                     姓名:@guider.GuiderNickname<br>
                     性別:@guider.GuiderGender<br>
-                    服務起始:@guider.GuiderStartDate.ToShortDateString()<br>
+                    服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
+                    地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                <button class="btn btn-primary text-center m-2 p-2 rounded shadow" style="width: 120px; height: 50px;">
-                    選擇
-                </button>
-                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0">
+                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" onclick="selectGuider('@guider.GuiderId', this.checked)">
             </div>
         </div>
     }
@@ -67,18 +100,24 @@
 </div>
 <br>
 
-<div class="row">
-    <div class="col-4"></div>
-    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
-    <div class="col-4"></div>
-</div>
-
 <script>
-    function filterGuiders(gender) {
+    // 篩選
+    function filterGuiders() {
+        var gender = document.getElementById("gender").value;
+        var experience = document.getElementById("experience").value;
+
         var url = "@Url.Action("TouristGuide", "Home")";
+        var params = [];
         if (gender) {
-            url += "?gender=" + gender;
+            params.push("gender=" + gender);
+        }
+        if (experience) {
+            params.push("experience=" + experience);
+        }
+        if (params.length > 0) {
+            url += "?" + params.join("&");
         }
         window.location.href = url;
     }
+   
 </script>

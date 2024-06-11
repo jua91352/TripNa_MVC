@@ -20,19 +20,18 @@
 <!-- 行程  生成訂單給會員-->
 <div class="row justify-content-center align-items-center m-3">
     <!-- 地點 要控制景點-->
-    <div class="col-md-auto">
-        <select class="form-select" id="locationSelect">
-            <option value="">地點</option>
-            @if (cities != null)
-            {
-                foreach (var city in cities)
+        <div class="col-md-auto">
+            <select class="form-select" id="locationSelect">
+                <option value="">地點</option>
+                @if (ViewBag.Cities != null)
                 {
-                    <option value="@city.ToLower()">@city</option>
+                    foreach (var city in ViewBag.Cities)
+                    {
+                        <option value="@city.ToLower()">@city</option>
+                    }
                 }
-            }
-        </select>
-
-    </div>
+            </select>
+        </div>
 
     <!-- 人數 -->
     <div class="col-md-auto">
@@ -154,8 +153,8 @@
     <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
         <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
             <div class="row justify-content-center">
-                <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
-                <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                <p class="text-white" style="font-size: 18px;">操作方法:</p>
+                    <p class="text-white style="font-size: 12px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
                 <div class="col-9" style="background-color: #f8e8ff;">
                     <ul id="gallery" class="gallery list-unstyled ui-sortable">
                         @foreach (var spot in Model)
@@ -195,9 +194,9 @@
     </div>
 </div>
 <div class="row m-3">
-    <div class="col-8"></div>
-    <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">我要根據縣市選擇要找的地區導遊</button>
-    <div class="col-2"></div>
+        <div class="col-8"></div>
+        <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3 shadow" id="findbtn" onclick="redirectToGuidersPage()">我要根據縣市選擇要找的地區導遊</button>
+        <div class="col-2"></div>
 </div>
 
 <br>
@@ -253,10 +252,6 @@
             minDate: 0,
             dateFormat: 'yy/mm/dd'
         });
-
-
-
-
 
         // 清除行程表的函數
         function clearSchedule() {
@@ -591,6 +586,9 @@
                 behavior: 'smooth'
             });
         }
+
+
+        //頁手控制---------------------------------------------------------------------------------------
         // 定義調整字體大小的函式
         function adjustFontSize(size) {
             // 調整根元素的字體大小
@@ -610,41 +608,21 @@
             adjustFontSize('16px'); // 設置小字體大小
         });
 
-    });
-
-
-
-    $(document).ready(function () {
-        $(".navbar-toggler").click(function () {
-            $("#navbarNav").toggleClass("show");
-        });
-    });
-
-
-    //
-    $(function () {
-        // 設置可拖曳項目
-        $(".gallery li").draggable({
-            helper: "clone",
-            revert: "invalid"
-        });
-
-        // 設置放置區域
-        $(".ui-widget-content").droppable({
-            accept: ".gallery li",
-            drop: function (event, ui) {
-                var $this = $(this);
-                var item = ui.helper.clone();
-                $this.append(item);
-
-                // 調用更新行程函數
-                updateItinerary();
-            }
-        });
-    });
-            document.getElementById('findGuideBtn').addEventListener('click', function () {
-                window.location.href = '/Home/TouristGuide';
+        $(document).ready(function () {
+            $(".navbar-toggler").click(function () {
+                $("#navbarNav").toggleClass("show");
             });
+        });
+    });
+            //頁手控制---------------------------------------------------------------------------------------
+
+
+            // 點擊按鈕時跳轉到導遊頁面並傳遞所選地點
+            function redirectToGuidersPage() {
+                var selectedLocation = document.getElementById("locationSelect").value;
+                window.location.href = '@Url.Action("TouristGuide", "Home")' + "?location=" + selectedLocation;
+            }
+
     
 
         
