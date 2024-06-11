@@ -64,50 +64,67 @@ namespace TripNa_MVC.Controllers
         // 徐庭軒加的---------------------------
         //, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary,
         [HttpPost]
-        public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel viewModel)
+        public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel dataToSend)
         {
             Console.WriteLine(ModelState.IsValid);
+            if (!ModelState.IsValid)
+            {
+                // Log ModelState errors
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+                return BadRequest("Invalid itinerary data"); // Or a more specific error message
+            }
+
             try
             {
-
-                if (ModelState.IsValid)
+                if (dataToSend.Itinerary == null)
                 {
-                    _context.Add(viewModel.Itinerary);
-                    await _context.SaveChangesAsync();
-
-                    foreach (var detail in viewModel.ItineraryDetail)
-                    {
-                        var itineraryDetail = new ItineraryDetail
-                        {
-                            ItineraryId = viewModel.Itinerary.ItineraryId, // 你需要動態設置或傳遞這個值
-                            SpotId = detail.SpotId,
-                            ItineraryDate = detail.ItineraryDate,
-                            VisitOrder = detail.VisitOrder
-                        };
-
-                        _context.ItineraryDetails.Add(itineraryDetail);
-
-                    }
-
-                    await _context.SaveChangesAsync();
-
-                    return View(viewModel);
+                    dataToSend.Itinerary = new Itinerary(); // 初始化 Itinerary 對象
                 }
+
+                // 確保 dataToSend.ItineraryDetail 不為空
+                if (dataToSend.ItineraryDetail == null)
+                {
+                    dataToSend.ItineraryDetail = new List<ItineraryDetailViewModel>(); // 初始化 ItineraryDetail 列表
+                }
+                _context.Add(dataToSend.Itinerary);
+                await _context.SaveChangesAsync();
+
+                foreach (var detail in dataToSend.ItineraryDetail)
+                {
+                    var itineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = dataToSend.Itinerary.ItineraryId, // You need to dynamically set this value
+                        SpotId = detail.SpotId,
+                        ItineraryDate = detail.ItineraryDate,
+                        VisitOrder = detail.VisitOrder
+                    };
+
+                    _context.ItineraryDetails.Add(itineraryDetail);
+                }
+
+                await _context.SaveChangesAsync();
+
+                // Consider returning a success message or redirecting to a confirmation view
+                return Ok("Itinerary created successfully!"); // Or a more specific success message
             }
             catch (Exception ex)
             {
-                // 記錄詳細的錯誤信息
+                // Log detailed error information
                 Console.WriteLine("Exception: " + ex.Message);
                 Console.WriteLine("Stack Trace: " + ex.StackTrace);
 
                 return StatusCode(500, "Internal server error.");
             }
-            return Redirect("/Home/Login");
         }
-        
 
 
-        
+
 
 
         // 徐庭軒加的---------------------------

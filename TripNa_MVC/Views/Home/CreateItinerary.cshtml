@@ -528,7 +528,7 @@
                         };
                         dataToSend.itineraryDetail.push(itineraryDetail);
                     });
-                    console.log(dataToSend);
+                    console.log(JSON.stringify(dataToSend));
                     $("#secondDayConfirmCheckbox").addClass("disabled");
                 }
             });
@@ -585,6 +585,8 @@
             });
 
         $("#confirmCheckbox").change(function () {
+                    let dateObj = new Date($("#datepicker").val());
+                    let date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
             if ($(this).is(":checked")) {
                 let DayInName;
                 if ($("#themeSelect").val() == "1") {
@@ -592,14 +594,32 @@
                 } else if ($("#themeSelect").val() == "2") {
                     DayInName = "二日遊"
                 } else { DayInName = "三日遊" };
-
                 dataToSend.itinerary = {
-                    ItineraryName: $("#locationSelect").val() + DayInName + "暢玩行程",
-                    ItineraryStartDate: $("#datepicker").val(),
-                    ItineraryPeopleNo: $("#peopleSelect").val()
+                        ItineraryName: $("#locationSelect").val() + DayInName + "暢玩行程",
+                        ItineraryStartDate: date1,
+                        ItineraryPeopleNo: $("#peopleSelect").val()
                 };
                 
                 console.log(dataToSend);
+
+                // Send to DB
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/CreateItinerary",
+                        data: JSON.stringify(dataToSend),
+                        contentType: "application/json; charset=utf-8",
+                        // dataType: "json",
+                        success: function (response) {
+                            console.log("Success", response);
+                            // 你可以在這裡處理成功後的回應
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
+                            console.error("Response Text: ", xhr.responseText);
+                            // 你可以在這裡處理錯誤
+                        }
+                    });
+                    
                
             }
         });
@@ -643,24 +663,8 @@
                 alert("請選擇一個有效的主題");
             }
 
-            // ajax send to Db
-                $.ajax({
-
-                    type: "POST",
-                    url: "/Home/CreateItinerary",
-                    data: JSON.stringify(dataToSend),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        console.log("Success", response);
-                        // 你可以在這裡處理成功後的回應
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("AJAX Error: ", status, error);
-                        console.error("Response Text: ", xhr.responseText);
-                        // 你可以在這裡處理錯誤
-                    }
-                });
+            
+                
                     
         });
 

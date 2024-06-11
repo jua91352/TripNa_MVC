@@ -3,6 +3,7 @@
     public class ItineraryViewModel
     {
         public Itinerary? Itinerary { get; set; }
+
         public List<ItineraryDetailViewModel>? ItineraryDetail { get; set; }
 
         public List<Spot>? Spot { get; set; }
