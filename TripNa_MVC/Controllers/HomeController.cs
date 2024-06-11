@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using TripNa_MVC.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TripNa_MVC.Controllers
 {
@@ -28,10 +29,13 @@ namespace TripNa_MVC.Controllers
             return View();
         }
 
-
+         
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
-            public IActionResult CreateItinerary()
+           
+        public IActionResult CreateItinerary()
             {
+            
+
             var viewModel = new ItineraryViewModel
             {
                 Itinerary = new Itinerary(),
@@ -66,7 +70,7 @@ namespace TripNa_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel dataToSend)
         {
-            Console.WriteLine(ModelState.IsValid);
+            
             if (!ModelState.IsValid)
             {
                 // Log ModelState errors
@@ -147,6 +151,22 @@ namespace TripNa_MVC.Controllers
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
+
+            services.AddControllersWithViews();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Home/Login"; // 登入頁面路徑
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AuthenticatedUser", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                });
             });
         }
 
