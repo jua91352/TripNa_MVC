@@ -34,7 +34,13 @@ namespace TripNa_MVC.Controllers
            
         public IActionResult CreateItinerary()
             {
-            
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                TempData["alertMessage"] = "請先註冊帳號!";
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
 
             var viewModel = new ItineraryViewModel
             {

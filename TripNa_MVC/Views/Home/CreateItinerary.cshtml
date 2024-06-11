@@ -4,7 +4,12 @@
 }
 @{
     var cities = ViewBag.Cities as List<string>;
-   
+}
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        TempData["message"]
+        </script>
 }
 <body style="background-image: url('../_img//行程背景.jpg');background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); ">
 <head>
@@ -211,6 +216,9 @@
 <br>
 <br>
 <script>
+
+        
+                
     $(function () {
         // 選日期
         $("#datepicker").datepicker({
@@ -789,7 +797,7 @@
         });
     });
 
-
+    
     //
     // $(function () {
     //     // 設置可拖曳項目
