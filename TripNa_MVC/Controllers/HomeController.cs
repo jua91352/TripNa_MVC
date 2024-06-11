@@ -30,21 +30,10 @@ namespace TripNa_MVC.Controllers
 
 
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
-            public IActionResult Privacy()
-            {
+        public IActionResult Privacy()
+        {
             // 獲取所有 Spot
-            var spot = from o in _context.Spots
-                       select o;
-            var spotid =from o in _context.Spots
-                        select o.SpotId;
-            var spotsList = spot.ToList();
-
-
-            // 獲取所有 Itinerary
-            var itinerary = from o in _context.Itineraries
-                            select o;
-            var itineraryList = itinerary.ToList();
-
+            var spots = _context.Spots.ToList();
 
             // 獲取所有縣市
             var cities = _context.Spots
@@ -55,24 +44,33 @@ namespace TripNa_MVC.Controllers
             // 將 cities 傳遞到 View
             ViewBag.Cities = cities;
 
-            return View(spotsList);
-            }
+            return View(spots);
+        }
 
         [HttpGet]
-        public IActionResult TouristGuide(string gender = null, int? experience = null, string location = null)
+        public IActionResult TouristGuide(string selectedCity, string gender = null, int? experience = null)
         {
-            var Guide = from o in _context.Guiders
-                        select o;
+            var guiders = from o in _context.Guiders
+                          select o;
+
+            if (!string.IsNullOrEmpty(selectedCity))
+            {
+                var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
+                if (cityArea != null)
+                {
+                    guiders = guiders.Where(g => g.GuiderArea == cityArea.Area);
+                }
+            }
 
             if (!string.IsNullOrEmpty(gender))
             {
                 if (gender.ToLower() == "男生")
                 {
-                    Guide = Guide.Where(g => g.GuiderGender == "M");
+                    guiders = guiders.Where(g => g.GuiderGender == "M");
                 }
                 else if (gender.ToLower() == "女生")
                 {
-                    Guide = Guide.Where(g => g.GuiderGender == "F");
+                    guiders = guiders.Where(g => g.GuiderGender == "F");
                 }
             }
 
@@ -81,29 +79,26 @@ namespace TripNa_MVC.Controllers
                 DateTime cutoffDate = DateTime.Now.AddYears(-experience.Value);
                 if (experience == 0)
                 {
-                    Guide = Guide.Where(g => g.GuiderStartDate >= DateTime.Now.AddMonths(-6)); // 新手導遊的條件，這裡假設少於6個月
+                    guiders = guiders.Where(g => g.GuiderStartDate >= DateTime.Now.AddMonths(-6)); // 新手導遊的條件，這裡假設少於6個月
                 }
                 else if (experience == 5)
                 {
-                    Guide = Guide.Where(g => g.GuiderStartDate <= DateTime.Now.AddYears(-5)); // 5年以上的條件
+                    guiders = guiders.Where(g => g.GuiderStartDate <= DateTime.Now.AddYears(-5)); // 5年以上的條件
                 }
                 else
                 {
-                    Guide = Guide.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // 指定年資
+                    guiders = guiders.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // 指定年資
                 }
             }
 
-            
+            var guideList = guiders.ToList();
+            ViewBag.GuiderCount = guideList.Count;
 
-            var GuideList = Guide.ToList();
-            ViewBag.GuiderCount = GuideList.Count;
-
-            return View(GuideList);
+            return View(guideList);
         }
 
-
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
-  
+
         public IActionResult Spot(string memberEmail)
         {
 
