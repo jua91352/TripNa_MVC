@@ -6,9 +6,8 @@
     string p = ".jpg";
     int ratingCount = ViewData["ratingCount"] != null ? (int)ViewData["ratingCount"] : 0;
     int orderCount = ViewData["orderCount"] != null ? (int)ViewData["orderCount"] : 0;
-    int ratingAvg = ViewData["ratingAvg"] != null ? (int)ViewData["ratingAvg"] : 0;
-
-    // int ratingavg = ;
+    double ratingAvg = ViewData["ratingAvg"] != null ? (double)ViewData["ratingAvg"] : 0.0;
+    var g = Model.Guiders.FirstOrDefault();
 }
 
 @functions {
@@ -88,11 +87,7 @@
 <br>
 
 
-
-@foreach (var g in Model.Guiders)
-{
-
-<div class="row">
+    <div class="row">
 
     <div class="col-5 text-end">
         <img id="display_img" src="~/導遊/大頭照/@g.GuiderArea/@g.GuiderNickname@p" style="border-radius: 50% ; object-fit: cover;"  height="170px " width="170px">
@@ -116,9 +111,13 @@
                     {
                         <span class="rank-rated" data-rating="@i">&#128970;</span>
                     }
+                    else if (ratingAvg >= i - 0.5)
+                    {
+                        <span class="rank-half-rated" data-rating="@i">&#128970;</span>
+                    }
                     else
                     {
-                        <span class="rank-not-rated" data-rating="@i">&#128970;</span>
+                    <span class="rank-not-rated" data-rating="@i">&#128970;</span>
                     }
                 }
             </span>
@@ -171,7 +170,6 @@
     </div>
 </div>
 
-}
 
 
 
@@ -202,8 +200,7 @@
 
     else
     {
-        @foreach (var item in Model.Rates)
-       {
+       
         <br />
     <div style="width: 50%; margin: 0 auto">
     <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
@@ -214,7 +211,8 @@
         <br>
 
 
-       
+            @foreach (var item in Model.Rates)
+            {
             <span class="text-start">
                 @item.MemberName
                 <span class="text-start" style="color: #f6be00;">
@@ -233,18 +231,18 @@
                     }
                 </span>
                 <br>
-                <span class="text-start" style="font-size:20px;">@item.RatingComment</span>
+                <p class="text-start" style="font-size:20px;">@item.RatingComment</p>
             </span>
             <br>
             <br>
             <br>
             <hr>
             <br>
-       
+       }
     </div>
            
 </div>
-    }
+    
 }
 
 

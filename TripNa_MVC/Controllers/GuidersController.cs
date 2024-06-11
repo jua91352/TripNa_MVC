@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using TripNa_MVC.Models;
 using static NuGet.Packaging.PackagingConstants;
 using static TripNa_MVC.Models.GuiderRating;
@@ -321,12 +322,11 @@ namespace TripNa_MVC.Controllers
             //(r.GuiderId.HasValue ? r.GuiderId.Value.ToString() : string.Empty) == GuiderId);
             //(o => (o.GuiderId.HasValue ? o.GuiderId.Value.ToString() : string.Empty) == GuiderId);
 
-            int ratingAvg = (int)_context.Ratings
-                        .Where(r => r.GuiderId == Convert.ToInt32(GuiderId))
+            double ratingAvg = _context.Ratings
+                        .Where(r => r.GuiderId == Convert.ToDouble(GuiderId))
                         .Select(r => (double)r.RatingStars)
                         .DefaultIfEmpty()
                         .Average();
-
 
 
             Console.WriteLine("orderCount為:"+orderCount + "----------------------------------------------");
@@ -417,8 +417,56 @@ namespace TripNa_MVC.Controllers
 
 
 
-        public IActionResult GuiderMatch()
+        //public IActionResult GuiderMatch()
+        //{
+        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
+        //    if (string.IsNullOrEmpty(memberEmail))
+        //    {
+        //        return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+        //    }
+
+        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+        //    var query = from s in _context.SelectGuiders
+        //                join o in _context.Orderlists on s.OrderId equals o.OrderId
+        //                join m in _context.Members on s.MemberId equals m.MemberId
+        //                join g in _context.Guiders on s.GuiderId equals g.GuiderId
+        //                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId into leftJoin
+        //                from i in leftJoin.DefaultIfEmpty()
+        //                join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
+        //                join p in _context.Spots on id.SpotId equals p.SpotId
+
+        //                where o.OrderMatchStatus == "媒合中" && s.GuiderId == member.GuiderId
+        //                select new
+        //                {
+        //                    OrderID = s.OrderId,
+        //                    GuiderID = s.GuiderId,
+        //                    ItineraryName = i.ItineraryName,
+        //                    ItineraryStartDate = i.ItineraryStartDate,
+        //                    ItineraryPeopleNo = i.ItineraryPeopleNo,
+        //                    MemberName = m.MemberName,
+        //                    OrderMatchStatus = o.OrderMatchStatus,
+        //                    SpotID = id.SpotId,
+        //                    SpotName = p.SpotName,
+        //                    SpotCity = p.SpotCity,
+        //                    VisitOrder = id.VisitOrder
+        //                };
+            
+        //var results = query.ToList();
+
+        //    var count = query.Count();
+        //    ViewData["count"] = count;
+        //    Console.WriteLine("-----------------------"+ count + "-----------------------");
+
+
+        //    return View(results);
+        //}
+
+
+
+        public IActionResult GuiderMatchDetails()
         {
+
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -427,56 +475,185 @@ namespace TripNa_MVC.Controllers
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            var query = from s in _context.SelectGuiders
-                        join o in _context.Orderlists on s.OrderId equals o.OrderId
-                        join m in _context.Members on s.MemberId equals m.MemberId
-                        join g in _context.Guiders on s.GuiderId equals g.GuiderId
-                        join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId into leftJoin
-                        from i in leftJoin.DefaultIfEmpty()
-                        join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
-                        join p in _context.Spots on id.SpotId equals p.SpotId
+            var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
 
-                        where o.OrderMatchStatus == "媒合中" && s.GuiderId == member.GuiderId
-                        select new
-                        {
-                            OrderID = s.OrderId,
-                            GuiderID = s.GuiderId,
-                            ItineraryName = i.ItineraryName,
-                            ItineraryStartDate = i.ItineraryStartDate,
-                            ItineraryPeopleNo = i.ItineraryPeopleNo,
-                            MemberName = m.MemberName,
-                            OrderMatchStatus = o.OrderMatchStatus,
-                            SpotID = id.SpotId,
-                            SpotName = p.SpotName,
-                            SpotCity = p.SpotCity,
-                            VisitOrder = id.VisitOrder
-                        };
-            
-        var results = query.ToList();
-
-            var count = query.Count();
-            ViewData["count"] = count;
-            Console.WriteLine("-----------------------"+ count + "-----------------------");
+            if (member != null && member.GuiderId == null)
+            {
+                // GuiderID 為空,可以註冊
+                ViewData["Message"] = "前往註冊";
+            }
+            else
+            {
+                // GuiderID 不為空,不能註冊
+            }
 
 
-            return View(results);
+
+
+
+
+            var orderDetails = (from o in _context.Orderlists
+                                join m in _context.Members on o.MemberId equals m.MemberId
+                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
+                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId into details
+                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                join r in _context.Ratings on o.MemberId equals r.MemberId
+                                where o.MemberId == member.MemberId 
+
+                                //where o.OrderMatchStatus == "媒合中" && o.GuiderId == member.GuiderId
+                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                                join s in _context.Spots on j.SpotId equals s.SpotId
+
+                                select new
+                                {
+                                    o.OrderNumber,
+                                    o.OrderDate,
+                                    i.ItineraryStartDate,
+                                    o.OrderTotalPrice,
+                                    o.OrderStatus,
+                                    o.OrderMatchStatus,
+                                    c.CouponCode,
+                                    g.GuiderNickname,
+                                    i.ItineraryName,
+                                    i.ItineraryPeopleNo,
+                                    m.MemberName,
+                                    m.MemberEmail,
+                                    m.MemberPhone,
+                                    o.ItineraryId,                                    
+                                    g.GuiderArea,
+                                    o.OrderId,
+                                    r.RatingComment,
+                                    r.RatingStars,
+                                    Spot = s,
+                                    ItineraryDetails = details.ToList() // 將 ItineraryDetails 作為子集合
+
+                                });
+
+            // 將查詢結果轉換為列表
+            var orderDetailsList = orderDetails.ToList();
+
+            if (orderDetailsList == null)
+            {
+                return NotFound();
+            }
+
+
+            var odp = from o in _context.Orderlists
+                      join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                      select o;
+
+
+
+
+            int orderCount = _context.Orderlists
+                         .Where(o => o.MemberId == member.MemberId)
+                         .Count();
+
+            Console.WriteLine("---------------------------"+ orderCount + "---------------------------");
+
+
+
+
+
+
+
+            // 構建 OrderDetail
+            var model = new OrderDetail
+            {
+
+                Orders = orderDetailsList.Select(o => new Orderlist
+                {
+
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderStatus = o.OrderStatus,
+                    OrderMatchStatus = o.OrderMatchStatus,
+                    OrderId = o.OrderId,
+
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
+                        ItineraryDetails = o.ItineraryDetails // 將 ItineraryDetails 作為子屬性
+                    },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+                    },
+                    Guider = new Guider
+                    {
+                        GuiderNickname = o.GuiderNickname,
+                        GuiderArea = o.GuiderArea
+                    },
+                    Rating = new Rating
+                    {
+                        RatingComment = o.RatingComment,
+                        RatingStars = o.RatingStars
+                    },
+                    Member = new Member
+                    {
+                        MemberName = o.MemberName,
+                        MemberEmail = o.MemberEmail,
+                        MemberPhone = o.MemberPhone
+                    },
+                    Spots = o.Spot
+                    //,
+                    //ItineraryDetail = new ItineraryDetail
+                    //{
+                    //    ItineraryId = o.ItineraryId,
+                    //    VisitOrder = o.VisitOrder
+                    //}
+                }).ToList(),
+
+
+                MemberId = member.MemberId,
+                
+            };
+
+            return View(model);
         }
 
 
 
-        //var model = results.Select(o => new Match
-        //{
-        //    MemberName = o.MemberName,
-        //    OrderMatchStatus = o.OrderMatchStatus,
-        //    GuiderID = o.GuiderID,
-        //    OrderId = o.OrderID,
-        //    ItineraryPeopleNo = o.ItineraryPeopleNo,
-        //    ItineraryStartDate = o.ItineraryStartDate,
-        //    ItineraryName = o.ItineraryName,
-        //    SpotId = (int)o.SpotID,
-        //    VisitOrder = (short)o.VisitOrder
 
-        //}).ToList();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

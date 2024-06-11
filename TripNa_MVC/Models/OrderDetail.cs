@@ -19,6 +19,7 @@
         public List<GuiderAnswer> GuiderAnswers { get; set; }
         public List<QuestionAnswer> Questions { get; set; }
 
+        public List<SelectGuider> SelectGuiders { get; set; }
 
         public IEnumerable<Order> Order { get; set; }
      
