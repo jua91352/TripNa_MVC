@@ -34,6 +34,7 @@ namespace TripNa_MVC.Controllers
            
         public IActionResult CreateItinerary()
             {
+            
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -120,7 +121,8 @@ namespace TripNa_MVC.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-
+                TempData["ItineraryID"] = dataToSend.Itinerary.ItineraryId;
+                TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(0, 1);
                 // Consider returning a success message or redirecting to a confirmation view
                 return Ok("Itinerary created successfully!"); // Or a more specific success message
             }
@@ -134,7 +136,64 @@ namespace TripNa_MVC.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult CreateOrder([FromBody] Orderlist newOrder)
+        {
+            
+            try
+            {
+                Console.WriteLine("MINJI-----------------------------------------------------------------");
 
+                var memberEmail = HttpContext.Session.GetString("memberEmail");
+                var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+                string orderDate = DateTime.UtcNow.Date.ToString("yyyy-MM-dd");
+                string orderNumber = DateTime.UtcNow.Date.ToString("yyMMdd") + member.MemberId + TempData["ItineraryID"];
+                int orderTotalPirce = 0;
+                if (TempData["DayCount"] == "一")
+                {
+                    orderTotalPirce = 2000;
+                } else if (TempData["DayCount"] == "二")
+                {
+                    orderTotalPirce = 3800;
+                } else
+                {
+                    orderTotalPirce = 5400;
+                }
+
+
+                    if (newOrder != null )
+                {
+                    Console.WriteLine("HANNI-----------------------------------------------------------------");
+                    // 設置訂單日期和狀態
+                    
+
+                    newOrder.MemberId = member.MemberId;
+                    newOrder.ItineraryId = (int)TempData["ItineraryID"];
+                    newOrder.OrderDate = DateTime.Parse(orderDate);
+                    newOrder.OrderNumber = int.Parse(orderNumber);
+                    newOrder.OrderTotalPrice = orderTotalPirce;
+                    ;
+
+
+                    Console.WriteLine(newOrder);
+
+                    _context.Orderlists.Add(newOrder);
+                    _context.SaveChanges();
+
+                    return Redirect("/Home/Login");
+                }
+                else
+                {
+                    return BadRequest("Invalid order data");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 錯誤處理
+                Console.WriteLine("Exception: " + ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
 
 

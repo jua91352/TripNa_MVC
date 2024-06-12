@@ -19,7 +19,7 @@
 </div>
 <!-- -------------------------------------------------------------------------------------------------------- -->
 <!-- 行程  生成訂單給會員-->
-    
+
 <div class="row justify-content-center align-items-center m-3">
     <!-- 地點 要控制景點-->
     <div class="col-md-auto">
@@ -604,16 +604,16 @@
                 };
                 
                 console.log(dataToSend);
-                    // Send to DB
+                    Send to DB
                     $.ajax({
                         type: "POST",
                         url: "/Home/CreateItinerary",
                         data: JSON.stringify(dataToSend),
                         contentType: "application/json; charset=utf-8",
-                        // dataType: "json",
+                        dataType: "json",
                         success: function (response) {
                             console.log("Success", response);
-                            // 你可以在這裡處理成功後的回應
+                            alert("行程已送出!");
                         },
                         error: function (xhr, status, error) {
                             console.error("AJAX Error: ", status, error);
@@ -621,7 +621,30 @@
                             // 你可以在這裡處理錯誤
                         }
                     });
-                
+
+                    // const newOrder = {
+                    //     MemberID: 0,
+                    //     ItineraryId: 0,
+                    //     OrderDate: "",
+                    //     OrderNumber: 0,
+                    //     OrderStatus : "尚未出發",
+                    //     OrderMatchStatus : "媒合中",
+                    //     OrderTotalPrice : 0
+                    // };
+                    // console.log(newOrder);
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url: "/Home/CreateOrder",
+                    //     data: JSON.stringify(newOrder),
+                    //     contentType: "application/json; charset=utf-8",
+                    //     success: function (response) {
+                    //         alert("訂單已成功創建！");
+                    //     },
+                    //     error: function (xhr, status, error) {
+                    //         console.error("Error creating order:", error);
+                    //         alert("創建訂單時出錯。");
+                    //     }
+                    // });
                     
                
             }
@@ -665,8 +688,22 @@
             } else {
                 alert("請選擇一個有效的主題");
             }
-                
-                    
+
+            //     const NewOrder = {};
+
+            // $.ajax({
+            //     url: "/Home/CreateOrder",
+            //     type: "POST",
+            //     contentType: "application/json",
+            //     data: JSON.stringify(NewOrder),
+            //     success: function (response) {
+            //         alert("訂單已成功創建！");
+            //     },
+            //     error: function (xhr, status, error) {
+            //         console.error("Error creating order:", error);
+            //         alert("創建訂單時出錯。");
+            //     }
+            // });
         });
 
 
