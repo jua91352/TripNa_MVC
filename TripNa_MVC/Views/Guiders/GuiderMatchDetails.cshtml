@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     int GuiderId =ViewData["GuiderId"] != null ? (int)ViewData["GuiderId"] : 0;
+    // object status = ViewData["Status"] ;
+
+
+
 
     int orderCount = Model.Orders.Count;
     string p = ".jpg";  
@@ -22,7 +26,6 @@
 
 
 }
-
 
 
 <style>
@@ -60,7 +63,8 @@
  
 
 
-
+<br>
+<br>
 <div class="container">
 
     <div>
@@ -203,39 +207,18 @@
                                 @orders.First().Member.MemberName
                         </td>
 
-                    @*    <td class="text-center">
-                         <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
-                             <input type="hidden" name="orderId" value="@orderId" />
-
-                             <input type="hidden" name="guideId" value="@GuiderId" />
-
-                             <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
-                             @orders.First().Member.MemberId
-
-
-                             <input type="submit" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId' ,'@GuiderId', '@orders.First().Member.MemberId')"  asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" 
-                             style="background-color: #e8eafe ;color: #4e5482;" />
-                           
-                             <input type="submit" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId' ,'@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId"
-                             style="background-color: #4e5482 ;color: #e8eafe;" /> 
-
-                         </form>
-                         </td> *@
-
+                  
                          <td class="text-center">
                             <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
                                 <input type="hidden" name="orderId" value="@orderId" />
                                 <input type="hidden" name="guideId" value="@GuiderId" />
                                 <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
-                                <input type="hidden" name="action" id="formAction" value="" />
-                         
-                                <input type="submit" value="婉拒" class="btn" onclick="setAction('reject')" style="background-color: #e8eafe ;color: #4e5482;" />
-                                <input type="submit" value="接單" class="btn" onclick="setAction('accept')" style="background-color: #4e5482 ;color: #e8eafe;" />
+                                                            
+                                <input type="submit" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" style="background-color: #e8eafe ;color: #4e5482;" />
+                                <input type="submit" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" style="background-color: #4e5482 ;color: #e8eafe;" />
+
                             </form>
                             </td>
-
-
-
 
 
                     </tr>
@@ -356,25 +339,58 @@
     function testID() {
 
         console.log("KKK");
+     
     }
 
-
-    function setAction(action) {
-    document.getElementById('formAction').value = action;
-}
-
-
+@* 
     function confirmOrder(button, action, orderId, guideId, memberId) {
     if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
-        fetch(`/Guiders/GuiderMatchDetails`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-            },
-            body: JSON.stringify({ orderId, guideId, memberId, action })
+        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
+        const method = action === 'reject' ? 'DELETE' : 'POST';
+        const headers = {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        };
+        const body = action === 'accept' ? JSON.stringify({ orderId, guideId, memberId, action }) : null;
+            
+        console.log(method + url + headers);
+
+        fetch(url, {
+            method,
+            headers,
+            body
         })
-        .then(response => response.json())
+        .then(response => response.text())
+        .then(data => {
+            alert(`${url}\n${method}\n${headers}\n${data}\n訂單已婉拒並刪除`);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+ *@
+    
+
+
+ function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊 ${guideId} 您確定要 ${action === 'reject' ? '婉拒' : '接單'} 訂單 ${orderId} 嗎? ${memberId}`)) {
+        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
+        const method = 'POST'; // 由於使用了 HttpPost 屬性，我們總是使用 POST 方法
+        const headers = {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        };
+        const body = JSON.stringify({ orderId, guideId, memberId, action });
+
+        fetch(url, {
+            method,
+            headers,
+            body
+        })
+        .then(response => response.text())
         .then(data => {
             alert(data);
             window.location.reload();
@@ -384,6 +400,15 @@
         });
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

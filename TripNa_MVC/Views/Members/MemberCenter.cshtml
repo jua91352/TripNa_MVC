@@ -3,13 +3,18 @@
 @{
     ViewData["Title"] = "MemberCenter";
 }
+<br>
+<br>
 
 
 <div class="container">
     <div>
-        <h1 class="text-center">TripNa Member Center</h1>
+        
+        <h1 id="title" class="text-center"> 會員中心</h1>
+        @* <br>
 
-        <h4 id="title" class="text-center"> 會員中心</h4>
+        <h3 class="text-center">TripNa Member Center</h3> *@
+
     </div>
     <br>
 
@@ -40,6 +45,8 @@
         <div class="col-sm-2 text-center"></div>
 
     </div>
+    <br>
+
     <hr style='background-color:#3A326D; height:1px; border:none;'>
 
     <br>
@@ -55,10 +62,13 @@
 
         <div class="col-sm-4">
 
+       
             <div style='border:1px solid #3A326D ; padding-top:10px; padding-left: 10px;'>
-                <p>12月內累積消費金額</p>
-                <p>NT$_________</p>
-                <p>(普通會員)</p>
+                <p>目前累積消費金額</p>
+                <p>NT$5,800</p>
+
+                @* <p>NT$_________</p> *@
+               @*  <p>(普通會員)</p> *@
             </div>
 
         </div>

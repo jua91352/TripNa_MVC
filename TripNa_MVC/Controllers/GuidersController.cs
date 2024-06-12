@@ -415,55 +415,6 @@ namespace TripNa_MVC.Controllers
 
 
 
-
-
-        //public IActionResult GuiderMatch()
-        //{
-        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
-        //    if (string.IsNullOrEmpty(memberEmail))
-        //    {
-        //        return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
-        //    }
-
-        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-        //    var query = from s in _context.SelectGuiders
-        //                join o in _context.Orderlists on s.OrderId equals o.OrderId
-        //                join m in _context.Members on s.MemberId equals m.MemberId
-        //                join g in _context.Guiders on s.GuiderId equals g.GuiderId
-        //                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId into leftJoin
-        //                from i in leftJoin.DefaultIfEmpty()
-        //                join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
-        //                join p in _context.Spots on id.SpotId equals p.SpotId
-
-        //                where o.OrderMatchStatus == "媒合中" && s.GuiderId == member.GuiderId
-        //                select new
-        //                {
-        //                    OrderID = s.OrderId,
-        //                    GuiderID = s.GuiderId,
-        //                    ItineraryName = i.ItineraryName,
-        //                    ItineraryStartDate = i.ItineraryStartDate,
-        //                    ItineraryPeopleNo = i.ItineraryPeopleNo,
-        //                    MemberName = m.MemberName,
-        //                    OrderMatchStatus = o.OrderMatchStatus,
-        //                    SpotID = id.SpotId,
-        //                    SpotName = p.SpotName,
-        //                    SpotCity = p.SpotCity,
-        //                    VisitOrder = id.VisitOrder
-        //                };
-            
-        //var results = query.ToList();
-
-        //    var count = query.Count();
-        //    ViewData["count"] = count;
-        //    Console.WriteLine("-----------------------"+ count + "-----------------------");
-
-
-        //    return View(results);
-        //}
-
-
-
         public IActionResult GuiderMatchDetails()
         {
 
@@ -524,6 +475,7 @@ namespace TripNa_MVC.Controllers
                                     m.MemberId,
                                     o.ItineraryId,                                    
                                     g.GuiderArea,
+                                    g.GuiderId,
                                     o.OrderId,
                                     Spot = s,
                                     ItineraryDetails = details.ToList() // 將 ItineraryDetails 作為子集合
@@ -545,7 +497,6 @@ namespace TripNa_MVC.Controllers
             int orderCount = _context.Orderlists
                          .Where(o => o.GuiderId == member.GuiderId)
                          .Count();
-
 
 
             Console.WriteLine("---------------------------"+ orderCount + "---------------------------");
@@ -581,7 +532,8 @@ namespace TripNa_MVC.Controllers
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
-                        GuiderArea = o.GuiderArea
+                        GuiderArea = o.GuiderArea,
+                        GuiderId=  o.GuiderId
                     },                    
                     Member = new Member
                     {
@@ -599,6 +551,171 @@ namespace TripNa_MVC.Controllers
 
             return View(model);
         }
+
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteMatch(int orderId, int guideId, int memberId, string action)
+        //{
+        //    var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+
+
+        //    Console.WriteLine("-----------------------------" + order.OrderId + "*************************************");
+
+
+        //    //var orderList1 = await _context.Orderlists.FindAsync(orderId);
+
+
+        //    if (order != null)
+        //    {
+        //        if (action == "reject")
+        //        {
+        //            _context.SelectGuiders.Remove(order);
+        //            await _context.SaveChangesAsync();
+        //            return Ok("訂單已婉拒並刪除");
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            var orderList = await _context.Orderlists.FindAsync(orderId);
+
+        //            var guide = await _context.Guiders.FindAsync(guideId);
+
+        //            if (orderList != null && guide != null)
+        //            {
+        //                orderList.OrderMatchStatus = "已媒合";
+        //                orderList.GuiderId = guideId;
+        //                _context.Orderlists.Update(orderList);
+        //                _context.SelectGuiders.Update(order);
+        //                await _context.SaveChangesAsync();
+        //                return Ok("訂單已接受並更新");
+        //            }
+
+        //            //ViewData["Status"]= orderList.OrderMatchStatus;
+        //        }
+
+        //    }
+
+
+        //    return Redirect("/Guiders/GuiderMatchDetails");
+
+        //    //return NotFound();
+        //}
+
+
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMatch(int orderId, int guideId, int memberId, string action)
+        {
+            var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+
+            if (order != null)
+            {
+                if (action == "reject")
+                {
+                    _context.SelectGuiders.Remove(order);
+                    await _context.SaveChangesAsync();
+                    return Ok("訂單已婉拒並刪除");
+                }
+                else if (action == "accept")
+                {
+                    var orderList = await _context.Orderlists.FindAsync(orderId);
+                    var guide = await _context.Guiders.FindAsync(guideId);
+
+                    if (orderList != null && guide != null)
+                    {
+                        orderList.OrderMatchStatus = "已媒合";
+                        _context.Orderlists.Update(orderList);
+                        await _context.SaveChangesAsync();
+                        return Ok("訂單已接受並更新");
+                    }
+                }
+            }
+
+            return BadRequest("無法處理請求");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //    [HttpPost]
+        //    public IActionResult GuiderMatchDetails(int orderId, int guideId, int memberId, string action)
+        //    {
+        //        var order = _context.Orderlists.Find(orderId);
+
+        //        if (order == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        if (action == "reject")
+        //        {
+        //            // 刪除該導遊的訂單
+        //            var guide = _context.SelectGuiders.Find(guideId);
+
+        //            if (guide != null)
+        //            {
+        //                guide.GuiderId = guideId;
+        //                _context.SelectGuiders.Remove(order);
+        //                //guide.Remove(order);
+        //                _guideRepository.UpdateGuide(guide);
+        //            }
+
+        //            _orderRepository.DeleteOrder(orderId);
+        //        }
+
+        //        else if (action == "accept")
+        //        {
+        //            // 刪除原有導遊的訂單
+        //            var oldGuide = _guideRepository.GetGuide(order.GuideId);
+        //            if (oldGuide != null)
+        //            {
+        //                oldGuide.Orders.Remove(order);
+        //                _guideRepository.UpdateGuide(oldGuide);
+        //            }
+
+        //            // 新增訂單到新導遊的訂單列表
+        //            var newGuide = _guideRepository.GetGuide(guideId);
+        //            if (newGuide != null)
+        //            {
+        //                newGuide.Orders.Add(order);
+        //                _guideRepository.UpdateGuide(newGuide);
+        //            }
+
+        //            // 更新訂單狀態和導遊ID
+        //            order.OrderMatchStatus = "已媒合";
+        //            order.GuideId = guideId;
+        //            _orderRepository.UpdateOrder(order);
+        //        }
+
+        //        // 根據需要返回適當的視圖或重定向
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
+
+
 
 
 
@@ -666,44 +783,42 @@ namespace TripNa_MVC.Controllers
 
 
         // 刪除被選擇的ID 的該筆收藏資料
-        [HttpPost, ActionName("GuiderMatchDetails")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int orderId, int guideId, int memberId, string action)
-        {
-            var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
-            var gu = _context.Guiders.FirstOrDefault(m => m.GuiderId == guideId);
-            var ol = _context.Orderlists.FirstOrDefault(s => s.OrderId == orderId);
+        //[HttpPost, ActionName("GuiderMatchDetails")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int orderId, int guideId, int memberId, string action)
+        //{
+        //    var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+        //    var gu = _context.Guiders.FirstOrDefault(m => m.GuiderId == guideId);
+        //    var ol = _context.Orderlists.FirstOrDefault(s => s.OrderId == orderId);
 
-            if (order != null)
-            {
-                if (action == "reject")
-                {
-                    _context.SelectGuiders.Remove(order);
-                }
-                else if (action == "accept")
-                {
-                    // 更新訂單的 OrderMatchStatus 和 guideId
-                    ol.OrderMatchStatus = "已媒合";
-                    gu.GuiderId = guideId;
-                    _context.SelectGuiders.Update(order);
-                }
+        //    if (order != null)
+        //    {
+        //        if (action == "reject")
+        //        {
+        //            _context.SelectGuiders.Remove(order);
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            // 更新訂單的 OrderMatchStatus 和 guideId
+        //            ol.OrderMatchStatus = "已媒合";
+        //            gu.GuiderId = guideId;
+        //            _context.SelectGuiders.Update(order);
+        //        }
 
-                await _context.SaveChangesAsync();
+        //        await _context.SaveChangesAsync();
 
-                if (action == "reject")
-                {
-                    return Ok("訂單已婉拒並刪除");
-                }
-                else if (action == "accept")
-                {
-                    return Ok("訂單已接受並更新");
-                }
-            }
+        //        if (action == "reject")
+        //        {
+        //            return Ok("訂單已婉拒並刪除");
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            return Ok("訂單已接受並更新");
+        //        }
+        //    }
 
-            return Redirect("/Guiders/GuiderMatchDetails");
-        }
-
-
+        //    return Redirect("/Guiders/GuiderMatchDetails");
+        //}
 
 
 
@@ -713,12 +828,42 @@ namespace TripNa_MVC.Controllers
 
 
 
+        ////[HttpDelete("{id}")]
+        //public IActionResult DeleteMatch(int orderId, int guideId, int memberId, string action)
+        //{
 
+        //    var order =  _context.SelectGuiders.Find(orderId, guideId, memberId);
+        //    var gu = _context.Guiders.FirstOrDefault(m => m.GuiderId == guideId);
+        //    var ol = _context.Orderlists.FirstOrDefault(s => s.OrderId == orderId);
 
+        //    if (order != null)
+        //    {
+        //        if (action == "reject")
+        //        {
+        //            _context.SelectGuiders.Remove(order);
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            // 更新訂單的 OrderMatchStatus 和 guideId
+        //            ol.OrderMatchStatus = "已媒合";
+        //            gu.GuiderId = guideId;
+        //            _context.SelectGuiders.Update(order);
+        //        }
 
+        //        _context.SaveChangesAsync();
 
+        //        if (action == "reject")
+        //        {
+        //            return Ok("訂單已婉拒並刪除");
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            return Ok("訂單已接受並更新");
+        //        }
+        //    }
 
-
+        //    return Redirect("/Guiders/GuiderMatchDetails");
+        //}
 
 
 
