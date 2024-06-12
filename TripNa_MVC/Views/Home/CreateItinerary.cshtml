@@ -606,24 +606,24 @@
                 console.log(dataToSend);
                     // Send to DB
 
-                    // $.ajax({
-                    //     type: "POST",
-                    //     url: "/Home/CreateItinerary",
-                    //     data: JSON.stringify(dataToSend),
-                    //     contentType: "application/json; charset=utf-8",
-                    //     success: function (response) {
-                    //         console.log("Success", response);
-                    //     },
-                    //     error: function (xhr, status, error) {
-                    //         console.error("AJAX Error: ", status, error);
-                    //         console.error("Response Text: ", xhr.responseText);
-                    //     }
-                    // });
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/CreateItinerary",
+                        data: JSON.stringify(dataToSend),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            console.log("Success", response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
+                            console.error("Response Text: ", xhr.responseText);
+                        }
+                    });
 
-                    const newOrder = {
-                        MemberID: 0,
+                    var newOrder = {
+                        MemberId: 0,
                         ItineraryId: 0,
-                        OrderDate: "",
+                        OrderDate: date1,
                         OrderNumber: 0,
                         OrderStatus : "尚未出發",
                         OrderMatchStatus : "媒合中",
@@ -639,12 +639,10 @@
                             alert("訂單已成功創建！");
                         },
                         error: function (xhr, status, error) {
-                            console.error("Error creating order:", error);
+                            console.error("Error creating order:", xhr.responseText);
                             alert("創建訂單時出錯。");
                         }
                     });
-                    
-               
             }
         });
         // 送出按鈕

@@ -74,7 +74,7 @@ namespace TripNa_MVC.Controllers
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
         // 徐庭軒加的---------------------------
-        //, [Bind("ItineraryId,ItineraryName,ItineraryStartDate,ItineraryPeopleNo")] Itinerary itinerary,
+       
         [HttpPost]
         public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel dataToSend)
         {
@@ -120,9 +120,9 @@ namespace TripNa_MVC.Controllers
                     _context.ItineraryDetails.Add(itineraryDetail);
                 }
 
-                await _context.SaveChangesAsync();
                 TempData["ItineraryID"] = dataToSend.Itinerary.ItineraryId;
-                TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(0, 1);
+                TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(2, 1);
+                await _context.SaveChangesAsync();
                 // Consider returning a success message or redirecting to a confirmation view
                 return Ok("Itinerary created successfully!"); // Or a more specific success message
             }
@@ -142,47 +142,55 @@ namespace TripNa_MVC.Controllers
             
             try
             {
-                Console.WriteLine("MINJI-----------------------------------------------------------------");
+                if (newOrder == null)
+                {
+                    newOrder = new Orderlist(); // 初始化 Orderlist 列表
+                }
+               
 
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
                 var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
                 string orderDate = DateTime.UtcNow.Date.ToString("yyyy-MM-dd");
                 string orderNumber = DateTime.UtcNow.Date.ToString("yyMMdd") + member.MemberId + TempData["ItineraryID"];
-                int orderTotalPirce = 0;
-                if (TempData["DayCount"] == "一")
+                decimal orderTotalPirce = 0;
+                if (TempData["DayCount"].ToString() == "一")
                 {
-                    orderTotalPirce = 2000;
-                } else if (TempData["DayCount"] == "二")
+                    orderTotalPirce = 2000M;
+                } else if (TempData["DayCount"].ToString() == "二")
                 {
-                    orderTotalPirce = 3800;
+                    orderTotalPirce = 3800M;
                 } else
                 {
-                    orderTotalPirce = 5400;
+                    orderTotalPirce = 5400M;
                 }
-
-
-                    if (newOrder != null )
+                if (!ModelState.IsValid)
                 {
-                    Console.WriteLine("HANNI-----------------------------------------------------------------");
+                    // Log ModelState errors
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            Console.WriteLine(error.ErrorMessage);
+                        }
+                    }
+                    return BadRequest("Invalid itinerary data"); // Or a more specific error message
+                }
+                if (newOrder != null )
+                {
                     // 設置訂單日期和狀態
-                    
 
-                    newOrder.MemberId = member.MemberId;
-                    newOrder.ItineraryId = (int)TempData["ItineraryID"];
+                    newOrder.MemberId = member.MemberId; // You need to dynamically set this value
+                        newOrder.ItineraryId = (int)TempData["ItineraryID"];
                     newOrder.OrderDate = DateTime.Parse(orderDate);
                     newOrder.OrderNumber = int.Parse(orderNumber);
                     newOrder.OrderStatus = "尚未出發";
                     newOrder.OrderMatchStatus = "媒合中";
                     newOrder.OrderTotalPrice = orderTotalPirce;
-                    ;
-
-
-                    Console.WriteLine(newOrder);
 
                     _context.Orderlists.Add(newOrder);
                     _context.SaveChanges();
 
-                    return Redirect("/Home/Login");
+                    return Ok("Order created successfully");
                 }
                 else
                 {
