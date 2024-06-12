@@ -171,6 +171,8 @@ namespace TripNa_MVC.Controllers
                     newOrder.ItineraryId = (int)TempData["ItineraryID"];
                     newOrder.OrderDate = DateTime.Parse(orderDate);
                     newOrder.OrderNumber = int.Parse(orderNumber);
+                    newOrder.OrderStatus = "尚未出發";
+                    newOrder.OrderMatchStatus = "媒合中";
                     newOrder.OrderTotalPrice = orderTotalPirce;
                     ;
 
