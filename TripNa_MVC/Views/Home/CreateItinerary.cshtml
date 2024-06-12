@@ -604,16 +604,15 @@
                 };
                 
                 console.log(dataToSend);
-                    Send to DB
+                    // Send to DB
                     $.ajax({
                         type: "POST",
                         url: "/Home/CreateItinerary",
                         data: JSON.stringify(dataToSend),
                         contentType: "application/json; charset=utf-8",
-                        dataType: "json",
+                        //dataType: "json",
                         success: function (response) {
                             console.log("Success", response);
-                            alert("行程已送出!");
                         },
                         error: function (xhr, status, error) {
                             console.error("AJAX Error: ", status, error);
