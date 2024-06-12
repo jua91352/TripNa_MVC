@@ -52,10 +52,10 @@ namespace TripNa_MVC.Controllers
         {
             var guiders = from o in _context.Guiders
                           select o;
+            var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
 
             if (!string.IsNullOrEmpty(selectedCity))
             {
-                var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
                 if (cityArea != null)
                 {
                     guiders = guiders.Where(g => g.GuiderArea == cityArea.Area);
@@ -96,6 +96,7 @@ namespace TripNa_MVC.Controllers
 
             return View(guideList);
         }
+
 
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 

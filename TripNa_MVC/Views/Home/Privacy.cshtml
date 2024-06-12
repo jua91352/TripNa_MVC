@@ -153,8 +153,8 @@
     <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
         <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
             <div class="row justify-content-center">
-                <p class="text-white" style="font-size: 18px;">操作方法:</p>
-                    <p class="text-white style="font-size: 12px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                <p class="text-white m-3" style="font-size: 18px;">操作方法:</p>
+                    <p class="text-white m-3" style="font-size: 12px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
                 <div class="col-9" style="background-color: #f8e8ff;">
                     <ul id="gallery" class="gallery list-unstyled ui-sortable">
                         @foreach (var spot in Model)
@@ -207,43 +207,7 @@
 @section Scripts {
 <script>
         //------------------------------------------測試把放置後的li裡面的資料放進資料庫裡----------------------------------------------------------------------------
-            // $(function () {
-            //     $(".ui-widget-content").sortable({
-            //         connectWith: ".ui-widget-content"
-            //     }).disableSelection();
-
-            //     $("#firstDayConfirmCheckbox").on("change", function () {
-            //         if (this.checked) {
-            //             let itineraryDetails = [];
-            //             $("#first-day-morning .ui-widget-content").each(function (index) {
-            //                 let spotId = $(this).data("spotid");
-            //                 if (spotId) {
-            //                     itineraryDetails.push({
-            //                         ItineraryId: 1,  // 假設第一天行程ID為1，可以動態設置
-            //                         SpotId: spotId,
-            //                         ItineraryDate: new Date().toISOString(),  // 假設為今天，可以根據需要設置
-            //                         VisitOrder: index + 1
-            //                     });
-            //                 }
-            //             });
-
-            //             // 同理處理其他時間段，如first-day-afternoon, first-day-evening, first-day-night
-
-            //             $.ajax({
-            //                 url: '@Url.Action("SaveItinerary", "Itinerary")',
-            //                 type: 'POST',
-            //                 contentType: 'application/json',
-            //                 data: JSON.stringify(itineraryDetails),
-            //                 success: function (response) {
-            //                     alert(response.message);
-            //                 },
-            //                 error: function (response) {
-            //                     alert("Error: " + response.responseJSON);
-            //                 }
-            //             });
-            //         }
-            //     });
-            // });
+          
 
         // ---------------------------------------------------------------------------------------------------------------------------------------------------
     $(function () {
@@ -418,7 +382,7 @@
         });
 
 
-        // ---------------------------------------------
+        // --------------------------------------------------------------------------------------------
         document.getElementById('themeSelect').addEventListener('change', function () {
             const value = this.value;
             const firstDayContainer = document.getElementById('firstDayContainer');
@@ -459,6 +423,7 @@
                     const firstDayConfirmCheckbox = document.getElementById("firstDayConfirmCheckbox");
                     const secondDayConfirmCheckbox = document.getElementById("secondDayConfirmCheckbox");
                     const thirdDayConfirmCheckbox = document.getElementById("thirdDayConfirmCheckbox");
+                    const selectedCity = document.getElementById("locationSelect").value;
 
                     if (!confirmCheckbox.checked) {
                         alert("你需要勾選《我確定行程》");

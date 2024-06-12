@@ -115,7 +115,7 @@
       style="background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); /* 模糊效果 */"> *@
 <!-- 頁首 -->
 <header class="sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-light" id="head" style="background-color:rgba(78, 84, 130, 0.4);   color: #dee0fb;
+    <nav class="navbar navbar-expand-lg navbar-light" id="head" style="background-color:rgba(78, 84, 130, 0.4); color: #dee0fb;
 ">
         <div class="container-fluid">
             <a asp-controller="Home" asp-action="Index"><img src="~/_img/logo.png" alt="" width="200px"></a>
@@ -136,28 +136,28 @@
                             <a class="nav-link text-light" href="#">旅遊資訊</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">自訂行程</a>
+                            <a class="nav-link text-light " asp-area="" asp-controller="Home" asp-action="Privacy">自訂行程</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Spot">景點介紹</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Spot">景點介紹</a>
                         </li>
                         @{
                             if (memberEmail == "Guest")
                             {
                                 <li class="nav-item">
 
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">會員登入</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Login">會員登入</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Members" asp-action="MemberCenter">HI @username</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Members" asp-action="MemberCenter">HI @username</a>
                                 </li>
 
                                 <li class="nav-item">
 
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Logout">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
                                 </li>
                             }
                         }
