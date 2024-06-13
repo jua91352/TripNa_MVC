@@ -634,7 +634,19 @@ namespace TripNa_MVC.Controllers
 
 
 
+        public IActionResult MemberCheckOut(int orderID)
+        {
+            //var memberEmail = HttpContext.Session.GetString("memberEmail");
+            //if (string.IsNullOrEmpty(memberEmail))
+            //{
+            //    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            //}
 
+            //var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            return View();
+
+        }
 
 
 
