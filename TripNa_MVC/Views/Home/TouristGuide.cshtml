@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TripNa_MVC.Models.Guider>
+﻿@using Microsoft.EntityFrameworkCore
+@model IEnumerable<TripNa_MVC.Models.Guider>
 @{
     ViewData["Title"] = "TouristGuide";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -110,14 +111,28 @@
 </div>
 <br>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var selectedGender = '@ViewBag.SelectedGender';
+        var selectedExperience = '@ViewBag.SelectedExperience'
+        if (selectedGender) {
+            document.getElementById("gender").value = selectedGender;
+        }
+        if (selectedExperience) {
+            document.getElementById("experience").value = selectedExperience;
+        }
+    });
     // 篩選
+    var url = "@Url.Action("TouristGuide", "Home")";
     function filterGuiders() {
         var gender = document.getElementById("gender").value;
+        var rating = document.getElementById("rating").value;
         var experience = document.getElementById("experience").value;
-        var url = "@Url.Action("TouristGuide", "Home")";
         var params = [];
         if (gender) {
             params.push("gender=" + gender);
+        }
+        if (rating) {
+            params.push("rating=" + rating);
         }
         if (experience) {
             params.push("experience=" + experience);
@@ -127,5 +142,7 @@
         }
         window.location.href = url;
     }
+
+
 
 </script>

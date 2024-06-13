@@ -21,9 +21,8 @@ namespace TripNa_MVC.Controllers
         {
             _logger = logger;
             _context = context;
-
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -206,7 +205,7 @@ namespace TripNa_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult TouristGuide(string gender = null, int? experience = null)
+        public IActionResult TouristGuide(string? gender = null,int? rating = null, int? experience = null)
         {
 
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -249,8 +248,26 @@ namespace TripNa_MVC.Controllers
                 }
             }
 
+            if(rating != null)
+            {
+                var averageRating = _context.Ratings
+                                            .GroupBy(r => r.GuiderId)
+                                            .Select(g => new
+                                            {
+                                                GuiderID = g.Key,
+                                                AverageRatingStars = g.Average(r => r.RatingStars)
+                                            })
+                                            .ToList();
+
+                var result = averageRating
+                         .Where(g => g.AverageRatingStars >= rating)
+                         .ToList();
+                
+            }
+
             if (experience.HasValue)
             {
+                Console.WriteLine(experience);
                 DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
                 if (experience == 0)
                 {
@@ -265,9 +282,38 @@ namespace TripNa_MVC.Controllers
                     guiders = guiders.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // 指定年資
                 }
             }
+            if (experience.HasValue && !string.IsNullOrEmpty(gender)) {
+                DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
+                if (experience == 0 && gender?.ToLower() == "男生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
+                }
+                else if (experience == 5 && gender?.ToLower() == "男生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
+                }
+                else if (experience == 0 && gender?.ToLower() == "女生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
+                }
+                else if (experience == 5 && gender?.ToLower() == "女生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
+                } else if (gender?.ToLower() == "男生" && experience != 0 && experience != 5)
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
+                }
+                else
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
+                }
+            };
 
             var guideList = guiders.ToList();
             ViewBag.GuiderCount = guideList.Count;
+            ViewBag.SelectedGender = gender;
+            //ViewBag.SelectedRating = rating;
+            ViewBag.SelectedExperience = experience;
 
             return View(guideList);
         }

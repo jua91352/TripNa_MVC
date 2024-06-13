@@ -15,6 +15,8 @@ public partial class Guider
 
     public DateOnly GuiderStartDate { get; set; }
 
+    public int? GuiderRatingStars { get; set; }
+
     public string GuiderIntro { get; set; } = null!;
 
     public virtual ICollection<GuiderAnswer> GuiderAnswers { get; set; } = new List<GuiderAnswer>();
