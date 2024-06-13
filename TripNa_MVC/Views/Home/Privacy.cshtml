@@ -6,7 +6,7 @@
     var cities = ViewBag.Cities as List<string>;
    
 }
-<body style="background-image: url('../_img//行程背景.jpg');background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); ">
+<body style="background-color:#e3e5f4">
 <head>
     <!--自訂-->
     <link rel="stylesheet" href="~/css/Privacy.css">
@@ -18,7 +18,7 @@
 </div>
 <!-- -------------------------------------------------------------------------------------------------------- -->
 <!-- 行程  生成訂單給會員-->
-<div class="row justify-content-center align-items-center m-3">
+<div class="row justify-content-center align-items-center m-3" >
     <!-- 地點 要控制景點-->
         <div class="col-md-auto">
             <select class="form-select" id="locationSelect">
@@ -66,7 +66,7 @@
     <div class="col-lg-1 "></div>
     <div id="accordionContainer" class="col-lg-6 col-md-6 col-sm-6 col-7" style="top: 150px; bottom:100px;">
         <button class="accordion disabled" id="day1" disabled>第一天的景點安排</button>
-        <div class="panel" id="panel1">
+            <div class="panel" id="panel1" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
             <div class="row justify-content-center m-3 text-center">
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                     <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -94,7 +94,7 @@
 
 
         <button class="accordion disabled" id="day2" disabled>第二天的景點安排</button>
-        <div class="panel" id="panel2">
+            <div class="panel" id="panel2" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
             <div class="row justify-content-center m-3 text-center">
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                     <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -121,7 +121,7 @@
 
 
         <button class="accordion disabled" id="day3" disabled>第三天的景點安排</button>
-        <div class="panel" id="panel3">
+            <div class="panel" id="panel3" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
             <div class="row justify-content-center m-3 text-center">
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                     <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -151,11 +151,11 @@
 
     <!-- 景點照片 -->
     <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
-        <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
+            <div class="container" id="mark" style="background-color: #4e5482; height: 300px;border-radius: 20px;">
             <div class="row justify-content-center">
-                <p class="text-white m-3" style="font-size: 18px;">操作方法:</p>
-                    <p class="text-white m-3" style="font-size: 12px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-                <div class="col-9" style="background-color: #f8e8ff;">
+                <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
+                    <p class="text-white m-3" style="font-size: 16px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                <div class="col-9" style="background-color: #f8e8ff; border-radius: 15px;">
                     <ul id="gallery" class="gallery list-unstyled ui-sortable">
                         @foreach (var spot in Model)
                         {

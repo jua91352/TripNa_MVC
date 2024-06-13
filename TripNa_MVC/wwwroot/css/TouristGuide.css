@@ -160,7 +160,7 @@ button {
 /* 手風琴樣式 */
 .accordion {
     background-color: #4e5482;
-    color: #fff;
+    color: #bdbdbd;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -179,18 +179,12 @@ button {
 
 .panel {
     padding: 0 0px;
-    background-color:#a78bcd;
+    background-color: white;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.1s ease-out;
+    transition: max-height 0.2s ease-out;
 }
 
 #mark {
     overflow-y: auto;
 }
-
-  
-
-
-    
-

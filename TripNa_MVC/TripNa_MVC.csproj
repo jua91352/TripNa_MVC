@@ -8,9 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="123\**" />
+    <Compile Remove="Utils\**" />
     <Content Remove="123\**" />
+    <Content Remove="Utils\**" />
     <EmbeddedResource Remove="123\**" />
+    <EmbeddedResource Remove="Utils\**" />
     <None Remove="123\**" />
+    <None Remove="Utils\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\css\Class.css" />
   </ItemGroup>
 
   <ItemGroup>

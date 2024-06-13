@@ -6,7 +6,7 @@
 
 <head>
     <!--自訂-->
-    <link rel="stylesheet" href="~/css/Privacy.css">
+    <link rel="stylesheet" href="~/css/TouristGuide.css">
 </head>
 @functions {
     public static string CalculateExperience(DateTime startDate)
@@ -32,23 +32,34 @@
     }
 }
 <style>
-    /* 新增 CSS */
-    .fixed-btn {
+    .fixed-btn-container {
         position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 300px;
-        border: 3px solid #73AD21;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: auto;
     }
+
+    .fixed-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+        .fixed-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
 </style>
+
 <div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
     我們為您推薦的導遊
 </div>
-<div class="row">
-    <div class="col-4"></div>
-    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
-    <div class="col-4"></div>
-</div>
+
 <div class="row justify-content-center" style="width: 100%;" id="select">
     <div class="col-auto">
         <select class="form-select" id="gender" onchange="filterGuiders()">
@@ -80,6 +91,15 @@
         </select>
     </div>
 </div>
+
+<br>
+
+<div class="row">
+    <div class="col-4"></div>
+    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
+    <div class="col-4"></div>
+</div>
+
 <br>
 
 <div id="card-container">
@@ -87,27 +107,25 @@
     {
         string imgPath = "~/導遊/大頭照/" + guider.GuiderNickname + ".jpg";
 
-        <div style="width: 60%; margin: 0 auto" id="card">
-            <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative" style="align-items: center;">
-                <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
-                <p class="card-text col-7">
+        <div style="width: 60%; margin: 0 auto;" id="card">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
+                <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" style="height: auto; width: 150px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 12px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+                <p style="margin-left: 1rem;" class="card-text col-7">
                     姓名:@guider.GuiderNickname<br>
                     性別:@guider.GuiderGender<br>
                     服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" onclick="selectGuider('@guider.GuiderId', this.checked)">
+                123
+                <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked)">
             </div>
         </div>
     }
 </div>
-
 <br>
-<div class="row justify-content-center m-3">
-    <div class="col-8"></div>
-    <button class="btn btn-primary col-1 text-center rounded shadow m-3">下單去</button>
-    <div class="col-2"></div>
+<div class="fixed-btn-container" id="fixed-btn-container">
+    <button class="fixed-btn" onclick="placeOrder()">下單去</button>
 </div>
 <br>
 
@@ -131,5 +149,31 @@
         window.location.href = url;
     }
 
-   
+    // 下單
+    function placeOrder() {
+        alert("下單要把會員訂單跟選多少導遊都送到SelectGuider資料表");
+    }
+
+    // 滾動偵測
+    window.onscroll = function () {
+        adjustButtonPosition();
+    };
+
+    function adjustButtonPosition() {
+        var fixedBtnContainer = document.getElementById('fixed-btn-container');
+        var scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        var triggerPosition = document.getElementById('card-container').offsetTop + document.getElementById('card-container').offsetHeight;
+
+        if (scrollPosition + window.innerHeight > triggerPosition) {
+            fixedBtnContainer.style.position = 'absolute';
+            fixedBtnContainer.style.bottom = '20px';
+            fixedBtnContainer.style.right = '20px';
+            fixedBtnContainer.style.top = triggerPosition + 'px';
+        } else {
+            fixedBtnContainer.style.position = 'fixed';
+            fixedBtnContainer.style.bottom = '20px';
+            fixedBtnContainer.style.right = '20px';
+            fixedBtnContainer.style.top = 'auto';
+        }
+    }
 </script>
