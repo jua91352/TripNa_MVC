@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div style="width:80%;margin: 0 auto;">
+<h1>景點管理</h1>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p style="width:auto;">
+
+            <input type="text" name="SearchString"  value="@ViewData["CurrentFilter"]"  placeholder="搜尋景點" id="search" />
+
+
+                <select name="city" asp-items="@(new SelectList(ViewBag.city, "Value", "Text"))">
+                    <option value="">-- 選擇區域 --</option>
+                </select>
+            
+            <input type="submit" value="搜尋" class="back" /> |
+                <a asp-action="Index" class="backserch" style="background-color:darkseagreen;padding:5px;color:white;">回到景點管理</a>
+        </p>
+    </div>
+</form>
+
+<p>
+
+    <a asp-action="Create" style="background-color:darkseagreen;padding:5px;color:white;">新增景點</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                景點名稱
+            </th>
+            <th>
+               城市
+            </th>
+            <th>
+                景點簡介
+            </th>
+            <th>
+                景點詳細介紹
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotBrief)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotIntro)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SpotId">編輯</a> |
+                <a asp-action="Details" asp-route-id="@item.SpotId">詳細</a> |
+                <a asp-action="Delete" asp-route-id="@item.SpotId">刪除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+  
+
+
+</div>
+
+            <style>
+
+
+    table{
+
+        background-color:aliceblue;
+      
+    }
+
+    a{
+        color:steelblue;
+        /* background-color: gray ; */
+        text-decoration:none;
+    }
+            </style>

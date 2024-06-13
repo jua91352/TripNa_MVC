@@ -154,8 +154,32 @@ namespace TripNa_MVC.Controllers
 			return PartialView("_spotlist", filteredspots.ToList());
 		}
 
+        [HttpPost]
+        public async Task<IActionResult> UploadSpotPhoto(IFormFile photo)
+        {
+            if (photo == null || photo.Length == 0)
+            {
+                // 處理沒有選擇檔案的情況
+                return View();
+            }
 
-		public IActionResult createSpot(string memberEmail)
+            // 獲取上傳檔案的原始檔案名稱
+            var fileName = Path.GetFileName(photo.FileName);
+
+            // 組合檔案路徑
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "/景點圖片/台中", fileName);
+
+            // 將檔案保存到指定路徑
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await photo.CopyToAsync(stream);
+            }
+
+            // 返回成功視圖或執行其他操作
+            return View();
+        }
+
+        public IActionResult createSpot(string memberEmail)
         {
 
             var query = from o in _context.Spots
