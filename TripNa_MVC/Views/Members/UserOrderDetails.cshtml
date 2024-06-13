@@ -1,0 +1,390 @@
+﻿@model TripNa_MVC.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "UserOrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = Model.Orders.FirstOrDefault();
+    int orderCount = Model.Orders.Count;
+    int groupSize = 4;
+    int day = 0;
+    string p = ".jpg";   
+    int ratingStars = order.Rating.RatingStars;
+
+}
+
+
+
+<style>
+
+    .block #OrderListTatble tr td img {
+        object-fit: cover;
+        height: 100px;
+        height: 100px;
+    }
+
+    body #myscore {
+        border-style: initial;
+        height: 200px;
+        border: 1px solid #3A326D;
+    }
+
+
+    #star {
+        font-size: 20px;
+        margin: 0;
+    }
+
+
+    .rank-rated {
+        color: #f6be00;
+    }
+
+    .rank-not-rated {
+        color: #a2a2a2;
+    }
+
+</style>
+
+
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Member Center</h1>
+
+        <h4 id="title" class="text-center"> 會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Members" asp-action="UserOrder"><img src="~/_img/png/click_myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            @if (ViewData["Message"] != null)
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/center.png" alt=""></a>
+
+            }
+            
+        </div>
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+
+
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <table id="listtable" class="table table-striped table-hover">
+
+        <thead>
+            <tr id="trTitle">
+                <th class="text-center">
+                    產品名稱
+                </th>
+                <th class="text-center">
+                    地區
+                </th>
+                <th class="text-center">
+                    出發日期
+                </th>
+                <th class="text-center">
+                    人數
+                </th>
+                @* <th class="text-center">
+                天數
+                </th> *@
+                <th class="text-center">
+                    金額
+                </th>
+                <th class="text-center">
+                    導遊
+                </th>
+                <th class="text-center">
+                    訂單狀態
+                </th>
+            </tr>
+        </thead>
+
+
+
+
+
+
+        <tbody>
+
+            @if (order != null)
+            {
+      
+
+                <tr id="trContent">
+                    <td class="text-center  align-middle  ">
+                        <a href="javascript:"
+                           onclick="document.all.fullContent.style.display=(document.all.fullContent.style.display=='none')?'':'none';document.all.smallContent.style.display=(document.all.smallContent.style.display=='none')?'':'none'">
+                            @order.Itinerary.ItineraryName▼
+                        </a>
+
+
+                    <td class="text-center align-middle ">
+                            @(order.Itinerary.ItineraryName.Substring(0, 2))
+
+                    </td>
+
+
+
+                    <td class="text-center align-middle">
+                            @(order.Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd"))
+
+                    </td>
+
+                    <td class="text-center align-middle">
+                            @order.Itinerary.ItineraryPeopleNo
+                    </td>
+
+                       
+                    <td class="text-center align-middle">
+                        NT$@order.OrderTotalPrice.ToString("N0")
+
+                    </td>
+
+
+                        @if (order.OrderMatchStatus == "媒合中")
+                        { 
+                            
+                            <td class="text-center align-middle">
+                            導遊媒合中
+                            </td>
+                        }
+                        else
+                        {
+                        <td class="text-center align-middle">
+
+                            <img src="~/導遊/大頭照/@order.Guider.GuiderArea/@order.Guider.GuiderNickname@p" style="border-radius: 50%; object-fit= cover" height="50px " width="50px">
+
+                            <br>
+                                @order.Guider.GuiderNickname
+                        </td>
+                        }
+
+                       
+
+                    <td class="text-center align-middle">
+                            @order.OrderStatus
+
+                    </td>
+
+
+                </tr>
+                <tr>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+
+
+
+    <div class="block" id="fullContent" style="display:none;">
+
+        <table id="OrderListTatble" class="table table-striped ">
+            @for (int i = 0; i < Math.Sqrt(orderCount); i += groupSize)
+            {
+                day++;
+                <tr id="trOrderList">
+
+
+                    <td class="align-middle  text-center">Day @day</td>
+
+                    @for (int j = i; j < i + groupSize && j < Math.Sqrt(orderCount); j++)
+                    {
+                        string g = ".jpg";
+                        <td class="text-center align-middle">
+                            <br>
+                            <img src="~/景點圖片/@(Model.Orders[j].Itinerary.ItineraryName.Substring(0, 2))/@Model.Orders[j].Spots.SpotName@g" height="100px " width="100px">
+                            <br>
+                            <p>@Model.Orders[j].Spots.SpotName</p>
+
+                        </td>
+
+                    }
+
+
+                </tr>
+            }
+
+
+
+
+        </table>
+    </div>
+
+    <br>
+
+
+
+
+
+    <div id="myDetail">
+
+        <table class="table ">
+
+
+            <thead>
+
+
+                <tr>
+                    <th colspan="2" scope="col">訂單資訊</th>
+                    <th colspan="2" scope="col">訂購人資訊</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (order != null)
+                {
+
+                    <tr>
+                        <th scope="row">訂單編號</th>
+                        <td>@order.OrderNumber</td>
+                        <th scope="row">姓名</th>
+                        <td>@order.Member.MemberName</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">訂購時間</th>
+                        <td>
+                            @(order.OrderDate.ToString("yyyy/MM/dd"))
+                        </td>
+                        <th scope="row">手機</th>
+                        <td>@order.Member.MemberPhone</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">訂單狀態</th>
+                        <td>@order.OrderStatus</td>
+                        <th scope="row">E-mail</th>
+                        <td>@order.Member.MemberEmail</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <br>
+
+
+
+
+
+    <br>
+
+    <!-- 評價導遊的地方 -->
+    @if (order.OrderMatchStatus == "媒合中")
+    {
+        
+    }
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "尚未出發")
+    {
+        <div id="scorezone">
+            <h3 class="text-center">評價導遊</h3>
+            <div id="myscore">
+                <br>
+                <span style="margin: 10px;">導遊評價：</span>
+
+                <span id="star">
+
+                    <span class="rank-not-rated" data-rating="1">&#128970;</span>
+                    <span class="rank-not-rated" data-rating="2">&#128970;</span>
+                    <span class="rank-not-rated" data-rating="3">&#128970;</span>
+                    <span class="rank-not-rated" data-rating="4">&#128970;</span>
+                    <span class="rank-not-rated" data-rating="5">&#128970;</span>
+                    <span id="score" style="color: #3A326D; font-size: 15px;"></span>
+                </span>
+                <br>
+                <br>
+
+                <textarea type="text" placeholder="輸入您的評價" id="write"
+                          style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ;"></textarea>
+            </div>
+
+
+            <br>
+            <div id="endBtn" class="row">
+
+                <div class="col-10 text-center"></div>
+
+                <div class="col-2 text-end">
+                    <button id="submitBtn " class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    }
+    //已經評論過了 
+    else
+    {
+        <div id="scorezone">
+            <h3 class="text-center">本次導遊評價</h3>
+            <div id="myscore">
+                <br>
+                <span style="margin: 10px;">導遊評價：</span>
+
+
+                <span id="star">
+                    @for (int i = 0; i < ratingStars; i++)
+                    {
+                        <span class="rank-rated">&#128970;</span>
+                    }
+
+                    @* <span id="score" style="color: #3A326D; font-size: 15px;"></span> *@
+                </span>  
+                <span>@ratingStars 顆星</span>
+                <br>
+                <br>
+
+             @*    <textarea type="text" placeholder="輸入您的評價" id="write" disabled
+                          style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">@order.Rating.RatingComment</textarea>
+ *@
+                <div style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">
+                    <span style="margin: 10px;">
+                        @order.Rating.RatingComment
+                        </span>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    }
+
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>

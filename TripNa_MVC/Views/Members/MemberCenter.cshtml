@@ -3,13 +3,18 @@
 @{
     ViewData["Title"] = "MemberCenter";
 }
+<br>
+<br>
 
 
 <div class="container">
     <div>
-        <h1 class="text-center">TripNa Member Center</h1>
+        
+        <h1 id="title" class="text-center"> 會員中心</h1>
+        @* <br>
 
-        <h4 id="title" class="text-center"> 會員中心</h4>
+        <h3 class="text-center">TripNa Member Center</h3> *@
+
     </div>
     <br>
 
@@ -18,20 +23,37 @@
         <div class="col-sm-2 text-center"></div>
 
         <div class="col-sm-8 text-center">
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserOrder"><img src="~/_img/png/myorder.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/click_mydata.png" alt=""></a>
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+            
+
+            @if (ViewData["Message"] != null)
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/center.png" alt=""></a>
+
+            }
         </div>
 
 
         <div class="col-sm-2 text-center"></div>
 
     </div>
+    <br>
+
     <hr style='background-color:#3A326D; height:1px; border:none;'>
+
     <br>
     <br>
+    <br>
+    <br>
+
 
     <div class="row">
 
@@ -40,10 +62,13 @@
 
         <div class="col-sm-4">
 
+       
             <div style='border:1px solid #3A326D ; padding-top:10px; padding-left: 10px;'>
-                <p>12月內累積消費金額</p>
-                <p>NT$_________</p>
-                <p>(普通會員)</p>
+                <p>目前累積消費金額</p>
+                <p>NT$5,800</p>
+
+                @* <p>NT$_________</p> *@
+               @*  <p>(普通會員)</p> *@
             </div>
 
         </div>
@@ -81,7 +106,7 @@
                                value="@Model.MemberPhone">
 
                         <br>
-                        <label for="userBirthday">生日</label>
+                        <label for="  ">生日</label>
                         <br>
                         <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 30px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
 
@@ -121,7 +146,7 @@
 
             else
             {
-                <div>用户信息加载失败。</div>
+                <div>用戶訊息加載失敗</div>
             }
         </div>
 
@@ -132,6 +157,11 @@
 
 </div>
 <br>
+<br>
+<br>
+<br>
+<br>
+
 
 <script>
 
@@ -139,45 +169,15 @@
         var password = document.getElementById("MemberPassword").value;
         var confirmPassword = document.getElementById("ReMemberPassword").value;
         if (password !== confirmPassword) {
-            alert("两次输入的密码不一致，请重新输入。");
+            alert("兩次輸入的密碼不一致，請重新輸入。");
             event.preventDefault();
+        }
+        else {
+            alert("修改成功！");
+            
         }
     });
 
 
 
-    var getUrl = "./_file/member.json";
-
-
-    $("#userName,#userEmail,#userPhone,#userBirthday").val("");
-    // $("#userName,#userEmail,#userPhone,#userBirthday").empty();
-
-    $.get(getUrl, function (e) {
-
-        var a = 0;
-        $("#userName").val(e[a].Name);
-        $("#userEmail").val(e[a]["E-mail"]);
-        $("#userPhone").val(e[a].PhoneNumber);
-        $("#userBirthday").val(e[a].Birthday);
-
-
-    })
-
-
-    // 綁定輸入的姓名 信箱 電話  並且顯示到alert上面 以便確認有綁定
-    var Name = document.getElementById("userName").value;
-    var Email = document.getElementById("userEmail").value;
-    var Phone = document.getElementById("userPhone").value;
-
-
-    var submitBtn = document.getElementById("submitBtn");
-
-    function submitdata() {
-        var str = "";
-        var submitValue = name.value;
-        str = submitValue;
-        alert(`${Name}+${Email}+${Phone}`);
-    }
-
-    submitBtn.addEventListener("click", submitdata);
 </script>

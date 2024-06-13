@@ -1,0 +1,251 @@
+﻿@model TripNa_MVC.Models.GuiderRating;
+
+@{
+    ViewData["Title"] = "Guiderintroduce";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string p = ".jpg";
+    int ratingCount = ViewData["ratingCount"] != null ? (int)ViewData["ratingCount"] : 0;
+    int orderCount = ViewData["orderCount"] != null ? (int)ViewData["orderCount"] : 0;
+    double ratingAvg = ViewData["ratingAvg"] != null ? (double)ViewData["ratingAvg"] : 0.0;
+    var g = Model.Guiders.FirstOrDefault();
+}
+
+@functions {
+    public static string CalculateExperience(DateTime startDate)
+    {
+        DateTime currentDate = DateTime.Now;
+        TimeSpan experience = currentDate - startDate;
+
+        int years = experience.Days / 365;
+        int months = (experience.Days % 365) / 30;
+
+        if (years > 0)
+        {
+            return $"{years}年";
+        }
+        else if (months > 0)
+        {
+            return $"{months}個月";
+        }
+        else
+        {
+            return "新手導遊";
+        }
+    }
+}
+
+
+<style>
+
+    .nav-center {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    #標題 {
+        background-color: #ffffff;
+        height: 150px;
+        line-height: 150px;
+    }
+
+    .rank-rated {
+        color: #f6be00;
+    }
+
+    .rank-not-rated {
+        color: #a2a2a2;
+    }
+
+    .rank-half-rated {
+        background: linear-gradient(to right, #f6be00 50%, #eee 50%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+</style>
+
+<br>
+
+<div class="">
+    <a asp-action="GuiderCenter" asp-controller="Guiders" style="text-decoration: none;">
+        <span class="bi bi-arrow-left" style="color: #545454; font-size: 18px;"></span>
+        <span style="color: #4e5482 ">返回導遊會員中心</span>
+    </a>
+
+</div>
+<br>
+
+
+<!-- 標題 -->
+<div class="nav-center" id="標題" style="color: #eef1ff; background-color: #4e5482; font-size: 24px;">
+    導遊詳細資料
+</div>
+
+<br>
+
+
+    <div class="row">
+
+    <div class="col-5 text-end">
+        <img id="display_img" src="~/導遊/大頭照/@g.GuiderArea/@g.GuiderNickname@p" style="border-radius: 50% ; object-fit: cover;"  height="170px " width="170px">
+        <br>
+        <br>
+        <div style='background-color: #e8eafe'>
+        </div>
+    </div>
+
+
+
+    <div class="col-7 text-start">
+            <h1>@g.GuiderNickname</h1>
+
+            <span class="text-start" style="color: #f6be00;">
+                @ratingAvg
+
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= ratingAvg)
+                    {
+                        <span class="rank-rated" data-rating="@i">&#128970;</span>
+                    }
+                    else if (ratingAvg >= i - 0.5)
+                    {
+                        <span class="rank-half-rated" data-rating="@i">&#128970;</span>
+                    }
+                    else
+                    {
+                    <span class="rank-not-rated" data-rating="@i">&#128970;</span>
+                    }
+                }
+            </span>
+
+            <span style="color: #a2a2a2;">(@ratingCount)</span>
+        <br>
+       
+
+
+
+
+
+            <span class="bi bi-trophy" style="color: #a2a2a2; font-size: 15px;">@(orderCount)次雇用</span>
+
+
+
+        <br>
+        <span>
+            性別:@(g.GuiderGender == "F" ? "女" : "男")
+            <br>
+            服務年資:@CalculateExperience(g.GuiderStartDate)
+            <br>
+            主要服務地區:@g.GuiderArea
+            <br>
+
+        </span>
+    </div>
+
+
+</div>
+
+<!-- 訂單資訊 -->
+
+<div style="width: 50%; margin: 0 auto">
+    <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
+
+        <h1 class="text-start">自我介紹</h1>
+        <hr>
+        <br>
+        <p style="font-size: 17px;">
+           @g.GuiderIntro
+        </p>
+
+        <br>
+
+
+
+        <hr>
+
+    </div>
+</div>
+
+
+
+
+
+
+@if (ratingCount == 0)
+
+    {
+
+    <br />
+                //bg-ligh
+    <div style="width: 50%; margin: 0 auto">
+        <div class="d-flex row justify-content-center m-3 p-3  bg-light rounded shadow text-center " >
+
+                <p class="text-center">
+
+
+                    <span class="bi bi-chat-square-dots" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+                 <p class="text-center">目前沒有評價</p>
+
+                </p>           
+
+        </div>
+    </div>
+
+    <br>
+    }
+
+    else
+    {
+       
+        <br />
+    <div style="width: 50%; margin: 0 auto">
+    <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
+
+        <h1 class="text-start">評價</h1>
+        <hr>
+
+        <br>
+
+
+            @foreach (var item in Model.Rates)
+            {
+            <span class="text-start">
+                @item.MemberName
+                <span class="text-start" style="color: #f6be00;">
+                    @item.RatingStars
+
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= item.RatingStars)
+                        {
+                            <span class="rank-rated" data-rating="@i">&#128970;</span>
+                        }
+                        else
+                        {
+                            <span class="rank-not-rated" data-rating="@i">&#128970;</span>
+                        }
+                    }
+                </span>
+                <br>
+                <p class="text-start" style="font-size:20px;">@item.RatingComment</p>
+            </span>
+            <br>
+            <br>
+            <br>
+            <hr>
+            <br>
+       }
+    </div>
+           
+</div>
+    
+}
+
+
+
+<br>
+

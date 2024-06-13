@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TripNa_MVC.Models.Coupon>
+﻿@model TripNa_MVC.Models.UserCoupon
 
 @{
     ViewData["Title"] = "UserCoupon";
@@ -55,12 +55,12 @@
     }
 </style>
 
-
-
+<br>
+<br>
 <div class="container">
     <div>
         <h1 class="text-center">TripNa Member Center</h1>
-
+        <br>
         <h4 id="title" class="text-center"> 會員中心</h4>
     </div>
     <br>
@@ -70,18 +70,30 @@
         <div class="col-sm-2 text-center"></div>
 
         <div class="col-sm-8 text-center">
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserOrder"><img src="~/_img/png/myorder.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/click_coupon.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/likelist.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/mydata.png" alt=""></a>
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+            @if (ViewData["Message"] != null)
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/center.png" alt=""></a>
+
+            }
         </div>
 
 
         <div class="col-sm-2 text-center"></div>
 
     </div>
+    <br>
+
     <hr style='background-color:#3A326D; height:1px; border:none;'>
+
     <br>
     <br>
     <br>
@@ -96,7 +108,7 @@
             @{
 
 
-                if (Model == null || !Model.Any())
+                if (Model == null || !Model.Coupon.Any())
                 {
                     <!--沒有評價 的畫面-->
 
@@ -116,7 +128,7 @@
 
                 }
 
-               foreach (var item in Model)
+                foreach (var Coupon in Model.Coupon)
                 {
                     <!--有評價 的畫面 且全部秀出來-->
 
@@ -125,17 +137,18 @@
                             <div class="flip-box-front">
                                 <br><br>
                                 <img src="~/_img/coupon.png" style="width:300px;height:100px">
-                                <h6>@item.CouponFrom</h6>
+                                <h6>@Coupon.Itinerary.ItineraryName</h6>
                                 <h6 class="text-end bi bi-hand-index-thumb" style="margin-right: 13px; font-size: 13px;">查看</h6>
                             </div>
                             <div class="flip-box-back">
                                 <br><br><br>
                                 <h6 class="text-center" style="color: #4e5482;">
-                                    優惠碼: <span>@item.CouponCode</span>
+                                    優惠碼: <span>@Coupon.CouponCode</span>
                                     <span class="bi bi-clipboard" id="copyimg" onclick="copyCode(this)" style="cursor: pointer;"></span>
 
                                 </h6>
-                                <h6 class="text-center" style="color: #4e5482;">期限 @item.CouponDueDate</h6>
+                                <h6 class="text-center" style="color: #4e5482;">期限 @Coupon.CouponDueDate</h6>
+                                <!--.ToString("yyyy/MM/dd")-->
                             </div>
                         </div>
                     </div>
@@ -155,6 +168,15 @@
     </div>
 
 </div>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 

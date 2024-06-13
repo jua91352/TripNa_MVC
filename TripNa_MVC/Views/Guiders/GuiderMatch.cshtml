@@ -1,0 +1,251 @@
+﻿@model IEnumerable<dynamic>
+
+
+@{
+    ViewData["Title"] = "GuiderMatch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = ViewData["count"] != null ? (int)ViewData["count"] : 0;
+
+    // int orderCount = Model.Orders.Count;
+    // int orderCount = Model.OrderID.Count;
+    int groupSize = 4;
+    int d= 0;
+    string p = ".jpg";
+     
+     var ordersGroupedByOrderId = Model.GroupBy(item => item.OrderID);
+           
+}
+
+@* 
+<table>
+    <thead>
+        <tr>
+            <th>OrderID</th>
+            <th>GuiderID</th>
+            <th>ItineraryName</th>
+            <th>ItineraryStartDate</th>
+            <th>ItineraryPeopleNo</th>
+            <th>MemberName</th>
+            <th>OrderMatchStatus</th>
+            <th>SpotID</th>
+            <th>VisitOrder</th>
+        </tr>
+    </thead>
+    <tbody> *@
+
+@* 
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.OrderID</td>
+        <td>@item.GuiderID</td>
+        <td>@item.ItineraryName</td>
+        <td>@item.ItineraryStartDate</td>
+        <td>@item.ItineraryPeopleNo</td>
+        <td>@item.MemberName</td>
+        <td>@item.OrderMatchStatus</td>
+        <td>@item.SpotID</td>
+        <td>@item.VisitOrder</td>
+        <td>@item.SpotName</td>
+        <td>@item.SpotCity</td>
+
+    </tr>
+} 
+    </tbody>
+</table>
+*@
+
+
+
+
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Guider Member Center</h1>
+
+        <h4 id="title" class="text-center">導遊會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderMatch"><img src="~/_img/png/click_match.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderOrder"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/membercenter.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+     @{
+        if (ordersGroupedByOrderId == null || !ordersGroupedByOrderId.Any())
+        {
+            <div class="row">
+
+                <div class="col-sm-2">
+                </div>
+
+                <div class="col-sm-8">
+
+
+                    <!-- 媒合裡面  沒有東西 -->
+
+                    <div id="mycollect" style='background-color: #e8eafe ' class="rounded shadow ">
+
+
+                        <div style="">
+                            <p class="text-center">
+
+                                <span class="bi bi-puzzle" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+
+                            </p>
+
+                        </div>
+
+                        <p class="text-center">目前沒有待媒合訂單</p>
+                        <div class="text-center" style=" margin-right:10px; ">
+
+                           
+                            <br>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2">
+                </div>
+
+            </div>
+
+
+
+        }
+        else
+        {
+            
+       
+        <table id="listtable" class="table table-striped">
+        <thead>
+            <tr id="trTitle">
+                <th class="text-center">
+                    產品名稱
+                </th>
+                <th class="text-center">
+                    地區
+                </th>
+                <th class="text-center">
+                    出發日期
+                </th>
+                <th class="text-center">
+                    訂購人
+                </th>
+                <th class="text-center">
+                    人數
+                </th>
+
+                <th class="text-center">
+                    訂單狀態
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+          
+            @foreach (var group in ordersGroupedByOrderId)
+            {
+                var orderCount = group.Count();
+                var tripDays = Math.Ceiling((double)orderCount / 4);
+
+                <tr>
+                    <td class="text-center" rowspan="@tripDays">
+                        @group.First().ItineraryName
+                    </td>
+                    <td class="text-center" rowspan="@tripDays">
+                        @group.First().SpotCity
+                    </td>
+                    <td class="text-center" rowspan="@tripDays">
+                        @group.First().ItineraryStartDate
+                    </td>
+                    <td class="text-center" rowspan="@tripDays">
+                        @group.First().MemberName
+                    </td>
+                    <td class="text-center" rowspan="@tripDays">
+                        @group.First().ItineraryPeopleNo
+                    </td>
+
+                    <td class="text-center" rowspan="@tripDays">
+                        <button onclick="deleteOrder('trContent1', 'trOrderList1')" id="submitBtn" class="btn"
+                                style="background-color: #e8eafe ;color: #4e5482;">
+                            婉拒
+                        </button>
+                        <button id="submitBtn" class="btn"
+                                style="background-color: #4e5482 ;color: #e8eafe;">
+                            接單
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    <table>
+
+
+        @foreach (var group in ordersGroupedByOrderId)
+        {
+            var orderCount = group.Count();
+            var tripDays = Math.Ceiling((double)orderCount / 4);
+
+            @for (int day = 1; day <= tripDays; day++)
+            {
+                <tr>
+                    <td class="align-middle  text-center">Day @day</td>
+                    @for (int i = (day - 1) * 4; i < day * 4 && i < orderCount; i++)
+                    {
+                        var item = group.ElementAt(i);
+                        string g = ".jpg";
+                        <td class="align-middle  text-center">
+                            <br>
+                            <img src="~/景點圖片/@item.SpotCity/@item.SpotName@g" height="100px" width="100px">
+                            <br>
+                            <p>@item.SpotName</p>
+                            <br>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </table>
+
+        }
+    }
+
+
+</div>
+
+
+
+<br>
+<br>
+<br>

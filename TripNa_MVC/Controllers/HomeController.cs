@@ -148,12 +148,46 @@ namespace TripNa_MVC.Controllers
 			// Get the counts of the filtered results
 			int filteredCount = filteredspots.Count();
 			ViewData["FilteredCount"] = filteredCount;
+            //-------------------------------------test------------------------------------------------
+            //var memberEmail = HttpContext.Session.GetString("memberEmail");
 
+            //if (string.IsNullOrEmpty(memberEmail))
+            //{
+            //    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            //}
+            //var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
+            //if (member == null)
+            //{
+            //    return NotFound();
+            //}
+            //-------------------------------------------------------------------------------------------------
 
-			return PartialView("_spotlist", filteredspots.ToList());
+            return PartialView("_spotlist", filteredspots.ToList());
 		}
 
+
+        public IActionResult GetFavoriteSpots()
+        {
+            // 檢查用戶是否已登錄
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return Json(new List<int>());
+            }
+
+            // 獲取當前用戶
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+            if (member == null)
+            {
+                return NotFound();
+            }
+
+            // 獲取當前用戶的收藏景點 ID 列表
+            var favoriteSpotIds = member.FavoriteSpots.Select(s => s.SpotId).ToList();
+
+            return Json(favoriteSpotIds);
+        }
         [HttpPost]
         public async Task<IActionResult> UploadSpotPhoto(IFormFile photo)
         {

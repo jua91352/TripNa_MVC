@@ -54,7 +54,7 @@ else
 					@* <h5 class="card-title" style="font-weight:800;">@spots.SpotName</h5> *@
 					@* <p class="card-text">@spots.SpotBrief</p> *@
 					<p class="card-text">@spots.SpotIntro</p>
-
+					<button class="favorite-btn" data-spot-id="@spots.SpotId">收藏</button>
 				</div>
 			</div>
 		</div>
@@ -126,46 +126,81 @@ else
 		}
 
 </style>
-</style>
-@section Scripts {
-	<script>
-		// 模擬用戶登入狀態
-		function isUserLoggedIn() {
-			// 在實際應用中，這應該是通過檢查會話、令牌等來完成
-			// 這裡我們用一個簡單的變量來模擬
-			return false; // 假設用戶未登入
-		}
 
-		// 模擬登入函數
-		function login() {
-			// 在實際應用中，這應該重定向到登入頁面或顯示登入對話框
-			alert("重定向到登入頁面...");
-		}
 
-		const heartIcons = document.querySelectorAll('.heart-icon');
+<script>
+	// 模擬用戶登入狀態
+	function isUserLoggedIn() {
+		// 在實際應用中，這應該是通過檢查會話、令牌等來完成
+		// 這裡我們用一個簡單的變量來模擬
+		return false; // 假設用戶未登入
+	}
 
-		heartIcons.forEach(function (heartIcon) {
-			heartIcon.addEventListener('click', function () {
-				if (isUserLoggedIn()) {
-					// 用戶已登入，切換愛心狀態
-					this.classList.toggle('filled');
+	// 模擬登入函數
+	function login() {
+		// 在實際應用中，這應該重定向到登入頁面或顯示登入對話框
+		alert("重定向到登入頁面...");
+		// window.location.href = @Url.Action("spots","Home");
+	}
 
-					// 在這裡你可以發送 AJAX 請求到後端，保存收藏狀態
-					const restaurantId = this.dataset.restaurantId;
-					const isFavorite = this.classList.contains('filled');
-					console.log(`餐廳 ID ${restaurantId} 收藏狀態: ${isFavorite}`);
-				} else {
-					// 用戶未登入，顯示警告並提供登入選項
-					const wantToLogin = confirm("您需要登入才能收藏餐廳。是否現在登入？");
-					if (wantToLogin) {
-						login();
-					}
+	const heartIcons = document.querySelectorAll('.heart-icon');
+
+	heartIcons.forEach(function (heartIcon) {
+		heartIcon.addEventListener('click', function () {
+			if (isUserLoggedIn()) {
+				// 用戶已登入，切換愛心狀態
+				this.classList.toggle('filled');
+
+				// 在這裡你可以發送 AJAX 請求到後端，保存收藏狀態
+				const restaurantId = this.dataset.restaurantId;
+				const isFavorite = this.classList.contains('filled');
+				console.log(`餐廳 ID ${restaurantId} 收藏狀態: ${isFavorite}`);
+			} else {
+				// 用戶未登入，顯示警告並提供登入選項
+				const wantToLogin = confirm("您需要登入才能收藏餐廳。是否現在登入？");
+				if (wantToLogin) {
+					login();
 				}
-			});
+			}
 		});
-
-
-
+	});
 
 	</script>
-}
+
+
+			@* 	<script>
+
+	$(function () {
+		// 檢查用戶是否已登錄
+		function isUserLoggedIn() {
+			// 在這裡你需要根據實際情況檢查用戶是否已登錄
+			// 例如,你可以檢查會話或令牌等信息
+			return true; // 這裡我們假設用戶已登錄
+		}
+
+		// 處理收藏按鈕點擊事件
+		$('.favorite-btn').click(function () {
+			var spotId = $(this).data('spot-id');
+
+			if (isUserLoggedIn()) {
+				// 用戶已登錄,發送 AJAX 請求切換收藏狀態
+				$.ajax({
+					url: '/Home/ToggleFavorite',
+					type: 'POST',
+					data: { spotId: spotId },
+					success: function (response) {
+						// 處理服務器響應
+						console.log(response);
+					},
+					error: function (xhr, status, error) {
+						// 處理錯誤
+						console.error(error);
+					}
+				});
+			} else {
+				// 用戶未登錄,提示登錄
+				alert('您需要先登錄才能收藏景點');
+			}
+		});
+	});
+				</script> *@

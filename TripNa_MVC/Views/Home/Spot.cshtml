@@ -79,26 +79,26 @@
 
 
     <div class="col-sm-2 text-center"></div>
-
+@* 
     <br>
     <div class="container-fluid px-0 ">
 
 
         <div class="row row-cols-1">
             <div class="col">
-                <div class="col fixed-top">
+                <div class="col fixed-top"> *@
                     <!-- 固定上方 -->
 
-                    <nav class="navbar navbar-expand-sm " id="head" ;>
+                    @* <nav class="navbar navbar-expand-sm " id="head" ;>
                         <img src="/images/logo.png" alt="" width="300px;">
-                        <div class="container-fluid justify-content-end  px-0">
+                        <div class="container-fluid justify-content-end  px-0"> *@
 
 
 
 
 
                             <!-- 頁首 -->
-                            <ul class="navbar-nav ">
+                    @*         <ul class="navbar-nav ">
 
                                 <li class="nav-item nav-travel">
                                     <a class="nav-link" asp-area="" asp-controller="Travel" asp-action="weather">旅遊資訊</a>
@@ -128,7 +128,10 @@
 
                     </nav>
 
-                </div>
+                </div> *@
+
+
+
     @*     <div id="topIcon" >
 
                 <div class=" text-center"></div>
@@ -324,7 +327,17 @@
 
 
 
-
+    @foreach (var spot in Model)
+    {
+        <div class="spot-item">
+            <h3>@spot.SpotName</h3>
+            <p>@spot.SpotCity</p>
+            <p>@spot.SpotBrief</p>
+            <button class="favorite-btn" data-spot-id="@spot.SpotId">
+                <i class="far fa-heart"></i> 收藏
+            </button>
+        </div>
+    }
 
 
 
@@ -551,7 +564,55 @@
                     //         // });
 
 
+            $(function () {
+                // 獲取當前用戶的收藏景點列表
+                $.ajax({
+                    url: '/Spots/GetFavoriteSpots',
+                    type: 'GET',
+                    success: function (favoriteSpots) {
+                        // 更新收藏按鈕狀態
+                        $('.favorite-btn').each(function () {
+                            var spotId = $(this).data('spot-id');
+                            if (favoriteSpots.indexOf(spotId) !== -1) {
+                                $(this).find('i').removeClass('far').addClass('fas');
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
 
+                // 處理收藏按鈕點擊事件
+                $('.favorite-btn').click(function () {
+                    var spotId = $(this).data('spot-id');
+                    var $icon = $(this).find('i');
+
+                    // 切換收藏狀態
+                    if ($icon.hasClass('far')) {
+                        // 添加收藏
+                        addToFavorites(spotId);
+                        $icon.removeClass('far').addClass('fas');
+                    } else {
+                        // 取消收藏
+                        removeFromFavorites(spotId);
+                        $icon.removeClass('fas').addClass('far');
+                    }
+                });
+            });
+
+            // 添加景點到收藏列表
+            function addToFavorites(spotId) {
+                // 在這裡你可以調用服務器端的方法來保存收藏狀態
+                console.log('添加景點 ' + spotId + ' 到收藏列表');
+                
+            }
+
+            // 從收藏列表中移除景點
+            function removeFromFavorites(spotId) {
+                // 在這裡你可以調用服務器端的方法來保存收藏狀態
+                console.log('從收藏列表中移除景點 ' + spotId);
+            }
 
 
 

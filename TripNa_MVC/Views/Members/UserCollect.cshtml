@@ -10,13 +10,14 @@
 
 }
 
-
+<br>
+<br>
 
 <div class="container">
     <div>
-        <h1 class="text-center">TripNa Member Center</h1>
-
-        <h4 id="title" class="text-center"> 會員中心</h4>
+        <h1 class="text-center">Member Center</h1>
+        <br>
+        <h3 id="title" class="text-center"> 會員中心</h3>
     </div>
     <br>
 
@@ -25,18 +26,30 @@
         <div class="col-sm-2 text-center"></div>
 
         <div class="col-sm-8 text-center">
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="UserOrder"><img src="~/_img/png/myorder.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCoupon"><img src="~/_img/png/coupon.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/click_likelist.png" alt=""></a>
             <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/png/mydata.png" alt=""></a>
-            <a asp-area="" asp-controller="Members" asp-action="UserCollect"><img src="~/_img/png/sign.png" alt=""></a>
+            @if (ViewData["Message"] != null)
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="SignUp"><img src="~/_img/png/sign.png" alt=""></a>
+
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/center.png" alt=""></a>
+
+            }
         </div>
 
 
         <div class="col-sm-2 text-center"></div>
 
     </div>
+    <br>
+
     <hr style='background-color:#3A326D; height:1px; border:none;'>
+
     <br>
     <br>
     <br>
@@ -61,7 +74,7 @@
                         <div style="">
                             <p class="text-center">
 
-                                <span class="bi bi-heart" style="font-size:100px ;margin-top:50px"></span>
+                                <span class="bi bi-heart" style="font-size:100px ;margin-top:50px ; color: #4e5482" ></span>
 
                             </p>
 
@@ -80,47 +93,49 @@
 
                 }
                 else
-                {                                   
-
-                foreach (var spot in Model.FavoriteSpots)
                 {
 
-                    <div>@spot.SpotName</div>
+                    foreach (var spot in Model.FavoriteSpots)
+                {
+
+                   
 
                     <table class="table table-hover bg-light rounded shadow table align-middle"  id="collectList">
  
                     <tr>
 
                         @{
-                            string img =@spot.SpotName+".jpg";
+                                 
+                            string img =@spot.Spot.SpotName+".jpg";
                         }
 
                             <td class="text-center" style="width: 200px;">
 
-                                    <img src="~/景點圖片/@spot.SpotCity/@img" alt="" width="150px" height="150px" style="object-fit:cover">
+                                    <img src="~/景點圖片/@spot.Spot.SpotCity/@img" alt="" width="150px" height="150px" style="object-fit:cover">
                                
                             </td>
 
 
                             <td>
-                                地點: @spot.SpotName
+                                    地點: @spot.Spot.SpotName
                                 <br>
-                                介紹: @spot.SpotIntro
+                                    介紹: @spot.Spot.SpotIntro
                             </td>
 
                             <form asp-action="UserCollect">
                             <td style="width: 50px">
-                                <input type="hidden" name="spotId" value="@spot.SpotId" />
-                                <input type="hidden" name="spotName" value="@spot.SpotName" />
-                                <input type="hidden" name="spotCity" value="@spot.SpotCity" />
-                                <input type="hidden" name="spotIntro" value="@spot.SpotIntro" />
-                                <input type="hidden" name="memberId" value="@memberId" />
+                                    <input type="hidden" name="spotId" value="@spot.Spot.SpotId" />
+                                    <input type="hidden" name="spotName" value="@spot.Spot.SpotName" />
+                                    <input type="hidden" name="spotCity" value="@spot.Spot.SpotCity" />
+                                    <input type="hidden" name="spotIntro" value="@spot.Spot.SpotIntro" />
+                                    <input type="hidden" name="memberId" value="@spot.MemberId" />
+                                    <input type="hidden" name="FavoriteSpotId" value="@spot.FavoriteSpotId" />
 
                                
-                                <a class="delete-btn" href="javascript:void(0);" 
-                                   data-spot-id="@spot.SpotId" data-spot-name="@spot.SpotName"
-                                   data-spot-city="@spot.SpotCity" data-spot-intro="@spot.SpotIntro"
-                                   data-member-id="@memberId">
+                                <a class="delete-btn" href="javascript:void(0);"
+                                       data-spot-id="@spot.SpotId" data-spot-name="@spot.Spot.SpotName"
+                                       data-spot-city="@spot.Spot.SpotCity" data-spot-intro="@spot.Spot.SpotIntro"
+                                       data-member-id="@spot.MemberId" data-id="@spot.FavoriteSpotId">
                                     
                                     <img src="~/_img/bin.png" alt="" width="20px" height="20px">
                                 </a>
@@ -129,12 +144,13 @@
                             </form>
                     </tr>
                     </table>
-
-                    <div>
-                        <span>@spot.SpotId @memberId</span>
-                    </div>
+                                         
+                    }
                 }
-              }
+              
+                    
+                
+
             }
 
 
@@ -159,17 +175,24 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
+
         document.querySelectorAll('.delete-btn').forEach(function (btn) {
+
             btn.addEventListener('click', function () {
-                var favoriteSpotId = this.getAttribute('data-id');
+
+
+                var FavoriteSpotId = this.getAttribute('data-id');
+
+                $("#test").append(`<p>FavoriteSpotId</>`)
 
                 if (confirm('確定要刪除這個景點嗎？')) {
-                    fetch(`/Members/UserCollect/${favoriteSpotId}`, {
+
+                    fetch(`/Members/UserCollect/${FavoriteSpotId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                        }
+                        } 
                     })
                         .then(response => {
                             if (response.ok) {
@@ -184,6 +207,9 @@
                             console.error('Error:', error);
                         });
                 }
+           
+            
+            
             });
         });
     });

@@ -1,0 +1,490 @@
+﻿@model TripNa_MVC.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "UserOrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int GuiderId =ViewData["GuiderId"] != null ? (int)ViewData["GuiderId"] : 0;
+    // object status = ViewData["Status"] ;
+
+
+
+
+    int orderCount = Model.Orders.Count;
+    string p = ".jpg";  
+    var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
+
+
+    var displayedSpotNames = new HashSet<string>();
+
+    int spotCount = 0;
+
+    int currentDay = 1; // 記錄當前天數
+    bool isNewOrder = true; // 標記是否為新訂單
+    string previousItineraryName = string.Empty; // 記錄上一個訂單的行程名稱
+    var displayedDays = new HashSet<string>(); // 記錄已顯示過的天數
+
+
+}
+
+
+<style>
+
+    .block #OrderListTatble tr td img {
+        object-fit: cover;
+        height: 100px;
+        height: 100px;
+    }
+
+    body #myscore {
+        border-style: initial;
+        height: 200px;
+        border: 1px solid #3A326D;
+    }
+
+
+    #star {
+        font-size: 20px;
+        margin: 0;
+    }
+
+
+    .rank-rated {
+        color: #f6be00;
+    }
+
+    .rank-not-rated {
+        color: #a2a2a2;
+    }
+
+</style>
+
+
+ 
+
+
+<br>
+<br>
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Guider Member Center</h1>
+
+        <h4 id="title" class="text-center">導遊會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderMatchDetails"><img src="~/_img/png/click_match.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderOrder"><img src="~/_img/png/myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/membercenter.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+
+    <table id="listtable" class="table table-striped table-hover">
+
+        
+
+        
+            @if (Model.Orders == null || !Model.Orders.Any())
+            {
+                <div class="row">
+
+                    <div class="col-sm-2">
+                    </div>
+
+                    <div class="col-sm-8">
+
+
+                        <!-- 媒合裡面  沒有東西 -->
+
+                        <div id="mycollect" style='background-color: #e8eafe ' class="rounded shadow ">
+
+
+                            <div style="">
+                                <p class="text-center">
+
+                                    <span class="bi bi-puzzle" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+
+                                </p>
+
+                            </div>
+
+                            <p class="text-center">目前沒有待媒合訂單</p>
+                            <div class="text-center" style=" margin-right:10px; ">
+
+
+                                <br>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-2">
+                    </div>
+
+                </div>
+            }
+            else
+            {
+
+            <thead>
+            <tr id="trTitle">
+                <th class="text-center">
+                    產品名稱
+                </th>
+                <th class="text-center">
+                    地區
+                </th>
+                <th class="text-center">
+                    出發日期
+                </th>
+                <th class="text-center">
+                    人數
+                </th>                          
+                <th class="text-center">
+                    訂購人
+                </th>
+                <th class="text-center">
+                    訂單狀態
+                </th>
+            </tr>
+           </thead>
+
+
+                @foreach (var group in groupedOrders)
+                {
+                    var orderId = group.Key;
+                    var orders = group.ToList();
+
+                <tbody>
+
+                    <tr id="trContent">
+                            @* <td>@orderId</td> *@
+                        <!-- 渲染其他訂單資料 -->
+                        <td class="text-center  align-middle  ">
+                                @orders.First().Itinerary.ItineraryName
+
+                        </td>
+
+                        <td class="text-center  align-middle  ">
+                                @orders.First().Itinerary.ItineraryName.Substring(0, 2)
+                        </td>
+
+                        <td class="text-center  align-middle  ">
+                                @orders.First().Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd")
+                        </td>
+
+                        <td class="text-center  align-middle  ">
+                                @orders.First().Itinerary.ItineraryPeopleNo
+                        </td>
+
+                        <td class="text-center  align-middle  ">
+                                @orders.First().Member.MemberName
+                        </td>
+
+                  
+                         <td class="text-center">
+                            <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
+                                <input type="hidden" name="orderId" value="@orderId" />
+                                <input type="hidden" name="guideId" value="@GuiderId" />
+                                <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
+                                                            
+                                <input type="submit" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" style="background-color: #e8eafe ;color: #4e5482;" />
+                                <input type="submit" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" style="background-color: #4e5482 ;color: #e8eafe;" />
+
+                            </form>
+                            </td>
+
+
+                    </tr>
+
+            @foreach (var order in orders)
+            {
+                             if (isNewOrder || order.Itinerary.ItineraryName != previousItineraryName)
+                             {
+                                 currentDay = 1;
+                                 isNewOrder = false;
+                                 previousItineraryName = order.Itinerary.ItineraryName;
+                                 displayedDays.Clear(); // 清空已顯示過的天數
+                             }
+                            
+                             string dayString = $"Day {currentDay}"; // 構造當前天數字符串
+                           
+                            if (@orders.First().Itinerary.ItineraryName.Substring(2, 3) == "一日遊")
+                            {
+                                if (spotCount % 4 == 0)
+                             {
+                                 @:</tr><tr>
+                                 if (!displayedDays.Contains(dayString))
+                                 {
+                                     @:<td colspan="2" class="align-middle text-center">@dayString</td>
+                                     displayedDays.Add(dayString);
+                                 }
+                             }
+                                  spotCount++;
+
+                                @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
+
+
+
+
+                            }
+                            else if (@orders.First().Itinerary.ItineraryName.Substring(2, 3) == "二日遊")
+                            {
+                                 if (spotCount % 4 == 0)
+                              {
+                                  @:</tr><tr>
+                                  if (!displayedDays.Contains(dayString))
+                                  {
+                                      @:<td colspan="2" class="align-middle text-center">@dayString</td>
+                                      displayedDays.Add(dayString);
+                                  }
+                                  currentDay++;
+                              }
+                                  spotCount++;
+
+                                 @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
+                            }
+                            else
+                            {
+                             if (spotCount % 4 == 0)
+                              {
+                                  @:</tr><tr>
+                                  if (!displayedDays.Contains(dayString))
+                                  {
+                                      @:<td colspan="2" class="align-middle text-center">@dayString</td>
+                                      displayedDays.Add(dayString);
+                                  }
+                                  currentDay++;
+                              }
+                                  spotCount++;
+
+                                @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
+                            }
+
+
+            }
+
+        </tbody> 
+        }
+
+        }
+
+    </table>
+    <br>
+    <br>
+    <br>  
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<script>
+    
+    
+    function testID() {
+
+        console.log("KKK");
+     
+    }
+
+@* 
+    function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
+        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
+        const method = action === 'reject' ? 'DELETE' : 'POST';
+        const headers = {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        };
+        const body = action === 'accept' ? JSON.stringify({ orderId, guideId, memberId, action }) : null;
+            
+        console.log(method + url + headers);
+
+        fetch(url, {
+            method,
+            headers,
+            body
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(`${url}\n${method}\n${headers}\n${data}\n訂單已婉拒並刪除`);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+ *@
+    
+
+
+ function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊 ${guideId} 您確定要 ${action === 'reject' ? '婉拒' : '接單'} 訂單 ${orderId} 嗎? ${memberId}`)) {
+        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
+        const method = 'POST'; // 由於使用了 HttpPost 屬性，我們總是使用 POST 方法
+        const headers = {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        };
+        const body = JSON.stringify({ orderId, guideId, memberId, action });
+
+        fetch(url, {
+            method,
+            headers,
+            body
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* 
+  function confirmOrder(button, action, orderId, guideId, memberId) {
+    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
+        if (action === 'reject') {
+            rejectOrder(orderId, guideId, memberId);
+
+            fetch(`/Guiders/GuiderMatchDetails/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('婉拒成功');
+                    window.location.reload();
+                } else {
+                    alert('婉拒成功');
+                    console.error('刪除失敗:', response.status, response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            acceptOrder(orderId, guideId, memberId);
+        }
+    }
+}
+
+
+ *@
+
+
+
+
+
+      @* if (confirm('確定要刪除這個景點嗎？')) {
+
+                    fetch(`/Members/UserCollect/${FavoriteSpotId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        } 
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('刪除成功');
+                                window.location.reload();
+                            } else {
+                                alert('刪除失敗');
+                                console.error('刪除失敗:', response.status, response.statusText);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            *@
+
+</script>

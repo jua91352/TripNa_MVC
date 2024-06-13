@@ -17,6 +17,9 @@ public partial class Member
 
     public string MemberPassword { get; set; } = null!;
 
+    public int? GuiderId { get; set; }
+
+
     public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
     public virtual ICollection<FavoriteSpot> FavoriteSpots { get; set; } = new List<FavoriteSpot>();

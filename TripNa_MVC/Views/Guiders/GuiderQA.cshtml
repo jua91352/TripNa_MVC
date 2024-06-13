@@ -1,0 +1,297 @@
+﻿@model TripNa_MVC.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "GuiderQA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = Model.Orders.FirstOrDefault();
+    int answerCount = ViewData["QuestionCount"] != null ? (int)ViewData["QuestionCount"] : 0;
+    int orderCount = Model.Orders.Count;
+    int groupSize = 4;
+    int day = 0;
+    string p = ".jpg";
+}
+
+
+<br>
+<br>
+<div class="container">
+
+    <div>
+        <h1 class="text-center">TripNa Guider Member Center</h1>
+
+        <h4 id="title" class="text-center">導遊會員中心</h4>
+    </div>
+
+
+
+    <br>
+
+    <div id="topIcon" class="row">
+
+        <div class="col-sm-2 text-center"></div>
+
+        <div class="col-sm-8 text-center">
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderMatchDetails"><img src="~/_img/png/match.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderOrder"><img src="~/_img/png/click_myorder.png" alt=""></a>
+            <a asp-area="" asp-controller="Guiders" asp-action="GuiderCenter"><img src="~/_img/png/mydata.png" alt=""></a>
+            <a asp-area="" asp-controller="Members" asp-action="MemberCenter"><img src="~/_img/membercenter.png" alt=""></a>
+        </div>
+
+
+        <div class="col-sm-2 text-center"></div>
+
+    </div>
+
+    <hr style='background-color:#3A326D; height:1px; border:none;'>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+
+
+
+    <table id="listtable" class="table table-striped table-hover">
+
+        <thead>
+            <tr id="trTitle">
+                <th class="text-center">
+                    產品名稱
+                </th>
+                <th class="text-center">
+                    地區
+                </th>
+                <th class="text-center">
+                    出發日期
+                </th>
+                <th class="text-center">
+                    人數
+                </th>
+
+                <th class="text-center">
+                    收益
+                </th>
+                <th class="text-center">
+                    訂購人
+                </th>
+                <th class="text-center">
+                    訂單狀態
+                </th>
+            </tr>
+        </thead>
+
+
+
+
+        <tbody>
+
+
+
+            @if (order != null)
+            {
+
+
+
+                <tr id="trContent">
+                    <td class="text-center  align-middle  ">
+                        <a href="javascript:"
+                           onclick="document.all.fullContent.style.display=(document.all.fullContent.style.display=='none')?'':'none';document.all.smallContent.style.display=(document.all.smallContent.style.display=='none')?'':'none'">
+                            @order.Itinerary.ItineraryName▼
+                        </a>
+
+
+                    <td class="text-center align-middle ">
+                            @(order.Itinerary.ItineraryName.Substring(0, 2))
+
+                    </td>
+
+
+
+                    <td class="text-center align-middle">
+                            @(order.Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd"))
+
+                    </td>
+
+                    <td class="text-center align-middle">
+
+                            @order.Itinerary.ItineraryPeopleNo
+
+
+
+
+
+
+
+
+
+                    </td>
+
+
+
+                    <td class="text-center align-middle">
+                        NT$@order.OrderTotalPrice.ToString("N0")
+
+                    </td>
+
+
+                        @if (order.OrderMatchStatus == "媒合中")
+                        {
+
+                        <td class="text-center align-middle">
+                            導遊媒合中
+                        </td>
+                        }
+                        else
+                        {
+                        <td class="text-center align-middle">
+
+                                @order.Member.MemberName
+                        </td>
+                        }
+
+                    <td class="text-center align-middle">
+                            @order.OrderStatus
+
+                    </td>
+
+
+                </tr>
+                <tr>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+
+    <div class="block" id="fullContent" style="display:none;">
+
+        <table id="OrderListTatble" class="table table-striped ">
+            @for (int i = 0; i < Math.Sqrt(orderCount); i += groupSize)
+            {
+                day++;
+                <tr id="trOrderList">
+                    <td class="align-middle  text-center">Day @day</td>
+                    @for (int j = i; j < i + groupSize && j < Math.Sqrt(orderCount); j++)
+                    {
+                        string g = ".jpg";
+                        <td class="text-center">
+                            <br>
+                            <img src="~/景點圖片/@(Model.Orders[j].Itinerary.ItineraryName.Substring(0, 2))/@Model.Orders[j].Spots.SpotName@g" height="100px " width="100px">
+                            <br>
+                            <p>@Model.Orders[j].Spots.SpotName</p>
+                            <br>
+                        </td>
+                    }
+                </tr>
+            }
+
+        </table>
+    </div>
+
+
+
+    <!-- 與會員溝通的地方 -->
+    <h3 class="text-center">訂單問與答</h3>
+
+
+    @foreach (var qa in Model.Questions)
+    {
+        <div id="userQA">
+            <span class="bi bi-person-circle" style="color: #545454; font-size: 20px;"></span>
+
+            <span>@order.Member.MemberName:</span>
+            <div>@qa.QuestionContent</div>
+            <span style="font-size: 12px; color: #a2a2a2;">@qa.QuestionTime</span>
+        </div>
+        <br>
+        if (@qa.QuestionTime < qa.AnswerTime)
+        {
+            <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
+                <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
+                <span>導遊-@order.Guider.GuiderNickname:</span>
+                <div>@qa.AnswerContent</div>
+                <span style="font-size: 12px; color: #a2a2a2;">@qa.AnswerTime</span>
+            </div>
+            <br>
+        }
+    }
+
+
+
+    <div>
+        <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
+        <span>@order.Guider.GuiderNickname:</span>
+        <br>
+        <textarea type="text" placeholder="請在此輸入您的回覆..." id="answerInput" style="resize:none; height: 110px; width:100%;"></textarea>
+        <br>
+        <br>
+
+
+        <div class="row">
+
+            <div class="col-sm-10 text-center"></div>
+
+
+            <div class="col-sm-2 text-end d-inline">
+                <button onclick="show22()" class="btn"
+                        style="background-color: #4e5482 ;color: #e8eafe;">
+                    取消
+                </button>
+
+                <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
+
+            </div>
+
+        </div>
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    @section Scripts {
+        <script>
+            $(function () {
+                $("#submitBtn").click(function () {
+                    var answer = $("#answerInput").val();
+                    var orderId = @Model.OrderId; // 獲取訂單 ID
+
+                    if (answer.trim() === "") {
+                        alert("請輸入回覆內容。");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SubmitAnswer", "Guiders")",
+                        data: { answer: answer, orderId: orderId },
+                        success: function (response) {
+                            alert(response);
+                            $("#answerInput").val(""); // 清空輸入框
+                            location.reload(); // 重新加載當前頁面
+
+                        },
+                        error: function (xhr, status, error) {
+                            alert("提交問題時發生錯誤: " + xhr.responseText);
+                        }
+                    });
+                });
+            });
+
+
+
+
+
+        
+        </script>
+
+    }
