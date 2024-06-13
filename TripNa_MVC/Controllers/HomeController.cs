@@ -122,6 +122,7 @@ namespace TripNa_MVC.Controllers
 
                 TempData["ItineraryID"] = dataToSend.Itinerary.ItineraryId;
                 TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(2, 1);
+                TempData["SelectedCity"] = dataToSend.Itinerary.ItineraryName.Substring(0, 2);
                 await _context.SaveChangesAsync();
                 // Consider returning a success message or redirecting to a confirmation view
                 return Ok("Itinerary created successfully!"); // Or a more specific success message
@@ -180,7 +181,7 @@ namespace TripNa_MVC.Controllers
                     // 設置訂單日期和狀態
 
                     newOrder.MemberId = member.MemberId; // You need to dynamically set this value
-                        newOrder.ItineraryId = (int)TempData["ItineraryID"];
+                    newOrder.ItineraryId = (int)TempData["ItineraryID"];
                     newOrder.OrderDate = DateTime.Parse(orderDate);
                     newOrder.OrderNumber = int.Parse(orderNumber);
                     newOrder.OrderStatus = "尚未出發";
@@ -234,14 +235,14 @@ namespace TripNa_MVC.Controllers
 
             if (experience.HasValue)
             {
-                DateTime cutoffDate = DateTime.Now.AddYears(-experience.Value);
+                DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
                 if (experience == 0)
                 {
-                    guiders = guiders.Where(g => g.GuiderStartDate >= DateTime.Now.AddMonths(-6)); // 新手導遊的條件，這裡假設少於6個月
+                    guiders = guiders.Where(g => g.GuiderStartDate >= DateOnly.FromDateTime(DateTime.Now.AddMonths(-6))); // 新手導遊的條件，這裡假設少於6個月
                 }
                 else if (experience == 5)
                 {
-                    guiders = guiders.Where(g => g.GuiderStartDate <= DateTime.Now.AddYears(-5)); // 5年以上的條件
+                    guiders = guiders.Where(g => g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5))); // 5年以上的條件
                 }
                 else
                 {
