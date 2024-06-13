@@ -167,26 +167,61 @@ namespace TripNa_MVC.Controllers
 		}
 
 
-        public IActionResult GetFavoriteSpots()
+        [HttpPost]
+        public IActionResult ToggleFavorite(int spotId, bool isFavorite)
         {
-            // 檢查用戶是否已登錄
+            // 獲取當前用戶的 ID
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
-                return Json(new List<int>());
+                return Json(new { success = false, message = "您需要先登錄" });
+                //return Redirect("/Members/MemberCenter");
             }
 
-            // 獲取當前用戶
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
             if (member == null)
             {
+                Console.WriteLine($"未找到電子郵件為 {memberEmail} 的用戶");
                 return NotFound();
             }
 
-            // 獲取當前用戶的收藏景點 ID 列表
-            var favoriteSpotIds = member.FavoriteSpots.Select(s => s.SpotId).ToList();
+            // 檢查是否已經收藏過該景點
+            var favoriteSpot = _context.FavoriteSpots.FirstOrDefault(fs => fs.SpotId == spotId && fs.MemberId == member.MemberId);
 
-            return Json(favoriteSpotIds);
+            //if (isFavorite)
+            //{
+            //    // 取消收藏
+            //    if (favoriteSpot != null)
+            //    {
+            //        _context.FavoriteSpots.Remove(favoriteSpot);
+            //        _context.SaveChanges();
+            //        return Json(new { success = true, message = "取消收藏成功" });
+            //    }
+            //    else
+            //    {
+            //        return Json(new { success = false, message = "該景點未被收藏" });
+            //    }
+            //}
+            //else
+            //{
+                // 添加收藏
+                if (favoriteSpot == null)
+                {
+                    var newFavoriteSpot = new FavoriteSpot
+                    {
+                        SpotId = spotId,
+                        MemberId = member.MemberId
+                    };
+                    _context.FavoriteSpots.Add(newFavoriteSpot);
+                    _context.SaveChanges();
+                 
+                    return Json(new { success = true, message = "收藏成功" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "該景點已被收藏" });
+                }
+            //}
         }
         [HttpPost]
         public async Task<IActionResult> UploadSpotPhoto(IFormFile photo)

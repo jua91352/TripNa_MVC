@@ -48,13 +48,17 @@ else
 
 				@* <p class="card-text" style="background-color:#4e5482;color:white; width:80px;height:20px;text-align:center;border-radius:5px;position:absolute;bottom:38%;font-weight:700;margin-left:5px;">@restaurant.FoodType</p> *@
 				<div class="card-body" style="overflow:auto;">
-					<span class="heart-icon align-self-end" id="">&#10084;</span>
+
+
+					<span class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
+
+
 					<h4 class="card-title" style="font-weight:800; font-size:1.2rem;">@spots.SpotName</h4>
 					<h5 class="card-title">@spots.SpotCity</h5>
 					@* <h5 class="card-title" style="font-weight:800;">@spots.SpotName</h5> *@
 					@* <p class="card-text">@spots.SpotBrief</p> *@
 					<p class="card-text">@spots.SpotIntro</p>
-					<button class="favorite-btn" data-spot-id="@spots.SpotId">收藏</button>
+	@* 				<button class="favorite-btn" data-spot-id="@spots.SpotId">收藏</button> *@
 				</div>
 			</div>
 		</div>
@@ -128,7 +132,7 @@ else
 </style>
 
 
-<script>
+@* <script>
 	// 模擬用戶登入狀態
 	function isUserLoggedIn() {
 		// 在實際應用中，這應該是通過檢查會話、令牌等來完成
@@ -165,7 +169,7 @@ else
 		});
 	});
 
-	</script>
+	</script> *@
 
 
 			@* 	<script>

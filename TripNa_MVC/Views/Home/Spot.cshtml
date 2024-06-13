@@ -327,7 +327,7 @@
 
 
 
-    @foreach (var spot in Model)
+  @*   @foreach (var spot in Model)
     {
         <div class="spot-item">
             <h3>@spot.SpotName</h3>
@@ -337,7 +337,7 @@
                 <i class="far fa-heart"></i> 收藏
             </button>
         </div>
-    }
+    } *@
 
 
 
@@ -564,55 +564,36 @@
                     //         // });
 
 
-            $(function () {
-                // 獲取當前用戶的收藏景點列表
+            $('.favorite-btn').click(function () {
+                var spotId = $(this).data('spot-id');
+                var isFavorite = $(this).hasClass('favorited');
+              
+         
+
                 $.ajax({
-                    url: '/Spots/GetFavoriteSpots',
-                    type: 'GET',
-                    success: function (favoriteSpots) {
-                        // 更新收藏按鈕狀態
-                        $('.favorite-btn').each(function () {
-                            var spotId = $(this).data('spot-id');
-                            if (favoriteSpots.indexOf(spotId) !== -1) {
-                                $(this).find('i').removeClass('far').addClass('fas');
-                            }
-                        });
+                    url: '/Home/ToggleFavorite',
+                    type: 'POST',
+                    data: {
+                        spotId: spotId,
+                        isFavorite: isFavorite
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // 切換收藏按鈕的狀態
+                            $('.favorite-btn[data-spot-id="' + spotId + '"]').toggleClass('favorited');
+
+                           
+                        } else {
+                            // 處理錯誤
+                            alert(response.message);
+                        }
                     },
                     error: function (xhr, status, error) {
+                        // 處理錯誤
                         console.error(error);
                     }
                 });
-
-                // 處理收藏按鈕點擊事件
-                $('.favorite-btn').click(function () {
-                    var spotId = $(this).data('spot-id');
-                    var $icon = $(this).find('i');
-
-                    // 切換收藏狀態
-                    if ($icon.hasClass('far')) {
-                        // 添加收藏
-                        addToFavorites(spotId);
-                        $icon.removeClass('far').addClass('fas');
-                    } else {
-                        // 取消收藏
-                        removeFromFavorites(spotId);
-                        $icon.removeClass('fas').addClass('far');
-                    }
-                });
             });
-
-            // 添加景點到收藏列表
-            function addToFavorites(spotId) {
-                // 在這裡你可以調用服務器端的方法來保存收藏狀態
-                console.log('添加景點 ' + spotId + ' 到收藏列表');
-                
-            }
-
-            // 從收藏列表中移除景點
-            function removeFromFavorites(spotId) {
-                // 在這裡你可以調用服務器端的方法來保存收藏狀態
-                console.log('從收藏列表中移除景點 ' + spotId);
-            }
 
 
 
