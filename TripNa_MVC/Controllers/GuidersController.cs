@@ -159,10 +159,71 @@ namespace TripNa_MVC.Controllers
 
 
 
+  //      [HttpPost]
+  //      public IActionResult GuiderCenter(Guider updatedGuider)
+  //      {
+  //          var memberEmail = HttpContext.Session.GetString("memberEmail");
+
+  //          if (string.IsNullOrEmpty(memberEmail))
+  //          {
+  //              return RedirectToAction("Login", "Home");
+  //          }
+
+  //          var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+  //          var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == member.GuiderId);
+
+  //          Console.WriteLine(member.GuiderId+ "----------------------------------------------");
+		//	Console.WriteLine(guider.GuiderNickname + "----------------------------------------------");
+		//	Console.WriteLine("----------------------------------------------" + updatedGuider.GuiderNickname + "----------------------------------------------");
+
+
+  //          if( member.GuiderId == null)
+  //          {
+  //              return Redirect("/Members/MemberCenter"); // 如果該使用者沒有，重定向到會員中心頁面
+  //          }
+
+
+  //          // 更新會員的資訊
+  //          // 檢查 GuiderNickname 是否被修改過
+  //          if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
+		//	{
+		//		guider.GuiderNickname = updatedGuider.GuiderNickname;
+		//	}
+
+		//	// 檢查 GuiderArea 是否被修改過
+		//	if (updatedGuider.GuiderArea != null && updatedGuider.GuiderArea != guider.GuiderArea)
+		//	{
+		//		guider.GuiderArea = updatedGuider.GuiderArea;
+		//	}
+
+		//	// 檢查 GuiderIntro 是否被修改過
+		//	if (updatedGuider.GuiderIntro != null && updatedGuider.GuiderIntro != guider.GuiderIntro)
+		//	{
+		//		guider.GuiderIntro = updatedGuider.GuiderIntro;
+		//	}
+
+		//	// 如果有任何欄位被修改過，就儲存變更
+		//	if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null)
+		//	{
+		//		_context.SaveChanges();
+		//	}
+
+		//	return RedirectToAction("GuiderCenter");
+		//}
+
+
+
+
+
+        //NEW 更新導遊
+
         [HttpPost]
-        public IActionResult GuiderCenter(Guider updatedGuider)
-        {
-            var memberEmail = HttpContext.Session.GetString("memberEmail");
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GuiderCenter(Guider updatedGuider, IFormFile guiderImage)
+            {
+
+                var memberEmail = HttpContext.Session.GetString("memberEmail");
 
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -173,44 +234,91 @@ namespace TripNa_MVC.Controllers
 
             var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == member.GuiderId);
 
-            Console.WriteLine(member.GuiderId+ "----------------------------------------------");
-			Console.WriteLine(guider.GuiderNickname + "----------------------------------------------");
-			Console.WriteLine("----------------------------------------------" + updatedGuider.GuiderNickname + "----------------------------------------------");
 
-
-            if( member.GuiderId == null)
+            if (member.GuiderId == null)
             {
                 return Redirect("/Members/MemberCenter"); // 如果該使用者沒有，重定向到會員中心頁面
             }
+
+            bool isUpdated = false;
+
 
 
             // 更新會員的資訊
             // 檢查 GuiderNickname 是否被修改過
             if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
-			{
-				guider.GuiderNickname = updatedGuider.GuiderNickname;
-			}
+            {
+                guider.GuiderNickname = updatedGuider.GuiderNickname;
+            }
 
-			// 檢查 GuiderArea 是否被修改過
-			if (updatedGuider.GuiderArea != null && updatedGuider.GuiderArea != guider.GuiderArea)
-			{
-				guider.GuiderArea = updatedGuider.GuiderArea;
-			}
+            // 檢查 GuiderArea 是否被修改過
+            if (updatedGuider.GuiderArea != null && updatedGuider.GuiderArea != guider.GuiderArea)
+            {
+                guider.GuiderArea = updatedGuider.GuiderArea;
+            }
 
-			// 檢查 GuiderIntro 是否被修改過
-			if (updatedGuider.GuiderIntro != null && updatedGuider.GuiderIntro != guider.GuiderIntro)
-			{
-				guider.GuiderIntro = updatedGuider.GuiderIntro;
-			}
+            // 檢查 GuiderIntro 是否被修改過
+            if (updatedGuider.GuiderIntro != null && updatedGuider.GuiderIntro != guider.GuiderIntro)
+            {
+                guider.GuiderIntro = updatedGuider.GuiderIntro;
+            }
 
-			// 如果有任何欄位被修改過，就儲存變更
-			if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null)
-			{
-				_context.SaveChanges();
-			}
+            // 檢查並更新照片
+            string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
 
-			return RedirectToAction("GuiderCenter");
-		}
+            // 更新正面照片
+            if (guiderImage != null && guiderImage.Length > 0)
+            {
+                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
+                if (!Directory.Exists(imagePath))
+                {
+                    Directory.CreateDirectory(imagePath);
+                }
+                var fullImagePath = Path.Combine(imagePath, guiderImageFileName);
+                using (var stream = new FileStream(fullImagePath, FileMode.Create))
+                {
+                    await guiderImage.CopyToAsync(stream);
+                }
+                isUpdated = true;
+            }
+
+
+            // 如果有任何欄位被修改過，就儲存變更
+            if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null || isUpdated)
+            {
+                _context.SaveChanges();
+            }
+
+           
+
+            return RedirectToAction("GuiderCenter");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
