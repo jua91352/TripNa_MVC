@@ -205,7 +205,55 @@ namespace TripNa_MVC.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult TouristGuide(string selectedCity, string gender = null, int? experience = null)
+        {
+            var guiders = from o in _context.Guiders
+                          select o;
+            var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
 
+            if (!string.IsNullOrEmpty(selectedCity))
+            {
+                if (cityArea != null)
+                {
+                    guiders = guiders.Where(g => g.GuiderArea == cityArea.Area);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(gender))
+            {
+                if (gender.ToLower() == "男生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "M");
+                }
+                else if (gender.ToLower() == "女生")
+                {
+                    guiders = guiders.Where(g => g.GuiderGender == "F");
+                }
+            }
+
+            if (experience.HasValue)
+            {
+                DateTime cutoffDate = DateTime.Now.AddYears(-experience.Value);
+                if (experience == 0)
+                {
+                    guiders = guiders.Where(g => g.GuiderStartDate >= DateTime.Now.AddMonths(-6)); // 新手導遊的條件，這裡假設少於6個月
+                }
+                else if (experience == 5)
+                {
+                    guiders = guiders.Where(g => g.GuiderStartDate <= DateTime.Now.AddYears(-5)); // 5年以上的條件
+                }
+                else
+                {
+                    guiders = guiders.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // 指定年資
+                }
+            }
+
+            var guideList = guiders.ToList();
+            ViewBag.GuiderCount = guideList.Count;
+
+            return View(guideList);
+        }
 
         // 徐庭軒加的---------------------------
 
