@@ -122,7 +122,6 @@ namespace TripNa_MVC.Controllers
 
                 TempData["ItineraryID"] = dataToSend.Itinerary.ItineraryId;
                 TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(2, 1);
-                TempData["SelectedCity"] = dataToSend.Itinerary.ItineraryName.Substring(0, 2);
                 await _context.SaveChangesAsync();
                 // Consider returning a success message or redirecting to a confirmation view
                 return Ok("Itinerary created successfully!"); // Or a more specific success message
@@ -207,10 +206,27 @@ namespace TripNa_MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult TouristGuide(string selectedCity, string gender = null, int? experience = null)
+        public IActionResult TouristGuide(string gender = null, int? experience = null)
         {
+
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var lastOrder = _context.Orderlists
+            .Where(o => o.MemberId == member.MemberId)
+            .OrderByDescending(o => o.OrderId)
+            .FirstOrDefault();
+
+            var lastItinerary = _context.Itineraries
+                .Where(i => i.ItineraryId == lastOrder.ItineraryId)
+                .FirstOrDefault();
+
+            string selectedCity = lastItinerary.ItineraryName.Substring(0, 2);
+
             var guiders = from o in _context.Guiders
                           select o;
+
+            
             var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
 
             if (!string.IsNullOrEmpty(selectedCity))

@@ -660,6 +660,15 @@
             // 判断主题选择
             const themeSelectValue = document.getElementById('themeSelect').value;
 
+                function redirectToTouristGuide() {
+                    var selectedCity = document.getElementById("locationSelect").value;
+                    if (selectedCity) {
+                        window.location.href = '/Home/TouristGuide?selectedCity=' + encodeURIComponent(selectedCity);
+                    } else {
+                        alert("請選擇一個地點");
+                    }
+                }
+
                 if (themeSelectValue === '3') {
                     // 第三天选择，需要所有复选框都选中
                     if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {

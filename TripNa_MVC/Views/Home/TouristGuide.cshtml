@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="~/css/Privacy.css">
 </head>
 @functions {
-    public static string CalculateExperience(DateTime startDate)
+    public static string CalculateExperience(DateOnly startDate)
     {
         DateTime currentDate = DateTime.Now;
-        TimeSpan experience = currentDate - startDate;
+        TimeOnly timePart = TimeOnly.MinValue;
+        DateTime dateTime = startDate.ToDateTime(timePart);
+        TimeSpan experience = currentDate - dateTime;
         int years = experience.Days / 365;
         int months = (experience.Days % 365) / 30;
         if (years > 0)
@@ -91,8 +93,8 @@
                 <p class="card-text col-7">
                     姓名:@guider.GuiderNickname<br>
                     性別:@guider.GuiderGender<br>
-@*                     服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
- *@                    地區:@guider.GuiderArea<br>
+                    服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
+                    地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
                 <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" onclick="selectGuider('@guider.GuiderId', this.checked)">
