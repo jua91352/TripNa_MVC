@@ -16,7 +16,7 @@ public partial class Guider
 
     public string GuiderArea { get; set; } = null!;
 
-    public DateTime GuiderStartDate { get; set; }
+    public DateOnly GuiderStartDate { get; set; }
 
     public string GuiderIntro { get; set; } = null!;
 

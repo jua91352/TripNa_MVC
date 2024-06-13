@@ -10,15 +10,16 @@
     var g = Model.Guiders.FirstOrDefault();
 }
 
+
 @functions {
-    public static string CalculateExperience(DateTime startDate)
+    public static string CalculateExperience(DateOnly startDate)
     {
         DateTime currentDate = DateTime.Now;
-        TimeSpan experience = currentDate - startDate;
-
+        TimeOnly timePart = TimeOnly.MinValue;
+        DateTime dateTime = startDate.ToDateTime(timePart);
+        TimeSpan experience = currentDate - dateTime;
         int years = experience.Days / 365;
         int months = (experience.Days % 365) / 30;
-
         if (years > 0)
         {
             return $"{years}年";
@@ -33,6 +34,8 @@
         }
     }
 }
+
+
 
 
 <style>

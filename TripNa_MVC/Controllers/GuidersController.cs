@@ -716,36 +716,93 @@ namespace TripNa_MVC.Controllers
 
 
 
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteMatch(int orderId, int guideId, int memberId, string action)
+        //{
+        //    var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
+
+        //    if (order != null)
+        //    {
+        //        if (action == "reject")
+        //        {
+        //            _context.SelectGuiders.Remove(order);
+        //            await _context.SaveChangesAsync();
+        //            return Ok("訂單已婉拒並刪除");
+        //        }
+        //        else if (action == "accept")
+        //        {
+        //            var orderList = await _context.Orderlists.FindAsync(orderId);
+        //            var guide = await _context.Guiders.FindAsync(guideId);
+
+        //            if (orderList != null && guide != null)
+        //            {
+        //                orderList.OrderMatchStatus = "已媒合";
+        //                _context.Orderlists.Update(orderList);
+        //                await _context.SaveChangesAsync();
+        //                return Ok("訂單已接受並更新");
+        //            }
+        //        }
+        //    }
+
+        //    return BadRequest("無法處理請求");
+        //}
+
+
+
+
+
+
         [HttpPost]
-        public async Task<IActionResult> DeleteMatch(int orderId, int guideId, int memberId, string action)
+        public async Task<IActionResult> AddOrder([FromBody] Orderlist dataToSend)
         {
-            var order = await _context.SelectGuiders.FindAsync(orderId, guideId, memberId);
-
-            if (order != null)
+            if (!ModelState.IsValid)
             {
-                if (action == "reject")
-                {
-                    _context.SelectGuiders.Remove(order);
-                    await _context.SaveChangesAsync();
-                    return Ok("訂單已婉拒並刪除");
-                }
-                else if (action == "accept")
-                {
-                    var orderList = await _context.Orderlists.FindAsync(orderId);
-                    var guide = await _context.Guiders.FindAsync(guideId);
-
-                    if (orderList != null && guide != null)
-                    {
-                        orderList.OrderMatchStatus = "已媒合";
-                        _context.Orderlists.Update(orderList);
-                        await _context.SaveChangesAsync();
-                        return Ok("訂單已接受並更新");
-                    }
-                }
+                return BadRequest("Invalid itinerary data");
             }
 
-            return BadRequest("無法處理請求");
+            try
+            {
+                if (dataToSend == null)
+                {
+                    return BadRequest("No data provided");
+                }
+
+                _context.Add(dataToSend);
+                await _context.SaveChangesAsync();
+
+                var orderlist = new Orderlist
+                {
+                    MemberId = dataToSend.MemberId,
+                    GuiderId = dataToSend.GuiderId,
+                    OrderMatchStatus = dataToSend.OrderMatchStatus,
+                    OrderStatus = dataToSend.OrderStatus
+                };
+
+                _context.Orderlists.Add(orderlist);
+                await _context.SaveChangesAsync();
+
+                return Ok("Order added successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+                return StatusCode(500, "Order server error.");
+            }
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
