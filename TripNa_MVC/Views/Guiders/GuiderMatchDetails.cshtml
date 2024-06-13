@@ -425,10 +425,38 @@ function confirmOrder(button, accept, orderId, guideId, memberId) {
             OrderStatus: "尚未出發",
             OrderMatchStatus: "已媒合"
         };
-
+        alert(dataToSend.OrderMatchStatus);
         console.log(dataToSend);
-    }
+        
 
+
+         $.ajax({
+                        type: "POST",
+                        url: "/Guiders/GuiderMatchDetails",
+                        data: JSON.stringify(dataToSend),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            console.log("Success", response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
+                            console.error("Response Text: ", xhr.responseText);
+                        }
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+@* 
         $.ajax({
                         type: "POST",
                         url: "/Guiders/AddOrder",
@@ -443,7 +471,7 @@ function confirmOrder(button, accept, orderId, guideId, memberId) {
                   }
 
                   });
-
+ *@
     }
 
 

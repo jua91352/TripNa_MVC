@@ -753,7 +753,7 @@ namespace TripNa_MVC.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody] Orderlist dataToSend)
+        public async Task<IActionResult> GuiderMatchDetails([FromBody] Orderlist dataToSend)
         {
             if (!ModelState.IsValid)
             {
@@ -766,6 +766,8 @@ namespace TripNa_MVC.Controllers
                 {
                     return BadRequest("No data provided");
                 }
+
+                Console.WriteLine("------------------------------------------------------------"+dataToSend);
 
                 _context.Add(dataToSend);
                 await _context.SaveChangesAsync();
@@ -789,6 +791,7 @@ namespace TripNa_MVC.Controllers
                 Console.WriteLine("Stack Trace: " + ex.StackTrace);
                 return StatusCode(500, "Order server error.");
             }
+
 
         }
 
