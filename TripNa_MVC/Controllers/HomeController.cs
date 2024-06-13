@@ -43,6 +43,7 @@ namespace TripNa_MVC.Controllers
 
             // 將 cities 傳遞到 View
             ViewBag.Cities = cities;
+            
 
             return View(spots);
         }
@@ -52,7 +53,12 @@ namespace TripNa_MVC.Controllers
         {
             var guiders = from o in _context.Guiders
                           select o;
+            
             var cityArea = _context.Cityareas.FirstOrDefault(ca => ca.City == selectedCity);
+
+
+            Console.WriteLine(cityArea);
+
 
             if (!string.IsNullOrEmpty(selectedCity))
             {
@@ -61,16 +67,19 @@ namespace TripNa_MVC.Controllers
                     guiders = guiders.Where(g => g.GuiderArea == cityArea.Area);
                 }
             }
-
-            if (!string.IsNullOrEmpty(gender))
+            Console.WriteLine("MINJI----------------------------------------------------");
+            Console.WriteLine(ViewData["selectedCity"]);
+            Console.WriteLine(gender);
+            if (cityArea != null && !string.IsNullOrEmpty(gender))
             {
-                if (gender.ToLower() == "男生")
+            Console.WriteLine("HANNI----------------------------------------------------");
+                if (gender == "男生")
                 {
-                    guiders = guiders.Where(g => g.GuiderGender == "M");
+                    guiders = guiders.Where(g => g.GuiderArea == cityArea.Area && g.GuiderGender == "M");
                 }
-                else if (gender.ToLower() == "女生")
+                else if (gender == "女生")
                 {
-                    guiders = guiders.Where(g => g.GuiderGender == "F");
+                    guiders = guiders.Where(g => g.GuiderArea == cityArea.Area && g.GuiderGender == "F");
                 }
             }
 

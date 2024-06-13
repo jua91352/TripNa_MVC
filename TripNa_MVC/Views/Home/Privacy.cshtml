@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<TripNa_MVC.Models.Spot>
 @{
     ViewData["Title"] = "Privacy Policy";
+    ViewData["selectedCity"] = "";
 }
 @{
     var cities = ViewBag.Cities as List<string>;
@@ -432,6 +433,7 @@
 
                     // 判断主题选择
                     const themeSelectValue = document.getElementById('themeSelect').value;
+                    ViewData["selectedCity"] = $("#locationSelect").val();
 
                     function redirectToTouristGuide() {
                         var selectedCity = document.getElementById("locationSelect").value;

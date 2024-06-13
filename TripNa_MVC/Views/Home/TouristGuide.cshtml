@@ -113,6 +113,8 @@
 
 <script>
     // 篩選
+    
+
     function filterGuiders() {
         var gender = document.getElementById("gender").value;
         var experience = document.getElementById("experience").value;
@@ -121,15 +123,21 @@
         var params = [];
         if (gender) {
             params.push("gender=" + gender);
+            window.location.href = url;
+            $("#gender").value(gender);
         }
         if (experience) {
             params.push("experience=" + experience);
+            window.location.href = url;
         }
         if (params.length > 0) {
             url += "?" + params.join("&");
+            window.location.href = url;
         }
         window.location.href = url;
     }
+
+    
 
    
 </script>
