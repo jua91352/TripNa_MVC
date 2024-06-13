@@ -660,46 +660,31 @@
             // 判断主题选择
             const themeSelectValue = document.getElementById('themeSelect').value;
 
-            if (themeSelectValue === '3') {
-                // 第三天选择，需要所有复选框都选中
-                if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
+                if (themeSelectValue === '3') {
+                    // 第三天选择，需要所有复选框都选中
+                    if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定前三天的行程》");
+                    }
+                } else if (themeSelectValue === '2') {
+                    // 第二天选择，只需要前两天复选框选中
+                    if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定前兩天的行程》");
+                    }
+                } else if (themeSelectValue === '1') {
+                    // 第一天选择，只需要第一天复选框选中
+                    if (firstDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定第一天的行程》");
+                    }
                 } else {
-                    alert("你需要勾選《我已確定前三天的行程》");
+                    alert("請選擇一個有效的主題");
                 }
-            } else if (themeSelectValue === '2') {
-                // 第二天选择，只需要前两天复选框选中
-                if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
-                } else {
-                    alert("你需要勾選《我已確定前兩天的行程》");
-                }
-            } else if (themeSelectValue === '1') {
-                // 第一天选择，只需要第一天复选框选中
-                if (firstDayConfirmCheckbox.checked) {
-                    window.location.href = "Tourist guide.html";
-                } else {
-                    alert("你需要勾選《我已確定第一天的行程》");
-                }
-            } else {
-                alert("請選擇一個有效的主題");
-            }
-
-            //     const NewOrder = {};
-
-            // $.ajax({
-            //     url: "/Home/CreateOrder",
-            //     type: "POST",
-            //     contentType: "application/json",
-            //     data: JSON.stringify(NewOrder),
-            //     success: function (response) {
-            //         alert("訂單已成功創建！");
-            //     },
-            //     error: function (xhr, status, error) {
-            //         console.error("Error creating order:", error);
-            //         alert("創建訂單時出錯。");
-            //     }
-            // });
+            
         });
 
 
