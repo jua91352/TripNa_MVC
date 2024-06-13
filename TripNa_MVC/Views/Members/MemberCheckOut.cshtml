@@ -1,0 +1,148 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<!-- 標題 -->
+<div class="nav-center" id="標題" style="color: #eef1ff; background-color: #4e5482; font-size: 24px;">
+    訂單確認
+</div>
+
+
+
+
+<!-- 訂單資訊 -->
+<div style="width: 50%; margin: 0 auto">
+    <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
+
+
+
+
+        <p class="col-3 ">產品名稱</p>
+        <p class="col-2 ">地區</p>
+        <p class="col-3">出發日期</p>
+        <p class="col-2">天數</p>
+        <p class="col-2">人數</p>
+
+        <hr>
+
+        <p class="col-3 ">台中一日遊</p>
+        <p class="col-2 ">台中</p>
+        <p class="col-3">2024/04/15</p>
+        <p class="col-2">2</p>
+        <p class="col-2">1</p>
+
+
+        <div class="row">
+
+
+            <div class="col-3">
+
+                <img src="./_img/journey/cvnmiwjfbm5.jpg" height="100px " width="100px">
+                <br>
+                知高圳步道
+            </div>
+
+
+            <div class="col-3">
+                <img src="./_img/journey/TC-2.jpg" height="100px " width="100px">
+                <br>
+                筏子溪
+            </div>
+
+            <div class="col-3">
+                <img src="./_img/journey/TC-beer.jpg" height="100px " width="100px">
+                <br>
+                啤酒觀光工廠
+
+            </div>
+
+
+            <div class="col-3">
+                <img src="./_img/journey/TC-gu.jpg" height="100px " width="100px">
+                <br>
+                聚奎居
+            </div>
+
+        </div>
+
+        <hr>
+        <span class=" text-start" style="padding-right:18px;">
+            使用優惠券
+            <input type="text" value="輸入折扣碼">
+            <input type="button" value="使用" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">
+        </span>
+        <a href="" class=" text-start" style="text-decoration: none;">查看優惠券</a>
+        <br>
+        <br>
+
+        <hr>
+
+        <br>
+        <span class=" text-end" style="padding-right:18px;">
+            訂單小計 NT$2,000 -優惠券 NT$0 = 總額 NT$
+            <span style="color: #c20d0d;">2,000</span>
+
+        </span>
+    </div>
+</div>
+
+
+
+<div class="row mb-5 m-3 ">
+    <div class="container mt-5 col-sm-6 bg-light rounded shadow ">
+        <h2 class="text-center ">Payment Info.</h2>
+        <h4 class="mb-5 text-center ">付款資訊</h4>
+
+        <form>
+            <div class="row mb-5">
+                <div class="col-3 text-start">
+                    <label for="cardNumber" class="form-label">信用卡卡號</label>
+                </div>
+                <div class="col-9">
+                    <input type="text" class="form-control card-input" maxlength="4" id="cardNumber1">-
+                    <input type="text" class="form-control card-input" maxlength="4" id="cardNumber2">-
+                    <input type="text" class="form-control card-input" maxlength="4" id="cardNumber3">-
+                    <input type="text" class="form-control card-input" maxlength="4" id="cardNumber4">
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-3 text-start">
+                    <label for="cardNumber" class="form-label">信用卡有效年月</label>
+                </div>
+                <div class="col-9">
+                    <input type="text" class="form-control card-input" maxlength="2" id="cardExpireMonth" placeholder="MM">/
+                    <input type="text" class="form-control card-input" maxlength="2" id="cardExpireYear" placeholder="YY">
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-3 text-start">
+                    <label for="cardNumber" class="form-label">信用卡背面驗證碼</label>
+                </div>
+                <div class="col-9">
+                    <input type="text" class="form-control card-input" maxlength="3" id="cardCode" placeholder="CVC">
+                </div>
+            </div>
+
+            <p class="form-text text-danger">※注意事項:</p>
+            <p class="form-text">1.請確認您的訂單資訊正確，再確認付款。</p>
+            <p class="form-text">2.請確認您所填寫的信用卡為您本人所有。</p>
+            <p class="form-text">3.若您已確認訂單無誤，請按「確認訂單」。</p>
+
+
+        </form>
+    </div>
+</div>
+
+  </div>
+
+<div class="d-flex justify-content-center">
+    <button type="submit" class="btn  mb-5" id="confirmOrder" style="background-color: #4e5482 ;color: #e8eafe;">確認訂單</button>
+</div>
+
+

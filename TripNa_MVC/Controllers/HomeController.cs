@@ -98,6 +98,9 @@ namespace TripNa_MVC.Controllers
         }
 
 
+
+
+
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
         public IActionResult Spot(string memberEmail)

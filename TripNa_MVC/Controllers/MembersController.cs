@@ -360,6 +360,35 @@ namespace TripNa_MVC.Controllers
 
 
 
+        public IActionResult MemberCheckOut() 
+        { 
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
