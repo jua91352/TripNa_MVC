@@ -10,7 +10,12 @@
 <body style="background-image: url('../_img//行程背景.jpg');background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); ">
 <head>
     <!--自訂-->
-    <link rel="stylesheet" href="~/css/Privacy.css">
+        <link rel="stylesheet" href="~/css/Privacy.css">
+        <style>
+            .ui-datepicker {
+                display: none !important;
+            }
+        </style>
 </head>
 
 
@@ -61,10 +66,10 @@
     </div>
 
     <!-- 日期選擇器 -->
-    <label for="from" class="col-md-auto col-sm-2 col-3" id="from1">出發日:</label>
-    <input type="text" id="datepicker" class="form-control col-md-auto  col-sm-10 col-7 text-center"
-                   style="width: auto;">
-</div>
+        <label for="from" class="col-md-auto col-sm-2 col-3" id="from1">出發日:</label>
+        <input type="date" id="datepicker" class="form-control col-md-auto  col-sm-10 col-7 text-center"
+               style="width: auto;">
+    </div>
 
 
 

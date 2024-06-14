@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using TripNa_MVC.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using System.Globalization;
 
 namespace TripNa_MVC.Controllers
 {
@@ -37,7 +40,7 @@ namespace TripNa_MVC.Controllers
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
-                TempData["alertMessage"] = "Please Login First!!";
+                TempData["alertMessage"] = "請先登入或是註冊會員!!";
                 Console.WriteLine(TempData["alertMessage"]);
                 return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
             }
@@ -248,21 +251,9 @@ namespace TripNa_MVC.Controllers
                 }
             }
 
-            if(rating != null)
+            if (rating != null)
             {
-                var averageRating = _context.Ratings
-                                            .GroupBy(r => r.GuiderId)
-                                            .Select(g => new
-                                            {
-                                                GuiderID = g.Key,
-                                                AverageRatingStars = g.Average(r => r.RatingStars)
-                                            })
-                                            .ToList();
-
-                var result = averageRating
-                         .Where(g => g.AverageRatingStars >= rating)
-                         .ToList();
-                
+                guiders = guiders.Where(g => g.GuiderRating >= rating);
             }
 
             if (experience.HasValue)
@@ -309,10 +300,46 @@ namespace TripNa_MVC.Controllers
                 }
             };
 
+            if (experience.HasValue && !string.IsNullOrEmpty(gender))
+            {
+                DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
+                string genderLower = gender.ToLower();
+                if (genderLower == "男生")
+                {
+                    if (experience == 0)
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
+                    }
+                    else if (experience == 5)
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
+                    }
+                    else
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
+                    }
+                }
+                else if (genderLower == "女生")
+                {
+                    if (experience == 0)
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
+                    }
+                    else if (experience == 5)
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
+                    }
+                    else
+                    {
+                        guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
+                    }
+                }
+            };
+
             var guideList = guiders.ToList();
             ViewBag.GuiderCount = guideList.Count;
-            ViewBag.SelectedGender = gender;
-            //ViewBag.SelectedRating = rating;
+            ViewBag.SelectedGender = gender?.ToLower();
+            ViewBag.SelectedRating = rating;
             ViewBag.SelectedExperience = experience;
 
             return View(guideList);
@@ -339,7 +366,7 @@ namespace TripNa_MVC.Controllers
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.DictionaryKeyPolicy = null;
             });
-
+            
             services.AddControllersWithViews();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

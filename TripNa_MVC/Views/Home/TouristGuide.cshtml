@@ -53,7 +53,7 @@
 <div class="row justify-content-center" style="width: 100%;" id="select">
     <div class="col-auto">
         <select class="form-select" id="gender" onchange="filterGuiders()">
-            <option value="">性別</option>
+            <option value="" disabled selected hidden>性別不限</option>
             <option value="男生">男生</option>
             <option value="女生">女生</option>
             <option value="">不限</option>
@@ -62,22 +62,24 @@
     <!-- 評價 -->
     <div class="col-auto">
         <select class="form-select" id="rating" onchange="filterGuiders()">
-            <option value="">評價</option>
+            <option value="" disabled selected hidden>評價不限</option>
             <option value="5">5星</option>
             <option value="4">4星</option>
             <option value="3">3星</option>
+            <option value="">不限</option>
         </select>
     </div>
     <!-- 服務經驗 -->
     <div class="col-auto">
         <select class="form-select" id="experience" onchange="filterGuiders()">
-            <option value="">服務年資</option>
+            <option value="" disabled selected hidden>服務年資不限</option>
             <option value="0">0年 (新手導遊)</option>
             <option value="1">1年</option>
             <option value="2">2年</option>
             <option value="3">3年</option>
             <option value="4">4年</option>
             <option value="5">5年以上</option>
+            <option value="">不限</option>
         </select>
     </div>
 </div>
@@ -95,6 +97,7 @@
                     姓名:@guider.GuiderNickname<br>
                     性別:@guider.GuiderGender<br>
                     服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
+                    評價:@(guider.GuiderRating.HasValue ? guider.GuiderRating.Value.ToString("F2") : "尚無評價")<br>
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
@@ -112,12 +115,20 @@
 <br>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        
         var selectedGender = '@ViewBag.SelectedGender';
-        var selectedExperience = '@ViewBag.SelectedExperience'
+        var selectedRating = '@ViewBag.SelectedRating';
+        var selectedExperience = '@ViewBag.SelectedExperience';
         if (selectedGender) {
+            console.log(selectedGender);
             document.getElementById("gender").value = selectedGender;
         }
+        if (selectedRating) {
+            console.log(selectedRating);
+            document.getElementById("rating").value = selectedRating;
+        }
         if (selectedExperience) {
+            console.log(selectedExperience);
             document.getElementById("experience").value = selectedExperience;
         }
     });
