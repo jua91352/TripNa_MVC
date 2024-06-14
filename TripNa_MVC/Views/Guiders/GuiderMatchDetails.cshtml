@@ -223,11 +223,14 @@
 
 
                              <form asp-controller="Guiders" asp-action="GuiderMatchDetails" id="orderForm" method="post">
-                                <input type="hidden" name="orderId" value="@orderId" />
-                                <input type="hidden" name="guideId" value="@GuiderId" />
-                                <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
+                                <input type="hidden" name="OrderID" value="@orderId" />
+                                <input type="hidden" name="MemberID" value="@GuiderId" />
+                                <input type="hidden" name="GuiderID" value="@orders.First().Member.MemberId" />
+                                <input type="hidden" name="ItineraryID" value="@orders.First().ItineraryId" />
+                                @orders.First().ItineraryId
+
                                                             
-                                <input type="submit" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" 
+                                <input type="button" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId','@orders.First().ItineraryId')" 
                                 @* asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId"  *@
                                 style="background-color: #4e5482 ;color: #e8eafe;" />
 
@@ -349,297 +352,49 @@
 
 <script>
     
-    
-    function testID() {
 
-        console.log("KKK");
-     
-    }
+function confirmOrder(button, accept, orderId, guideId, memberId,itineraryId) {
+    @* if (confirm(`導遊 ${guideId} 您確定要接單 : 訂單 ${orderId} 嗎? ${memberId}  ${itineraryId}`)) { *@
+       if (confirm("確定要接單嗎?")) {
 
-@* 
-    function confirmOrder(button, action, orderId, guideId, memberId) {
-    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
-        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
-        const method = action === 'reject' ? 'DELETE' : 'POST';
-        const headers = {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        const  dataToSend ={
+            "OrderId": orderId,
+            "MemberId": memberId,
+            "GuiderId": guideId,
+            "ItineraryId": itineraryId,
+            "OrderStatus":"尚未出發",
+            "OrderMatchStatus":"已媒合"
         };
-        const body = action === 'accept' ? JSON.stringify({ orderId, guideId, memberId, action }) : null;
-            
-        console.log(method + url + headers);
+        @* console.log(dataToSend); *@
+       @* alert(dataToSend.OrderMatchStatus); *@
 
-        fetch(url, {
-            method,
-            headers,
-            body
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(`${url}\n${method}\n${headers}\n${data}\n訂單已婉拒並刪除`);
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-}
+       
+          $.ajax({
+            method: "PUT",
+            url: "/Guiders/MatchDetails",
+            data: JSON.stringify(dataToSend),
+            contentType: "application/json",
+            success: function(data) {
+                      @*  console.log(data);
+                       alert(data); *@
+                     alert("接單成功!");
+                     location.reload(); // 重新加載當前頁面
 
- *@
-    
-
-
-@*  function confirmOrder(button, action, orderId, guideId, memberId) {
-    if (confirm(`導遊 ${guideId} 您確定要 ${action === 'reject' ? '婉拒' : '接單'} 訂單 ${orderId} 嗎? ${memberId}`)) {
-        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
-        const method = 'POST'; // 由於使用了 HttpPost 屬性，所以都是使用 POST 方法
-        const headers = {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-        };
-        const body = JSON.stringify({ orderId, guideId, memberId, action });
-
-        fetch(url, {
-            method,
-            headers,
-            body
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            window.location.reload();  
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-} *@
-
-
-function confirmOrder(button, accept, orderId, guideId, memberId) {
-    if (confirm(`導遊 ${guideId} 您確定要接單 : 訂單 ${orderId} 嗎? ${memberId}`)) {
-        const dataToSend = {
-            OrderID: orderId,
-            MemberID: memberId,
-            GuiderID: guideId,
-            OrderStatus: "尚未出發",
-            OrderMatchStatus: "已媒合"
-        };
-        alert(dataToSend.OrderMatchStatus);
-        console.log(dataToSend);
-        
-
-
-         $.ajax({
-                        type: "POST",
-                        url: "/Guiders/GuiderMatchDetails",
-                        data: JSON.stringify(dataToSend),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            console.log("Success", response);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("AJAX Error: ", status, error);
-                            console.error("Response Text: ", xhr.responseText);
-                        }
-                    });
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-@* 
-        $.ajax({
-                        type: "POST",
-                        url: "/Guiders/AddOrder",
-                        data: JSON.stringify(dataToSend),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            console.log("Success", response);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("AJAX Error: ", status, error);
-                            console.error("Response Text: ", xhr.responseText);
-                  }
-
-                  });
- *@
-    }
-
-
-
-
-
-
-@* 
-
-        fetch('/Guiders/AddOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(dataToSend)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert('Order added successfully!');
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
- *@
+          
+             error: function(xhr, status, error) {
+                      console.log(xhr);
+                      console.log(status);
+                      console.log(error);
+                  // 可能的話,嘗試解析錯誤響應並顯示給用戶
+                                  }
+          
+          
+          });
 
-
-
-
-
-
-
-  @*   if (confirm(`導遊 ${guideId} 您確定要 ${action === 'reject' ? '婉拒' : '接單'} 訂單 ${orderId} 嗎? ${memberId}`)) {
-
-
-
-
-
-
-        const url = `/Guiders/DeleteMatch?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}&action=${action}`;
-        const method = 'POST'; // 由於使用了 HttpPost 屬性，所以都是使用 POST 方法
-        const headers = {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-        };
-        const body = JSON.stringify({ orderId, guideId, memberId, action });
-
-        fetch(url, {
-            method,
-            headers,
-            body
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            window.location.reload();  
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
     }
-}
- *@
 
-
-@* 
-   $("#confirmCheckbox").change(function () {
-                    let dateObj = new Date($("#datepicker").val());
-                    let date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
-            if ($(this).is(":checked")) {
-                let DayInName;
-                if ($("#themeSelect").val() == "1") {
-                    DayInName = "一日遊"
-                } else if ($("#themeSelect").val() == "2") {
-                    DayInName = "二日遊"
-                } else { DayInName = "三日遊" };
-                dataToSend.itinerary = {
-                        ItineraryName: $("#locationSelect").val() + DayInName + "暢玩行程",
-                        ItineraryStartDate: date1,
-                        ItineraryPeopleNo: $("#peopleSelect").val()
-                };
-                
-                console.log(dataToSend);
-
- *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* 
-  function confirmOrder(button, action, orderId, guideId, memberId) {
-    if (confirm(`導遊${guideId}您確定要${action === 'reject' ? '婉拒' : '接單'}訂單 ${orderId} 嗎? ${memberId}`)) {
-        if (action === 'reject') {
-            rejectOrder(orderId, guideId, memberId);
-
-            fetch(`/Guiders/GuiderMatchDetails/${orderId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('婉拒成功');
-                    window.location.reload();
-                } else {
-                    alert('婉拒成功');
-                    console.error('刪除失敗:', response.status, response.statusText);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        } else {
-            acceptOrder(orderId, guideId, memberId);
-        }
     }
-}
 
-
- *@
-
-
-
-
-
-      @* if (confirm('確定要刪除這個景點嗎？')) {
-
-                    fetch(`/Members/UserCollect/${FavoriteSpotId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                        } 
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                alert('刪除成功');
-                                window.location.reload();
-                            } else {
-                                alert('刪除失敗');
-                                console.error('刪除失敗:', response.status, response.statusText);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                }
-            *@
 
 </script>

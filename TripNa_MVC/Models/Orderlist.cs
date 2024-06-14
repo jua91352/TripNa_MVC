@@ -48,5 +48,5 @@ public partial class Orderlist
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<SelectGuider> SelectGuiders { get; set; } = new List<SelectGuider>();
-    public string ItineraryName { get; internal set; }
+    //public string? ItineraryName { get; internal set; }
 }
