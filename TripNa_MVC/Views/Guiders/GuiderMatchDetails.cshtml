@@ -212,14 +212,24 @@
 
                   
                          <td class="text-center">
+
                             <form asp-controller="Guiders" asp-action="GuiderMatchDetails" method="post">
                                 <input type="hidden" name="orderId" value="@orderId" />
                                 <input type="hidden" name="guideId" value="@GuiderId" />
                                 <input type="hidden" name="memberId" value="@orders.First().Member.MemberId" />
-                                                            
-                                <input type="submit" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId', '@GuiderId', '@orders.First().Member.MemberId')" asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId" style="background-color: #e8eafe ;color: #4e5482;" />
+                                <input type="hidden" name="ItineraryID" value="@orders.First().ItineraryId" />
+                          
+                                <input type="button" value="婉拒" class="btn" id="submitBtn" onclick="confirmOrder(this, 'reject', '@orderId', '@GuiderId', '@orders.First().Member.MemberId','@orders.First().ItineraryId')" 
+                                style="background-color: #e8eafe ;color: #4e5482;" />
+                
+                                <input type="button" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId','@orders.First().ItineraryId')" 
+                                style="background-color: #4e5482 ;color: #e8eafe;" />
 
-                            </form>
+                            </form> 
+
+                            </td>
+
+                           @*   </form>
 
 
                              <form asp-controller="Guiders" asp-action="GuiderMatchDetails" id="orderForm" method="post">
@@ -228,15 +238,7 @@
                                 <input type="hidden" name="GuiderID" value="@orders.First().Member.MemberId" />
                                 <input type="hidden" name="ItineraryID" value="@orders.First().ItineraryId" />
                                 @orders.First().ItineraryId
-
-                                                            
-                                <input type="button" value="接單" class="btn" id="submitBtn" onclick="confirmOrder(this, 'accept', '@orderId', '@GuiderId', '@orders.First().Member.MemberId','@orders.First().ItineraryId')" 
-                                @* asp-route-orderID="@orderId"  asp-route-guideId="@GuiderId" asp-route-memberId="@orders.First().Member.MemberId"  *@
-                                style="background-color: #4e5482 ;color: #e8eafe;" />
-
-                            </form>
-                            </td>
-
+ *@
 
                     </tr>
 
@@ -352,49 +354,62 @@
 
 <script>
     
+    @* 可以成功 接單 跟 婉拒  *@
+ 
 
-function confirmOrder(button, accept, orderId, guideId, memberId,itineraryId) {
-    @* if (confirm(`導遊 ${guideId} 您確定要接單 : 訂單 ${orderId} 嗎? ${memberId}  ${itineraryId}`)) { *@
-       if (confirm("確定要接單嗎?")) {
+  function confirmOrder(button, action, orderId, guideId, memberId, itineraryId) {
+    if (action === 'reject') {
+        if (confirm(`確定要婉拒嗎`)) {
+            const dataToDelete = {
+                "OrderId": orderId,
+                "MemberId": memberId,
+                "GuiderId": guideId
+            };
 
-        const  dataToSend ={
-            "OrderId": orderId,
-            "MemberId": memberId,
-            "GuiderId": guideId,
-            "ItineraryId": itineraryId,
-            "OrderStatus":"尚未出發",
-            "OrderMatchStatus":"已媒合"
-        };
-        @* console.log(dataToSend); *@
-       @* alert(dataToSend.OrderMatchStatus); *@
+            $.ajax({
+                method: "DELETE",
+                url: `/Guiders/GuiderMatchDetails?orderId=${orderId}&guideId=${guideId}&memberId=${memberId}`,
+                data: JSON.stringify(dataToDelete),
+                contentType: "application/json",
+                success: function(data) {
+                    alert("婉拒成功!");
+                    location.reload(); // 重新加載當前頁面
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
+        }
+    } else if (action === 'accept') {
+        if (confirm(`確定要接單嗎`)) {
+            const dataToSend = {
+                "OrderId": orderId,
+                "MemberId": memberId,
+                "GuiderId": guideId,
+                "ItineraryId": itineraryId,
+                "OrderStatus": "尚未出發",
+                "OrderMatchStatus": "已媒合"
+            };
 
-       
-          $.ajax({
-            method: "PUT",
-            url: "/Guiders/MatchDetails",
-            data: JSON.stringify(dataToSend),
-            contentType: "application/json",
-            success: function(data) {
-                      @*  console.log(data);
-                       alert(data); *@
-                     alert("接單成功!");
-                     location.reload(); // 重新加載當前頁面
-
-            },
-          
-             error: function(xhr, status, error) {
-                      console.log(xhr);
-                      console.log(status);
-                      console.log(error);
-                  // 可能的話,嘗試解析錯誤響應並顯示給用戶
-                                  }
-          
-          
-          });
-
+            $.ajax({
+                method: "PUT",
+                url: "/Guiders/MatchDetails",
+                data: JSON.stringify(dataToSend),
+                contentType: "application/json",
+                success: function(data) {
+                    alert("接單成功!");
+                    location.reload(); // 重新加載當前頁面
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
+        }
     }
-
-    }
-
+}
 
 </script>

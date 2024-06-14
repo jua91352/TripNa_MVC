@@ -710,6 +710,88 @@ namespace TripNa_MVC.Controllers
 
 
 
+        [HttpDelete("/Guiders/GuiderMatchDetails")]
+        public async Task<IActionResult> GuiderMatchDetails([FromQuery] int orderId, [FromQuery] int guideId, [FromQuery] int memberId)
+
+        {
+            var existingOrder = await (from o in _context.SelectGuiders
+                                       where o.OrderId == orderId && o.MemberId == memberId && o.GuiderId == guideId
+                                       select o).FirstOrDefaultAsync();
+            //return Ok(existingOrder);
+
+
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+
+            _context.SelectGuiders.Remove(existingOrder);
+
+
+
+
+            try
+            {
+                //_context.Entry(existingOrder).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok("婉拒了了了");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+                return StatusCode(500, "錯誤");
+            }
+        }
+
+
+
+
+        // 刪除被選擇的ID 的該筆收藏資料
+        //[HttpPost, ActionName("GuiderMatchDetails")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteMatch([FromQuery] int orderId, [FromQuery] int guideId, [FromQuery] int memberId)
+        //{
+        //    var existingOrder = await _context.Orderlists.FindAsync(orderId);
+
+        //    if (existingOrder == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+
+        //    if (existingOrder != null)
+        //    {
+        //        _context.SelectGuiders.Remove(existingOrder);
+
+        //        _context.FavoriteSpots.Remove(favoriteSpot);
+        //    }
+
+
+
+
+
+        //    existingOrder.OrderId = orderId;
+        //    existingOrder.MemberId = memberId;
+        //    existingOrder.GuiderId = guideId;
+
+
+        //    _context.Orderlists.Remove(existingOrder);
+
+        //    await _context.SaveChangesAsync();
+        //    //return RedirectToAction("UserCollect", "Members");
+        //    return Redirect("/Members/UserCollect");
+
+        //}
+
+
+
+
+
+
+
+
 
 
 
