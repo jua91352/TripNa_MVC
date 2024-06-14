@@ -10,11 +10,11 @@
 }
 else if (ViewData["FilteredCount"] != null)
 {
-	<div>共有 @ViewData["FilteredCount"] 項結果</div>
+	<div style="margin-left:46%; color:darkslateblue;">共有 @ViewData["FilteredCount"] 項結果</div>
 }
 else
 {
-	<div>共有 @ViewData["SearchCount"] 項結果</div>
+	<div style="margin-left:46%; color:darkslateblue;">共有 @ViewData["SearchCount"] 項結果</div>
 	@* <div>總共有 @ViewData["TotalCount"] 條記錄</div> *@
 }
 <br />
@@ -28,19 +28,10 @@ else
 			<div class="card" style="width:24rem;height:400px;  box-shadow: 0 3px 10px rgb(0,0,0,.2);">
 
 
-				@* <img src="@Url.Content(img)" class="img-fluid h-100 rounded-start" alt="Alternate Text" height:100px; style="max-height:250px; position:relative;" />
-			<div class="img-overlay">
-
-
-			<a href="@img" title="查看較大的圖片" class="ui-icon ui-icon-zoomin"><span class="zoom-icon">&#128269;</span></a>
-			</div>
-
-
-			*@
-
 				<div class="img-container">
 					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" />
-					<div class="img-overlay">
+                    <div class="img-overlay">
+						
 						<span class="zoom-icon">&#128269;</span>
 					</div>
 				</div>
@@ -50,10 +41,13 @@ else
 				<div class="card-body" style="overflow:auto;">
 
 
-					<span class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
+					<span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
 
+					<div class="d-flex align-items-center">
+						<h4 class="card-title" style="font-weight:800; font-size:1.2rem; margin-right: 0;">@spots.SpotName</h4>
 
-					<h4 class="card-title" style="font-weight:800; font-size:1.2rem;">@spots.SpotName</h4>
+						<img src="/_img/S1_Car.png" alt="Alternate Text" height="55px" width="55px" />
+					</div>
 					<h5 class="card-title">@spots.SpotCity</h5>
 					@* <h5 class="card-title" style="font-weight:800;">@spots.SpotName</h5> *@
 					@* <p class="card-text">@spots.SpotBrief</p> *@
@@ -67,6 +61,14 @@ else
 
 
 <style>
+
+	.d-flex {
+		display: flex;
+	}
+
+	.align-items-center {
+		align-items: center;
+	}
 	.card-text, .card-title {
 		font-size: .8rem;
 	}
@@ -208,3 +210,43 @@ else
 		});
 	});
 				</script> *@
+
+	
+
+<script>
+
+
+	function SOPTLIKE(x) {
+
+		var spotId = $(x).data('spot-id');
+		var isFavorite = $(x).hasClass('favorited');
+
+
+
+		$.ajax({
+			url: '/Home/ToggleFavorite',
+			type: 'POST',
+			data: {
+				spotId: spotId,
+				isFavorite: isFavorite
+			},
+			success: function (response) {
+				if (response.success) {
+					// 切換收藏按鈕的狀態
+					var $btn = $('.favorite-btn[data-spot-id="' + spotId + '"]');
+					$btn.toggleClass('favorited');
+
+
+				} else {
+					// 處理錯誤
+					alert(response.message);
+				}
+			},
+			error: function (xhr, status, error) {
+				// 處理錯誤
+				console.error(error);
+			}
+		});
+	}
+
+			</script>
