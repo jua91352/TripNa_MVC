@@ -96,6 +96,7 @@ namespace TripNa_MVC.Controllers
 
             try
             {
+
                 if (dataToSend.Itinerary == null)
                 {
                     dataToSend.Itinerary = new Itinerary(); // 初始化 Itinerary 對象
@@ -144,6 +145,8 @@ namespace TripNa_MVC.Controllers
             
             try
             {
+                Console.WriteLine("Entering CreateOrder method.");
+
                 if (newOrder == null)
                 {
                     newOrder = new Orderlist(); // 初始化 Orderlist 列表
@@ -153,8 +156,15 @@ namespace TripNa_MVC.Controllers
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
                 var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
                 string orderDate = DateTime.UtcNow.Date.ToString("yyyy-MM-dd");
-                string orderNumber = DateTime.UtcNow.Date.ToString("yyMMdd") + member.MemberId + TempData["ItineraryID"];
+                string orderNumber = DateTime.UtcNow.Date.ToString("MMdd") + member.MemberId.ToString("00") + TempData["ItineraryID"].ToString();
                 decimal orderTotalPirce = 0;
+
+                if (TempData["DayCount"] == null)
+                {
+                    Console.WriteLine("DayCount is missing in TempData.");
+                    return BadRequest("DayCount is missing in TempData.");
+                }
+
                 if (TempData["DayCount"].ToString() == "一")
                 {
                     orderTotalPirce = 2000M;
@@ -165,6 +175,7 @@ namespace TripNa_MVC.Controllers
                 {
                     orderTotalPirce = 5400M;
                 }
+
                 if (!ModelState.IsValid)
                 {
                     // Log ModelState errors
@@ -177,14 +188,16 @@ namespace TripNa_MVC.Controllers
                     }
                     return BadRequest("Invalid itinerary data"); // Or a more specific error message
                 }
+
                 if (newOrder != null )
                 {
+                    Console.WriteLine("Preparing to create a new order.");
                     // 設置訂單日期和狀態
 
-                    newOrder.MemberId = member.MemberId; // You need to dynamically set this value
+                    newOrder.MemberId = member.MemberId; 
                     newOrder.ItineraryId = (int)TempData["ItineraryID"];
                     newOrder.OrderDate = DateTime.Parse(orderDate);
-                    newOrder.OrderNumber = int.Parse(orderNumber);
+                    newOrder.OrderNumber = orderNumber;
                     newOrder.OrderStatus = "尚未出發";
                     newOrder.OrderMatchStatus = "媒合中";
                     newOrder.OrderTotalPrice = orderTotalPirce;
@@ -345,9 +358,43 @@ namespace TripNa_MVC.Controllers
             return View(guideList);
         }
 
-        // 徐庭軒加的---------------------------
 
-        public IActionResult Spot(string memberEmail)
+        [HttpPost]
+        public IActionResult SubmitSelectedGuiders(List<int> guiderIds)
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var lastOrder = _context.Orderlists
+            .Where(o => o.MemberId == member.MemberId)
+            .OrderByDescending(o => o.OrderId)
+            .FirstOrDefault();
+
+            if (guiderIds == null || !guiderIds.Any())
+            {
+                return BadRequest("No guiders selected.");
+            }
+
+            foreach (var guiderId in guiderIds)
+            {
+                var selectedGuider = _context.SelectGuiders.FirstOrDefault(sg => sg.GuiderId == guiderId);
+                selectedGuider = new SelectGuider 
+                    {
+                        OrderId = lastOrder.OrderId,
+                        MemberId = member.MemberId,
+                        GuiderId = guiderId 
+                    };
+                _context.SelectGuiders.Add(selectedGuider);
+                
+            }
+
+            _context.SaveChanges();
+            return Ok();
+        }
+
+		// 徐庭軒加的---------------------------
+
+		public IActionResult Spot(string memberEmail)
         {
 
             var query = from o in _context.Spots

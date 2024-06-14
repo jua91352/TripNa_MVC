@@ -633,12 +633,13 @@
                         MemberId: 0,
                         ItineraryId: 0,
                         OrderDate: date1,
-                        OrderNumber: 0,
+                        OrderNumber: "",
                         OrderStatus : "尚未出發",
                         OrderMatchStatus : "媒合中",
                         OrderTotalPrice : 0
                     };
                     console.log(newOrder);
+
                     $.ajax({
                         type: "POST",
                         url: "/Home/CreateOrder",

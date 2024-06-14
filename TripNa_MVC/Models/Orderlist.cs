@@ -18,7 +18,7 @@ public partial class Orderlist
 
     public int ItineraryId { get; set; }
 
-    public int? OrderNumber { get; set; }
+    public string? OrderNumber { get; set; }
 
     public DateTime OrderDate { get; set; }
 

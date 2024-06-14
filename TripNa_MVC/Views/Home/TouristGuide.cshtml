@@ -84,6 +84,7 @@
     </div>
 </div>
 <br>
+
 <div id="card-container">
     @foreach (var guider in Model)
     {
@@ -101,7 +102,7 @@
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" onclick="selectGuider('@guider.GuiderId', this.checked)">
+                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)">
             </div>
         </div>
     }
@@ -109,9 +110,10 @@
 <br>
 <div class="row justify-content-center m-3">
     <div class="col-8"></div>
-    <button class="btn btn-primary col-1 text-center rounded shadow m-3">下單去</button>
+        <button type="button" class="btn btn-primary col-1 text-center rounded shadow m-3" onclick="submitSelectedGuiders()">下單去</button>
     <div class="col-2"></div>
-</div>
+	</div>
+
 <br>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -154,6 +156,32 @@
         window.location.href = url;
     }
 
+    var selectedGuiderIds = [];
 
+    function selectGuider(guiderId, isChecked) {
+        if (isChecked) {
+            selectedGuiderIds.push(guiderId);
+        } else {
+            selectedGuiderIds = selectedGuiderIds.filter(id => id !== guiderId);
+        }
+        console.log("Selected Guider Ids:", selectedGuiderIds);
+    }
+
+    function submitSelectedGuiders() {
+
+        $.ajax({
+            url: ("/Home/SubmitSelectedGuiders"),
+            type: 'POST',
+            data: {
+                guiderIds: selectedGuiderIds
+            },
+            success: function (response) {
+                console.log('Successfully updated guider selection.');
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating guider selection:', error);
+            }
+        });
+    }
 
 </script>
