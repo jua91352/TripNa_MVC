@@ -636,38 +636,117 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult MemberCheckOut(int orderID)
         {
-            //var memberEmail = HttpContext.Session.GetString("memberEmail");
-            //if (string.IsNullOrEmpty(memberEmail))
-            //{
-            //    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
-            //}
 
-            //var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
 
-            return View();
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+
+
+            var latestOrder = _context.Orderlists
+                             .Where(o => o.MemberId == member.MemberId)
+                             .OrderByDescending(o => o.OrderId)
+                             .Select(o => o.OrderId)
+                             .FirstOrDefault();
+
+
+            var newOrder = (from o in _context.Orderlists
+                        join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                        join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
+                        join s in _context.Spots on id.SpotId equals s.SpotId
+                        join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+
+                        from c in couponGroup.DefaultIfEmpty()
+                        where o.MemberId == member.MemberId && o.OrderId == latestOrder
+                            orderby o.OrderId descending
+
+                        select new
+                        {
+                            o.OrderId,
+                            o.MemberId,
+                            o.OrderNumber,
+                            o.OrderDate,
+                            c.CouponCode,
+                            o.OrderTotalPrice,
+                            i.ItineraryId,
+                            i.ItineraryName,
+                            i.ItineraryStartDate,
+                            i.ItineraryPeopleNo,
+                            s.SpotId,
+                            s.SpotName,
+                            s.SpotCity,
+                            id.VisitOrder,
+                            id.ItineraryDate                         
+                        }).ToList();
+
+
+            // 查詢會員的所有優惠券
+            var memberCoupons = _context.Coupons
+                .Where(c => c.MemberId == member.MemberId)
+                .ToList();
+
+
+            var order = new OrderDetail
+            {
+                Orders = newOrder.Select(o => new Orderlist
+                {
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderId = o.OrderId,
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
+                    },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+                    },
+                    Spots = new Spot
+                    {
+                        SpotId = o.SpotId,
+                        SpotCity = o.SpotCity,
+                        SpotName = o.SpotName
+                    },
+                    ItineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = o.ItineraryId,
+                        VisitOrder = o.VisitOrder,
+                        ItineraryDate = o.ItineraryDate
+                    }
+                }).ToList(),
+                MemberCoupons = memberCoupons,  // 添加會員的所有優惠券
+                MemberId = member.MemberId,
+                OrderId = orderID
+            };
+
+            return View(order);
 
         }
 
+        //判斷該會員是否真的有該筆優惠券
+        [HttpPost]
+        public IActionResult ValidateCoupon(string couponCode, int memberId, decimal orderTotal)
+        {
+            var coupon = _context.Coupons
+                .FirstOrDefault(c => c.MemberId == memberId && c.CouponCode == couponCode);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if (coupon != null)
+            {
+                // 這裡假設優惠券金額是固定的 50 元，您可以根據實際情況進行調整
+                return Json(new { isValid = true, discountAmount = 50m });
+            }
+            else
+            {
+                return Json(new { isValid = false });
+            }
+        }
 
 
 

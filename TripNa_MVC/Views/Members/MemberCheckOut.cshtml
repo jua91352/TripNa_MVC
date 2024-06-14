@@ -1,7 +1,26 @@
-﻿
+﻿@model TripNa_MVC.Models.OrderDetail
+
+
 @{
     ViewData["Title"] = "MemberCheckOut";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var neworder = Model.Orders.FirstOrDefault();
+
+    var cooupon = Model.MemberCoupons.ToList();
+
+
+    // var cooupon = Model.Coupons.ToList();
+
+    // var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
+
+    string p = ".jpg";  
+    var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
+    var displayedSpotNames = new HashSet<string>();
+    int spotCount = 0;
+    int currentDay = 1; // 記錄當前天數
+    bool isNewOrder = true; // 標記是否為新訂單
+    string previousItineraryName = string.Empty; // 記錄上一個訂單的行程名稱
+    var displayedDays = new HashSet<string>(); // 記錄已顯示過的天數
 }
 
 
@@ -33,7 +52,82 @@
       margin-right: 5px;
       text-align: center;
     }
+
+
+
+    
+.popup-wrap {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  content: '';
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.popup-box {
+  width: 50%;
+  padding: 50px 75px;
+  transform: translate(-50%, -50%) scale(0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  background: #fff;
+}
+
+h2 {
+  font-size: 60px;
+  text-align: left;
+  margin-bottom: 50px;
+  color: #1a1a1a;
+}
+
+h3 {
+  font-size: 35px;
+  color: #888;
+  text-align: center;
+
+}
+
+.close-btn {
+  width: 65px;
+  height: 65px;
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 100%;
+  background: #d75f70;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  font-size: 35px;
+  text-align: center;
+
+}
+
+.transform-in, .transform-out {
+  display: block;
+  -webkit-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+}
+
+.transform-in {
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.transform-out {
+  -webkit-transform: translate(-50%, -50%) scale(0.5);
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
   </style>
+
 
 
 
@@ -52,90 +146,237 @@
     <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow text-center">
 
 
+         <table id="listtable" class="table table-striped table-hover">
+
+                <thead>
+                    <tr id="trTitle">
+                        <th class="text-center" style="width:150px">
+                            產品名稱
+                        </th>
+                        <th class="text-center">
+                            地區
+                        </th>
+                        <th class="text-center">
+                            出發日期
+                        </th>
+                        <th class="text-center">
+                            天數
+                        </th>
+                        <th class="text-center">
+                            人數
+                        </th>                      
+                    </tr>
+                </thead>
 
 
-        <p class="col-3 ">產品名稱</p>
-        <p class="col-2 ">地區</p>
-        <p class="col-3">出發日期</p>
-        <p class="col-2">天數</p>
-        <p class="col-2">人數</p>
+                <tbody>
+                  @*   @foreach (var order in Model.Orders)
+                    { *@
+                        <tr id="trContent align-middle">
+                       
+                            
+                        <td class="text-center align-middle" width="100px">                           
+                                @neworder.Itinerary.ItineraryName
+                        </td>
 
-        <hr>
-
-        <p class="col-3 ">台中一日遊</p>
-        <p class="col-2 ">台中</p>
-        <p class="col-3">2024/04/15</p>
-        <p class="col-2">2</p>
-        <p class="col-2">1</p>
-
-
-        <div class="row">
+                       
+                        <td class="text-center align-middle" width="100px">
+                                @neworder.Spots.SpotCity
+                        </td>
 
 
-            <div class="col-3">
+                            <td class="text-center align-middle" width="100px">
+                                @(neworder.ItineraryDetail.ItineraryDate.ToString("yyyy/MM/dd"))
+                        </td>
+              
+                     @{
+                            if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "一日遊")
+                            { 
+                            <td class="text-center align-middle" width="100px">                          
+                            1
+                             </td>
+                           }  
 
-                <img src="./_img/journey/cvnmiwjfbm5.jpg" height="100px " width="100px">
-                <br>
-                知高圳步道
-            </div>
+                             else if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "二日遊")
+                            { 
+                            <td class="text-center align-middle" width="100px">                          
+                            2
+                             </td>
+                           }  
+
+                            else if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "三日遊")
+                            { 
+                            <td class="text-center align-middle" width="100px">                          
+                            3
+                             </td>
+                           }  
+                     }
+
+                            <td class="text-center align-middle" width="100px">
+                                @neworder.Itinerary.ItineraryPeopleNo
+                        </td>
+
+                           
+                    </tr>
+                   
 
 
-            <div class="col-3">
-                <img src="./_img/journey/TC-2.jpg" height="100px " width="100px">
-                <br>
-                筏子溪
-            </div>
+                          @foreach (var order in Model.Orders)
+            {
+                             if (isNewOrder || order.Itinerary.ItineraryName != previousItineraryName)
+                             {
+                                 currentDay = 1;
+                                 isNewOrder = false;
+                                 previousItineraryName = order.Itinerary.ItineraryName;
+                                 displayedDays.Clear(); // 清空已顯示過的天數
+                             }
+                            
+                             string dayString = $"Day {currentDay}"; // 構造當前天數字符串
+                           
+                            if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "一日遊")
+                            {
+                                if (spotCount % 4 == 0)
+                             {
+                                 @:</tr><tr>
+                                 if (!displayedDays.Contains(dayString))
+                                 {
+                                     @:<td class="align-middle text-center">@dayString</td>
+                                     displayedDays.Add(dayString);
+                                 }
+                             }
+                                  spotCount++;
 
-            <div class="col-3">
-                <img src="./_img/journey/TC-beer.jpg" height="100px " width="100px">
-                <br>
-                啤酒觀光工廠
+                                @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
 
-            </div>
 
 
-            <div class="col-3">
-                <img src="./_img/journey/TC-gu.jpg" height="100px " width="100px">
-                <br>
-                聚奎居
-            </div>
 
-        </div>
+                            }
+                            else if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "二日遊")
+                            {
+                                 if (spotCount % 4 == 0)
+                              {
+                                  @:</tr><tr>
+                                  if (!displayedDays.Contains(dayString))
+                                  {
+                                      @:<td  class="align-middle text-center">@dayString</td>
+                                      displayedDays.Add(dayString);
+                                  }
+                                  currentDay++;
+                              }
+                                  spotCount++;
 
-        <hr>
+                                 @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
+                            }
+                            else if (@neworder.Itinerary.ItineraryName.Substring(2, 3) == "三日遊")
+                            {
+                             if (spotCount % 4 == 0)
+                              {
+                                  @:</tr><tr>
+                                  if (!displayedDays.Contains(dayString))
+                                  {
+                                      @:<td  class="align-middle text-center">@dayString</td>
+                                      displayedDays.Add(dayString);
+                                  }
+                                  currentDay++;
+                              }
+                                  spotCount++;
+
+                                @if (!displayedSpotNames.Contains(order.Spots.SpotName))
+                                {
+                                   <td class="text-center  align-middle  ">
+                                    <br>
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <br>
+                                    <p>@order.Spots.SpotName</p>
+                                    </td>                         
+                                    displayedSpotNames.Add(order.Spots.SpotName);
+                                }
+                            }
+            }
+
+                </tbody>
+            </table>
+
+
+
+
+
         <span class=" text-start" style="padding-right:18px;">
             使用優惠券
-            <input type="text" value="輸入折扣碼">
-            <input type="button" value="使用" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">
+
+            <input type="text" id="couponInput"  placeholder="輸入折扣碼">
+
+            <input type="button" id="useCouponBtn" value="使用" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">
         </span>
-        <a href="" class=" text-start" style="text-decoration: none;">查看優惠券</a>
+
+        <a class=" popup-btn text-start"style="text-decoration: none;" href="#letmeopen">查看優惠券</a>
+          
+
+
+        <div class="popup-wrap" id="letmeopen">
+        <div class="popup-box transform-out">
+          <h2>選擇優惠券</h2>
+
+
+          
+@foreach ( var c in cooupon)
+{
+    <h3 class="text-center" style="color: #4e5482;">
+            優惠碼: <span>@c.CouponCode</span>
+     <span class="bi bi-clipboard" id="copyimg" onclick="copyCode(this)" style="cursor: pointer;"></span>        
+    
+    </h3>
+
+      <h3 class="text-center" style="color: #4e5482;">期限:@c.CouponDueDate</h3>
+
+          }
+
+          <a class="close-btn popup-close" href="#">x</a>
+
+        </div>
+      </div>
+
         <br>
         <br>
 
         <hr>
 
         <br>
-        <span class=" text-end" style="padding-right:18px;">
-            訂單小計 NT$2,000 -優惠券 NT$0 = 總額 NT$
-            <span style="color: #c20d0d;">2,000</span>
-
-        </span>
+       <span class="text-end" style="padding-right:18px;">
+    訂單小計 NT$<span id="subtotal">@neworder.OrderTotalPrice.ToString("N0")</span> 
+    -優惠券 NT$<span id="discountAmount">0</span> = 總額 NT$
+    <span id="totalAmount" style="color: #c20d0d;">@neworder.OrderTotalPrice.ToString("N0")</span>
+</span>
     </div>
 </div>
 
 
-
-
-
-
-
-         <form action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+      <form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
          
              <input type="hidden" name="MerchantID" value="3002607">
-             <input type="hidden" name="MerchantTradeNo" value="TT3456">
-             <input type="hidden" name="MerchantTradeDate" value="2024/06/15 12:12:12">
+             <input type="hidden" name="MerchantTradeNo" value="@neworder.OrderNumber">
+             <input type="hidden" name="MerchantTradeDate"  id="orderTime"  value="">
              <input type="hidden" name="PaymentType" value="aio">
-             <input type="hidden" name="TotalAmount " value="20000">
+             <input type="hidden" name="TotalAmount id="totalAmountInput"   value="">
              <input type="hidden" name="ItemName" value="TAIPEI">
              <input type="hidden" name="ReturnURL" value="http://localhost:5226/members/MemberCheckOut">
              <input type="hidden" name="ChoosePayment" value="ALL">
@@ -143,33 +384,110 @@
              <input type="hidden" name="EncryptType" value="1">
          
          
-         
              <input type="submit" value="結帳" id="submit" style="display:none;">
 
-</form>
-
+</form> 
+ 
 
 
 </div>
 
 <div class="d-flex justify-content-center">
-    <button  type="submit" class="btn  mb-5" id="confirmOrder" style="background-color: #4e5482 ;color: #e8eafe;">結帳去→</button>
+    <button  type="button" class="btn  mb-5" id="confirmOrder" style="background-color: #4e5482 ;color: #e8eafe;">結帳去→</button>
 </div>
 
 
 <script>
 
+ //點擊優惠碼的彈跳視窗
+$(".popup-btn").click(function() {
+  var href = $(this).attr("href")
+  $(href).fadeIn(250);
+  $(href).children$("popup-box").removeClass("transform-out").addClass("transform-in");
+  e.preventDefault();
+});
 
-    // document.getElementById("submit").addEventListener((this) => {
-    //     this.submit();
-    // })
+$(".popup-close").click(function() {
+  closeWindow();
+});
 
+function closeWindow(){
+  $(".popup-wrap").fadeOut(200);
+  $(".popup-box").removeClass("transform-in").addClass("transform-out");
+  event.preventDefault();
+}
+
+
+//點擊ICON複製優惠碼
+function copyCode(element) {
+      var couponCode = element.previousElementSibling.innerText; // 獲取優惠碼
+      navigator.clipboard.writeText(couponCode); // 將優惠碼複製到剪貼板
+      element.classList.remove("bi-clipboard"); // 刪除 clipboard 圖標 class
+      element.classList.add("bi-check2"); // 添加 check2 圖標 class
+  }
+
+
+  //確認優惠券是該用戶資料庫中的資料
+  $(document).ready(function() {
+        $('#useCouponBtn').click(function() {
+            var couponCode = $('#couponInput').val();
+            var memberId = @Model.MemberId; 
+            var orderTotal = parseFloat($('#subtotal').text().replace(/,/g, ''));
+
+            $.ajax({
+                url: '@Url.Action("ValidateCoupon", "Members")', 
+                type: 'POST',
+                data: { couponCode: couponCode, memberId: memberId, orderTotal: orderTotal },
+                success: function(response) {
+                    if (response.isValid) {
+                        $('#discountAmount').text(response.discountAmount);
+                        var newTotal = orderTotal - response.discountAmount;
+                        $('#totalAmount').text(newTotal.toLocaleString('en-US'));
+                    } else {
+                        alert('無效的優惠券代碼');
+                    }
+                },
+                error: function() {
+                    alert('驗證優惠券時發生錯誤');
+                }
+            });
+        });
+    });
+
+
+
+
+
+    //獲取提交訂單當下的時間
+   $(document).ready(function() {
+      $('#confirmOrder').click(function() {
+        // 獲取當前時間
+        var now = new Date();
+        var formattedDate = 
+            now.getFullYear() + "/" + 
+            ("0" + (now.getMonth() + 1)).slice(-2) + "/" + 
+            ("0" + now.getDate()).slice(-2) + " " + 
+            ("0" + now.getHours()).slice(-2) + ":" + 
+            ("0" + now.getMinutes()).slice(-2) + ":" + 
+            ("0" + now.getSeconds()).slice(-2);
+
+        // 設置訂單時間
+        $('#orderTime').val(formattedDate);
+
+        // 獲取總金額（假設顯示在某個元素中）
+        var totalAmount = $('#totalAmount').text().replace(/,/g, '').trim();
+        $('#totalAmountInput').val(totalAmount);
+
+        // 提交表單
+        $('#paymentForm').submit();
+    });
+});
+
+
+
+    //按下按鈕 轉跳至綠界
     document.getElementById("confirmOrder").addEventListener("click", function () {
         document.getElementById("submit").click();
     });
 
-    // function myFunction() {
-        
-    //     document.getElementById("confirmOrder").submit();
-    // }
 </script>

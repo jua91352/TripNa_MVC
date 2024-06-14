@@ -75,7 +75,7 @@ public partial class TripNaContext : DbContext
                 .HasMaxLength(8)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.CouponFrom).HasMaxLength(24);
+            //entity.Property(e => e.CouponFrom).HasMaxLength(24);
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
             entity.HasOne(d => d.Member).WithMany(p => p.Coupons)
