@@ -2,14 +2,432 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣哪</title>
+    @* test start *@
+    @* <link rel="stylesheet" href="~/css/bootstrap.min.css"> *@
+    @* test end *@
+
+    <link href="~/css/augurio-taiwan.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
+    <!-- css -->
+    <link rel="stylesheet" href="~/css/index_new3rain.css">
+    <!-- 字體相關 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- gsap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
+    <!-- js link -->
+    <script src="~/js/index3rain.js" defer></script>
+    <script src="~/js/augurio-taiwan.min.js"></script>
+    <!-- jquery -->
+    <script src="~/js/jquery-3.7.1.js"></script>
+    <!-- bootstrap -->
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<section>
+    <div class="background-color">
+        <canvas id="canvas" style="position: absolute; height: 100%; width:100%; "></canvas>
+    </div>
+    <!-- Container 101背景 start -->
+
+    <section>
+        <div class="bgi"
+             style="height: 900px;  background-size: cover ;">
+            <img src="~/_img/index/taipei101.jpeg" alt="Alternate Text" />
+        </div>
+    </section>
+    <!-- 背景雲朵 -->
+    @*  <div class="cloud-container" id="parallax">
+    <div class="cloud">
+    <img src="~/_img/index/cloud.png" alt="">
+    </div>
+    </div> *@
+    <!-- SVG台灣圖 -->
+    <div class="Taiwans">
+        <svg width="750" height="600" style="position: absolute; " id="taiwans"></svg>
+    </div>
+    <!-- 右邊API INFO -->
+    <div class="weatherinfo">
+        <!-- 城市名稱 -->
+        <div class="p-2 d-flex flex-fill myb-1">
+            <div class="h-100 p-2 flex-fill bd-heighlight">
+                <span class="country" id="country"></span>
+            </div>
+        </div>
+        <div class="w-100  d-flex flex-row myb-2">
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info1">
+                <!-- 日期 -->
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+                </div>
+                <!-- 天氣ICON -->
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+                </div>
+                <!-- 溫度 -->
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <!-- 降雨機率 -->
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <i class="icon-umbrella">
+                            <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                        </i>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info2">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info3">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info4">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info5">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info6">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="p-2 w-55 flex-fill bd-heighlight" id="info7">
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="dateline"></span>
+
+                </div>
+                <!-- <div class="p-2 d-inline-block flex-fill bd-heighlight" style="width: 100%;height: 15%">
+                    <span class="time"></span>
+
+                </div> -->
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="weather-icon" style="width: 50px;height: 50px; object-fit:contain;"></span>
+
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="temp">
+                        <i class="low"></i>
+                        <sup class="start"></sup>
+                        <i class="height"></i>
+                        <sup class="end"></sup>
+                    </span>
+                </div>
+                <div class="p-2 d-inline-block flex-fill bd-heighlight">
+                    <span class="rain">
+                        <span class="rain">
+                            <i class="icon-umbrella">
+                                <img src="~/_img/index/雨傘.svg" alt="https://699pic.com/copyright.html">"10%"
+                            </i>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- TABLE START 熱門景點 -->
+        <div class="p-2 w-100 h-50 p d-flex flex-row">
+            <div class="p-2 flex-fill bd-heighlight " id="info8">
+                <table class="table table-striped" style="width: 200px;">
+                    <thead>
+                        <tr>
+                            <th id="pop" colspan="2" class="table-success">推薦行程</th>
+                            <!-- 将 "熱門行程" 单元格合并到下一个空的单元格中 -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="cityTd" class="table-primary">台北市</td>
+                        </tr>
+                        <tr>
+                            <td class="table-success">
+                                <span class="top">TOP1:逢甲一日遊</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-primary">
+                                <span class="top">TOP1:逢甲二日遊</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-success">
+                                <span class="top">TOP1:逢甲三日遊</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-primary">
+                                <span class="top">TOP1:逢甲四日遊</span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-success">
+                                <span class="top">TOP1:逢甲五日遊</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- picture slider start -->
+            <div class="container" id="info9">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner" style="align-items: center; justify-content: center;">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                <div class="p-2 col-md-6 h-100 position-relative" id="picture1"> 
+                                    <img src="~/_img/index/下載.jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(1)九份</p>
+                                </div>
+                                <div class="p-2 col-md-6 h-100 position-relative">
+                                    <img src="~/_img/index/下載 (1).jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(2)九份</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <div class="p-2 col-md-6 h-100 position-relative">
+                                    <img src="~/_img/index/下載.jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(3)九份</p>
+                                </div>
+                                <div class="p-2 col-md-6 h-100 position-relative">
+                                    <img src="~/_img/index/下載 (1).jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(4)九份</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <div class="p-2 col-md-6 h-100 position-relative">
+                                    <img src="~/_img/index/下載.jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(5)九份</p>
+                                </div>
+                                <div class="p-2 col-md-6 h-100 position-relative">
+                                    <img src="~/_img/index/下載 (1).jpg" class="d-block w-100" alt="Forest">
+                                    <button class="heart">&#9825;</button>
+                                    <p style="background-color: aliceblue;">(6)九份</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <div class="hamburger-menu" id="hamburgerMenu">
+                    <div class="hamburger-icon">&#9776;</div>
+                    <div class="note" id="noteContent">
+                        <div class="row" id="note-content">
+                            <!-- 动态添加的项目清单会放在这里 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- picture slider end -->
+            <!-- Bootstrap JS -->
+
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+            @*  <a href="#" class="page-top" id="page-top">
+            <img src="~/_img/index/晴天娃娃.png" alt="">
+            <p>TOP</p>
+            </a> *@
+
+        </div>
+    </div>
+    <!-- <div class="rainboy">
+        <img src="/4405.png_300.png" alt="" id="rainboy" z-index="20">
+    </div> -->
+    <!-- pageTop -->
+    <a href="#" class="page-top" id="page-top">
+        <img src="~/_img/index/晴天娃娃.png" alt="">
+        <p>TOP</p>
+    </a>
+   
+
+</section>
 
 
-<p>123132132</p>
+<script>
 
-<img src="~/_img/未命名.png" />
+    document.addEventListener("DOMContentLoaded", function () {
+        // 獲取元素
+        var element = document.getElementById('page-top');
+
+        // 監聽點擊事件
+        element.addEventListener("click", function () {
+            // 觸發GSAP動畫
+            gsap.to('#page-top img', {
+                y: 100,
+                duration: 1,
+                repeat: 1,
+                yoyo: true
+            });
+            gsap.to('#page-top p', {
+                y: 100,
+                duration: 1,//持續時間
+                repeat: 1,
+                yoyo: true
+            });
+            // 在控制台輸出消息
+            console.log("點擊事件觸發");
+
+            // 一次性移除點擊事件監聽器，避免動畫重複觸發
+            // element.removeEventListener("click", arguments.callee);
+        });
+
+    });
+
+
+</script>
+
 
 
