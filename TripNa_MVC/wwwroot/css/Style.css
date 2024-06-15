@@ -80,12 +80,12 @@ body {
 
 .weather-head {
     letter-spacing: 3px;
-    padding-top: 150px;
+    padding-top: 10px;
     padding-bottom: 0px;
     padding-left: 300px;
     padding-right: 60px;
     /*text-align: center;*/
-    /*background-image: linear-gradient(135deg,white,#ebecfd);*/
+    background-image: linear-gradient(135deg,white,#ebecfd);
     border-bottom: 1px solid rgba(0,0,0,0.7);
     width: 40%;
     /*margin-bottom:500px;*/
@@ -93,7 +93,7 @@ body {
     /*clip-path: polygon(15% 0,100% 0,85% 100%,0 100%);*/
     /* 將 margin-left 和 margin-bottom 改為 margin */
     /*box-shadow: 0 3px 10px rgb(0,0,0,.8);*/
-    font-weight: 600;
+    /*font-weight: 600;*/
     color: #2d314e;
 }
 
@@ -571,6 +571,8 @@ body {
     margin-bottom: 40px;
     background-image: linear-gradient(135deg,#cf7688,#cdcfee);
     padding-left: 270px;
+    padding-top: 50px;
+    padding-bottom: 40px;
     clip-path: polygon(0 0,100% 0,100% 90%,0 100%);
 }
 
@@ -1046,41 +1048,43 @@ footer {
         }
 
 #exploration {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     text-align: center;
     margin-bottom: 50px;
     z-index: 1;
-    background-image: linear-gradient(135deg,#e8eafe,#747acc80);
-    border: 5px solid rgb(255, 255, 255);
-    width: 20%;
-    /*clip-path: polygon(0 0,100% 0,85% 100%,0 100%);*/
+    background-image: linear-gradient(135deg, #8c3c3c52, #999cc591);
+    /* border: 5px solid rgb(255, 255, 255); */
+    width: 320px;
+    /* clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); */
     margin-left: 40%;
-    box-shadow: 0 3px 10px rgb(0,0,0,.8);
-    font-weight: 600;
-    color: #3f456e;
+    box-shadow: 4px 4px 5px rgb(0, 0, 0, .8);
+    /* font-weight: 600; */
+    color: #ffffff;
     font-size: 2rem;
+    letter-spacing: 2.5px;
 }
 
 #exploration_road {
     top: 55px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     /*margin: 1.5rem auto;*/
     margin-bottom: 300px;
     text-align: center;
     z-index: 1;
-    background-image: linear-gradient(135deg,#ffffff46,#ffffff2a);
+    background-image: linear-gradient(135deg,#ffffff46, #0000002a);
     /*border: 5px solid rgb(255, 255, 255);*/
     width: 30%;
     /*clip-path: polygon(0 0,100% 0,85% 100%,0 100%);*/
     /*margin-left: 40%;*/
     box-shadow: 0 3px 10px rgb(0,0,0,.8);
-    font-weight: 600;
+    /*font-weight: 600;*/
     color: white;
     font-size: 2rem;
-    margin-left: 31%;
+    margin-left: 32%;
     position: absolute;
+    letter-spacing: 2.5px;
 }
 
 
