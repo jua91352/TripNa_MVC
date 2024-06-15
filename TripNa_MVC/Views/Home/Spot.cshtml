@@ -79,90 +79,25 @@
 
 
     <div class="col-sm-2 text-center"></div>
-@* 
-    <br>
-    <div class="container-fluid px-0 ">
-
-
-        <div class="row row-cols-1">
-            <div class="col">
-                <div class="col fixed-top"> *@
-                    <!-- 固定上方 -->
-
-                    @* <nav class="navbar navbar-expand-sm " id="head" ;>
-                        <img src="/images/logo.png" alt="" width="300px;">
-                        <div class="container-fluid justify-content-end  px-0"> *@
 
 
 
-
-
-                            <!-- 頁首 -->
-                    @*         <ul class="navbar-nav ">
-
-                                <li class="nav-item nav-travel">
-                                    <a class="nav-link" asp-area="" asp-controller="Travel" asp-action="weather">旅遊資訊</a>
-                                    <ul class="nav-intro">
-                                        <li><a class="nav-link_1" asp-area="" asp-controller="Spots" asp-action="Index">景點介紹</a></li></br>
-                                        <li><a class="nav-link_1" asp-area="" asp-controller="Travel" asp-action="Index">美食導覽</a></li>
-                                    </ul>
-                                </li>
-
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">自訂行程</a>
-                                </li>
-
-
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">會員登入</a>
-                                </li>
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link" href="#">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </nav>
-
-                </div> *@
-
-
-
-    @*     <div id="topIcon" >
-
-                <div class=" text-center"></div>
-
-                <div class="text-center">
-                <a href="myorder.html"><img src="~/_img/png/myorder.png" alt=""></a>
-                <a href="mycoupon.html"><img src="~/_img/png/coupon.png" alt=""></a>
-                <a href="mycollect.html"><img src="~/_img/png/likelist.png" alt=""></a>
-                <a href="/mydata.html"><img src="~/_img/png/mydata.png" alt=""></a>
-                <a href="/sign.html"><img src="~/_img/png/sign.png" alt=""></a>
-                </div>
-
-
-                <div class="text-center"></div>
-
-                </div>
-                <hr style='background-color:#3A326D; height:1px; border:none;'> *@
-
-
-                <div id="food-guide" style="width:95%; margin-top:8rem;">
+	<div id="food-guide" style="width:95%; margin-top:3rem;padding-top:12rem;">
+		
                     <div class="guide-content">
 			<h2>景點介紹</h2>
+			<img src="/_img/S4_Travelling_by_Сar-removebg-preview.png" alt="Alternate Text" width="350px" height="300px" style="position:absolute;top:-60px;left:30px;" />
+                        <img src="/_img/sleeping-dog-with-cloud.png" alt="Alternate Text" style="position:absolute;bottom:0;" width="300px" height="300px"/>
+		
             <hr style="color:black;" />
-			<img src="/_img/S1_Car.png" id="car" alt="Alternate Text"  style="position:absolute;"/> 
+			@* <img src="/_img/S1_Car.png" id="car" alt="Alternate Text"  style="position:absolute;"/>  *@
                         <br />  <br />
-
+           
                     </div>
 
 
                     <form asp-action="spot" method="get">
-                        <div class="form-actions no-color" style="margin-left:20px;">
+                        <div class="form-actions no-color" style="margin-left:100px;">
                             <p style="width:auto;">
 
                                 <input type="text" name="SearchString" @* value="@ViewData["CurrentFilter"]" *@ placeholder="開始探索景點" id="search" />
@@ -199,11 +134,11 @@
 
 
         <div style="position:relative;">
-            <img src="/_img/S1_Car.png" id="car_2" alt="Alternate Text" style="position:absolute;" />
-                    <p id="topic">精選主題</p>
-        
+            @* <img src="/_img/S1_Car.png" id="car_2" alt="Alternate Text" style="position:absolute;" /> *@
+			<h2 id="topic">精選主題</h2>
+            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:-5px;" />
         <ul id="selectedregion-spot_topic">
-            
+				
                         <a asp-action="Spot" asp-controller="Home" asp-route-searchString="夜市">夜市</a>
                         <a asp-action="Spot" asp-controller="Home" asp-route-searchString="海洋">海邊</a>
                         <a asp-action="Spot" asp-controller="Home" asp-route-searchString="老街">老街</a>
@@ -220,11 +155,15 @@
         <div class="main" style="position:relative;">
             
             <img id="suitcase" src="/_img/旅遊素材.png" alt="Alternate Text" style="position:absolute;" />
+            <br />
+            <br />
+      
+            
                         <h2 id="spotlist">景點列表</h2>
-
+            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:130px;" />
             @* ------------------------------分頁按鈕---------------------------- *@
 
-                        <div class="btn" style="position:absolute; right:30px;top:0;margin:10px">
+                        <div class="btn" style="position:absolute; right:32px;top:190px;margin:10px">
 
                 @{
                     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -245,9 +184,10 @@
                                class="btn btn-outline-secondary @nextDisabled">
                                 <img src="/_img/arrow_forward_ios_20dp_FILL0_wght400_GRAD0_opsz20.png" width="20px" height="20px" alt="Alternate Text" style="margin-left:5px;margin-bottom:3px;" />
                             </a>
+				
                         </div>
 
-
+			
             @* ----------------------------------------------------------------------- *@
                         <ul id="spotcity-list" style="padding:10px;">
 
@@ -257,7 +197,7 @@
                         </ul>
 
 
-
+            
                     </div>
                 </div>
 
@@ -277,52 +217,8 @@
                 <div id="spotImages"></div> *@
 
 
+             
 
-
-
-                <Table>
-
-
-                    <tr>
-                        <h1>@ViewData["Message"]</h1>
-
-            @*    @foreach (var item in Model)
-                        {
-
-                        string img = @item.SpotName + ".jpg";
-
-                        <form asp-action="Spot" method="post">
-                        <input type="hidden" name="spotId" value="@item.SpotId" />
-                        <input type="hidden" name="spotName" value="@item.SpotName" />
-                        <input type="hidden" name="spotCity" value="@item.SpotCity" />
-                        <input type="hidden" name="spotIntro" value="@item.SpotIntro" />
-                        <input type="hidden" name="memberId" value="@memberId" /> <!--獲取本使用者的ID -->
-
-
-
-                        <td class="text-center" style="width: 300px;">
-                        <span class="List">
-                        <img src="~/景點圖片/@item.SpotCity/@img" width="100px" height="100px">
-                        <p>@item.SpotName</p>
-                        <p>@item.SpotIntro</p>
-                        </span>
-                        <button type="submit" class="btn btn-default btnCollect" style="background-color:#4e5482 ; color: #dee0fb"
-                        data-spot-id="@item.SpotId" data-spot-name="@item.SpotName" data-spot-city="@item.SpotCity"
-                        data-spot-intro="@item.SpotIntro" data-member-id="@memberId">
-                        <span class="bi bi-heart"></span>收藏
-                        </button>
-                        </td>
-
-                        </form> *@
-            @*  <div>
-                        <p>@item.SpotId</p>
-                        <p>@item.SpotName</p>
-                        <p>@memberId</p>
-                        </div> *@
-                        }
-                    </tr>
-
-                </Table>
 
             </div>
             <br>
@@ -330,32 +226,6 @@
             <br>
             <br>
         </div>
-
-
-
-
-
-
-  @*   @foreach (var spot in Model)
-    {
-        <div class="spot-item">
-            <h3>@spot.SpotName</h3>
-            <p>@spot.SpotCity</p>
-            <p>@spot.SpotBrief</p>
-            <button class="favorite-btn" data-spot-id="@spot.SpotId">
-                <i class="far fa-heart"></i> 收藏
-            </button>
-        </div>
-    } *@
-
-
-
-
-
-
-
-
-
 
 
 

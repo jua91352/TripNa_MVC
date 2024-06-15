@@ -10,24 +10,26 @@
 }
 else if (ViewData["FilteredCount"] != null)
 {
-	<div style="margin-left:46%; color:darkslateblue;">共有 @ViewData["FilteredCount"] 項結果</div>
+	<div style="width:contain; color:darkslateblue;padding-left:80px;">共有 @ViewData["FilteredCount"] 項結果</div>
+
 }
 else
 {
-	<div style="margin-left:46%; color:darkslateblue;">共有 @ViewData["SearchCount"] 項結果</div>
+	<div style="width:90%; color:darkslateblue;padding-left:80px;">共有 @ViewData["SearchCount"] 項結果</div>
+	
 	@* <div>總共有 @ViewData["TotalCount"] 條記錄</div> *@
 }
 <br />
 
 
-<div class="row row-cols-1 row-cols-md-3 g-4 row-cols-sm-1 g-4 row-cols-xl-3 g-4 row-cols-xxl-4 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4 row-cols-sm-1 g-4 row-cols-xl-3 g-4 row-cols-xxl-4 g-4" style="padding-left: calc(var(--bs-gutter-x)* 2);">
 	@foreach (var spots in Model)
 	{
 		string img = "/景點圖片/" + spots.SpotCity + "/" + spots.SpotName + ".jpg";
 		<div class="col">
 			<div class="card" style="width:24rem;height:400px;  box-shadow: 0 3px 10px rgb(0,0,0,.2);">
 
-
+				<img src="/_img/s1_car.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;left:0;" />
 				<div class="img-container">
 					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" />
                     <div class="img-overlay">
@@ -46,7 +48,7 @@ else
 					<div class="d-flex align-items-center">
 						<h4 class="card-title" style="font-weight:800; font-size:1.2rem; margin-right: 0;">@spots.SpotName</h4>
 
-						<img src="/_img/S1_Car.png" alt="Alternate Text" height="55px" width="55px" />
+						<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" height="55px" width="55px" />
 					</div>
 					<h5 class="card-title">@spots.SpotCity</h5>
 					@* <h5 class="card-title" style="font-weight:800;">@spots.SpotName</h5> *@
