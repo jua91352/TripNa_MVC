@@ -100,7 +100,7 @@
                         <div class="form-actions no-color" style="margin-left:100px;">
                             <p style="width:auto;">
 
-                                <input type="text" name="SearchString" @* value="@ViewData["CurrentFilter"]" *@ placeholder="開始探索景點" id="search" />
+                                <input type="text" name="SearchString"  value="@ViewData["CurrentFilter"]"  placeholder="開始探索景點" id="search" />
                                 <input type="submit" value="搜尋" class="back" /> |
                                 <a asp-action="spot" class="backserch">回到景點總覽</a>
                             </p>
@@ -136,7 +136,7 @@
         <div style="position:relative;">
             @* <img src="/_img/S1_Car.png" id="car_2" alt="Alternate Text" style="position:absolute;" /> *@
 			<h2 id="topic">精選主題</h2>
-            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:-5px;" />
+            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:5px;" />
         <ul id="selectedregion-spot_topic">
 				
                         <a asp-action="Spot" asp-controller="Home" asp-route-searchString="夜市">夜市</a>
@@ -156,14 +156,14 @@
             
             <img id="suitcase" src="/_img/旅遊素材.png" alt="Alternate Text" style="position:absolute;" />
             <br />
-            <br />
+       
       
             
                         <h2 id="spotlist">景點列表</h2>
-            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:130px;" />
+            <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:220px;top:105px;" />
             @* ------------------------------分頁按鈕---------------------------- *@
 
-                        <div class="btn" style="position:absolute; right:32px;top:190px;margin:10px">
+                        <div class="btn" style="position:absolute; right:32px;top:170px;margin:10px">
 
                 @{
                     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";

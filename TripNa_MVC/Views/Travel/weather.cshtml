@@ -1,0 +1,889 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<TripNa_MVC.Models.Restaurant>
+
+     @using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor hca
+@* @{
+
+    string memberId = hca.HttpContext.Session.GetString("memberId");
+
+
+    var distinctCities = Model.Select(m => m.SpotCity).Distinct();
+
+
+} *@
+@{
+    ViewData["Title"] = "Spot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link href="/css/Style.css" rel="stylesheet" />
+
+
+    @*
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    >>>>>>> Stashed changes
+
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script> *@
+
+
+    <!-- 字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body id="body">
+
+	<section class="banner" style="height:100%;">
+
+		<!-- <------------>
+		<div class="banner-container container auto">
+			<div class="banner-head">
+				<h1 class="title" style="color: white">趣哪的旅遊資訊<small><br>TripNa</small></h1>
+
+				<h2 class="subtitle" style="color: white">您要的所有旅遊資訊都在這</h2>
+				<p class="con_font" style="color: white">完善的旅遊規劃，都在趣哪上找到<br>提前的準備<br>為您帶來難忘的回憶</p>
+				<a href="#" class="btn">點此開始製訂行程</a>
+			</div>
+			<div class="banner-body">
+			
+				<img class="banner-img banner-img-pad" src="~/images/台灣.png" alt="" width="250px" height="545px">
+				<img class="banner-img  banner-img-mo" src="~/images/米其林.jpg" alt="">
+				<img class="banner-img banner-img-tape" src="~/images/膠帶.png" alt="" width="300px" height="300px">
+				<img class="banner-img banner-img-ph" src="~/images/森林.jpg" alt="" width="750px" height="950px">
+
+
+			</div>
+		</div>
+
+	</section>
+
+	</div>
+
+	@* ======================================================================= *@
+	<!-- 內容資訊部分 -->
+	@* <div class="container"> *@
+		<div class="row justify-content-center">
+			<!-- <div class="col-lg-8"> -->
+			<!-- <div class="row row-cols-2"> -->
+
+
+			<br><br>
+			<!-- ------------------------------天氣資訊內容 ------------------------------------------->
+			<div class="col-12 m-3">
+
+			<h1 class="weather-head">天氣資訊</h1>
+			<div class="dropdown btn-group">
+				
+				<img src="/images/S4_Sky_of_Stars-removebg-preview.png" alt="Alternate Text" width="350px" height="300px" style="position:absolute;bottom:-15px;left:550px;border-bottom:1px solid black;" />
+				
+					<button type="button" class="btn btn-outline-secondary" id="loca"></button>
+					<button class="btn btn-outline-secondary secondary  dropdown-toggle dropdown-toggle-split" type="button"
+							id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+						<!-- bootstrap設定按鈕顯示的樣式 -->
+						<span style="display: inline-block; vertical-align: middle;">
+							<span id="site"></span>  <!-- 設定按鈕顯示的文字 -->
+
+
+
+						</span>
+					</button>
+
+				
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="location-dropdown">
+					</div>
+				</div>
+				<br>
+			
+				<div id="weather-table" class="row row-cols-3">
+				
+
+					<table class="table table-bordered table-light table table-striped table-hover table align-middle" style="margin-top: 10px;margin-bottom:0; ">
+						<thead class="th" scope="">
+						</thead>
+
+						<tbody>
+
+							<tr id="time" class="table-primary text-center">
+							</tr>
+
+							<tr id="temp" class="text-center">
+							</tr>
+							<tr id="rain" class="text-center">
+							</tr>
+
+
+							<tr id="img" class="text-center">
+							</tr>
+
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		@* <div class="readMore " style="width: 200px; border-radius: 20px;padding: 12px; margin-left: 2rem;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
+		<a href="https://www.cwa.gov.tw/V8/C/" class="text-center  ">查看更多天氣資訊</a>
+		</div> *@
+
+		<br>
+
+
+
+		@* ========================================================== *@
+		<!-- ＝＝＝＝＝＝＝＝＝＝＝＝＝booystrap套版開頭＝＝＝＝＝＝＝＝＝＝＝＝＝＝ -->
+
+		<div id="roadinfo" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%), url('/images/森林.jpg');">
+			@* <img src="/images/海.jpg" alt="Alternate Text" /> *@
+
+		</div>
+
+		<div class="container" style="position:relative;">
+		<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;top:-95px;left:520px;" />
+			<h2 id="exploration_road">路況資訊&地震資訊</h2>
+		
+			<div class="row">
+
+				<div class="col-12 col-md-6">
+
+					<div class="menu">
+					</div>
+
+
+
+					<!-- 第一張卡片的 HTML 代碼 -->
+
+
+					<div class="card border-secondary mb-3" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:8.5rem;">
+						<div class="card-header bg border-light" style="font-size: 1.3rem; padding:12px;">
+							國道一號
+						</div>
+						<div class="card-body text-success " id="card-body-1">
+							@* <img src="/images/車軌.webp" alt="Alternate Text" width="478px"; height="250px"; /> *@
+							<div class="link-display"></div><br>
+							<div class="link" style="color: white; font-weight: bold;font-size: 1.6rem;display:flex;"></div>
+						</div>
+						<div class="card-footer bg-transparent border-success">北向路段</div>
+					</div>
+
+					<button class="menu-btn">選單</button>
+					<ul class="menu-content_1">
+					</ul>
+
+				</div>
+
+
+
+				<div class="col-12 col-md-6">
+					<!-- 第二張卡片的 HTML 代碼 -->
+					<div class="Eqk" style="margin-left:20px;width:32rem;margin-top:10rem;">
+					</div>
+					<button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#demo" id="btnGetOpenData">
+						近期地震資訊
+					</button>
+					<br></br>
+					<div class="container">
+						<div class="collapse show" id="collapseExample" style="max-height: 300px; overflow:auto; max-width:520px;">
+							<div id="demo" class=" bg-light">
+								<div id="btn"></div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			
+			</div>
+		<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:500px;" />
+		</div>
+
+	
+		@* ====================================================================================== *@
+		<!-------------------------------- 天氣資訊 ------------------------------------------->
+
+
+
+		<div class="col">
+			<div class="col-7  p-7 w-25 p-3">
+				<table class="table  table-bordered">
+
+
+					<thead scope="col-2">
+						<tr id="location"></tr>
+					</thead>
+
+
+					<tbody scope="col-2">
+						<tr id="temp" class="table-primary">
+						</tr>
+						<tr id="text123">
+						</tr>
+						<tr id="rain">
+						</tr>
+
+						<tr id="status">
+						</tr>
+
+						<tr id="img">
+						</tr>
+					</tbody>
+				</table>
+			
+			
+			</div>
+		
+
+		</div>
+	
+	
+		<!-- 地震資料顯示DIV欄位 bootstrap套版摺疊 -->
+		<!-- --------------------------------------精選主題卡片 --------------------------------->
+
+
+		<div class="trip" style="padding-left:5%;">
+			<h2 id="exploration">景點探索</h2>
+		
+			<div class="rew">
+				<div class="card-group p-20">
+					<div class="card" style=" box-shadow: 0 3px 10px rgb(0,0,0,.2);overflow: hidden;">
+
+						<div class="overlay"></div>
+
+						<img src="~/images/台北/台北101.jpg" class="card-img-top" alt="..." width="100px" height="350px" style="opacity:50%; position:relative; overflow: hidden;">
+
+						<h3 style="position:absolute;top:175px;left:45%; color:#ffffffcd; ">台北</h3>
+						<div class="card-body">
+							<h5 class="card-title" style="font-weight:800;">
+								台北101
+							</h5>
+							<p class="card-text">台灣最高建築物</p>
+
+
+						<p class="card-text"><small class="text-muted"><a asp-action="Spot" asp-controller="Home" asp-route-searchString="台北">查看更多台北景點</a></small></p>
+
+						</div>
+					</div>
+					<div class="card" style=" box-shadow: 0 3px 10px rgb(0,0,0,.2);">
+						<div class="overlay"></div>
+						<img src="~/images/高雄.jpeg" class="card-img-top" alt="..." width="100px" height="350px" style="opacity:50%; position:relative;">
+						<h3 style="position:absolute;top:175px;left:45%; color:#ffffffcd;">高雄</h3>
+						<div class="card-body">
+							<h5 class="card-title" style="font-weight:800;">高雄流行音樂中心</h5>
+							<p class="card-text">融合了音樂、建築和藝術的現代化場館</p>
+						<p class="card-text"><small class="text-muted"><a asp-action="Spot" asp-controller="Home" asp-route-searchString="高雄">查看更多高雄景點</a></small></p>
+						</div>
+					</div>
+
+
+
+
+
+					<div class="card" style=" box-shadow: 0 3px 10px rgb(0,0,0,.2);">
+						<div class="overlay"></div>
+						<img src="~/images/太魯閣.webp" class="card-img-top" alt="..." width="100px" height="350px" style="opacity:50%; position:relative;">
+						<h3 style="position:absolute;top:175px;left:45%; color:#ffffffcd;">花蓮</h3>
+						<div class="card-body">
+							<h5 class="card-title" style="font-weight:800;">太魯閣國家公園</h5>
+							<p class="card-text">太魯閣國家公園位於台灣花蓮縣，以雄偉壯麗的峽谷景觀聞名，</p>
+						<p class="card-text"><small class="text-muted"><a asp-action="Spot" asp-controller="Home" asp-route-searchString="花蓮">查看更多花蓮景點</a></small></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝底部按鈕============================================== -->
+			<div class="bottom_btn">
+
+				<a href="@Url.Action("Spot", "Home")"> 查看更多景點</a>
+			</div>
+
+		</div>
+
+
+
+		<!-- 美食探索 -->
+		<div class="container_1">
+
+			<div class="row">
+				<h2 id="exploration" style="margin-top: 50px;">美食導覽</h2>
+				<div class="col-6 p-0 m-0">
+
+
+
+					<div id="locationCarousel">
+						<div class="foodflur"></div>
+						<img id="tape" src="/images/膠帶.png" alt="Alternate Text" />
+
+
+						<img id="currentImage" src="" alt="">
+						<div id="currenttext">
+							<h3 id="currentLocation"></h3>
+							<h5 id="currentFoodType"></h5>
+							<div id="pagination"></div>
+						</div>
+					</div>
+
+				</div>
+
+
+				<div class="col-6">
+
+
+
+					@*  https://travel.taichung.gov.tw/zh-tw/shop/consumeoverview *@
+
+					<div class="row row-cols-1 row-cols-md-2 g-3">
+						<div class="col" style="padding-left:30px;">
+							<div class="card" style="width:420px; height:350px; overflow:hidden;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);">
+								@* <div class="foodflur"></div> *@
+								<div class="overlay_1"></div>
+
+								<div class="image-container">
+									<img src="/images/米其林.jpg" class="card-img-top" alt="..." height="350px;" style="position:relative; opacity:60%;">
+									<h4 class="centered-text"><a asp-action="Index" asp-controller="Travel" asp-route-searchString="米其林推薦">米其林推薦</a></h4>
+								</div>
+
+								<div class="card-body" style="position:absolute; bottom:0;z-index:10;">
+									<h6 class="card-title" id="foodtypetitle">全台米其林餐廳</h6>
+									@* <p class="card-text">
+									一年一度的米其林指南，被視為城市的美食指標之一。
+									獲得米其林的星等評鑑，對許多餐廳來說是至高的榮耀，一星餐廳代表「優質料理值得順道嘗試」，二星餐廳代表「烹調出色不容錯過」，三星餐廳代表「表現卓越值得專程拜訪」
+									</p> *@
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="card" style="width:420px; height:350px; box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);">
+								<div class="overlay_1"></div>
+
+								<div class="image-container">
+									<img src="/images/美食/宮原眼科冰淇淋.jpg" class="card-img-top" alt="..." height="350px;" style="position:relative; opacity:60%;">
+									<h4 class="centered-text"><a asp-action="Index" asp-controller="Travel" asp-route-searchString="必比登推薦">必比登推薦</a></h4>
+								</div>
+
+
+								<div class="card-body" style="position:absolute; bottom:0;z-index:10;">
+									<h6 class="card-title" id="foodtypetitle">平價的美食指南</h6>
+									@* <p class="card-text">必比登推介就是平價的美食指南！入選餐廳必須是台幣1000元可以吃到三種菜色，包含小吃、異國料理、風格多元的必比登推介餐廳，值得你來探索。</p> *@
+								</div>
+							</div>
+						</div>
+						<div class="col" style="padding-left:30px;">
+							<div class="card" style="width:420px; height:350px; overflow:hidden;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);">
+
+								<div class="overlay_1"></div>
+
+								<div class="image-container">
+									<img src="/images/桃園伴手禮.png" class="card-img-top" alt="..." height="350px;" style="position:relative; opacity:50%;">
+									<h4 class="centered-text"><a asp-action="Index" asp-controller="Travel" asp-route-searchString="伴手禮">伴手禮</a></h4>
+								</div>
+
+								<div class="card-body" style="position:absolute; bottom:0;z-index:10;">
+									<h6 class="card-title" id="foodtypetitle">精選全台伴手禮</h6>
+									@* 	<h6 class="card-title" id="foodtypetitle">伴手禮</h6> *@
+									@* <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+									@* 	*@
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="card" style="width:420px; height:350px; overflow:hidden;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2); position:relative;">
+
+								<div class="overlay_1"></div>
+
+								<div class="image-container">
+									<img src="/images/烤玉米.jpg" class="card-img-top" alt="..." height="350px;" style="position:relative; opacity:70%;">
+									<h4 class="centered-text"><a asp-action="Index" asp-controller="Travel" asp-route-searchString="特色小吃">特色小吃</a></h4>
+								</div>
+								<div class="card-body" style="position:absolute; bottom:0;z-index:10;">
+									<h7 class="card-title" id="foodtypetitle">當地特產</h7>
+									<h7 class="card-title" id="foodtypetitle">夜市美食</h7>
+									@*   <p class="card-text">
+									來到臺灣，怎麼能錯過在地的特色小吃！
+
+									從傳統市場到各大夜市的人氣美食，或是只有臺灣才吃得到的特色料理，都是一定要品嚐的絕佳滋味。
+									</p> *@
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		@* ============================查看美食導覽================================ *@
+		<div class="bottom_btn" id="tourist_btn">
+
+			<a id="show-food-guide" href="@Url.Action("Index", "Travel")">查看美食導覽</a>
+		</div>
+		@* ======================================================================== *@
+
+		<br><br><br><br><br>
+
+	</div>
+
+
+	@* ================================================================================== *@
+		@section Scripts {
+
+								<script>
+
+
+
+
+							// 解碼 HTML 實體的函數保持不變
+							function decodeHtmlEntities(str) { /* ... */ }
+
+							var restaurants = [
+							@foreach (var restaurant in Model)
+							{
+								string imgName = Uri.EscapeDataString(restaurant.RestaurantName) + ".jpg";
+								@:{
+								@:name: "@Html.Raw(restaurant.LocationName)",
+								@:foodType: "@Html.Raw(restaurant.RestaurantName)",
+								@:imageUrl: "@Url.Content("~/images/" + imgName)"
+								@:},
+							}
+								];
+
+							var currentIndex = 0;
+							var carouselElement = document.getElementById("locationCarousel");
+							var locationElement = document.getElementById("currentLocation");
+							var foodTypeElement = document.getElementById("currentFoodType");
+							var imageElement = document.getElementById("currentImage");
+							var paginationElement = document.getElementById("pagination");
+
+							// 創建分頁選擇器
+							function createPagination() {
+								paginationElement.innerHTML = '';
+								var totalDots = 5; // 總共顯示的點數（包括當前點）
+								var sideDotsCount = Math.floor(totalDots / 2); // 當前點兩側的點數
+
+								for (let i = 0; i < restaurants.length; i++) {
+									if (
+										i === 0 || // 第一個點
+										i === restaurants.length - 1 || // 最後一個點
+										(i >= currentIndex - sideDotsCount && i <= currentIndex + sideDotsCount) // 當前點附近的點
+									) {
+										var dot = document.createElement('span');
+										dot.classList.add('pagination-dot');
+										dot.dataset.index = i;
+										paginationElement.appendChild(dot);
+									} else if (
+										i === currentIndex - sideDotsCount - 1 ||
+										i === currentIndex + sideDotsCount + 1
+									) {
+										var ellipsis = document.createElement('span');
+
+										//分頁中間的省略號
+										ellipsis.textContent = '';
+										ellipsis.classList.add('pagination-ellipsis');
+										paginationElement.appendChild(ellipsis);
+									}
+								}
+							}
+
+							// 更新分頁指示器
+							function updatePagination() {
+								var dots = paginationElement.getElementsByClassName('pagination-dot');
+								for (let i = 0; i < dots.length; i++) {
+									dots[i].classList.toggle('active', parseInt(dots[i].dataset.index) === currentIndex);
+								}
+							}
+
+							function showRestaurant() {
+								carouselElement.classList.add("fade-out");
+								setTimeout(() => {
+									// 解碼並顯示 LocationName 和 FoodType
+									locationElement.innerHTML = restaurants[currentIndex].name;
+									foodTypeElement.innerHTML = restaurants[currentIndex].foodType;
+									// 設定餐廳圖片
+									imageElement.src = restaurants[currentIndex].imageUrl;
+									imageElement.alt = decodeHtmlEntities(restaurants[currentIndex].name) + " 餐廳圖片";
+
+									// 更新分頁
+									createPagination(); // 每次切換都重新創建分頁
+									updatePagination();
+
+									currentIndex = (currentIndex + 1) % restaurants.length;
+									carouselElement.classList.remove("fade-out");
+								}, 500);
+							}
+
+							// 預載圖片
+							restaurants.forEach(restaurant => {
+								let img = new Image();
+								img.src = restaurant.imageUrl;
+							});
+
+							// 初始化
+							showRestaurant();
+							setInterval(showRestaurant, 5000);
+								
+
+									// <!-----------------------------字大小調整------------------------------------------------------?
+
+									$("#big").on("click", function () {
+										let x = $("body").css("font-size");
+										console.log(x)
+										console.log(parseInt(x) + 2 + "px");
+
+										$("body").css("font-size", parseInt(x) + 4 + "px");
+									});
+
+									$("#sm").on("click", function () {
+										let x = $("body").css("font-size");
+										console.log(x)
+
+
+										$("body").css("font-size", parseInt(x) - 4 + "px");
+									});
+
+								
+
+
+									// 天氣資訊JS
+									let city = [];
+									fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWA-C0D27692-4189-4521-80B1-6805AE7B21F5')
+										.then(response => response.json())
+										.then(data => {
+											generateWeatherTable(data);
+
+										})
+										.catch(error => {
+											console.error('Error:', error);
+										});
+									function generateWeatherTable(data) {
+										console.log(data)
+										const locations = data.records.locations[0].location;
+										console.log(locations)
+										const weatherElement = locations[0].weatherElement;
+										// 地點
+
+										$(document).find(function () {
+											// 在下拉選單中插入地區選項
+											for (var q = 0; q < locations.length; q++) {
+
+												var city = locations[q].locationName;
+												$('.dropdown-menu').append(`<a class="dropdown-item" href="javascript:void(0)">${city}</a>`);
+
+											}
+
+											cityinfo('您想去的地點', 0);
+											// 監聽下拉選單選項的點擊事件
+											$('.dropdown-item').click(function () {
+												var selectedCity = $(this).text();
+												var selectedCityIndex = $(this).index();
+												console.log(selectedCity + selectedCityIndex)
+												cityinfo(selectedCity, selectedCityIndex);
+											});
+
+											function cityinfo(selectedCity, selectedCityIndex) {
+												// $(".weather-head").text(selectedCity)
+												$('#loca').empty();
+												$("#loca").append(`<p class="m-0 p-0">${selectedCity}</p>`)
+												console.log('選擇的地區:', selectedCity);
+												$("#time").empty();
+												$("#time").append('<th>日期</th>');
+												for (var i = 0; i < 14; i = i + 2) {
+													var u = locations[selectedCityIndex].weatherElement[12].time[i].startTime.split('-');
+													var time = u[1] + '/' + u[2]
+													var t = time.substring('0', '5')
+													console.log(t)
+													$("#time").append(`
+
+																								<th>${t}</th>`)
+												}
+
+												$("#temp").empty();
+												$("#temp").append('<th>溫度</th>');
+												for (var i = 0; i < 14; i = i + 2) {
+													$('#temp').append(`
+																								<td>${locations[selectedCityIndex].weatherElement[11].time[i].elementValue[0].value}-${locations[0].weatherElement[12].time[i].elementValue[0].value}°C</td>`)
+												}
+												$("#rain").empty();
+												$("#rain").append('<th>降雨機率</th>');
+												for (var i = 0; i < 14; i = i + 2) {
+													if (locations[selectedCityIndex].weatherElement[0].time[i].elementValue[0].value == ' ') { locations[selectedCityIndex].weatherElement[0].time[i].elementValue[0].value = "0" }
+													$('#rain').append(`
+																								<td>${locations[selectedCityIndex].weatherElement[0].time[i].elementValue[0].value}%</td>`)
+												}
+
+
+
+												$('#img').empty();
+												$('#img').append('<th>天氣狀態</th>');
+												for (var i = 0; i < 14; i = i + 2) {
+													var y = locations[selectedCityIndex].weatherElement[6].time[i].elementValue[0].value;
+													// console.log(y + i)
+													//           $("#status").append(`
+													// <td>${y}</td>`)
+
+													$('#img').append(`<td><img src="/images/icon/${y}.svg" alt="" width="50px"/></td>`)
+
+
+
+
+													// ------------------------地震圖示資訊--------------------------------------------------------
+												}
+												$('.Eqk').empty();
+												$('.Eqk').append(`
+													<div class="card" style="width: 100%; height: 355px; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:1px;">
+							  <div class="d-flex flex-column h-100">
+								<div class="bg-light py-3 px-3" style="height: 15%;">
+								  <h4 class="card-title mb-0" style="font-weight:600">${selectedCity}</h4>
+								</div>
+														<div class="bg-none py-3 px-3 d-flex justify-content-between align-items-center" style="height: 81%;background-color:#10882493;color:white;font-size:1.2rem;font-weight:600; opacity:70% ">
+								  <div class="d-flex flex-column align-items-start">
+																														<h3 class="card-subtitle mb-1 text-muted_1"  style="font-weight:700;color:yellow;text-shadow:0.1em 0.1em 0.1em #333 ;">震度分級燈號：</h3><br>
+									<div class="d-flex align-items-center">
+									  <div class="safe me-2"></div>
+																  <h4 class="card-text mb-0" style="font-weight:800;">未達下列標準之地震</h4>
+									</div>
+								  </div>
+								</div>
+								<div class="bg-light py-1 px-3 d-flex align-items-center" style="height: 18%;">
+								  <div class="row row-cols-4 g-0" style="font-size: 0.8rem; width: 100%;">
+									<div class="col">
+									  <div class="d-flex flex-column align-items-center">
+										<div class="safe_1" style="width: 14px; height: 14px;"></div>
+										<p class="mb-0 text-center">未達標準</p>
+									  </div>
+									</div>
+									<div class="col">
+									  <div class="d-flex flex-column align-items-center">
+										<div class="middle" style="width: 14px; height: 14px;"></div>
+										<p class="mb-0 text-center">芮氏5.5+<br>最大震度4級+</p>
+									  </div>
+									</div>
+									<div class="col">
+									  <div class="d-flex flex-column align-items-center">
+										<div class="large" style="width: 14px; height: 14px;"></div>
+										<p class="mb-0 text-center">芮氏6.0+<br>最大震度5弱+</p>
+									  </div>
+									</div>
+									<div class="col">
+									  <div class="d-flex flex-column align-items-center">
+										<div class="danger" style="width: 14px; height: 14px;"></div>
+										<p class="mb-0 text-center">芮氏6.5+<br>最大震度6弱+</p>
+									  </div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							</div>
+
+
+
+
+																								`)
+
+
+											}
+
+
+
+
+
+										});
+
+									}
+
+									// -------------------------------- 按鈕點選時，載入地震資料------------------------------------------
+
+
+
+									btnGetOpenData.onclick = function (x) {
+										$.ajax({
+											url: "https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0016-001?Authorization=rdec-key-123-45678-011121314",
+											method: "GET"
+
+										}).done(function (x) {
+											// console.log(x);
+											if (x.records && x.records.Earthquake) {
+												console.log(x.records)
+												var str = "";
+												var more = ""
+												$.each(x.records.Earthquake, function (index, item) {
+													console.log(item.ReportContent)
+													if (item.ReportContent) {
+														var x = item.ReportContent
+														var size = x.split('，')
+														var Max = size[1].substring('4');
+														var date =
+															//  console.log(Max)
+
+															str += `<p class="date">日期：${size[0].substring('0', '11')}</p>` + `<p>地點：${size[0].substring('11')}</p>` + `<p>最大震度：${Max}</p>` + `<p>震度分級燈號:</p><div class="safe">${item.ReportColor}</div>
+																												  `;
+														more = `<button type="button" class="btn btn-outline-secondary p-1" id="readmore"><a href="https://www.cwa.gov.tw/V8/C/E/index.html">查看更多</a></button>`
+													}
+
+
+												});
+												$("#demo").html(str) + $("#demo").append(more);
+
+
+											}
+
+										})
+									};
+
+
+					
+							// ====================================================================================
+							// 首先獲取道路數據
+							fetch('/images/highway_name.json')
+								.then(response => response.json())
+								.then(data => {
+									generateTrafficTable(data);
+									console.log(data);
+									var roadname = data.Sections[0].RoadSection;
+									console.log(roadname);
+
+									// 在這裡獲取交通數據，以便在點擊 .roadselect 時使用
+									fetch('/lib/response_1717917614665.json')
+										.then(response => response.json())
+										.then(trafficData => {
+											//取得道路資訊跟路面壅塞資訊的函示
+											setupRoadSelectHandlers(data, trafficData);
+
+											// 預設顯示第一個路段
+											const firstRoadLink = $('.roadselect').first();
+											firstRoadLink.click();  // 模拟點擊
+										});
+								});
+
+								//呼叫路段名稱函式
+							function generateTrafficTable(data) {
+								// console.log("yyy" + data);
+								var road = data.Sections[0].RoadSection;
+								console.log(road);
+
+								//進行for迴圈
+								$(document).ready(function () {
+									for (var i = 0; i < 50; i++) {
+										var start = data.Sections[i].RoadSection.Start;
+										var ID = data.Sections[i].SectionID;
+										$(".menu-content_1").append(`<a href="#" class="roadselect" data-index="${i}">${start}</a>`);
+										console.log(ID);
+									}
+
+									$(".menu-content_1").hide(); // 初始時隱藏 .menu-content_1 元素
+
+									$('.menu-btn').click(function () {
+										$(".menu-content_1").toggle(); // 切換 .menu-content_1 元素的顯示和隱藏狀態
+									});
+
+									$("#cancel").click(function () {
+										$(".menu-content_1").hide();
+									});
+								});
+							}
+
+							//呼叫道路資訊跟路面壅塞資訊的函示
+							function setupRoadSelectHandlers(roadData, trafficData) {
+								$('.roadselect').click(function (event) {
+									event.preventDefault();
+									const linkIndex = $(this).data('index');
+									const linkText = $(this).text();
+									console.log(linkText + linkIndex);
+
+									const end = roadData.Sections[linkIndex].RoadSection.End;
+									$('.link-display').empty();
+									$('.link-display').append(`${linkText}-<br>${end} `);
+
+									const CongestionLevel = trafficData.LiveTraffics[linkIndex].CongestionLevel;
+									let congestionState = "";
+
+									//判斷CongestionLevel屬性 將分級英文轉換成文字
+									switch (CongestionLevel) {
+										case "1":
+											congestionState = "順暢";
+											break;
+										case "2":
+										case "3":
+											congestionState = "車多";
+											break;
+										case "4":
+										case "5":
+											congestionState = "壅塞";
+											break;
+										case "-1":
+											congestionState = "道路封閉";
+											break;
+										default:
+											congestionState = "未知狀態";
+											break;
+									}
+
+									// 獲取對應的 TravelSpeed
+									const TravelSpeed = trafficData.LiveTraffics[linkIndex].TravelSpeed;
+									const TravelTime = trafficData.LiveTraffics[linkIndex].TravelTime;
+									const second = TravelTime / 60;
+
+
+							
+
+							console.log(trafficData.LiveTraffics[linkIndex]);
+							console.log("TravelSpeed: " + TravelSpeed);
+
+							$(".link").empty();
+							let congestionText = `壅塞程度: ${congestionState}<br>時速: ${TravelSpeed}公里/小時`;
+
+							if (congestionState == '順暢') {
+								// 檢查目標元素是否已經存在
+								//if ($('#card-body-1 .safe').length ===0) {
+									// 如果不存在,則插入新元素
+									congestionText =  '<div class="safe me-2"></div>' + congestionText+'<br>';
+								//}
+							}
+                            //$(".link").empty();
+							$(".link").append(congestionText);
+
+
+						// $(".link").append(` <br>時速: ${TravelSpeed}公里/小時`);
+
+
+									const speedLimit = roadData.Sections[linkIndex].SpeedLimit;
+									const cardBody = $('#card-body-1');
+									if (TravelSpeed < 60) {
+										cardBody.css('background-color', '#eb0909a8');
+									} else {
+										cardBody.css('background-color', '#10882493');
+										cardBody.css('opacity', '70%');
+									}
+
+
+								
+								});
+							}
+
+		</script>
+
+	}
+
+	<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"></script>
+</body>
+</html>

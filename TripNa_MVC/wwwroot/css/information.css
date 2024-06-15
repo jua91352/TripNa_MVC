@@ -151,10 +151,10 @@
 }
 
 #suitcase {
-    width: 450px;
-    height: 450px;
-    right: 0;
-    top: -440px;
+    width: 500px;
+    height: 550px;
+    right: -30px;
+    top: -510px;
 }
 
 #spotlist {
@@ -178,7 +178,7 @@
     color: #444165;
     left: 80px;
     position: absolute;
-    top: 20px;
+    top: 35px;
 }
 
 #selectedregion-spot_topic {
