@@ -1,15 +1,12 @@
 ﻿
  @model TripNa_MVC.Models.OrderDetail
 
-    @{
-        ViewData["Title"] = "MemberCheckOut";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-
+@{
+     ViewData["Title"] = "MemberCheckOut";
+     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var neworder = Model.Orders.FirstOrDefault();
-
     var cooupon = Model.MemberCoupons.ToList();
-
 
     string p = ".jpg";  
     var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
@@ -26,6 +23,7 @@
 <head>
     <link rel="stylesheet" href="~/css/CheckOut.css"/> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
   <script src="path/to/your/payment.js"></script>
 </head>
 
@@ -129,17 +127,12 @@ h3 {
   </style>
 
 
-
-
 <!-- 標題 -->
 <div class="nav-center" id="標題" style="color: #eef1ff; background-color: #4e5482; font-size: 24px;">
     訂單確認
 </div>
 
-
-
 <br>
-
 
 <!-- 訂單資訊 -->
 <div style="width: 50%; margin: 0 auto">
@@ -374,46 +367,20 @@ h3 {
    var price = (int)Math.Floor(neworder.OrderTotalPrice);
 }
       <form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
-         
-        
-                <input type="text" name="MerchantID" value="3002607">
-               <input type="text" name="MerchantTradeNo" value="ecpay20230312153023">
-               <input type="text" name="MerchantTradeDate" id="orderTime" value="2023/03/12 15:30:23">
-               <input type="text" name="PaymentType" value="aio">
-               <input type="text" name="TotalAmount" id="totalAmountInput" value="">
-               <input type="text" name="TradeDesc" value="促銷方案">
-               <input type="text" name="ItemName" value="Apple iphone 15">
-               <input type="text" name="ReturnURL" value="https://www.ecpay.com.tw/receive.php">
-               <input type="text" name="ChoosePayment" value="ALL">
-               <input type="text" name="EncryptType" value="1"> 
-               <input type="text" name="CheckMacValue" value="">
-
-             <input type="submit" value="結帳" id="submit" style="display:none;">
-
+               <input type="hidden" name="MerchantID" value="3002607">
+               <input type="hidden" name="MerchantTradeNo" value="ecpay20230312153023">
+               <input type="hidden" name="MerchantTradeDate" id="orderTime" value="2023/03/12 15:30:23">
+               <input type="hidden" name="PaymentType" value="aio">
+               <input type="hidden" name="TotalAmount" id="totalAmountInput" value="">
+               <input type="hidden" name="TradeDesc" value="自訂行程">
+               <input type="hidden" name="ItemName" value="@neworder.Itinerary.ItineraryName">
+               <input type="hidden" name="ReturnURL" value="https://www.ecpay.com.tw/receive.php">
+               <input type="hidden" name="ChoosePayment" value="ALL">
+               <input type="hidden" name="EncryptType" value="1"> 
+               <input type="hidden" name="CheckMacValue" width="100px" value="">
+               <input type="submit" value="結帳" id="submit" style="display:none;">
 </form> 
  
-  @*  <input type="hidden" name="MerchantID" value="3002607">
-             <input type="hidden" name="MerchantTradeNo" value="@neworder.OrderNumber">
-             <input type="hidden" name="MerchantTradeDate"  id="orderTime"  value="@neworder.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")">
-             <input type="hidden" name="PaymentType" value="aio">
-             <input type="hidden" name="TotalAmount id="totalAmountInput"  value="price">
-             <input type="hidden" name="ItemName" value="TAIPEI">
-             <input type="hidden" name="ReturnURL" value="http://localhost:5226/members/MemberCheckOut">
-             <input type="hidden" name="ChoosePayment" value="ALL">
-             <input type="hidden" name="CheckMacValue" value="3002607">
-             <input type="hidden" name="EncryptType" value="1">  *@
-         
-             @* <input type="text" name="MerchantID" value="3002607">
-             <input type="text" name="MerchantTradeNo" value="@neworder.OrderNumber">
-             <input type="text" name="MerchantTradeDate"  id="orderTime"  value="@neworder.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")">
-             <input type="text" name="PaymentType" value="aio">
-             <input type="text" name="TotalAmount id="totalAmountInput"  value="@price">
-             <input type="text" name="ItemName" value="TAIPEI">
-             <input type="text" name="ReturnURL" value="http://localhost:5226/members/MemberCheckOut">
-             <input type="text" name="ChoosePayment" value="ALL">
-             <input type="text" name="CheckMacValue" value="3002607">
-             <input type="text" name="EncryptType" value="1"> *@
-
 
 </div>
 
@@ -480,49 +447,25 @@ h3 {
     });
 
 
-    document.addEventListener('DOMContentLoaded', function() {
-
-    var form = document.getElementById('paymentForm');
-    var merchantTradeNo = 'Test' + new Date().getTime();
-    var merchantTradeDate = formatDate(new Date());
+     document.addEventListener('DOMContentLoaded', function() {
+     var form = document.getElementById('paymentForm');
+     var merchantTradeNo = 'Test' + new Date().getTime();
+     var merchantID = '3002607'; 
      var totalAmountSpan = document.getElementById('totalAmount');
      var totalAmountInput = document.getElementById('totalAmountInput');
 
-           // 將 totalAmount 中的值傳換為整數 並設置到 totalAmountInput 中
-           var totalAmount = parseInt(totalAmountSpan.textContent.replace(/[^\d]/g, ''), 10);
-           if (!isNaN(totalAmount)) {
-               totalAmountInput.value = totalAmount;
-           } else {
-               console.error('無效的總金額:', totalAmountSpan.textContent);
-           }
+     // 將 totalAmount 中的值傳換為整數 並設置到 totalAmountInput 中
+     var totalAmount = parseInt(totalAmountSpan.textContent.replace(/[^\d]/g, ''), 10);
+     if (!isNaN(totalAmount)) {
+         totalAmountInput.value = totalAmount;
+     } else {
+         console.error('無效的總金額:', totalAmountSpan.textContent);
+     }
 
-
-
-    // 設置動態欄位
-    form.elements['MerchantTradeNo'].value = merchantTradeNo;
-    form.elements['MerchantTradeDate'].value = merchantTradeDate;
-
-    // 準備參數
-    var params = {
-        MerchantID: form.elements['MerchantID'].value,
-        MerchantTradeNo: merchantTradeNo,
-        MerchantTradeDate: merchantTradeDate,
-        PaymentType: form.elements['PaymentType'].value,
-        TotalAmount: form.elements['TotalAmount'].value,
-        TradeDesc: form.elements['TradeDesc'].value,
-        ItemName: form.elements['ItemName'].value,
-        ReturnURL: form.elements['ReturnURL'].value,
-        ChoosePayment: form.elements['ChoosePayment'].value,
-        EncryptType: form.elements['EncryptType'].value
-    };
-
-    var hashKey = '5294y06JbISpM5x9'; 
-    var hashIV = 'v77hoKGq4kWxNNIS';  
-
-    // 生成 CheckMacValue
-    var checkMacValue = generateCheckMacValue(params, hashKey, hashIV);
-    form.elements['CheckMacValue'].value = checkMacValue;
-     params.CheckMacValue = checkMacValue;
+     // 設置動態欄位
+     form.elements['MerchantID'].value = merchantID;
+     form.elements['MerchantTradeNo'].value = merchantTradeNo;
+     form.elements['MerchantTradeDate'].value = formatDate(new Date());
 
     console.log('表單已準備完成，CheckMacValue:', checkMacValue);
 
@@ -540,26 +483,27 @@ h3 {
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 }
 
-    // 產生 CheckMacValue
-    function generateCheckMacValue(params, hashKey, hashIV) {
-    // 參數按照字母順序排序
-    var sortedParams = Object.keys(params).sort().reduce((obj, key) => {
-        obj[key] = params[key];
-        return obj;
-    }, {});
 
-    // 組合字串
-    var checkStr = 'HashKey=' + hashKey;
-    Object.keys(sortedParams).forEach(function(key) {
-        checkStr += '&' + key + '=' + sortedParams[key];
+
+ // 產生 CheckMacValue
+function generateCheckMacValue(params, hashKey, hashIV) {
+    // 將參數轉換為排序後的查詢字符串
+    var sortedParams = Object.keys(params).sort().map(function(key) {
+        return key + '=' + params[key];
     });
-    checkStr += '&HashIV=' + hashIV;
+    var queryString = sortedParams.join('&');
+    console.log("(1) 排序並組合參數:", queryString);
 
-    // URL Encode
-    checkStr = encodeURIComponent(checkStr).toLowerCase();
+    // 加上 HashKey 和 HashIV
+    var rawString = "HashKey=" + hashKey + "&" + queryString + "&HashIV=" + hashIV;
+    console.log("(2) 加上 HashKey 和 HashIV:", rawString);
 
-    // 取代為與 .NET 相容的字元
-    checkStr = checkStr
+    // 將整串字串進行 URL encode
+    var encodedString = encodeURIComponent(rawString).toLowerCase();
+    console.log("(3) URL encode 並轉小寫:", encodedString);
+
+    // 取代為與 .NET 相容的字符
+    encodedString = encodedString
         .replace(/%2d/g, '-')
         .replace(/%5f/g, '_')
         .replace(/%2e/g, '.')
@@ -568,11 +512,19 @@ h3 {
         .replace(/%28/g, '(')
         .replace(/%29/g, ')')
         .replace(/%20/g, '+');
+    console.log("(4) 取代特殊字符:", encodedString);
 
-    // 使用 SHA256 加密
-    var hash = CryptoJS.SHA256(checkStr).toString().toUpperCase();
-    return hash;
+    // 以 SHA256 壓碼產生雜湊值
+    var hash = CryptoJS.SHA256(encodedString).toString(CryptoJS.enc.Hex);
+    console.log("(5) SHA256 雜湊值:", hash);
+
+    // 轉大寫
+    var checkMacValue = hash.toUpperCase();
+    console.log("(6) 轉大寫後的 CheckMacValue:", checkMacValue);
+
+    return checkMacValue;
 }
+
 
 
     // 綁定送出按鈕事件
@@ -596,6 +548,31 @@ h3 {
             totalAmountInput.value = totalAmount;
             console.log('金額已更新:', totalAmount);
         }
+
+
+         // 準備所有參數
+    var params = {
+        MerchantID: form.elements['MerchantID'].value,
+        MerchantTradeNo: form.elements['MerchantTradeNo'].value,
+        MerchantTradeDate: form.elements['MerchantTradeDate'].value,
+        PaymentType: form.elements['PaymentType'].value,
+        TotalAmount: totalAmountInput.value,
+        TradeDesc: form.elements['TradeDesc'].value,
+        ItemName: form.elements['ItemName'].value,
+        ReturnURL: form.elements['ReturnURL'].value,
+        ChoosePayment: form.elements['ChoosePayment'].value,
+        EncryptType: form.elements['EncryptType'].value
+    };
+
+    var hashKey = "pwFHCqoQZGmho4w6";
+    var hashIV = "EkRm7iFT261dpevs";
+
+    // 生成 CheckMacValue
+    var checkMacValue = generateCheckMacValue(params, hashKey, hashIV);
+    form.elements['CheckMacValue'].value = checkMacValue;
+
+
+
 
     // 送出前再次檢查所有欄位
     console.log('正在提交表單，參數如下：');
