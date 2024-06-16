@@ -33,3 +33,13 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+static void ConfigureServices(IServiceCollection services)
+{
+    // 添加內存緩存服務
+    services.AddMemoryCache();
+
+    // 其他服務配置...
+    services.AddControllers();
+}

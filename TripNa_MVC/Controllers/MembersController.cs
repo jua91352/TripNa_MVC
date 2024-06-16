@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TripNa_MVC.Models;
+using XSystem.Security.Cryptography;
 
 namespace TripNa_MVC.Controllers
 {
@@ -21,10 +24,10 @@ namespace TripNa_MVC.Controllers
         }
 
         // GET: Members
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Members.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Members.ToListAsync());
+        //}
 
 
         // GET: /Members/MemberCenter
@@ -632,9 +635,46 @@ namespace TripNa_MVC.Controllers
         }
 
 
+        //判斷該會員是否真的有該筆優惠券
+        [HttpPost]
+        public IActionResult ValidateCoupon(string couponCode, int memberId, decimal orderTotal)
+        {
+            var coupon = _context.Coupons
+                .FirstOrDefault(c => c.MemberId == memberId && c.CouponCode == couponCode);
+
+            if (coupon != null)
+            {
+                // 這裡假設優惠券金額是固定的 50 元，您可以根據實際情況進行調整
+                return Json(new { isValid = true, discountAmount = 50m });
+            }
+            else
+            {
+                return Json(new { isValid = false });
+            }
+        }
 
 
-        public IActionResult MemberCheckOut(int orderID)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+        //step1 : 網頁導入傳值到前端
+        public ActionResult MemberCheckOut(int orderID)
         {
 
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -645,8 +685,6 @@ namespace TripNa_MVC.Controllers
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-
-
             var latestOrder = _context.Orderlists
                              .Where(o => o.MemberId == member.MemberId)
                              .OrderByDescending(o => o.OrderId)
@@ -654,34 +692,42 @@ namespace TripNa_MVC.Controllers
                              .FirstOrDefault();
 
 
-            var newOrder = (from o in _context.Orderlists
-                        join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                        join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
-                        join s in _context.Spots on id.SpotId equals s.SpotId
-                        join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+            var orderTotalPrice = _context.Orderlists
+                            .Where(o => o.OrderId == latestOrder)
+                            .OrderByDescending(o => o.OrderId)                            
+                            .Select(o => o.OrderTotalPrice)
+                            .FirstOrDefault();
+          
 
-                        from c in couponGroup.DefaultIfEmpty()
-                        where o.MemberId == member.MemberId && o.OrderId == latestOrder
+            var newOrder = (from o in _context.Orderlists
+                            join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                            join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
+                            join s in _context.Spots on id.SpotId equals s.SpotId
+                            join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+
+                            from c in couponGroup.DefaultIfEmpty()
+                            where o.MemberId == member.MemberId && o.OrderId == latestOrder
                             orderby o.OrderId descending
 
-                        select new
-                        {
-                            o.OrderId,
-                            o.MemberId,
-                            o.OrderNumber,
-                            o.OrderDate,
-                            c.CouponCode,
-                            o.OrderTotalPrice,
-                            i.ItineraryId,
-                            i.ItineraryName,
-                            i.ItineraryStartDate,
-                            i.ItineraryPeopleNo,
-                            s.SpotId,
-                            s.SpotName,
-                            s.SpotCity,
-                            id.VisitOrder,
-                            id.ItineraryDate                         
-                        }).ToList();
+                            select new
+                            {
+                                o.OrderId,
+                                o.MemberId,
+                                o.OrderNumber,
+                                o.OrderDate,
+                                c.CouponCode,
+                                o.OrderTotalPrice,
+                                i.ItineraryId,
+                                i.ItineraryName,
+                                i.ItineraryStartDate,
+                                i.ItineraryPeopleNo,
+                                s.SpotId,
+                                s.SpotName,
+                                s.SpotCity,
+                                id.VisitOrder,
+                                id.ItineraryDate
+                            }).ToList();
+
 
 
             // 查詢會員的所有優惠券
@@ -723,30 +769,254 @@ namespace TripNa_MVC.Controllers
                 }).ToList(),
                 MemberCoupons = memberCoupons,  // 添加會員的所有優惠券
                 MemberId = member.MemberId,
-                OrderId = orderID
+                OrderId = latestOrder
             };
 
+
+            string TotalAmount = (Decimal.ToInt32(orderTotalPrice)).ToString();
+
+            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+
+            //var orderId = "EC" + latestOrder + ;
+
+            //需填入你的網址
+            var website = $"http://localhost:5226/";
+            //var neworder = new OrderDetail
+            //{
+            //    MerchantTradeNo = orderId,
+            //    MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+            //    TotalAmount = TotalAmount,
+            //    TradeDesc = "無",
+            //    ItemName = "測試商品",
+            //    ExpireDate = "3",
+            //    CustomField1 = "",
+            //    CustomField2 = "",
+            //    CustomField3 = "",
+            //    CustomField4 = "",
+            //    ReturnURL = $"{website}/api/Ecpay/AddPayInfo",
+            //    OrderResultURL = $"{website}/Members/PayInfo/{orderId}",
+            //    PaymentInfoURL = $"{website}/api/Ecpay/AddAccountInfo",
+            //    ClientRedirectURL = $"{website}/Members/AccountInfo/{orderId}",
+            //    MerchantID = "2000132",
+            //    IgnorePayment = "GooglePay#WebATM#CVS#BARCODE",
+            //    PaymentType = "aio",
+            //    ChoosePayment = "ALL",
+            //    EncryptType = "1"
+            //};
+
+            //檢查碼
+            //neworder.CheckMacValue = GetCheckMacValue(ConvertToDictionary(neworder));
             return View(order);
-
         }
 
-        //判斷該會員是否真的有該筆優惠券
-        [HttpPost]
-        public IActionResult ValidateCoupon(string couponCode, int memberId, decimal orderTotal)
+
+
+        private Dictionary<string, string> ConvertToDictionary(OrderCheckOut neworder)
         {
-            var coupon = _context.Coupons
-                .FirstOrDefault(c => c.MemberId == memberId && c.CouponCode == couponCode);
+            var dictionary = new Dictionary<string, string>
+    {
+        { "MerchantTradeNo", neworder.MerchantTradeNo },
+        { "MerchantTradeDate", neworder.MerchantTradeDate },
+        { "TotalAmount", neworder.TotalAmount },
+        { "TradeDesc", neworder.TradeDesc},
+        { "ItemName", neworder.ItemName},
+        { "ExpireDate", neworder.ExpireDate},
+        { "CustomField1", neworder.CustomField1},
+        { "CustomField2", neworder.CustomField2},
+        { "CustomField3", neworder.CustomField3},
+        { "CustomField4", neworder.CustomField4},
+        { "ReturnURL", neworder.ReturnURL},
+        { "OrderResultURL", neworder.OrderResultURL},
+        { "PaymentInfoURL", neworder.PaymentInfoURL},
+        { "ClientRedirectURL", neworder.ClientRedirectURL},
+        { "MerchantID", neworder.MerchantID},
+        { "PaymentType", neworder.PaymentType},
+        { "ChoosePayment", neworder.ChoosePayment},
+        { "EncryptType", neworder.EncryptType},
+        { "CheckMacValue", neworder.CheckMacValue}
 
-            if (coupon != null)
-            {
-                // 這裡假設優惠券金額是固定的 50 元，您可以根據實際情況進行調整
-                return Json(new { isValid = true, discountAmount = 50m });
-            }
-            else
-            {
-                return Json(new { isValid = false });
-            }
+        
+    };
+
+            return dictionary;
         }
+
+
+
+        /// <summary>
+        /// 產生檢查碼。
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        //private string BuildCheckMacValue(string parameters, int encryptType = 0)
+        //{
+        //    string szCheckMacValue = String.Empty;
+        //    // 產生檢查碼。
+        //    var HashKey = "5294y06JbISpM5x9";
+        //    var HashIV = "v77hoKGq4kWxNNIS";
+
+        //    szCheckMacValue = String.Format("HashKey={0}{1}&HashIV={2}", HashKey, parameters, HashIV);
+        //    szCheckMacValue = HttpUtility.UrlEncode(szCheckMacValue).ToLower();
+        //    if (encryptType == 1)
+        //    {
+        //        szCheckMacValue = SHA256Encoder.Encrypt(szCheckMacValue);
+        //    }
+        //    else
+        //    {
+        //        szCheckMacValue = MD5Encoder.Encrypt(szCheckMacValue);
+        //    }
+
+        //    return szCheckMacValue;
+        //}
+
+
+        //private string GetCheckMacValue(Dictionary<string, string> order)
+        //{
+        //    var param = order.Keys.OrderBy(x => x).Select(key => key + "=" + order[key]).ToList();
+        //    string checkValue = string.Join("&", param);
+        //    //測試用的 HashKey
+        //    var HashKey = "5294y06JbISpM5x9";
+        //    //測試用的 HashIV
+        //    var HashIV = "v77hoKGq4kWxNNIS";
+        //    checkValue = $"HashKey={HashKey}" + "&" + checkValue + $"&HashIV={HashIV}";
+        //    checkValue = HttpUtility.UrlEncode(checkValue).ToLower();
+        //    checkValue = GetSHA256(checkValue);
+        //    return checkValue.ToUpper();
+        //}
+
+
+        //private string GetSHA256(string value)
+        //{
+        //    var result = new StringBuilder();
+
+        //    // 創建 SHA256 實例
+        //    using (var sha256 = SHA256.Create())
+        //    {
+        //        // 將輸入字符串轉換為 UTF-8 編碼的字節數組
+        //        var bytes = Encoding.UTF8.GetBytes(value);
+
+        //        // 計算哈希值
+        //        var hash = sha256.ComputeHash(bytes);
+
+        //        // 將每個字節轉換為十六進制表示，並附加到結果字符串中
+        //        for (int i = 0; i < hash.Length; i++)
+        //        {
+        //            result.Append(hash[i].ToString("X2")); // X2 表示以十六進制格式輸出，並且保證每個字節的表示都是兩位數
+        //        }
+        //    }
+
+        //    // 返回計算得到的 SHA256 哈希值的字符串表示
+        //    return result.ToString();
+        //}
+
+
+
+        //private string GetSHA256(string value)
+        //{
+        //    var result = new StringBuilder();
+        //    var sha256 = SHA256Managed.Create();
+        //    var bts = Encoding.UTF8.GetBytes(value);
+        //    var hash = sha256.ComputeHash(bts);
+        //    for (int i = 0; i < hash.Length; i++)
+        //    {
+        //        result.Append(hash[i].ToString("X2"));
+        //    }
+        //    return result.ToString();
+        //}
+
+
+
+        /// step5 : 取得付款資訊，更新資料庫
+        [HttpPost]
+        public ActionResult PayInfo(FormCollection id)
+        {
+            var data = new Dictionary<string, string>();
+            foreach (string key in id.Keys)
+            {
+                data.Add(key, id[key]);
+            }
+            TripNaContext db = new TripNaContext();
+            string temp = id["MerchantTradeNo"]; //寫在LINQ(下一行)會出錯，
+            var ecpayOrder = db.EcpayOrders.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
+            if (ecpayOrder != null)
+            {
+                ecpayOrder.RtnCode = int.Parse(id["RtnCode"]);
+                if (id["RtnMsg"] == "Succeeded") ecpayOrder.RtnMsg = "已付款";
+                ecpayOrder.PaymentDate = Convert.ToDateTime(id["PaymentDate"]);
+                ecpayOrder.SimulatePaid = int.Parse(id["SimulatePaid"]);
+                db.SaveChanges();
+            }
+            return View("EcpayView", data);
+        }
+
+
+
+
+
+        /// step5 : 取得虛擬帳號 資訊
+        [HttpPost]
+        public ActionResult AccountInfo(FormCollection id)
+        {
+            var data = new Dictionary<string, string>();
+            foreach (string key in id.Keys)
+            {
+                data.Add(key, id[key]);
+            }
+            TripNaContext db = new TripNaContext();
+            string temp = id["MerchantTradeNo"]; //寫在LINQ會出錯
+            var ecpayOrder = db.EcpayOrders.Where(m => m.MerchantTradeNo == temp).FirstOrDefault();
+            if (ecpayOrder != null)
+            {
+                ecpayOrder.RtnCode = int.Parse(id["RtnCode"]);
+                if (id["RtnMsg"] == "Succeeded") ecpayOrder.RtnMsg = "已付款";
+                ecpayOrder.PaymentDate = Convert.ToDateTime(id["PaymentDate"]);
+                ecpayOrder.SimulatePaid = int.Parse(id["SimulatePaid"]);
+                db.SaveChanges();
+            }
+            return View("EcpayView", data);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
