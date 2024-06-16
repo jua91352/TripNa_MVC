@@ -106,6 +106,40 @@
             height: 85px;
             object-fit: cover;
         }
+
+
+
+        .nav-intro {
+            display: none; /* 初始隱藏 */
+            position: absolute; /* 絕對定位 */
+            background-color: white; /* 背景顏色 */
+            list-style-type: none; /* 去除列表樣式 */
+            padding: 0;
+            margin: 0;
+            /* left: 15px; */
+        }
+
+        .nav-item.nav-travel:hover .nav-intro {
+            display: block;
+            background-color: #4e5482;
+            font-size: 1rem;
+            line-height: 20px;
+            padding: 15px;
+        }
+
+        .nav-intro > li > a:hover {
+            color: black;
+        }
+
+
+        .nav-intro > li {
+            list-style-type: none;
+        }
+
+            .nav-intro > li > a {
+                text-decoration: none;
+                color: white;
+            }
     </style>
 </head>
 
