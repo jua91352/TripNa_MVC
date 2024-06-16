@@ -31,8 +31,9 @@ else
 
 				@* <img src="/_img/s1_car.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;left:0;" /> *@
 				<div class="img-container" >
-					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" onclick="zoom(this)" />
-					<div class="overlay">
+
+					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" @* onclick="zoom(y)" *@ />
+					<div class="overlay" >
 						<span class="zoom-icon">&#128269;</span>
 					</div>
 				</div>
@@ -259,12 +260,13 @@ else
 
 	// ====================================================================================================
 
-	function zoom(y) { 
+	// function zoom(y) { 
 
 	const imgContainers = document.querySelectorAll('.img-container');
 	const overlay = document.createElement('div');
 	overlay.classList.add('overlay');
-	document.body.appendChild(overlay);
+	document.body.append(overlay);
+		
 
 	imgContainers.forEach(container => {
 		const img = container.querySelector('.img-zoom');
@@ -273,10 +275,12 @@ else
 			overlay.style.display = container.classList.contains('zoomed') ? 'flex' : 'none';
 			if (container.classList.contains('zoomed')) {
 				img.style.transform = 'scale(3)';
+document.body.remove(overlay);
 			} else {
 				img.style.transform = 'none';
+					
 			}
 		});
 	});
-}
+// }
 			</script>

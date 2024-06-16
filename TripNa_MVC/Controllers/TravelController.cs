@@ -158,7 +158,7 @@ namespace TripNa_MVC.Controllers
             ViewBag.FoodType = foodtype;
 
             int pageSize = 12;
-            return View(await PaginatedList2<Restaurant>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Restaurant>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 		//public IActionResult GetFilteredRestaurants(List<string> regions, List<string> foodType)

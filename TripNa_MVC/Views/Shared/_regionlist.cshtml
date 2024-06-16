@@ -1,0 +1,251 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Restaurant>
+<link href="/lib/jquery/dist/jquery.min.js" rel="stylesheet" />
+
+
+
+@if (ViewData["NoResult"] != null)
+{
+    <div class="nullresult">@ViewData["NoResult"]</div>
+}
+else if (ViewData["FilteredCount"] != null)
+{
+	<div>共有 @ViewData["FilteredCount"] 項結果</div>
+}
+else
+{
+    <div>共有 @ViewData["SearchCount"] 項結果</div>
+    @* <div>總共有 @ViewData["TotalCount"] 條記錄</div> *@
+}
+<br />
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var restaurant in Model)
+    {
+        string img = @restaurant.RestaurantName + ".jpg";
+        <div class="col">
+            <div class="card" style="width:24rem;height:400px;  box-shadow: 0 3px 10px rgb(0,0,0,.2);">
+
+                @* <img src="~/images/美食/@img" class="img-fluid h-100 rounded-start" alt="Alternate Text" height:100px; style="max-height:250px; position:relative;" />  *@
+
+                <div class="img-container">
+					<img src="~/images/美食/@img" class="img-fluid  rounded-start" alt="Alternate Text" style="height:250px;max-height:250px;width:100%; position:relative;object-fit: cover;" />
+                    <div class="overlay">
+                        <span class="zoom-icon">&#128269;</span>
+                    </div>
+                </div>
+
+
+				@* <div class="img-container">
+					<img src="@Model" class="img-fluid rounded-start img-zoom" alt="Alternate Text" style="height:250px;max-height:250px;width:100%; position:relative;" />
+					<div class="img-overlay">
+						<span class="zoom-icon">&#128269;</span>
+					</div>
+					<span class="close-btn">&times;</span>
+				</div>
+ *@
+
+
+
+				<p style="background-color:#f5565b;color:white;padding:4px;text-align:center;border-radius:2px;position:absolute;bottom:38%;font-weight:600;margin-left:5px;font-size:.9rem;">@restaurant.FoodType</p>
+				<div class="card-body" style="overflow:auto;">
+                    <span class="heart-icon align-self-end">&#10084;</span>
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => restaurant.LocationName)</h5>
+                    <h5 class="card-title" style="font-weight:800;">@restaurant.RestaurantName</h5>
+                    <p class="card-text">@restaurant.Description</p>
+                    <p class="card-text">地址:@restaurant.Address<br />電話:@restaurant.Phone</p>
+                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+ 
+
+<style>
+	.card-text, .card-title {
+		font-size: .8rem;
+	}
+
+	.card {
+		transition: transform 0.3s;
+		/* z-index:3; */
+	}
+
+		.card:hover {
+			/* transform: scale(1.05); */
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+			background-color: #cdcfee4f;
+			.card-text, .card-title
+			
+
+	{
+		font-size: 1rem;
+	}
+
+	}
+
+	/* .img-overlay {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		width: 100%;
+		height: 100%; */
+		/* background-color: rgba(0, 0, 0, 0.5); */
+	/* 	opacity: 0;
+		transition: opacity 0.3s;
+		display: flex; */
+		/* justify-content: center;
+			align-items: center; */
+	}
+/* 
+	
+
+	.img-overlay:hover {
+		opacity: 1;
+		cursor: pointer;
+	
+	}
+
+	.img-container {
+		position: relative;
+	}
+
+		.img-container img {
+			transition: transform 0.3s ease;
+		}
+
+		.img-container.zoomed img {
+			transform: scale(3.5);
+			overflow: visible;
+			
+		} */
+/* ------------------------------------------------------------------------------------ */
+
+/* 	.img-container {
+		position: relative;
+	}
+
+	.overlay {
+		position: fixed;
+		top: 0; */
+		/* left: 0; */
+		/* width: 100%; */
+		/* height: 100%;
+		background-color: rgba(0, 0, 0, 0.8);
+		z-index: 0;
+		display: none; */
+	/* 	display: flex; */
+	/* 	justify-content: center;
+		align-items: center; */
+	}
+
+	/* .zoomed {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	} */
+
+/* 	.zoom-icon {
+		position: absolute;
+		color: white;
+		font-size: 1.4rem;
+	} */
+
+	.img-container.zoomed {
+		/* height: 350px;
+		width: 350px; */
+		object-fit: cover;
+
+	}
+
+
+	.img-container {
+		position: relative;
+		display: inline-block;
+	}
+
+	.overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.8);
+		z-index: 0;
+		display: none;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.zoomed {
+		position: fixed;
+		top: 42%;
+		left: 40%;
+		transform: translate(-50%, -50%);
+		z-index: 1;
+	/* 	max-width: 50vw;
+		max-height: 50vh;   */
+		object-fit: cover;
+		transform: scale(3);
+		width: 300px; 
+		height: 250px; 
+	}
+
+		.zoomed img {
+			/* max-width: 90vw;
+			max-height: 90vh; */
+		 width: 100%;
+			height: 100%;
+			/* object-fit: contain; 
+		}
+	/* .img-container {
+		position: relative;
+		display: inline-block;
+	}
+
+	.overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 0;
+		display: none;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	} */
+
+	
+
+	/* 	.zoomed img {
+			max-width: 90vw;
+			max-height: 90vh;
+			transform: scale(3);
+		} */
+
+</style>
+
+
+
+    <script>
+        $(document).ready(function () {
+            const heartIcons = document.querySelectorAll('.heart-icon');
+
+            heartIcons.forEach(function (heartIcon) {
+                heartIcon.addEventListener('click', function () {
+                    this.classList.toggle('filled');
+                });
+            });
+        }); 
+
+
+
+
+
+
+		
+  </script> 

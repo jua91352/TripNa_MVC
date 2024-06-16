@@ -1,0 +1,553 @@
+﻿@model PaginatedList<TripNa_MVC.Models.Restaurant>
+
+@{
+	ViewData["Title"] = "Spot";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<!DOCTYPE html>
+	<html>
+    <head>
+	<meta charset="UTF-8" />
+	<link href="~/css/Information.css" rel="stylesheet" />
+
+	</head>
+
+
+
+<body id="body">
+
+
+	<!-- ------------------------------------------- -->
+
+	@* <div class="container-fluid px-0 ">
+
+		<div class="row row-cols-1">
+			<div class="col">
+				<div class="col fixed-top">
+					<!-- 固定上方 -->
+
+					<nav class="navbar navbar-expand-sm " id="head">
+						<img src="/images/logo.png" alt="" width="300px">
+
+						<div class="container-fluid justify-content-end  px-0">
+
+
+							<!-- 大小切換 -->
+							<button type="button" class="btn btn-outline-secondary m-1" id="big">大</button>
+
+							<button type="button" class="btn btn-outline-secondary m-2" id="sm">小</button>
+
+							<!-- 頁首 -->
+							<ul class="navbar-nav ">
+
+								<li class="nav-item nav-travel">
+									<a class="nav-link" asp-area="" asp-controller="Travel" asp-action="weather">旅遊資訊</a>
+									<ul class="nav-intro">
+										<li><a class="nav-link_1" asp-area="" asp-controller="Spots" asp-action="Index">景點介紹</a></li></br>
+										<li><a class="nav-link_1" asp-area="" asp-controller="Travel" asp-action="Index">美食導覽</a></li>
+									</ul>
+								</li>
+
+
+								<li class="nav-item">
+									<a class="nav-link" href="#">自訂行程</a>
+								</li>
+
+
+
+								<li class="nav-item">
+									<a class="nav-link" href="#">會員登入</a>
+								</li>
+
+								<li class="nav-item">
+
+									<a class="nav-link" href="#">會員登出<span class="bi bi-box-arrow-in-right"></span></a>
+								</li>
+							</ul>
+						</div>
+
+
+					</nav>
+
+
+				</div> *@
+
+
+				<!--=== Breadcrumbs ===-->
+				<!--=== Breadcrumbs    end===-->
+				<!-- ============================================================ -->
+				@*     <section class="banner ">
+
+
+				<!-- <------------>
+				<div class="banner-container container auto">
+				<div class="banner-head">
+				<h1 class="title" style="color: white">景點列表</h1>
+
+				<h2 class="subtitle" style="color: white">好吃好玩的都在這</h2>
+
+				<a href="#" class="btn">點此開始製訂行程</a>
+				</div>
+				<div class="banner-body">
+
+
+
+				<!-- <img class="banner-img banner-img-pad" src="/icon/膠帶 - 複製.png" alt="" width="250px" height="545px"> -->
+				<img class="banner-img banner-img-pad" src="/images/台灣.png" alt="" width="250px" height="545px">
+				<img class="banner-img  banner-img-mo" src="/images/美食.jpeg" alt="" width="260px" height="364px">
+				<img class="banner-img banner-img-ph" src="/images/太魯閣.webp" alt="" width="720px" height="900px">
+
+
+
+				</div>
+
+				</div>
+
+
+
+				</section> *@
+
+
+				<div class="container">
+
+
+
+
+
+
+
+					@* 導覽卡片＝＝＝＝＝＝＝＝＝＝＝＝ --> *@
+
+
+					<div id="food-guide" style="margin-top:5rem;">
+						<!-- 這裡放置美食導覽的內容 -->
+
+						<div class="guide-content">
+							<h2>美食導覽</h2>
+
+							<br />  <br />
+
+
+
+							<div class="foodcard">
+
+
+
+								<form asp-action="Index" method="get">
+									<div class="form-actions no-color" style="margin-left:20px;">
+										<p style="width:auto;">
+											<input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="開始探索美食" id="search" />
+											<input type="submit" value="搜尋" class="back" /> |
+											<a asp-action="Index" class="backserch">回到美食總覽</a>
+
+										</p>
+									</div>
+
+								</form>
+
+
+								@* ----------------篩選列表--------------------- *@
+
+
+								<div class="sidebar">
+									<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" id="locabtn">依縣市排序</a>
+									<button class="btn btn-light " type="button" data-bs-toggle="collapse" data-bs-target="#regionCollapse" aria-expanded="false" aria-controls="regionCollapse" style="width:100px;margin-bottom:5px;" id="filter">
+										<img src="~/images/篩選 (2).png" alt="Alternate Text" width="20px" height="20px" style="margin-right:5px;" />  篩選
+									</button>
+									<div class="collapse" id="regionCollapse" style="position:relative;">
+										<p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇區域</p>
+										<ul id="selectedregion">
+											@* ------------------------------------------------------------------- *@
+											@foreach (var region in ViewBag.Regions)
+											{
+												<li id="liStyle">
+													<input type="checkbox" name="selectedRegions" value="@region" id="region-@region" class="region-checkbox" />
+													<label for="region-@region">@region</label>
+												</li>
+											}
+
+
+
+
+											<li><a href="javascript:void(0)" id="cancel"><img src="/images/取消.png" alt="Alternate Text" width="20px" height="20px" /></a></li>
+										</ul>
+										@* -----------------------------------選擇食物類型------------------------------- *@
+
+										<p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇類型</p>
+										<ul id="selectedregion">
+											@foreach (var foodtype in ViewBag.FoodType)
+											{
+												<li id="liStyle">
+													<input type="checkbox" name="selectedFoodtype" value="@foodtype" id="foodtype-@foodtype" class="foodtype-checkbox" />
+													<label for="foodtype-@foodtype">@foodtype</label>
+												</li>
+											}
+										</ul>
+									</div>
+								</div>
+
+
+
+
+
+								@* ---------------------------- *@
+
+								<hr class="my-4">
+
+								<div class="menu">
+									@*  <button class="menu-btn">選擇類型</button> *@
+									<div class="menu-content">
+									</div>
+
+
+
+
+
+								</div>
+
+
+								<div class="main" style="position:relative;">
+									<h3 style="margin-left:30px;">餐廳列表</h3>
+
+									<div class="btn" style="position:absolute; right:30px;top:0;margin:10px">
+
+										@{
+											var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+											var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+										}
+
+										<a asp-action="Index"
+										   asp-route-sortOrder="@ViewData["CurrentSort"]"
+										   asp-route-pageNumber="@(Model.PageIndex - 1)"
+										   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+										   class="btn btn-outline-secondary  @prevDisabled" style="margin-right:8px;">
+											<img src="/images/arrow_back_ios_20dp_FILL0_wght400_GRAD0_opsz20.svg" alt="Alternate Text" style="margin-left:5px;margin-bottom:3px;" />
+										</a>
+										<a asp-action="Index"
+										   asp-route-sortOrder="@ViewData["CurrentSort"]"
+										   asp-route-pageNumber="@(Model.PageIndex + 1)"
+										   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+										   class="btn btn-outline-secondary @nextDisabled">
+											<img src="/images/arrow_forward_ios_20dp_FILL0_wght400_GRAD0_opsz20.png" width="20px" height="20px" alt="Alternate Text" style="margin-left:5px;margin-bottom:3px;" />
+										</a>
+									</div>
+
+
+
+
+									<ul id="restaurant-list">
+
+										<!-- 這裡將顯示篩選後的餐廳結果 -->
+										<partial name="_regionlist" />
+
+									</ul>
+
+								</div>
+
+
+								<!-- 分頁選擇器 -->
+								@* <nav aria-label="餐廳分頁" class="mt-4">
+								<ul class="pagination justify-content-center" id="restaurantPagination"></ul>
+								</nav>
+								*@
+								<br /><br />
+
+
+							</div>
+
+
+
+
+
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<!-- 美食探索================================= -->
+				<!-- -------------------------------------------------------- -->
+			</div>
+
+		</div>
+
+
+
+
+
+
+		<!-- 內容資訊部分 -->
+		<div class="container">
+			<div class="row justify-content-center">
+				<!-- <div class="col-lg-8"> -->
+				<!-- <div class="row row-cols-2"> -->
+
+
+			</div>
+		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<footer class="text-center mt-5 p-3 shadow" style="height: 200px;">
+			<div class="row justify-content-center align-items-center text-center m-3">
+				<div class="col-3">
+					<h5>關於我們</h5>
+					<hr>
+					<ul class="list-unstyled">
+						<li class="mb-1">趣哪:旅遊網站</li>
+						<li class="mb-1">可以自訂行程</li>
+						<li class="mb-1">也可以媒合導遊</li>
+					</ul>
+				</div>
+				<div class="col-3">
+					<h5>聯絡我們</h5>
+					<hr>
+					<ul class="list-unstyled">
+						<li class="mb-1">電話: 123-456-7890</li>
+						<li class="mb-1">地址: 123 Main Street, Anytown, USA</li>
+						<li class="mb-1">Email: 8bXrN@example.com</li>
+					</ul>
+				</div>
+				<div class="col-3">
+					<h5>社群媒體</h5>
+					<hr>
+					<ul class="list-unstyled">
+						<li class="mb-1">Facebook</li>
+						<li class="mb-1">Twitter</li>
+						<li class="mb-1">Instagram</li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<!-- ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝圓形圖片點擊放大＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ -->
+	</div>
+	@* ================================================================================ *@
+
+	@section Scripts {
+
+		<script>
+
+
+			// ====================================收藏==================================
+			// 模擬用戶登入狀態
+			function isUserLoggedIn() {
+				// 在實際應用中，這應該是通過檢查會話、令牌等來完成
+				// 這裡我們用一個簡單的變量來模擬
+				return false; // 假設用戶未登入
+			}
+
+			// 模擬登入函數
+			function login() {
+				// 在實際應用中，這應該重定向到登入頁面或顯示登入對話框
+				alert("重定向到登入頁面...");
+			}
+
+			const heartIcons = document.querySelectorAll('.heart-icon');
+
+			heartIcons.forEach(function (heartIcon) {
+				heartIcon.addEventListener('click', function () {
+					if (isUserLoggedIn()) {
+						// 用戶已登入，切換愛心狀態
+						this.classList.toggle('filled');
+
+						// 在這裡你可以發送 AJAX 請求到後端，保存收藏狀態
+						const restaurantId = this.dataset.restaurantId;
+						const isFavorite = this.classList.contains('filled');
+						console.log(`餐廳 ID ${restaurantId} 收藏狀態: ${isFavorite}`);
+					} else {
+						// 用戶未登入，顯示警告並提供登入選項
+						const wantToLogin = confirm("您需要登入才能收藏餐廳。是否現在登入？");
+						if (wantToLogin) {
+							login();
+						}
+					}
+				});
+			});
+
+
+
+
+
+			// =======================分頁===========================
+			// 餐廳列表分頁
+			// const restaurantsPerPage = 10;
+			// const restaurantItems = document.querySelectorAll('.restaurant-item');
+			// const totalRestaurants = restaurantItems.length;
+			// const totalPages = Math.ceil(totalRestaurants / restaurantsPerPage);
+			// let currentPage = 1;
+
+			// // 顯示指定頁碼的餐廳
+			// function showPage(pageNumber) {
+			// 	const start = (pageNumber - 1) * restaurantsPerPage;
+			// 	const end = start + restaurantsPerPage;
+
+			// 	restaurantItems.forEach((item, index) => {
+			// 		item.style.display = (index >= start && index < end) ? 'block' : 'none';
+			// 	});
+
+			// 	currentPage = pageNumber;
+			// 	createPagination();
+			// 	window.scrollTo(0, 0); // 滾動到頁面頂部
+			// }
+
+
+
+
+			// 初始化後在這裡進行篩選
+			$('input[type="checkbox"][name="selectedRegions"]').on('change', function () {
+				var selectedregion = $('input[type="checkbox"][name="selectedRegions"]:checked').map(function () {
+					return $(this).val();
+				}).get();
+				$.ajax({
+					url: '@Url.Action("getregionfilter", "Travel")',
+					type: 'POST',
+					dataType: 'html',
+					data: { region: selectedregion },
+					success: function (result) {
+						$('#region-list').html(result);
+					},
+					error: function () {
+						console.log('an error')
+					}
+				});
+			});
+
+			$(function () {
+				// 當複選框的狀態改變時
+				$('input.region-checkbox, input.foodtype-checkbox').change(function () {
+					var selectedRegions = $('input.region-checkbox:checked').map(function () {
+						return this.value;
+					}).get();
+					var selectedFoodtype = $('input.foodtype-checkbox:checked').map(function () {
+						return this.value;
+					}).get();
+
+					// 發送 AJAX 請求
+					$.ajax({
+						url: '@Url.Action("GetFilteredRestaurants", "Travel")', // 控制器動作方法的 URL
+						type: 'POST',
+						dataType: 'html',
+						data: { regions: selectedRegions, foodtype: selectedFoodtype },
+						success: function (result) {
+							$('#restaurant-list').html(result); // 更新餐廳列表
+							$("#result").hide();
+
+						},
+						error: function () {
+							console.log('發生錯誤');
+						}
+					});
+				});
+			});
+
+
+			// ----------------------------
+
+
+			// $(function () {
+			// 	// 當複選框的狀態改變時
+			// 	$('input.foodtype-checkbox').change(function () {
+			// 		var selectedFoodtype = $('input.foodtype-checkbox:checked').map(function () {
+			// 			return this.value;
+			// 		}).get();
+
+			// 		// 發送 AJAX 請求
+			// 		$.ajax({
+			// 			url: '@Url.Action("GetFilteredRestaurants", "Travel")', // 控制器動作方法的 URL
+			// 			type: 'POST',
+			// 			dataType: 'html',
+			// 			data: { foodtype: selectedFoodtype },
+			// 			success: function (result) {
+			// 				$('#restaurant-list').html(result); // 更新餐廳列表
+			// 			},
+			// 			error: function () {
+			// 				console.log('發生錯誤');
+			// 			}
+			// 		});
+			// 	});
+			// });
+			// --------------------------------
+
+			$("#filter").click(function () {
+				$(this).hide();
+				$("#locabtn").hide();
+				$("#regionCollapse").show();
+			});
+
+			$("#cancel").click(function () {
+				$("#regionCollapse").toggle();
+				$("#filter").toggle();
+				$("#locabtn").toggle();
+			});
+
+			// const imgContainers = document.querySelectorAll('.img-container');
+
+			// imgContainers.forEach(container => {
+			// 	const img = container.querySelector('img');
+
+			// 	container.addEventListener('click', () => {
+			// 		container.classList.toggle('zoomed');
+
+			// 		if (container.classList.contains('zoomed')) {
+			// 			// 立即將圖片放大並移到更高層級
+			// 			img.style.transform = 'scale(3)';
+			// 			img.style.position = 'relative';
+			// 			img.style.zIndex = '1';
+			// 		} else {
+			// 			// 還原圖片大小和層級
+			// 			img.style.transform = 'none';
+			// 			img.style.position = 'static';
+			// 			img.style.zIndex = 'auto';
+			// 		}
+			// 	});
+			// });
+			const imgContainers = document.querySelectorAll('.img-container');
+			const overlay = document.createElement('div');
+			overlay.classList.add('overlay');
+			document.body.appendChild(overlay);
+
+			imgContainers.forEach(container => {
+				const img = container.querySelector('.img-zoom');
+				container.addEventListener('click', () => {
+					container.classList.toggle('zoomed');
+					overlay.style.display = container.classList.contains('zoomed') ? 'flex' : 'none';
+					if (container.classList.contains('zoomed')) {
+						img.style.transform = 'scale(3)';
+					} else {
+						img.style.transform = 'none';
+					}
+				});
+			});
+
+
+			// ---------------------------------------------------------------------
+			// const dropdownToggle = document.getElementById('orderByDropdown');
+			// const dropdownMenu = document.getElementById('orderbyregion');
+
+			// dropdownToggle.addEventListener('click', () => {
+			//     dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+			// });
+
+			// document.addEventListener('click', (event) => {
+			//     if (!event.target.matches('#orderByDropdown') && !dropdownMenu.contains(event.target)) {
+			//         dropdownMenu.style.display = 'none';
+			//     }
+
+
+
+
+		</script>
+
+
+
+
+	}
+</body>
+
+			</html>
