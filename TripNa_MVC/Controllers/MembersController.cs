@@ -757,6 +757,20 @@ namespace TripNa_MVC.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
         {

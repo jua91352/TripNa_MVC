@@ -369,12 +369,13 @@ h3 {
     </div>
 </div>
 
+@* @neworder.OrderDate.ToString("yyyy/MM/dd HH:mm:ss") *@
 
       <form id="paymentForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
          
              <input type="hidden" name="MerchantID" value="3002607">
              <input type="hidden" name="MerchantTradeNo" value="@neworder.OrderNumber">
-             <input type="hidden" name="MerchantTradeDate"  id="orderTime"  value="">
+             <input type="hidden" name="MerchantTradeDate"  id="orderTime"  value="@neworder.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")">
              <input type="hidden" name="PaymentType" value="aio">
              <input type="hidden" name="TotalAmount id="totalAmountInput"   value="">
              <input type="hidden" name="ItemName" value="TAIPEI">
@@ -472,7 +473,21 @@ function copyCode(element) {
             ("0" + now.getSeconds()).slice(-2);
 
         // 設置訂單時間
-        $('#orderTime').val(formattedDate);
+        // $('#orderTime').val(formattedDate);
+
+        var totalAmount = $('#totalAmount').text().replace(/[^\d]/g, '');
+        totalAmount = parseInt(totalAmount, 10);
+
+        if (isNaN(totalAmount) || totalAmount <= 0) {
+            alert('無效的交易金額');
+            return false; // 阻止表單提交
+        }
+
+        var totalAmount = $("input[name='TotalAmount']").val();
+        if (!/^\d+$/.test(totalAmount) || parseInt(totalAmount, 10) <= 0) {
+            alert('交易金額必須是正整數');
+            return false; // 阻止表單提交
+        }
 
         // 獲取總金額（假設顯示在某個元素中）
         var totalAmount = $('#totalAmount').text().replace(/,/g, '').trim();
