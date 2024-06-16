@@ -359,31 +359,51 @@
                     $("#filter").toggle();
                     $("#locabtn").toggle();
                 });
+                // =====================================================================================================================
+                // const imgContainers = document.querySelectorAll('.img-container');
 
-                const imgContainers = document.querySelectorAll('.img-container');
+                // imgContainers.forEach(container => {
+                //     const img = container.querySelector('img');
 
-                imgContainers.forEach(container => {
-                    const img = container.querySelector('img');
+                //     container.addEventListener('click', () => {
+                //         container.classList.toggle('zoomed');
 
-                    container.addEventListener('click', () => {
-                        container.classList.toggle('zoomed');
-
-                        if (container.classList.contains('zoomed')) {
-                            // 立即將圖片放大並移到更高層級
-                            img.style.transform = 'scale(1.5)';
-                            img.style.position = 'relative';
-                            img.style.zIndex = '1';
-                        } else {
-                            // 還原圖片大小和層級
-                            img.style.transform = 'none';
-                            img.style.position = 'static';
-                            img.style.zIndex = 'auto';
-                        }
-                    });
-                });
+                //         if (container.classList.contains('zoomed')) {
+                //             // 立即將圖片放大並移到更高層級
+                //             img.style.transform = 'scale(1.5)';
+                //             img.style.position = 'relative';
+                //             img.style.zIndex = '1';
+                //         } else {
+                //             // 還原圖片大小和層級
+                //             img.style.transform = 'none';
+                //             img.style.position = 'static';
+                //             img.style.zIndex = 'auto';
+                //         }
+                //     });
+                // });
 
 
+            // const imgContainers = document.querySelectorAll('.img-container');
+            // const overlay = document.createElement('div');
+            // overlay.classList.add('overlay');
+            // document.body.appendChild(overlay);
 
+            // imgContainers.forEach(container => {
+            //     const img = container.querySelector('.img-zoom');
+            //     container.addEventListener('click', () => {
+            //         container.classList.toggle('zoomed');
+            //         overlay.style.display = container.classList.contains('zoomed') ? 'flex' : 'none';
+            //         if (container.classList.contains('zoomed')) {
+            //             img.style.transform = 'scale(3)';
+            //         } else {
+            //             img.style.transform = 'none';
+            //         }
+            //     });
+            // });
+
+
+
+                // =====================================================================================
 
 
             </script>

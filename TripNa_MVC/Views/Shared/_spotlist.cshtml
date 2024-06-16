@@ -29,11 +29,10 @@ else
 		<div class="col">
 			<div class="card" style="width:24rem;height:400px;  box-shadow: 0 3px 10px rgb(0,0,0,.2);">
 
-				<img src="/_img/s1_car.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;left:0;" />
-				<div class="img-container">
-					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" />
-                    <div class="img-overlay">
-						
+				@* <img src="/_img/s1_car.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;left:0;" /> *@
+				<div class="img-container" >
+					<img src="@Url.Content(img)" class="img-fluid rounded-start" alt="Alternate Text" style="height:250px; position:relative;width:100%;" onclick="zoom(this)" />
+					<div class="overlay">
 						<span class="zoom-icon">&#128269;</span>
 					</div>
 				</div>
@@ -46,9 +45,9 @@ else
 					<span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
 
 					<div class="d-flex align-items-center">
-						<h4 class="card-title" style="font-weight:800; font-size:1.2rem; margin-right: 0;">@spots.SpotName</h4>
+						<h4 class="card-title" style="font-weight:800; font-size:1.2rem; margin-right: 0;margin-left: 28px;">@spots.SpotName</h4>
 
-						<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" height="55px" width="55px" />
+						<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" height="55px" width="55px" style="position: absolute;left: 0;" />
 					</div>
 					<h5 class="card-title">@spots.SpotCity</h5>
 					@* <h5 class="card-title" style="font-weight:800;">@spots.SpotName</h5> *@
@@ -81,7 +80,7 @@ else
 	}
 
 		.card:hover {
-			transform: scale(1.05);
+			/* transform: scale(1.05); */
 			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 			background-color: #cdcfee4f;
 			transition-duration: 1s;
@@ -93,45 +92,50 @@ else
 
 	}
 
-	.img-overlay {
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		width: 100%;
-		height: 100%;
-		/* background-color: rgba(0, 0, 0, 0.5); */
-		opacity: 0;
-		transition: opacity 0.3s;
-		display: flex;
-		/* justify-content: center;
-			align-items: center; */
+	.img-container.zoomed {
+		/* height: 350px;
+			width: 350px; */
+		object-fit: cover;
 	}
 
-	.zoom-icon {
-		color: white;
-		font-size: 1.4rem;
-	}
-
-	.img-overlay:hover {
-		opacity: 1;
-		cursor: pointer;
-		/* z-index: 1; */
-		/* overflow: visible; */
-	}
 
 	.img-container {
 		position: relative;
+		display: inline-block;
 	}
 
-		.img-container img {
-			transition: transform 0.3s ease;
-		}
+	.overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.8);
+		z-index: 0;
+		display: none;
+		justify-content: center;
+		align-items: center;
+	}
 
-		.img-container.zoomed img {
-			transform: scale(1.5);
-			overflow: visible;
-			/* z-index: 1; */
-		}
+	.zoomed {
+		position: fixed;
+		top: 42%;
+		left: 40%;
+		transform: translate(-50%, -50%);
+		z-index: 1;
+		/* 	max-width: 50vw;
+			max-height: 50vh;   */
+		object-fit: cover;
+		transform: scale(3);
+		width: 300px;
+		height: 250px;
+	}
+
+		.zoomed img {
+			/* max-width: 90vw;
+				max-height: 90vh; */
+			width: 100%;
+			height: 100%;}
 
 </style>
 
@@ -251,4 +255,28 @@ else
 		});
 	}
 
+
+
+	// ====================================================================================================
+
+	function zoom(y) { 
+
+	const imgContainers = document.querySelectorAll('.img-container');
+	const overlay = document.createElement('div');
+	overlay.classList.add('overlay');
+	document.body.appendChild(overlay);
+
+	imgContainers.forEach(container => {
+		const img = container.querySelector('.img-zoom');
+		container.addEventListener('click', () => {
+			container.classList.toggle('zoomed');
+			overlay.style.display = container.classList.contains('zoomed') ? 'flex' : 'none';
+			if (container.classList.contains('zoomed')) {
+				img.style.transform = 'scale(3)';
+			} else {
+				img.style.transform = 'none';
+			}
+		});
+	});
+}
 			</script>
