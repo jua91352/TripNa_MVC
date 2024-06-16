@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
 using Humanizer;
 using Microsoft.AspNetCore.Http;
@@ -686,10 +688,21 @@ namespace TripNa_MVC.Controllers
             existingOrder.OrderMatchStatus = dataToSend.OrderMatchStatus;
             existingOrder.ItineraryId = dataToSend.ItineraryId;
 
+            var member = _context.Members.FirstOrDefault(m => m.MemberId == existingOrder.MemberId);
+            var memberEmail = member.MemberEmail;
+
+            var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == existingOrder.GuiderId);
+            var guiderNickname = guider.GuiderNickname;
+
+            var itinerary = _context.Itineraries.FirstOrDefault(i => i.ItineraryId == existingOrder.ItineraryId);
+            var itineraryName = itinerary.ItineraryName;
+            var itineraryStartDate = itinerary.ItineraryStartDate;
+
             try
             {
                 _context.Entry(existingOrder).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                await SendAcceptEmail(memberEmail, guiderNickname, itineraryName, itineraryStartDate);
                 return Ok("成功");
             }
             catch (Exception ex)
@@ -728,6 +741,17 @@ namespace TripNa_MVC.Controllers
 
             _context.SelectGuiders.Remove(existingOrder);
 
+            var member = _context.Members.FirstOrDefault(m => m.MemberId == existingOrder.MemberId);
+            var memberEmail = member.MemberEmail;
+
+            var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == existingOrder.GuiderId);
+            var guiderNickname = guider.GuiderNickname;
+
+            
+            var order = _context.Orderlists.FirstOrDefault(o => o.OrderId == existingOrder.OrderId);
+            var itinerary = _context.Itineraries.FirstOrDefault(i => i.ItineraryId == order.ItineraryId);
+            var itineraryName = itinerary.ItineraryName;
+            var itineraryStartDate = itinerary.ItineraryStartDate;
 
 
 
@@ -735,6 +759,7 @@ namespace TripNa_MVC.Controllers
             {
                 //_context.Entry(existingOrder).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                await SendRejectEmail(memberEmail, guiderNickname, itineraryName, itineraryStartDate);
                 return Ok("婉拒了了了");
             }
             catch (Exception ex)
@@ -746,6 +771,50 @@ namespace TripNa_MVC.Controllers
         }
 
 
+        //-----------------------------------------------------------寄信--------------------------------------------------------
+        public async Task SendAcceptEmail(string memberEmail, string guiderNickName, string itineraryName, DateTime itineraryStartDate)
+        {
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "導遊媒合成功通知",
+                Body = $"您的{itineraryName}訂單(出發日{itineraryStartDate})，已與導遊 {guiderNickName} 媒合成功",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(memberEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        public async Task SendRejectEmail(string memberEmail, string guiderNickName, string itineraryName, DateTime itineraryStartDate)
+        {
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "導遊婉拒訂單通知",
+                Body = $"您的{itineraryName}訂單(出發日{itineraryStartDate})，已被導遊 {guiderNickName} 婉拒",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(memberEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
 
 
         // 刪除被選擇的ID 的該筆收藏資料
