@@ -226,7 +226,7 @@ namespace TripNa_MVC.Controllers
         public async Task<IActionResult> GuiderCenter(Guider updatedGuider, IFormFile guiderImage)
             {
 
-                var memberEmail = HttpContext.Session.GetString("memberEmail");
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
 
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -245,7 +245,8 @@ namespace TripNa_MVC.Controllers
 
             bool isUpdated = false;
 
-
+            string originalNickname = guider.GuiderNickname;
+            string originalArea = guider.GuiderArea;
 
             // 更新會員的資訊
             // 檢查 GuiderNickname 是否被修改過
@@ -267,11 +268,12 @@ namespace TripNa_MVC.Controllers
             }
 
             // 檢查並更新照片
+         
             string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
-
             // 更新正面照片
             if (guiderImage != null && guiderImage.Length > 0)
             {
+                Console.WriteLine("------------------------------------- 更改照片 ----------------------------------------");
                 var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
                 if (!Directory.Exists(imagePath))
                 {
@@ -285,14 +287,29 @@ namespace TripNa_MVC.Controllers
                 isUpdated = true;
             }
 
+            if (originalNickname != guider.GuiderNickname || originalArea != guider.GuiderArea || isUpdated)
+            {
+                var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{originalArea}", $"{originalNickname}.jpg");
+                var newImagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}", $"{guider.GuiderNickname}.jpg");
 
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    if (!Directory.Exists(Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}"));
+                    }
+
+                    // 移動圖片到新的路徑
+                    System.IO.File.Move(oldImagePath, newImagePath);
+                }
+            }
             // 如果有任何欄位被修改過，就儲存變更
             if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null || isUpdated)
             {
                 _context.SaveChanges();
             }
 
-           
+
 
             return RedirectToAction("GuiderCenter");
         }
