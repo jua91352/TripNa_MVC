@@ -43,11 +43,12 @@ public partial class TripNaContext : DbContext
 
     public virtual DbSet<Spot> Spots { get; set; }
 
-	public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+    public virtual DbSet<EcpayOrder> EcpayOrders { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=TripNa;Integrated Security=True;Encrypt=False;");
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Server=.;Database=TripNa;Integrated Security=True;Encrypt=False;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -75,7 +76,7 @@ public partial class TripNaContext : DbContext
                 .HasMaxLength(8)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.ItineraryId).HasColumnName("ItineraryID");
+            //entity.Property(e => e.CouponFrom).HasMaxLength(24);
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
             entity.HasOne(d => d.Itinerary).WithMany(p => p.Coupons)
@@ -329,6 +330,23 @@ public partial class TripNaContext : DbContext
             entity.Property(e => e.SpotIntro).HasMaxLength(300);
             entity.Property(e => e.SpotName).HasMaxLength(30);
         });
+
+        modelBuilder.Entity<EcpayOrder>(entity =>
+        {
+            entity.HasKey(e => e.MerchantTradeNo);
+
+            entity.Property(e => e.MerchantTradeNo).HasMaxLength(50);
+            entity.Property(e => e.MemberId)
+                .HasMaxLength(50)
+                .HasColumnName("MemberID");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentType).HasMaxLength(50);
+            entity.Property(e => e.PaymentTypeChargeFee).HasMaxLength(50);
+            entity.Property(e => e.RtnMsg).HasMaxLength(50);
+            entity.Property(e => e.TradeDate).HasMaxLength(50);
+            entity.Property(e => e.TradeNo).HasMaxLength(50);
+        });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

@@ -10,15 +10,16 @@
     var g = Model.Guiders.FirstOrDefault();
 }
 
+
 @functions {
-    public static string CalculateExperience(DateTime startDate)
+    public static string CalculateExperience(DateOnly startDate)
     {
         DateTime currentDate = DateTime.Now;
-        TimeSpan experience = currentDate - startDate;
-
+        TimeOnly timePart = TimeOnly.MinValue;
+        DateTime dateTime = startDate.ToDateTime(timePart);
+        TimeSpan experience = currentDate - dateTime;
         int years = experience.Days / 365;
         int months = (experience.Days % 365) / 30;
-
         if (years > 0)
         {
             return $"{years}年";
@@ -33,6 +34,8 @@
         }
     }
 }
+
+
 
 
 <style>
@@ -69,13 +72,32 @@
 
 <br>
 
-<div class="">
+
+@* <div class="row">
+
+    <div class="col-5 text-end">
+        <img id="display_img" src="~/導遊/大頭照/@g.GuiderArea/@g.GuiderNickname@p" style="border-radius: 50% ; object-fit: cover;" height="170px " width="170px">
+        <br>
+        <br>
+        <div style='background-color: #e8eafe'>
+        </div>
+    </div>
+</div> *@
+
+
+
+<div style=" margin-left:50px">
     <a asp-action="GuiderCenter" asp-controller="Guiders" style="text-decoration: none;">
         <span class="bi bi-arrow-left" style="color: #545454; font-size: 18px;"></span>
         <span style="color: #4e5482 ">返回導遊會員中心</span>
     </a>
 
 </div>
+
+
+
+
+
 <br>
 
 

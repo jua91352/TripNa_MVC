@@ -2,9 +2,12 @@
 {
     public class OrderDetail
     {
+        public List<Coupon> MemberCoupons { get; set; }
+
         public List<Orderlist> Orders { get; set; }
         public List<Itinerary> Itineraries { get; set; }
         public List<Coupon> Coupons { get; set; }
+
         public List<Guider> Guiders { get; set; }
         public int?  GuiderID { get; set; }
 

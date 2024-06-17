@@ -9,7 +9,10 @@ public partial class Itinerary
 
     public string ItineraryName { get; set; } = null!;
 
-    public DateOnly ItineraryStartDate { get; set; }
+    public DateTime ItineraryStartDate { get; set; }
+
+    public short ItineraryPeopleNo { get; set; }
+
 
     public short ItineraryPeopleNo { get; set; }
 
@@ -18,4 +21,5 @@ public partial class Itinerary
     public virtual ICollection<ItineraryDetail> ItineraryDetails { get; set; } = new List<ItineraryDetail>();
 
     public virtual ICollection<Orderlist> Orderlists { get; set; } = new List<Orderlist>();
+
 }

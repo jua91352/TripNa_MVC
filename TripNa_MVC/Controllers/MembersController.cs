@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TripNa_MVC.Models;
+using XAct;
+using XSystem.Security.Cryptography;
 
 namespace TripNa_MVC.Controllers
 {
@@ -20,11 +25,6 @@ namespace TripNa_MVC.Controllers
             _context = context;
         }
 
-        // GET: Members
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Members.ToListAsync());
-        }
 
 
         // GET: /Members/MemberCenter
@@ -274,6 +274,7 @@ namespace TripNa_MVC.Controllers
                                join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
                                from c in couponGroup.DefaultIfEmpty() // left join
                                where o.MemberId == member.MemberId
+                               orderby o.OrderDate descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
@@ -343,44 +344,44 @@ namespace TripNa_MVC.Controllers
                 // GuiderID 不為空,不能註冊
             }
 
-            var orderDetails = (from o in _context.Orderlists
-                                join m in _context.Members on o.MemberId equals m.MemberId
+            var orderDetails =( from o in _context.Orderlists
+                               join m in _context.Members on o.MemberId equals m.MemberId
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
-                                join r in _context.Ratings on o.MemberId equals r.MemberId
-                                where o.MemberId == member.MemberId && o.OrderId == orderID
-                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
-                                join s in _context.Spots on j.SpotId equals s.SpotId
-                                select new
-                                {
-                                    o.OrderNumber,
-                                    o.OrderDate,
-                                    i.ItineraryStartDate,
-                                    o.OrderTotalPrice,
-                                    o.OrderStatus,
-                                    o.OrderMatchStatus,
-                                    c.CouponCode,
-                                    g.GuiderNickname,
-                                    i.ItineraryName,
-                                    i.ItineraryPeopleNo,
-                                    m.MemberName,
-                                    m.MemberEmail,
-                                    m.MemberPhone,
-                                    ItineraryDetails = j,
-                                    Spot = s,
-                                    o.ItineraryId,
-                                    a.VisitOrder,
-                                    g.GuiderArea,
-                                    o.OrderId,
-                                    r.RatingComment,
-                                    r.RatingStars,
-                                });
+                               join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+                               join c in _context.Coupons on o.MemberId equals c.MemberId
+                               join r in _context.Ratings on o.MemberId equals r.MemberId
+                               where  o.MemberId == member.MemberId  && o.OrderId == orderID
+                               from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                               join s in _context.Spots on j.SpotId equals s.SpotId
+                               select new
+                               {
+                                   o.OrderNumber,
+                                   o.OrderDate,
+                                   i.ItineraryStartDate,
+                                   o.OrderTotalPrice,
+                                   o.OrderStatus,
+                                   o.OrderMatchStatus,
+                                   c.CouponCode,
+                                   g.GuiderNickname,
+                                   i.ItineraryName,
+                                   i.ItineraryPeopleNo,
+                                   m.MemberName,
+                                   m.MemberEmail,
+                                   m.MemberPhone,
+                                   ItineraryDetails = j,
+                                   Spot = s,
+                                   o.ItineraryId,
+                                   a.VisitOrder,
+                                   g.GuiderArea,
+                                   o.OrderId,
+                                   r.RatingComment,
+                                   r.RatingStars,
+                               });
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
-
+           
             if (orderDetailsList == null)
             {
                 return NotFound();
@@ -408,7 +409,7 @@ namespace TripNa_MVC.Controllers
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderId = o.OrderId,
-
+  
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
@@ -465,7 +466,7 @@ namespace TripNa_MVC.Controllers
             var orderDetails = (from o in _context.Orderlists
                                 join m in _context.Members on o.MemberId equals m.MemberId
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
-                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
                                 join c in _context.Coupons on o.MemberId equals c.MemberId
                                 where o.MemberId == member.MemberId && o.OrderId == orderID
@@ -503,10 +504,6 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
-
-
-
-            //join q in _context.MemberQuestions on o.MemberId equals q.MemberId
 
 
             var questions = from q in _context.MemberQuestions
@@ -568,8 +565,8 @@ namespace TripNa_MVC.Controllers
                         MemberEmail = o.MemberEmail,
                         MemberPhone = o.MemberPhone
                     },
-
-                    Spots = o.Spot,
+                   
+                    Spots = o.Spot,                    
                     ItineraryDetail = new ItineraryDetail
                     {
                         ItineraryId = o.ItineraryId,
@@ -582,7 +579,7 @@ namespace TripNa_MVC.Controllers
                     QuestionTime = (DateTime)q.QuestionTime,
                     AnswerContent = q.AnswerContent,
                     AnswerTime = q.AnswerTime
-                }).ToList(),
+                }).ToList(),              
                 MemberId = member.MemberId,
                 OrderId = orderID
             };
@@ -612,8 +609,6 @@ namespace TripNa_MVC.Controllers
 
 
 
-
-
             // 建立新的 MemberQuestion 實體並儲存到資料庫
             var newQuestion = new MemberQuestion
             {
@@ -632,31 +627,136 @@ namespace TripNa_MVC.Controllers
         }
 
 
+        //判斷該會員是否真的有該筆優惠券
+        [HttpPost]
+        public IActionResult ValidateCoupon(string couponCode, int memberId, decimal orderTotal)
+        {
+            var coupon = _context.Coupons
+                .FirstOrDefault(c => c.MemberId == memberId && c.CouponCode == couponCode);
+
+            if (coupon != null)
+            {
+                // 這裡假設優惠券金額是固定的 50 元，您可以根據實際情況進行調整
+                return Json(new { isValid = true, discountAmount = 50m });
+            }
+            else
+            {
+                return Json(new { isValid = false });
+            }
+        }
 
 
 
+        public ActionResult MemberCheckOut(int orderID)
+        {
+
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+
+            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+            var latestOrder = _context.Orderlists
+                             .Where(o => o.MemberId == member.MemberId)
+                             .OrderByDescending(o => o.OrderId)
+                             .Select(o => o.OrderId)
+                             .FirstOrDefault();
+
+
+            var orderTotalPrice = _context.Orderlists
+                            .Where(o => o.OrderId == latestOrder)
+                            .OrderByDescending(o => o.OrderId)                            
+                            .Select(o => o.OrderTotalPrice)
+                            .FirstOrDefault();
+          
+
+            var newOrder = (from o in _context.Orderlists
+                            join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                            join id in _context.ItineraryDetails on i.ItineraryId equals id.ItineraryId
+                            join s in _context.Spots on id.SpotId equals s.SpotId
+                            join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
+
+                            from c in couponGroup.DefaultIfEmpty()
+                            where o.MemberId == member.MemberId && o.OrderId == latestOrder
+                            orderby o.OrderId descending
+
+                            select new
+                            {
+                                o.OrderId,
+                                o.MemberId,
+                                o.OrderNumber,
+                                o.OrderDate,
+                                c.CouponCode,
+                                o.OrderTotalPrice,
+                                i.ItineraryId,
+                                i.ItineraryName,
+                                i.ItineraryStartDate,
+                                i.ItineraryPeopleNo,
+                                s.SpotId,
+                                s.SpotName,
+                                s.SpotCity,
+                                id.VisitOrder,
+                                id.ItineraryDate
+                            }).ToList();
 
 
 
+            // 查詢會員的所有優惠券
+            var memberCoupons = _context.Coupons
+                .Where(c => c.MemberId == member.MemberId)
+                .ToList();
 
 
+            var order = new OrderDetail
+            {
+                Orders = newOrder.Select(o => new Orderlist
+                {
+                    OrderNumber = o.OrderNumber,
+                    OrderDate = o.OrderDate,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                    OrderId = o.OrderId,
+                    Itinerary = new Itinerary
+                    {
+                        ItineraryStartDate = o.ItineraryStartDate,
+                        ItineraryName = o.ItineraryName,
+                        ItineraryPeopleNo = o.ItineraryPeopleNo,
+                    },
+                    Coupon = new Coupon
+                    {
+                        CouponCode = o.CouponCode
+                    },
+                    Spots = new Spot
+                    {
+                        SpotId = o.SpotId,
+                        SpotCity = o.SpotCity,
+                        SpotName = o.SpotName
+                    },
+                    ItineraryDetail = new ItineraryDetail
+                    {
+                        ItineraryId = o.ItineraryId,
+                        VisitOrder = o.VisitOrder,
+                        ItineraryDate = o.ItineraryDate
+                    }
+                }).ToList(),
+                MemberCoupons = memberCoupons,  // 添加會員的所有優惠券
+                MemberId = member.MemberId,
+                OrderId = latestOrder
+            };
+            return View(order);
+        }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public ActionResult PaySuccess()
+        {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
+            return View();
+        }
 
 
 

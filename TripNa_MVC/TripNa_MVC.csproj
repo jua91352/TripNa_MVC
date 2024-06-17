@@ -7,16 +7,58 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="123\**" />
+    <Compile Remove="wwwroot\lib\bootstrap\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <Compile Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
+    <Content Remove="123\**" />
+    <Content Remove="wwwroot\lib\bootstrap\**" />
+    <Content Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <Content Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
+    <EmbeddedResource Remove="123\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
+    <None Remove="123\**" />
+    <None Remove="wwwroot\lib\bootstrap\**" />
+    <None Remove="wwwroot\導遊\大頭照\南部地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\大頭照\東部地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\大頭照\離島地區\NewFolder\**" />
+    <None Remove="wwwroot\導遊\證照\南部地區\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsQuery" Version="1.3.4" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="XAct.Core.PCL" Version="0.0.5014" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="123\" />
+    <None Include="wwwroot\景點圖片\南投\_烘培研究所.webp" />
+    <None Include="wwwroot\景點圖片\南投\元首館.webp" />
+    <None Include="wwwroot\景點圖片\南投\惠蓀林場.webp" />
+    <None Include="wwwroot\景點圖片\南投\竹山紫南宮.webp" />
+    <None Include="wwwroot\景點圖片\台中\惠蓀林場.webp" />
+    <None Include="wwwroot\景點圖片\彰化\魔菇部落生態休閒農場.webp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\導遊\證照\離島地區\" />
+    <Folder Include="wwwroot\導遊\證照\北部地區\" />
+    <Folder Include="wwwroot\導遊\證照\南部地區\" />
   </ItemGroup>
 
 </Project>

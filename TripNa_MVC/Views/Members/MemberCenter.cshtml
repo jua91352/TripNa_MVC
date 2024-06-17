@@ -7,16 +7,28 @@
 <br>
 
 
-<div class="container">
-    <div>
-        
-        <h1 id="title" class="text-center"> 會員中心</h1>
-        @* <br>
 
-        <h3 class="text-center">TripNa Member Center</h3> *@
 
-    </div>
+<br>
+<br>
+   <div class="container" style="background-color: lavender;">
     <br>
+    <br>
+    <div>
+            <h1 class="text-center">TripNa Member Center</h1>
+
+            <h3 id="title" class="text-center"> 會員中心</h3>
+        </div>
+        <br>
+
+
+
+
+
+
+
+
+
 
     <div id="topIcon" class="row">
 
@@ -62,18 +74,18 @@
 
         <div class="col-sm-4">
 
-       
+      @*  
             <div style='border:1px solid #3A326D ; padding-top:10px; padding-left: 10px;'>
                 <p>目前累積消費金額</p>
-                <p>NT$5,800</p>
+                <p>NT$5,800</p> *@
 
                 @* <p>NT$_________</p> *@
                @*  <p>(普通會員)</p> *@
-            </div>
+         @*    </div> *@
 
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-10">
 
 
 
@@ -81,13 +93,13 @@
             {
                 <form method="post" asp-action="MemberCenter" asp-controller="Members">
 
-                    <div id="userData"
-                         style='border:1px solid #3A326D ; padding-top:10px; padding-left:10px; padding-bottom:10px;'>
+                    <div id="userData" style=" font-size:20px"
+                         @* style='border:1px solid #3A326D ; padding-top:10px; padding-left:10px; padding-bottom:10px; *@ >
 
 
                         <label for="memberName">姓名</label>
                         <br>
-                        <input type="text" id="memberName" name="memberName" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="memberName" name="memberName" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberName">
 
 
@@ -95,20 +107,20 @@
 
                         <label for="userEmail">E-mail</label>
                         <br>
-                        <input type="text" id="MemberEmail" name="MemberEmail" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="MemberEmail" name="MemberEmail" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberEmail" readonly>
 
                         <br>
 
                         <label for="userPhone">行動電話</label>
                         <br>
-                        <input type="text" id="MemberPhone" name="MemberPhone" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="MemberPhone" name="MemberPhone" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberPhone">
 
                         <br>
                         <label for="  ">生日</label>
                         <br>
-                        <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 30px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
+                        <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 40px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
 
                         <br>
                         <br>
@@ -121,13 +133,13 @@
                         <div class="block" id="fullContent" style="display:none;">
                             <label asp-for="MemberPassword">重設密碼(不修改則不需輸入)</label>
                             <br>
-                            <input type="password" id="MemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <input type="password" id="MemberPassword" name="MemberPassword" style="resize:none; height: 40px ; width:90% ;" value="">
                             <br>
                             <label asp-for="MemberPassword">請再輸入一次密碼</label>
                             <br>
                             @*                             <input type="text" asp-for="MemberPassword" class="form-control" />
                         *@
-                            <input type="password" id="ReMemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <input type="password" id="ReMemberPassword" name="MemberPassword" style="resize:none; height: 40px ; width:90% ;" value="">
                             <br>
                         </div>
 
@@ -162,6 +174,24 @@
 <br>
 <br>
 
+
+<style>
+
+    #userData{
+        background-color: whitesmoke;
+        border: 4px solid whitesmoke;
+        padding-top: 45px;
+        padding-left: 25px;
+        padding-bottom: 60px;
+        margin-bottom: 46px;
+        width: 100%;
+        box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.4);
+        border-radius:10px;
+        margin-left: 105px;
+    }
+    
+
+</style>
 
 <script>
 

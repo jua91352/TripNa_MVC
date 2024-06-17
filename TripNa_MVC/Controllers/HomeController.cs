@@ -283,6 +283,12 @@ namespace TripNa_MVC.Controllers
 
 
 
+        //public IActionResult Spot(string city)
+        //{
+        //    var spots = _context.Spots;
+        //    return View();
+        //}
+
 
         public IActionResult Login()
         {
@@ -341,7 +347,7 @@ namespace TripNa_MVC.Controllers
             if (ModelState.IsValid)
             {
                 // Check if the email already exists in the database
-                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberPassword);
+                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberEmail);
 
                 if (existingMember != null)
                 {
@@ -351,7 +357,8 @@ namespace TripNa_MVC.Controllers
 
                 _context.Add(member);
                 await _context.SaveChangesAsync();
-                return Redirect("/home/Login");
+                ViewData["Success"] = "µù¥U¦¨¥\¡I";
+                return View();
             }
 
             return View("home");
