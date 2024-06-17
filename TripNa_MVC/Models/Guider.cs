@@ -15,6 +15,7 @@ public partial class Guider
     public string GuiderGender { get; set; } = null!;
 
     public string GuiderArea { get; set; } = null!;
+    public decimal? GuiderRating { get; set; }
 
     public DateOnly GuiderStartDate { get; set; }
 
