@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "PaySuccess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+.payment-success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.payment-success-svg {
+    width: 300px;
+    height: 300px;
+}
+
+.payment-success-title {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 36px;
+    color: #333;
+    margin-top: 20px;
+    opacity: 0;
+}
+
+.payment-success-circle {
+    stroke-dasharray: 1194;
+    stroke-dashoffset: 1194;
+}
+
+.payment-success-tick {
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350;
+}
+
+.payment-success-circle {
+    animation: payment-success-circle 1s ease-in-out forwards;
+}
+
+.payment-success-tick {
+    animation: payment-success-tick 0.8s 0.95s ease-in-out forwards;
+}
+
+.payment-success-title {
+    animation: payment-success-title 0.6s 1.2s ease-in-out forwards;
+}
+
+.payment-success-button {
+    opacity: 0;
+    transform: translateY(20px);
+    background-color: #68E534;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    animation: show-button 0.5s 1.8s ease-out forwards;
+}
+
+    @@keyframes payment-success-circle {
+        from {
+            stroke-dashoffset: 1194;
+        }
+
+        to {
+            stroke-dashoffset: 2388;
+        }
+    }
+
+    @@keyframes payment-success-tick {
+        from {
+            stroke-dashoffset: 350;
+        }
+
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @@keyframes payment-success-title {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes show-button {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+  </style>
+
+<br>
+<br>
+<br>
+
+<div class="payment-success-container">
+    <svg width="150" height="150" viewBox="0 0 400 400" class="payment-success-svg">
+        <circle class="payment-success-circle" fill="none" transform="rotate(-90 200 200)" stroke="#68E534" stroke-width="20" cx="200" cy="200" r="190" stroke-linecap="round" />
+        <polyline class="payment-success-tick" fill="none" stroke="#68E534" stroke-width="24" points="88,214 173,284 304,138" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    </svg>
+    <h2 class="payment-success-title">付款成功</h2>
+        <a class="btn payment-success-button " asp-area="" asp-controller="Members" asp-action="UserOrder"
+       style="width: 180px; background-color: #4e5482 ;color: #e8eafe;">前往會員中心→</a>
+      
+</div>
+<br />
+
+  <script>
+   
+</script>

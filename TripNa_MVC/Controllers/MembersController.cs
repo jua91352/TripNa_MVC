@@ -747,7 +747,18 @@ namespace TripNa_MVC.Controllers
         }
 
 
-      
+        public ActionResult PaySuccess()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
 
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
