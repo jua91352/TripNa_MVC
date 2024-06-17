@@ -1,0 +1,68 @@
+﻿@model TripNa_MVC.Models.Spot
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div style="width:100%;margin:10rem 40rem;">
+<h1>新增景點</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SpotName" class="control-label">景點名稱</label>
+                <input asp-for="SpotName" class="form-control" />
+                <span asp-validation-for="SpotName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotCity" class="control-label">所在城市</label>
+                <input asp-for="SpotCity" class="form-control" />
+                <span asp-validation-for="SpotCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotBrief" class="control-label">景點簡介</label>
+                <input asp-for="SpotBrief" class="form-control" />
+                <span asp-validation-for="SpotBrief" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotIntro" class="control-label">景點詳細介紹</label>
+                <input asp-for="SpotIntro" class="form-control" />
+                <span asp-validation-for="SpotIntro" class="text-danger"></span>
+            </div>
+
+             @*    <div class="form-group">
+                    <label asp-for="SpotName" class="control-label">景點名稱</label>
+                    <input asp-for="SpotName" class="form-control" />
+                    <span asp-validation-for="/景點圖片/SpotName" class="text-danger"></span>
+                </div>
+ *@
+
+            <div class="form-group">
+                <input type="submit" value="新增" class="btn btn-primary" style="margin:20px 0;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+    <form method="post" enctype="multipart/form-data" asp-action="UploadSpotPhoto">
+        <div>
+            <label for="photo">選擇景點照片:</label>
+            <input type="file" id="photo" name="photo" />
+        </div>
+        <button type="submit">上傳照片</button>
+    </form>
+
+
+
+<div>
+        <a asp-action="Index" class="btn btn-primary">回到景點管理</a>
+</div>
+    <div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

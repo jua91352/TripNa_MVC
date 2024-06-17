@@ -1,0 +1,2052 @@
+{
+  "UpdateTime": "2024-06-09T15:16:45+08:00",
+  "UpdateInterval": 60,
+  "SrcUpdateTime": "2024-06-09T15:14:00+08:00",
+  "SrcUpdateInterval": 60,
+  "AuthorityCode": "NFB",
+  "LinkVersion": "23.05.1",
+  "LiveTraffics": [
+    {
+      "SectionID": "0001",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aROxHdYgATA/+B/3YAEwP/ff95ABMAAA=="
+        },
+        {
+          "OpenLR": "C1aQwxHc4gAUA/95/4cAFAP/dv+JABQAAA=="
+        },
+        {
+          "OpenLR": "C1aQQxHccgATA/+l/5kAEgP/s/+MABIAAA=="
+        },
+        {
+          "OpenLR": "C1aP9BHcDAASAv/J/5sAEQL/0/+VABEAAA=="
+        }
+      ],
+      "TravelTime": 56,
+      "TravelSpeed": 66,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0003",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aQQxHccgATA/+l/5kAEgP/s/+MABIAAA=="
+        },
+        {
+          "OpenLR": "C1aP9BHcDAASAv/J/5sAEQL/0/+VABEAAA=="
+        },
+        {
+          "OpenLR": "C1aPxRHbqgARBv+J/tgAEQb/hv7YABEAAA=="
+        },
+        {
+          "OpenLR": "C1aPVRHalgASBf9g/xoAFQX+/v+NABUAAA=="
+        },
+        {
+          "OpenLR": "C1aOkhHZ9QAWA/8+/9YAFgP/PP/TABYAAA=="
+        }
+      ],
+      "TravelTime": 60,
+      "TravelSpeed": 87,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0005",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aPVRHalgASBf9g/xoAFQX+/v+NABUAAA=="
+        },
+        {
+          "OpenLR": "C1aOkhHZ9QAWA/8+/9YAFgP/PP/TABYAAA=="
+        },
+        {
+          "OpenLR": "C1aN2xHZzAAWCP4l/5gAFQj+Wf8ZABUAAA=="
+        },
+        {
+          "OpenLR": "C1aMOBHZLwAVCP5O/0kAFwj+Kf/IABcAAA=="
+        },
+        {
+          "OpenLR": "C1aKkhHYvwATA/+K/3gAEQP/vP9XABEAAA=="
+        }
+      ],
+      "TravelTime": 95,
+      "TravelSpeed": 89,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0419",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aMOBHZLwAVCP5O/0kAFwj+Kf/IABcAAA=="
+        },
+        {
+          "OpenLR": "C1aKkhHYvwATA/+K/3gAEQP/vP9XABEAAA=="
+        },
+        {
+          "OpenLR": "C1aKOxHYMQARBf+m/v4AEgX/eP8WABIAAA=="
+        },
+        {
+          "OpenLR": "C1aJ0RHXSwAVBP8u/6QAFgT/Hf/PABYAAA=="
+        },
+        {
+          "OpenLR": "C1aJBRHXCQAWAv99/+MAFgL/e//jABYAAA=="
+        },
+        {
+          "OpenLR": "C1aIiRHW7QAWAv+J/+YAFgL/iP/mABYAAA=="
+        }
+      ],
+      "TravelTime": 87,
+      "TravelSpeed": 69,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0007",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aJBRHXCQAWAv99/+MAFgL/e//jABYAAA=="
+        },
+        {
+          "OpenLR": "C1aIiRHW7QAWAv+J/+YAFgL/iP/mABYAAA=="
+        },
+        {
+          "OpenLR": "C1aIGRHW1QAXA/9Y/+UAFwP/Vf/xABcAAA=="
+        },
+        {
+          "OpenLR": "C1aHexHWwQAXBP8b//wAFwT/G//oABcAAA=="
+        },
+        {
+          "OpenLR": "C1aGpRHWtAAWAv+n/+4AFgL/p//oABYAAA=="
+        },
+        {
+          "OpenLR": "C1aGURHWoAAWA/9g/8kAFQP/Zv+5ABUAAA=="
+        },
+        {
+          "OpenLR": "C1aFvhHWZQAVBv7y/2QAFAb+9v9ZABQAAA=="
+        },
+        {
+          "OpenLR": "C1aExBHVzgAUB/6k/y0AFAf+pv8nABQAAA=="
+        },
+        {
+          "OpenLR": "C1aDgBHVBgAVAf/A/+AAFQH/vv/fABUAAA=="
+        },
+        {
+          "OpenLR": "C1aDQxHU5wAWCP4x/2gAFwj+Hf+qABcAAA=="
+        }
+      ],
+      "TravelTime": 227,
+      "TravelSpeed": 55,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "3",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0011",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aDQxHU5wAWCP4x/2gAFwj+Hf+qABcAAA=="
+        },
+        {
+          "OpenLR": "C1aBihHUeAAXBP8E/9kAFwT/A//XABcAAA=="
+        }
+      ],
+      "TravelTime": 54,
+      "TravelSpeed": 61,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0013",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1aBihHUeAAXBP8E/9kAFwT/A//XABcAAA=="
+        },
+        {
+          "OpenLR": "C1aAnhHUUgAXA/9f/+UAFgP/X//jABYAAA=="
+        },
+        {
+          "OpenLR": "C1aABxHUNwAWAf+6/+0AFQH/u//mABUAAA=="
+        },
+        {
+          "OpenLR": "C1Z/xhHUIgAUBv7f/0sAFAb+2v9RABQAAA=="
+        },
+        {
+          "OpenLR": "C1Z+thHTewAWAv99/9MAFgL/d//kABYAAA=="
+        },
+        {
+          "OpenLR": "C1Z+OBHTWQAXCP4U/9YAFwn+E//YABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z8bRHTMgAXA/9o//YAFwP/Z//1ABcAAA=="
+        }
+      ],
+      "TravelTime": 111,
+      "TravelSpeed": 78,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0015",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Z+OBHTWQAXCP4U/9YAFwn+E//YABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z8bRHTMgAXA/9o//YAFwP/Z//1ABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z73xHTKAAXBv6w/94AFwb+sf/WABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z6pRHTBAAXAv97//AAFwL/ev/vABcAAA=="
+        }
+      ],
+      "TravelTime": 51,
+      "TravelSpeed": 83,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0017",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Z6pRHTBAAXAv97//AAFwL/ev/vABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z6KRHS9AAXBv6X/9MAFwb+lf/SABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z41xHSyQAXAf/C//kAFwH/wf/4ABcAAA=="
+        },
+        {
+          "OpenLR": "C1Z4nBHSwgAXBf7j//AAGAX+4gAWABgAAA=="
+        },
+        {
+          "OpenLR": "C1Z3kRHSxQAYAv90ABUAGQL/dQAgABkAAA=="
+        }
+      ],
+      "TravelTime": 75,
+      "TravelSpeed": 76,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0019",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Z4nBHSwgAXBf7j//AAGAX+4gAWABgAAA=="
+        },
+        {
+          "OpenLR": "C1Z3kRHSxQAYAv90ABUAGQL/dQAgABkAAA=="
+        },
+        {
+          "OpenLR": "C1Z3DxHS3gAZBP8gAEwAGgT/JQBcABoAAA=="
+        },
+        {
+          "OpenLR": "C1Z2QBHTLAAaBP82AFIAGgT/NgBTABoAAA=="
+        },
+        {
+          "OpenLR": "C1Z1gxHTegAZCf4yAKgAGQj+IABsABkAAA=="
+        },
+        {
+          "OpenLR": "C1ZzzBHT+wAYCf4BAC8AGAn9/gAAABgAAA=="
+        },
+        {
+          "OpenLR": "C1Zx7hHUEQAZCP4mAHcAGAj+GwBHABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZwLhHUagAYCP4SAAkAGAn+EQAJABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZuYRHUcwAYCf4OAAIAFwn+EP/DABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZskhHUWAAXAf/NAAAAGAH/zAABABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZsYRHUWAAZBP8mADQAGgT/LwBTABoAAA=="
+        }
+      ],
+      "TravelTime": 306,
+      "TravelSpeed": 73,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0021",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZskhHUWAAXAf/NAAAAGAH/zAABABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZsYRHUWAAZBP8mADQAGgT/LwBTABoAAA=="
+        },
+        {
+          "OpenLR": "C1ZrmhHUlwAaBP88AEsAGQT/OwBKABkAAA=="
+        },
+        {
+          "OpenLR": "C1Zq4xHU3QAZB/6AAHgAGQf+dgBXABkAAA=="
+        },
+        {
+          "OpenLR": "C1ZpdxHVPgAYAv+RABIAGAL/kAAOABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZpDxHVTQAYBf7pABgAGAX+6AAJABgAAA=="
+        }
+      ],
+      "TravelTime": 96,
+      "TravelSpeed": 69,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0023",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZpdxHVPgAYAv+RABIAGAL/kAAOABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZpDxHVTQAYBf7pABgAGAX+6AAJABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZoChHVXQAXBP8q//cAFwT/Kv/tABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZnQhHVTwAXBP8B/90AFgT/Av/PABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZmVBHVJwAWBP8y/8wAFgT/MP/RABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZlkxHU+QAWCf4a/4wAFgn+Gf+MABYAAA=="
+        }
+      ],
+      "TravelTime": 82,
+      "TravelSpeed": 85,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0025",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZlkxHU+QAWCf4a/4wAFgn+Gf+MABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZjzRHUjAAXCP4a/9MAGAj+HQBLABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZiCRHUmgAZCf4fAHsAGAn+FAA7ABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZgQxHU8AAXCP4V/9QAFgn+Iv98ABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZefxHUnQAWBf8C/7QAFgX/Af+zABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZdkRHUVgAWBP8r/78AFgT/Kf+/ABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZcyRHUGAAWB/55/4oAFgf+c/+eABYAAA=="
+        }
+      ],
+      "TravelTime": 195,
+      "TravelSpeed": 90,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0027",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZcyRHUGAAWB/55/4oAFgf+c/+eABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZbWhHTswAXAf+w//IAFgH/r//xABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZbDhHTpQAXB/5//9oAFwf+ff/vABcAAA=="
+        }
+      ],
+      "TravelTime": 41,
+      "TravelSpeed": 85,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0029",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZbDhHTpQAXB/5//9oAFwf+ff/vABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZZphHTiwAXAv+b//sAFwL/m//3ABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZZSBHThAAWB/6L/4oAFAf+r/80ABQAAA=="
+        }
+      ],
+      "TravelTime": 78,
+      "TravelSpeed": 52,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "3",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0031",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZZSBHThAAWB/6L/4oAFAf+r/80ABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZX/BHS7QAUAf/Q/+IAFQH/zv/jABUAAA=="
+        },
+        {
+          "OpenLR": "C1ZXzhHS0QAVAv+M/7wAFAL/jf+4ABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZXYhHSkAAUB/68/zUAFAf+u/80ABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZWMxHR0gAUAv+X/7wAFAL/lv+9ABQAAA=="
+        }
+      ],
+      "TravelTime": 69,
+      "TravelSpeed": 87,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0425",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZXzhHS0QAVC/3L/skAFAz97/6NABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZV0BHRkwAVBv7E/10AFwb+n//lABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZUlxHROgAaCP5sANgAHAn+1wFoABwAAA=="
+        },
+        {
+          "OpenLR": "C1ZTUBHSRwAbCf6DATIAGAj+HABBABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZRvBHS9QAXCP4a/+AAGQj+KACFABkAAA=="
+        },
+        {
+          "OpenLR": "C1ZP/RHTJAAYA/9fAAEAFwP/Xv/uABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZPZhHTHAAXBv6x/9cAFwb+r//hABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZOLRHS+gAXCf4A/+0AGAn9/wANABgAAA=="
+        }
+      ],
+      "TravelTime": 236,
+      "TravelSpeed": 82,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0033",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZOLRHS+gAXCf4A/+0AGAn9/wANABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZMTxHS9gAYAv+oAAcAGAL/pwAFABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZL+xHS/QAYBf7aABwAGAX+2AASABgAAA=="
+        },
+        {
+          "OpenLR": "C1ZK6BHTEwAYAv+pAAEAFwL/qP/+ABcAAA=="
+        },
+        {
+          "OpenLR": "C1ZKlhHTEgAXCf4V/8sAFgn+K/9iABYAAA=="
+        },
+        {
+          "OpenLR": "C1ZI1hHSrwAUCP5n/woAFAn+mP7EABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZHbxHRqAATCf7c/pQAEwn+2P6WABMAAA=="
+        },
+        {
+          "OpenLR": "C1ZGXRHQVgAUCf5t/vgAFQj+Of9VABUAAA=="
+        },
+        {
+          "OpenLR": "C1ZEzBHPiwAVCf44/08AFQn+P/85ABUAAA=="
+        },
+        {
+          "OpenLR": "C1ZDJhHO2wAVBP86/6AAFQT/Of+gABUAAA=="
+        },
+        {
+          "OpenLR": "C1ZCbBHOgQAVBf8b/3wAFQX/Gv97ABUAAA=="
+        },
+        {
+          "OpenLR": "C1ZBlRHOBQAUB/6Z/yEAFAj+of8RABQAAA=="
+        }
+      ],
+      "TravelTime": 285,
+      "TravelSpeed": 94,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0035",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1ZBlRHOBQAUB/6Z/yEAFAj+of8RABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZAShHNLgAUAf/T/90AFAH/0f/eABQAAA=="
+        },
+        {
+          "OpenLR": "C1ZAHxHNDQAUBP8+/20AFAT/QP9oABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y/ahHMgQAUBP9O/2oAFAT/UP9nABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y+xRHL9AAUBf8d/zUAFAb/G/81ABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y98BHLNwAUA/+C/5IAFAP/gv+QABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y9ehHKzwAUCf54/sQAFAn+cv7KABQAAA=="
+        }
+      ],
+      "TravelTime": 136,
+      "TravelSpeed": 89,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0037",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Y9ehHKzwAUCf54/sQAFAn+cv7KABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y8CRHJqgAUCP6c/uwAFAj+nf7qABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y6vhHIqAAUBv75/zMAFAb+9v82ABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y5xhHH6QAUA/+Q/6oAFAP/kP+oABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y5XhHHmAAUBP9T/3oAFAT/VP93ABQAAA=="
+        }
+      ],
+      "TravelTime": 104,
+      "TravelSpeed": 88,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0039",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Y5XhHHmAAUBP9T/3oAFAT/VP93ABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y4vBHHGQAUBf8//1oAEwX/R/9RABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y4DBHGegATAv+h/6IAEwL/of+hABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y3sxHGIQATBP9a/1gAEwT/V/9aABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y3FhHFhgATAv+7/7kAEwL/uv+5ABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y21RHFQwATBP9b/1oAEwT/Wv9ZABMAAA=="
+        }
+      ],
+      "TravelTime": 102,
+      "TravelSpeed": 60,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0041",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Y3FhHFhgATAv+7/7kAEwL/uv+5ABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y21RHFQwATBP9b/1oAEwT/Wv9ZABMAAA=="
+        },
+        {
+          "OpenLR": "C1Y2OhHEqAATBP9X/1sAFAT/Tf9kABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y1lxHEEgAUCP63/uYAFAj+tv7mABQAAA=="
+        }
+      ],
+      "TravelTime": 117,
+      "TravelSpeed": 58,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "3",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0427",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Y1lxHEEgAUCP63/uYAFAj+tv7mABQAAA=="
+        },
+        {
+          "OpenLR": "C1Y0ZBHDCgAUCf55/rIAFAn+ef6xABQAAA=="
+        },
+        {
+          "OpenLR": "C1Yy9xHB0gAUAf/D/8wAFAH/wv/LABQAAA=="
+        },
+        {
+          "OpenLR": "C1YyvRHBoQAUB/7R/wQAFAf+uv8gABQAAA=="
+        }
+      ],
+      "TravelTime": 63,
+      "TravelSpeed": 91,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0429",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YyvRHBoQAUB/7R/wQAFAf+uv8gABQAAA=="
+        },
+        {
+          "OpenLR": "C1YxlxHAwgAUCP6D/wYAFAj+kP70ABQAAA=="
+        },
+        {
+          "OpenLR": "C1YwOhG/0AATBP9X/1wAEwT/af9LABMAAA=="
+        }
+      ],
+      "TravelTime": 104,
+      "TravelSpeed": 91,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0043",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YwOhG/0AATBP9X/1wAEwT/af9LABMAAA=="
+        },
+        {
+          "OpenLR": "C1YvpBG/LwATAv+9/6gAEgL/wv+jABIAAA=="
+        },
+        {
+          "OpenLR": "C1YvZxG+2gASA/+8/4kAEgP/xf+DABIAAA=="
+        },
+        {
+          "OpenLR": "C1YvLBG+aAARCf9q/k8AEQn/h/5EABEAAA=="
+        },
+        {
+          "OpenLR": "C1YurRG8zwARAv/k/5sAEQL/3P+cABEAAA=="
+        },
+        {
+          "OpenLR": "C1YujxG8cQASBv9a/s0AEwb/Hf72ABMAAA=="
+        },
+        {
+          "OpenLR": "C1Yt1xG7ZQAUBv72/zQAFQb+1P9oABUAAA=="
+        }
+      ],
+      "TravelTime": 105,
+      "TravelSpeed": 87,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0045",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YujxG8cQASBv9a/s0AEwb/Hf72ABMAAA=="
+        },
+        {
+          "OpenLR": "C1Yt1xG7ZQAUBv72/zQAFQb+1P9oABUAAA=="
+        },
+        {
+          "OpenLR": "C1YszxG6vwAWA/93/9AAFgP/df/QABYAAA=="
+        },
+        {
+          "OpenLR": "C1YsThG6kgAVB/6K/3IAFAf+q/8tABQAAA=="
+        },
+        {
+          "OpenLR": "C1YrABG57QAUAf/B/84AFAL/w//JABQAAA=="
+        },
+        {
+          "OpenLR": "C1YqxhG5uwATCP70/rcAEQj/UP58ABEAAA=="
+        }
+      ],
+      "TravelTime": 89,
+      "TravelSpeed": 92,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0047",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YqxhG5uwATCP70/rcAEQj/UP58ABEAAA=="
+        },
+        {
+          "OpenLR": "C1Yp9xG4bQARBv+b/uwAEQb/nv7qABEAAA=="
+        },
+        {
+          "OpenLR": "C1YpmRG3agARBP/F/0oAEQT/wv9KABEAAA=="
+        },
+        {
+          "OpenLR": "C1YpYBG2wAARBf+c/v0AEgX/Xf8fABIAAA=="
+        }
+      ],
+      "TravelTime": 75,
+      "TravelSpeed": 89,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0049",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YpYBG2wAARBf+c/v0AEgX/Xf8fABIAAA=="
+        },
+        {
+          "OpenLR": "C1Yo5RG13gAUA/9y/4UAFAP/YP+cABQAAA=="
+        },
+        {
+          "OpenLR": "C1YoWBG1dgAVBf8G/5QAFgX++f+xABYAAA=="
+        },
+        {
+          "OpenLR": "C1YnaBG1HgAWBP8x/8oAFgT/MP/JABYAAA=="
+        },
+        {
+          "OpenLR": "C1YmphG06wAWCf4m/4EAFgn+Jv9/ABYAAA=="
+        }
+      ],
+      "TravelTime": 66,
+      "TravelSpeed": 94,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0431",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YnaBG1HgAWBP8x/8oAFgT/MP/JABYAAA=="
+        },
+        {
+          "OpenLR": "C1YmphG06wAWCf4m/4EAFgn+Jv9/ABYAAA=="
+        },
+        {
+          "OpenLR": "C1Yk7BG0cwAWCf4l/4AAFgn+Jf9/ABYAAA=="
+        },
+        {
+          "OpenLR": "C1YjMRGz+wAWCP4l/4oAFwj+Gv/CABcAAA=="
+        },
+        {
+          "OpenLR": "C1YhcBGzpgAYCf30AA0AGAn99AAZABgAAA=="
+        },
+        {
+          "OpenLR": "C1YfhxGzuQAXCP4+/9IAFgj+S/+HABYAAA=="
+        },
+        {
+          "OpenLR": "C1Yd6hGzawAVCP5N/zAAFAn+Y/8BABQAAA=="
+        },
+        {
+          "OpenLR": "C1YcXhGykwAVCP5A/0YAFwj+HP/IABcAAA=="
+        },
+        {
+          "OpenLR": "C1YaqxGyIgAXCP4W/80AFgn+Lf9gABYAAA=="
+        },
+        {
+          "OpenLR": "C1YY7BGxvwAUCf5m/wYAFQn+XP8VABUAAA=="
+        },
+        {
+          "OpenLR": "C1YXaRGw3QAWCP4s/3oAFwj+GP/kABcAAA=="
+        },
+        {
+          "OpenLR": "C1YVqxGwkQAYCP4TABUAGAn+FAAnABgAAA=="
+        },
+        {
+          "OpenLR": "C1YT3xGwrQAYCf4NACAAFwn+DP/4ABcAAA=="
+        },
+        {
+          "OpenLR": "C1YSDhGwuQAXCP4Y/8QAFgn+If+LABYAAA=="
+        }
+      ],
+      "TravelTime": 507,
+      "TravelSpeed": 89,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0053",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YSDhGwuQAXCP4Y/8QAFgn+If+LABYAAA=="
+        },
+        {
+          "OpenLR": "C1YQShGwZgAWA/9g/84AFQP/Y//DABUAAA=="
+        },
+        {
+          "OpenLR": "C1YPthGwMgAVBv7h/3YAFAb+9f9RABQAAA=="
+        },
+        {
+          "OpenLR": "C1YOtBGvoAAUCf6m/sAAEgn+9P57ABIAAA=="
+        },
+        {
+          "OpenLR": "C1YNlRGuVAASAv/O/50AEQL/1f+ZABEAAA=="
+        },
+        {
+          "OpenLR": "C1YNaRGt9gAQBv/F/r0ADgYAXv7GAA4AAA=="
+        }
+      ],
+      "TravelTime": 104,
+      "TravelSpeed": 91,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0055",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YNaRGt9gAQBv/F/r0ADgYAXv7GAA4AAA=="
+        },
+        {
+          "OpenLR": "C1YNeRGszAANAQAl/8kADAEAJ//LAAwAAA=="
+        },
+        {
+          "OpenLR": "C1YNnRGsmgAMBQC0/1AACwUAv/9dAAsAAA=="
+        },
+        {
+          "OpenLR": "C1YOSxGr/AALAgBR/7wACwIAUf+8AAsAAA=="
+        },
+        {
+          "OpenLR": "C1YOlxGrvAALAQAn/+AACwEAJv/gAAsAAA=="
+        },
+        {
+          "OpenLR": "C1YOuxGrnQAMCAEU/pgADwkAYf5BAA8AAA=="
+        },
+        {
+          "OpenLR": "C1YPahGqJQAQCQAC/j0AEAn/qf5EABAAAA=="
+        },
+        {
+          "OpenLR": "C1YPQhGogwARBf+q/xUAEgX/kf8eABIAAA=="
+        },
+        {
+          "OpenLR": "C1YO5hGnqwASBP+Z/00AEgT/j/9SABIAAA=="
+        },
+        {
+          "OpenLR": "C1YOgRGnBwASA/+c/2MAEgP/nf9hABIAAA=="
+        }
+      ],
+      "TravelTime": 202,
+      "TravelSpeed": 77,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0057",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YO5hGnqwASBP+Z/00AEgT/j/9SABIAAA=="
+        },
+        {
+          "OpenLR": "C1YOgRGnBwASA/+c/2MAEgP/nf9hABIAAA=="
+        },
+        {
+          "OpenLR": "C1YOJBGmcwASBf91/woAEgX/if7+ABIAAA=="
+        },
+        {
+          "OpenLR": "C1YNrBGliAARA//E/24AEQP/yv9qABEAAA=="
+        },
+        {
+          "OpenLR": "C1YNdhGk/QARBv+z/ucAEAb/xP7iABAAAA=="
+        },
+        {
+          "OpenLR": "C1YNNhGj9AAQA//n/20AEAP/5/9sABAAAA=="
+        },
+        {
+          "OpenLR": "C1YNHhGjagAQBv/R/tcAEQb/vf7ZABEAAA=="
+        },
+        {
+          "OpenLR": "C1YM6RGiVgARBf+w/vwAEQX/mv8CABEAAA=="
+        },
+        {
+          "OpenLR": "C1YMkxGhZgARA/+8/1gAEQP/uv9YABEAAA=="
+        },
+        {
+          "OpenLR": "C1YMUhGgyQARA/+7/1gAEQP/x/9SABEAAA=="
+        }
+      ],
+      "TravelTime": 177,
+      "TravelSpeed": 86,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0059",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YMUhGgyQARA/+7/1gAEQP/x/9SABEAAA=="
+        },
+        {
+          "OpenLR": "C1YMFxGgKQAQBf/S/voAEAX/9/71ABAAAA=="
+        },
+        {
+          "OpenLR": "C1YL/RGfMgAPBQAI/wcADwUACv8GAA8AAA=="
+        },
+        {
+          "OpenLR": "C1YMBhGeSQAQBP/6/zcAEAT/4v84ABAAAA=="
+        },
+        {
+          "OpenLR": "C1YL9RGdjgARCf9s/k8AEwj+8P6PABMAAA=="
+        },
+        {
+          "OpenLR": "C1YLMRGcGAAVCP6M/zAAFgj+ZP+BABYAAA=="
+        },
+        {
+          "OpenLR": "C1YJwxGbfAAVAf/R/+gAFQH/0P/mABUAAA=="
+        },
+        {
+          "OpenLR": "C1YJlhGbZAAUBP9B/2IAEwX/Zf87ABMAAA=="
+        }
+      ],
+      "TravelTime": 159,
+      "TravelSpeed": 87,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0061",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1YJlhGbZAAUBP9B/2IAEwX/Zf87ABMAAA=="
+        },
+        {
+          "OpenLR": "C1YI9BGavgASBP90/z0AEwT/Z/9GABMAAA=="
+        },
+        {
+          "OpenLR": "C1YIaxGaDAAUCP6N/wIAFAj+o/7lABQAAA=="
+        },
+        {
+          "OpenLR": "C1YHGxGZEQASCf82/mcAEgj/FP54ABIAAA=="
+        },
+        {
+          "OpenLR": "C1YGThGXnAAUCf6R/tQAFAj+f/7oABQAAA=="
+        },
+        {
+          "OpenLR": "C1YE8BGWjQATCf6s/rgAFQj+V/8zABUAAA=="
+        },
+        {
+          "OpenLR": "C1YDixGVlAAXCP4c/7QAFwj+FP/2ABcAAA=="
+        },
+        {
+          "OpenLR": "C1YBwxGVawAXB/5o/+gAFgf+c/+cABYAAA=="
+        },
+        {
+          "OpenLR": "C1YATBGVMQAVAf+y/+AAFQL/sv/cABUAAA=="
+        },
+        {
+          "OpenLR": "C1YAAxGVEQAUCP6A/vIAEwn+5/6HABMAAA=="
+        },
+        {
+          "OpenLR": "C1X+zBGT4wASAv/S/5sAEQL/2f+WABEAAA=="
+        },
+        {
+          "OpenLR": "C1X+pBGTggAQBv+//rcAEAb/7f6vABAAAA=="
+        },
+        {
+          "OpenLR": "C1X+fBGSSwAQCf+2/kAAEgj/CP6CABIAAA=="
+        },
+        {
+          "OpenLR": "C1X95hGQyAATB/7v/uYAEwf/Cf7PABMAAA=="
+        },
+        {
+          "OpenLR": "C1X88xGPtgASAf/Z/8MAEgH/2f/BABIAAA=="
+        },
+        {
+          "OpenLR": "C1X8zhGPfAASCP8q/oAAEwj+9v6hABMAAA=="
+        }
+      ],
+      "TravelTime": 407,
+      "TravelSpeed": 96,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0063",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1X8zhGPfAASCP8q/oAAEwj+9v6hABMAAA=="
+        },
+        {
+          "OpenLR": "C1X77hGOJQAUCf57/skAFQn+Uf8CABUAAA=="
+        },
+        {
+          "OpenLR": "C1X6cBGNHgAUCP6e/skAEwn+p/69ABMAAA=="
+        },
+        {
+          "OpenLR": "C1X5KRGL9gAVCf5O/ysAFgj+I/+cABYAAA=="
+        },
+        {
+          "OpenLR": "C1X3gBGLYwAVCP5k/yQAEgn+9v5+ABIAAA=="
+        },
+        {
+          "OpenLR": "C1X2QxGKSAARCP+O/k4AEAn/sv5DABAAAA=="
+        },
+        {
+          "OpenLR": "C1X16hGIrgARCf9t/k8AEgj/AP6GABIAAA=="
+        },
+        {
+          "OpenLR": "C1X1LhGHMwAUCf6b/ssAFAn+of7CABQAAA=="
+        },
+        {
+          "OpenLR": "C1Xz4xGGDwATCP62/rwAEQn/T/5bABEAAA=="
+        },
+        {
+          "OpenLR": "C1Xy9hGEswAPCABG/kcADwkAQv5EAA8AAA=="
+        },
+        {
+          "OpenLR": "C1XzNhGDFgARCf+W/kgAEgj/Iv5xABIAAA=="
+        },
+        {
+          "OpenLR": "C1XynRGBjwAQCP/p/kgADggAhv5TAA4AAA=="
+        },
+        {
+          "OpenLR": "C1Xy0RF/+QAQCf/m/j4AEgj/Lf5tABIAAA=="
+        },
+        {
+          "OpenLR": "C1XyYhF+awASCP9I/mcAEAn/1P5BABAAAA=="
+        },
+        {
+          "OpenLR": "C1Xx9xF83AAPCQA3/j8AEQj/g/5SABEAAA=="
+        },
+        {
+          "OpenLR": "C1Xx1hF7QgASA/+m/3UAEwP/mv98ABMAAA=="
+        },
+        {
+          "OpenLR": "C1XxfRF6wwATBv83/u8AEgb/c/7KABIAAA=="
+        },
+        {
+          "OpenLR": "C1Xw3RF5swARCP9n/n4AEwj+5P7VABMAAA=="
+        }
+      ],
+      "TravelTime": 577,
+      "TravelSpeed": 97,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0445",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1Xw3RF5swARCP9n/n4AEwj+5P7VABMAAA=="
+        },
+        {
+          "OpenLR": "C1XwERF4dAAUCP6L/uQAEwn+5v6HABMAAA=="
+        },
+        {
+          "OpenLR": "C1Xu4BF3PwASCP80/moAEQn/Z/5SABEAAA=="
+        },
+        {
+          "OpenLR": "C1XuORF1uQARCf9K/lwAEwj+8P6QABMAAA=="
+        },
+        {
+          "OpenLR": "C1XtZRF0SQATCP7L/qUAEgn++P6CABIAAA=="
+        },
+        {
+          "OpenLR": "C1XsWRFy9QARCf9u/lIAEQj/Sv5hABEAAA=="
+        },
+        {
+          "OpenLR": "C1XrwBFxawATA/+a/34AEwP/iv+KABMAAA=="
+        },
+        {
+          "OpenLR": "C1XrWRFw9wAUBf8J/0wAFQX+9v9kABUAAA=="
+        }
+      ],
+      "TravelTime": 232,
+      "TravelSpeed": 101,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0067",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XrWRFw9wAUBf8J/0wAFQX+9v9kABUAAA=="
+        },
+        {
+          "OpenLR": "C1XqaRFwWgAUAv+k/8YAFAL/pP/EABQAAA=="
+        },
+        {
+          "OpenLR": "C1XqExFwIgAUB/7t/xUAEwf/Hv7lABMAAA=="
+        },
+        {
+          "OpenLR": "C1XpKRFvMQASCf8g/m0AEwj+4f6YABMAAA=="
+        },
+        {
+          "OpenLR": "C1XoOxFtzAAUCf50/vIAFQj+QP9RABUAAA=="
+        },
+        {
+          "OpenLR": "C1XmsRFs/QAWCf4z/14AFQn+P/9BABUAAA=="
+        },
+        {
+          "OpenLR": "C1XlCBFsWAAUCP6V/twAEgn/BP53ABIAAA=="
+        },
+        {
+          "OpenLR": "C1Xj6RFrGAARCP+K/lAAEAn/9f4/ABAAAA=="
+        },
+        {
+          "OpenLR": "C1XjrBFpfQAPAwAW/2oADgMAJP9sAA4AAA=="
+        },
+        {
+          "OpenLR": "C1XjyBFo8QAOBgBf/uUADgYAef7uAA4AAA=="
+        },
+        {
+          "OpenLR": "C1XkLRFn7gANBwCb/q8ADgcAhf6lAA4AAA=="
+        }
+      ],
+      "TravelTime": 273,
+      "TravelSpeed": 94,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0443",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XkLRFn7gANBwCb/q8ADgcAhf6lAA4AAA=="
+        },
+        {
+          "OpenLR": "C1XktBFmrwAOAgAY/7AADgIAFP+uAA4AAA=="
+        },
+        {
+          "OpenLR": "C1XkyRFmYwAPCQAX/j4AEQn/fP5RABEAAA=="
+        },
+        {
+          "OpenLR": "C1XklhFkyAASCP8C/oUAEQn/Vv5aABEAAA=="
+        },
+        {
+          "OpenLR": "C1Xj0BFjUgAQCf/C/kAAEQn/dv5SABEAAA=="
+        },
+        {
+          "OpenLR": "C1XjchFhuQASCP9H/mUAEAn/vP5DABAAAA=="
+        },
+        {
+          "OpenLR": "C1Xi/BFgKQAQCf/O/kIAEAn/of5IABAAAA=="
+        },
+        {
+          "OpenLR": "C1XiuBFejAAQCf+1/kUAEQn/lf5JABEAAA=="
+        },
+        {
+          "OpenLR": "C1XiYxFc8QARCf93/k4AEgj+/v6HABIAAA=="
+        },
+        {
+          "OpenLR": "C1XhqhFbdgATCP6s/r4AEwn+x/6jABMAAA=="
+        },
+        {
+          "OpenLR": "C1XgeRFaPQASBv9J/u8AEgb/S/7sABIAAA=="
+        },
+        {
+          "OpenLR": "C1XfzxFZPAASAv+5/5MAEgL/tf+VABIAAA=="
+        },
+        {
+          "OpenLR": "C1XfihFY1wASBf9l/yMAEgX/aP8fABIAAA=="
+        }
+      ],
+      "TravelTime": 365,
+      "TravelSpeed": 99,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0069",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XfihFY1wASBf9l/yMAEgX/aP8fABIAAA=="
+        },
+        {
+          "OpenLR": "C1Xe+hFYBwASBP+k/1sAEgT/p/9XABIAAA=="
+        },
+        {
+          "OpenLR": "C1XephFXawASCf9B/mMAEgn/Qv5hABIAAA=="
+        },
+        {
+          "OpenLR": "C1Xd9BFV6QASCf8x/mcAEgn/Ef54ABIAAA=="
+        },
+        {
+          "OpenLR": "C1XdIxFUcwATCf7v/ooAEwn+1P6dABMAAA=="
+        },
+        {
+          "OpenLR": "C1XcGBFTHwATCf7N/qAAEwn+y/6hABMAAA=="
+        },
+        {
+          "OpenLR": "C1Xa+RFR1wATBf9P/zQAEwX/Tv80ABMAAA=="
+        },
+        {
+          "OpenLR": "C1XaUhFRGAATBP+A/20AEwT/f/9sABMAAA=="
+        },
+        {
+          "OpenLR": "C1XZ2hFQjgATCP7R/qAAEwn+7/6HABMAAA=="
+        },
+        {
+          "OpenLR": "C1XYzRFPOgASCf8a/nMAEgn/GP5zABIAAA=="
+        },
+        {
+          "OpenLR": "C1XX9RFNyAASB/8y/tsAEwf/FP7yABMAAA=="
+        },
+        {
+          "OpenLR": "C1XXJxFMwgATAv+3/7IAEwL/tv+yABMAAA=="
+        },
+        {
+          "OpenLR": "C1XW4hFMeAATAf/Q/9AAEwH/0P/PABMAAA=="
+        },
+        {
+          "OpenLR": "C1XWtRFMSwATB/78/uUAEwf/D/7UABMAAA=="
+        }
+      ],
+      "TravelTime": 323,
+      "TravelSpeed": 102,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0071",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XWtRFMSwATB/78/uUAEwf/D/7UABMAAA=="
+        },
+        {
+          "OpenLR": "C1XVyxFLOgASCf8D/nIAEgn/Kv5bABIAAA=="
+        }
+      ],
+      "TravelTime": 38,
+      "TravelSpeed": 97,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0073",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XVyxFLOgASCf8D/nIAEgn/Kv5bABIAAA=="
+        },
+        {
+          "OpenLR": "C1XU8RFJvAARAv/V/6AAEQL/1f+eABEAAA=="
+        },
+        {
+          "OpenLR": "C1XUyRFJYQARB/+B/r0AEQf/kv62ABEAAA=="
+        },
+        {
+          "OpenLR": "C1XUWhFIMQARCf+K/k0AEAn/qP5FABAAAA=="
+        },
+        {
+          "OpenLR": "C1XT+RFGlwAQCf/E/kIAEAn/yv5AABAAAA=="
+        },
+        {
+          "OpenLR": "C1XTxBFE9gAQCP/M/ksAEAj/zP5JABAAAA=="
+        },
+        {
+          "OpenLR": "C1XTkhFDXQAQCf/G/iEAEAn/xv4fABAAAA=="
+        }
+      ],
+      "TravelTime": 186,
+      "TravelSpeed": 93,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0077",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XTkhFDXQAQCf/G/iEAEAn/xv4fABAAAA=="
+        },
+        {
+          "OpenLR": "C1XTXBFBngAQCP/P/lsAEAj/zv5ZABAAAA=="
+        },
+        {
+          "OpenLR": "C1XTLRFAFAAQB//W/pcAEAf/1f6WABAAAA=="
+        },
+        {
+          "OpenLR": "C1XTBRE+wgAQAv/2/6wAEAL/9v+rABAAAA=="
+        },
+        {
+          "OpenLR": "C1XS/BE+cwAQAf/5/74AEAH/+f+9ABAAAA=="
+        }
+      ],
+      "TravelTime": 142,
+      "TravelSpeed": 51,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "3",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0079",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XS/BE+cwAQAf/5/74AEAH/+f+9ABAAAA=="
+        },
+        {
+          "OpenLR": "C1XS9RE+NAAQB//Q/oUAEAf/wf6GABAAAA=="
+        },
+        {
+          "OpenLR": "C1XSwRE80wARCf+d/kgAEQn/ef5RABEAAA=="
+        },
+        {
+          "OpenLR": "C1XSUxE7PAARCf9J/l0AEgn/Fv52ABIAAA=="
+        },
+        {
+          "OpenLR": "C1XRkRE5wQATCf7d/pMAEwj+sv64ABMAAA=="
+        },
+        {
+          "OpenLR": "C1XQbRE4fgAUCf6G/t8AFQj+Zf8NABUAAA=="
+        },
+        {
+          "OpenLR": "C1XO/RE3hgAVBv68/14AFQb+t/9nABUAAA=="
+        }
+      ],
+      "TravelTime": 210,
+      "TravelSpeed": 92,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0493",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XO/RE3hgAVBv68/14AFQb+t/9nABUAAA=="
+        },
+        {
+          "OpenLR": "C1XNzBE28wAVAv+T/88AFQL/kf/PABUAAA=="
+        },
+        {
+          "OpenLR": "C1XNZRE2xAAVB/6P/1YAFQf+mf9AABUAAA=="
+        }
+      ],
+      "TravelTime": 100,
+      "TravelSpeed": 99,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0081",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XNZRE2xAAVB/6P/1YAFQf+mf9AABUAAA=="
+        },
+        {
+          "OpenLR": "C1XMERE2GwAVAf+//9sAFQH/vv/aABUAAA=="
+        },
+        {
+          "OpenLR": "C1XL1BE1+AAUCP54/vQAFAn+m/7FABQAAA=="
+        },
+        {
+          "OpenLR": "C1XKdhE06AATCP7Q/qIAEgn/A/56ABIAAA=="
+        },
+        {
+          "OpenLR": "C1XJchEzjwASCP8+/mUAEQn/Wf5YABEAAA=="
+        },
+        {
+          "OpenLR": "C1XIyREyCQARAv/Y/58AEgL/0/+hABIAAA=="
+        },
+        {
+          "OpenLR": "C1XIohExsAASB/9O/s0AEwf/Hf7uABMAAA=="
+        }
+      ],
+      "TravelTime": 160,
+      "TravelSpeed": 98,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0083",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XIohExsAASB/9O/s0AEwf/Hf7uABMAAA=="
+        },
+        {
+          "OpenLR": "C1XH5BEwoAATAf/e/90AEwH/3v/cABMAAA=="
+        },
+        {
+          "OpenLR": "C1XHxBEwfgATCP7i/tMAEwj/CP6yABMAAA=="
+        },
+        {
+          "OpenLR": "C1XGyxEvVgASCP9G/oAAEQj/l/5iABEAAA=="
+        },
+        {
+          "OpenLR": "C1XGQxEt4gAQCf/X/iYAEAn/zf4nABAAAA=="
+        }
+      ],
+      "TravelTime": 103,
+      "TravelSpeed": 94,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0085",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1XGQxEt4gAQCf/X/iYAEAn/zf4nABAAAA=="
+        },
+        {
+          "OpenLR": "C1XGGBEsKAAQA//n/14AEAP/5f9dABAAAA=="
+        },
+        {
+          "OpenLR": "C1XF/xErkAAQBf/S/ucAEAX/1v7lABAAAA=="
+        },
+        {
+          "OpenLR": "C1XF1hEqiQAQCf/T/kEAEAn/5P4/ABAAAA=="
+        },
+        {
+          "OpenLR": "C1XFtBEo5gAQCf/e/j4AEAn/qf5GABAAAA=="
+        },
+        {
+          "OpenLR": "C1XFexEnRgASCf88/l8AEwj+wP60ABMAAA=="
+        },
+        {
+          "OpenLR": "C1XEihEl6QAVCP5X/yQAFwj+Jf/GABcAAA=="
+        },
+        {
+          "OpenLR": "C1XC5hElZwAZCP49AJYAGgn+YwD1ABoAAA=="
+        },
+        {
+          "OpenLR": "C1XBUxEmIAAaBv7jAJEAGQb+0ABnABkAAA=="
+        },
+        {
+          "OpenLR": "C1XAQBEmlAAZA/9OACcAGAP/SwAeABgAAA=="
+        },
+        {
+          "OpenLR": "C1W/mBEmtAAYAf+8AAcAGAH/uwAEABgAAA=="
+        },
+        {
+          "OpenLR": "C1W/WBEmugAXB/5m//UAFgf+cf+dABYAAA=="
+        }
+      ],
+      "TravelTime": 285,
+      "TravelSpeed": 99,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0087",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1W/WBEmugAXB/5m//UAFgf+cf+dABYAAA=="
+        },
+        {
+          "OpenLR": "C1W93hEmhgAVBP8k/5YAFAT/Of9wABQAAA=="
+        },
+        {
+          "OpenLR": "C1W9GxEmEQATBP9c/2EAEwT/af9SABMAAA=="
+        },
+        {
+          "OpenLR": "C1W8hxEldgATAv+q/5oAEwL/p/+aABMAAA=="
+        },
+        {
+          "OpenLR": "C1W8NRElFgATBv8o/wYAEwb/Jv8GABMAAA=="
+        },
+        {
+          "OpenLR": "C1W7ahEkLQATBP93/2QAEwT/bf9qABMAAA=="
+        },
+        {
+          "OpenLR": "C1W65REjnQAUBf8r/2gAFQX/FP+MABUAAA=="
+        }
+      ],
+      "TravelTime": 124,
+      "TravelSpeed": 94,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0089",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1W65REjnQAUBf8r/2gAFQX/FP+MABUAAA=="
+        },
+        {
+          "OpenLR": "C1W6FBEjIAAWBP8Q/7kAFwT/CP/bABcAAA=="
+        },
+        {
+          "OpenLR": "C1W5MBEi7gAXBP8U/+4AFwT/FP/kABcAAA=="
+        },
+        {
+          "OpenLR": "C1W4VBEi1wAWCP40/2gAFAn+aP74ABQAAA=="
+        },
+        {
+          "OpenLR": "C1W2vxEiFQAUCP6k/sYAEwn+0f6ZABMAAA=="
+        },
+        {
+          "OpenLR": "C1W1jxEg2wASCP8K/n4AEgn/RP5dABIAAA=="
+        },
+        {
+          "OpenLR": "C1W0xBEfZAARB/+e/rEAEAf/yP6mABAAAA=="
+        },
+        {
+          "OpenLR": "C1W0exEeJgAQAv/2/50AEAL/+/+bABAAAA=="
+        },
+        {
+          "OpenLR": "C1W0dBEdyAAPCQAL/j8ADwkALf5AAA8AAA=="
+        }
+      ],
+      "TravelTime": 245,
+      "TravelSpeed": 79,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "2",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    },
+    {
+      "SectionID": "0091",
+      "OpenLRs": [
+        {
+          "OpenLR": "C1W0dBEdyAAPCQAL/j8ADwkALf5AAA8AAA=="
+        },
+        {
+          "OpenLR": "C1W0jxEcJgAPAgAJ/7EADwIACP+wAA8AAA=="
+        },
+        {
+          "OpenLR": "C1W0lxEb2wAPBwAk/pQADwcAEP6SAA8AAA=="
+        },
+        {
+          "OpenLR": "C1W0sBEahgAQCf/1/jsAEAn/zf4+ABAAAA=="
+        },
+        {
+          "OpenLR": "C1W0kxEY4QAQCf+o/kUAEQn/hP5NABEAAA=="
+        },
+        {
+          "OpenLR": "C1W0LxEXRwARCf9p/lQAEQn/X/5WABEAAA=="
+        },
+        {
+          "OpenLR": "C1WznREVuQARCP9p/lYAEQn/g/5MABEAAA=="
+        },
+        {
+          "OpenLR": "C1WzHBEUJwARCf+W/koAEQn/mP5IABEAAA=="
+        },
+        {
+          "OpenLR": "C1WyuhESjgARCf+a/kgAEQn/mf5IABEAAA=="
+        },
+        {
+          "OpenLR": "C1WyWhEQ8wARCf+U/iYAEQn/k/4mABEAAA=="
+        },
+        {
+          "OpenLR": "C1Wx9BEPOQARBP/O/ycAEQT/zf8mABEAAA=="
+        },
+        {
+          "OpenLR": "C1WxxREObQARBP/W/0UAEAT/2/9EABAAAA=="
+        }
+      ],
+      "TravelTime": 342,
+      "TravelSpeed": 99,
+      "CongestionLevelID": "A",
+      "CongestionLevel": "1",
+      "DataSources": {
+        "HasHistorical": 0,
+        "HasVD": 1,
+        "HasAVI": 0,
+        "HasETAG": 0,
+        "HasGVP": 0,
+        "HasCVP": 0,
+        "HasOthers": 0
+      },
+      "DataCollectTime": "2024-06-09T15:14:00+08:00"
+    }
+  ]
+}

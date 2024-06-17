@@ -1,0 +1,43 @@
+﻿@model TripNa_MVC.Models.Spot
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div style="width:90%;margin:10rem auto; background-color:white;padding:30px;">
+<h1>詳細內容</h1>
+
+<div>
+    <h4>景點</h4>
+        <hr class="full-width-hr" />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            景點名稱
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpotName)
+        </dd>
+        <dt class = "col-sm-2">
+            城市
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpotCity)
+        </dd>
+        <dt class = "col-sm-2">
+           景點簡介
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpotBrief)
+        </dd>
+        <dt class = "col-sm-2">
+            詳細介紹
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpotIntro)
+        </dd>
+    </dl>
+</div>
+<div>
+        <a asp-action="Edit" asp-route-id="@Model?.SpotId" style="background-color:darkseagreen;padding:5px 15px;color:white;text-decoration:none">編輯</a> |
+        <a asp-action="Index" style="color:steelblue;text-decoration:none;">回到景點管理清單</a>
+</div>
+</div>

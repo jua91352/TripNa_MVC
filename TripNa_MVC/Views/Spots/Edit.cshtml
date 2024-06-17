@@ -1,0 +1,56 @@
+﻿@model TripNa_MVC.Models.Spot
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div style="width:100%;margin:10rem 40rem;">
+<h1>編輯景點</h1>
+
+@* <h4>景點</h4> *@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SpotId" />
+            <div class="form-group">
+                <label asp-for="SpotName" class="control-label">景點名稱</label>
+                <input asp-for="SpotName" class="form-control" />
+                <span asp-validation-for="SpotName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotCity" class="control-label">城市</label>
+                <input asp-for="SpotCity" class="form-control" />
+                <span asp-validation-for="SpotCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotBrief" class="control-label">景點簡介</label>
+                <input asp-for="SpotBrief" class="form-control" />
+                <span asp-validation-for="SpotBrief" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotIntro" class="control-label">詳細介紹</label>
+                <input asp-for="SpotIntro" class="form-control" />
+                <span asp-validation-for="SpotIntro" class="text-danger"></span>
+            </div>
+                <div class="form-group"  style="margin-top:40px;">
+                    <input type="submit" value="保存" style="background-color:darkseagreen;padding:5px 15px;color:white;text-decoration:none;border:none;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+   
+
+
+    <div style="margin-top:20px;">
+        <a asp-action="Index" style="color:steelblue;text-decoration:none;">回到景點管理清單</a>
+</div>
+
+    </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
