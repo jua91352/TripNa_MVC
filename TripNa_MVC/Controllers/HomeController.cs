@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Authorization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Globalization;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
 
 namespace TripNa_MVC.Controllers
 {
@@ -73,10 +77,11 @@ namespace TripNa_MVC.Controllers
             return View(viewModel);
         }
 
+       
         //黃浩維的不要動-------------------------------------------------------------------------------------------------
 
         // 徐庭軒加的---------------------------
-       
+
         [HttpPost]
         public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel dataToSend)
         {
@@ -498,6 +503,126 @@ namespace TripNa_MVC.Controllers
 
 
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(string memberEmail)
+        {
+            if (!string.IsNullOrEmpty(memberEmail))
+            {
+                // Check if memberEmail exists in the database
+                var query = from o in _context.Members
+                            where o.MemberEmail == memberEmail
+                            select o;
+
+                var result = query.FirstOrDefault();
+
+                if (result != null)
+                {
+                    // Member found! Proceed with password reset logic...
+                    // (Generate password reset token, send email, etc.)
+
+                    // 寄送驗證碼到電子郵件
+                    string verificationCode = GenerateVerificationCode();
+                    TempData["VerificationCode"] = verificationCode;
+                    TempData["MemberEmail"] = memberEmail;
+
+                    Console.WriteLine(verificationCode);
+                    await SendVerificationEmail(memberEmail, verificationCode);
+                    ViewData["Message"] = "已寄送驗證碼到您的信箱。";
+
+                }
+                else
+                {
+                    ViewData["Message"] = "信箱輸入錯誤，請確認此信箱為註冊時輸入的信箱。";
+                    return View();
+                }
+            }
+            else
+            {
+                // Invalid or empty email address
+                ModelState.AddModelError("memberEmail", "Please enter a valid email address.");
+            }
+
+            return Redirect("/home/EmailVertification");
+        }
+        private string GenerateVerificationCode()
+        {
+            // 生成6位數驗證碼
+            return new Random().Next(100000, 999999).ToString();
+        }
+
+        private async Task SendVerificationEmail(string email, string verificationCode)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "TripNa 驗證碼",
+                Body = $"您的驗證碼是 {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(email);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        private async Task ReSendVerificationEmail()
+        {
+            string verificationCode = GenerateVerificationCode();
+            TempData["VerificationCode"] = verificationCode;
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "TripNa 驗證碼",
+                Body = $"您的驗證碼是 {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(TempData["MemberEmail"].ToString());
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+        public IActionResult EmailVertification()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailVertification(string newPassword)
+        {
+
+            var memberEmail = TempData["MemberEmail"]?.ToString();
+
+
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == memberEmail);
+
+            // 更新密碼
+            member.MemberPassword = newPassword;
+            await _context.SaveChangesAsync();
+
+            return Redirect("/home/Login");
+        }
+
+
+
+
+
         public IActionResult SignUp()
         {
             return View();
@@ -529,7 +654,7 @@ namespace TripNa_MVC.Controllers
 
 
 
-        
+
 
 
 
