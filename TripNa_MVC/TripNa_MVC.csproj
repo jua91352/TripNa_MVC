@@ -14,6 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\景點圖片\南投\_烘培研究所.webp" />
+    <None Include="wwwroot\景點圖片\南投\元首館.webp" />
+    <None Include="wwwroot\景點圖片\南投\惠蓀林場.webp" />
+    <None Include="wwwroot\景點圖片\南投\竹山紫南宮.webp" />
+    <None Include="wwwroot\景點圖片\台中\惠蓀林場.webp" />
+    <None Include="wwwroot\景點圖片\彰化\魔菇部落生態休閒農場.webp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>

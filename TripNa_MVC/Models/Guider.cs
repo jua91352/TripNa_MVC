@@ -17,6 +17,8 @@ public partial class Guider
 
     public string GuiderIntro { get; set; } = null!;
 
+    public decimal? GuiderRating { get; set; }
+
     public virtual ICollection<GuiderAnswer> GuiderAnswers { get; set; } = new List<GuiderAnswer>();
 
     public virtual ICollection<Orderlist> Orderlists { get; set; } = new List<Orderlist>();

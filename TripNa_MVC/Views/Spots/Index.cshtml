@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TripNa_MVC.Models.Spot>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SpotName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpotCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpotBrief)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpotIntro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotBrief)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpotIntro)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SpotId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SpotId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SpotId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

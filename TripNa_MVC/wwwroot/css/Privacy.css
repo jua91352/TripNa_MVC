@@ -1,0 +1,196 @@
+﻿
+/* 標題 */
+.nav-center {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+
+
+#標題, #標題2 {
+    background-color: #dee0fb;
+    height: 150px;
+    line-height: 150px;
+    animation: fadeIn 2.5s ease-in-out;
+}
+
+/* 先把手風琴關起來 */
+.accordion {
+    cursor: pointer;
+    transition: background-color 0.6s ease;
+}
+
+    .accordion.disabled {
+        cursor: not-allowed;
+    }
+
+.panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+}
+
+.checkbox-container {
+    display: none;
+}
+
+/* 動畫 */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* 照片 */
+.form-select {
+    margin: 10px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s ease-in-out;
+}
+
+    .gallery li {
+        margin: 10px;
+        padding: 10px;
+        width: 150px;
+        height: 150px;
+        text-align: center;
+        border: 1px solid #c5c5c5;
+        background: #fff;
+        border-radius: 10px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .gallery li:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .gallery img {
+        max-width: 100%;
+        max-height: 100%;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+.ui-widget-header {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.ui-widget-content {
+    border: 1px solid #c5c5c5;
+    background: #fff;
+    border-radius: 10px;
+    /* padding: 10px; */
+    min-height: 150px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.ui-state-highlight {
+    border: 1px solid #ccc;
+    background: #ffffcc;
+    color: #333;
+    border-radius: 10px;
+    /* padding: 10px; */
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* 選擇動畫 */
+.form-select {
+    margin: 10px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+#from1 {
+    animation: fadeIn 1s ease-in-out;
+}
+
+#from {
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+#to1 {
+    animation: fadeIn 1s ease-in-out;
+}
+
+#to {
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+#findbtn {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* 手風琴樣式 */
+.accordion {
+    background-color: #4e5482;
+    color: #bdbdbd;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+    .active,
+    .accordion:hover {
+        background-color: #a78bcd;
+        color: #2b0656;
+    }
+
+.panel {
+    padding: 0 0px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+#mark {
+    overflow-y: auto;
+}
+
+  
+
+
+    
+

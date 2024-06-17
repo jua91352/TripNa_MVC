@@ -1,0 +1,866 @@
+﻿@model TripNa_MVC.Models.ItineraryViewModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+@{
+    var cities = ViewBag.Cities as List<string>;
+    
+}
+
+<body style="background-image: url('../_img//行程背景.jpg');background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); ">
+<head>
+    <!--自訂-->
+        <link rel="stylesheet" href="~/css/Privacy.css">
+        <style>
+            .ui-datepicker {
+                display: none !important;
+            }
+        </style>
+</head>
+
+
+<div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
+    自訂想去的行程
+</div>
+<!-- -------------------------------------------------------------------------------------------------------- -->
+<!-- 行程  生成訂單給會員-->
+
+<div class="row justify-content-center align-items-center m-3">
+    <!-- 地點 要控制景點-->
+    <div class="col-md-auto">
+                <select class="form-select" id="locationSelect">
+            <option value="" selected disabled hidden>地點</option>
+            @if (cities != null)
+            {
+                foreach (var city in cities)
+                {
+                    <option value="@city.ToLower()">@city</option>
+                }
+            }
+        </select>
+
+    </div>
+
+    <!-- 人數 -->
+    <div class="col-md-auto">
+                <select class="form-select" id="peopleSelect">
+                    <option value="" selected disabled hidden>人數</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+
+        </select>
+    </div>
+
+    <!-- 天數 要控制時間選擇 -->
+    <div class="col-md-auto col-sm-5">
+        <select class="form-select" id="themeSelect">
+            <option value="" selected disabled hidden>出遊天數</option>
+            <option value="1">一日遊</option>
+            <option value="2">二日遊</option>
+            <option value="3">三日遊</option>
+        </select>
+    </div>
+
+    <!-- 日期選擇器 -->
+        <label for="from" class="col-md-auto col-sm-2 col-3" id="from1">出發日:</label>
+        <input type="date" id="datepicker" class="form-control col-md-auto  col-sm-10 col-7 text-center"
+               style="width: auto;">
+    </div>
+
+
+
+@* 行程日程安排 *@
+    <div class="row align-items-center m-3 text-center">
+        <div class="col-lg-1 "></div>
+        <div id="accordionContainer" class="col-lg-6 col-md-6 col-sm-6 col-7" style="top: 150px; bottom:100px;">
+            <button type="button" class="accordion disabled" id="day1" disabled>第一天的景點安排</button>
+            <div class="panel" id="panel1">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="first-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="first-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="first-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="first-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="firstDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="firstDayConfirmCheckbox" disabled> 我已確定第一天行程
+            </div>
+
+
+
+                <button type="button" class="accordion disabled" id="day2" disabled>第二天的景點安排</button>
+            <div class="panel" id="panel2">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="second-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="second-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="second-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="second-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="secondDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="secondDayConfirmCheckbox" disabled> 我已確定第二天行程
+            </div>
+
+
+                <button type ="button" class="accordion disabled" id="day3" disabled>第三天的景點安排</button>
+            <div class="panel" id="panel3">
+                <div class="row justify-content-center m-3 text-center">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
+                        <div id="third-day-morning" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>下午</h4>
+                        <div id="third-day-afternoon" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>傍晚</h4>
+                        <div id="third-day-evening" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>晚上</h4>
+                        <div id="third-day-night" class="ui-widget-content ui-state-default"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="thirdDayContainer" class="checkbox-container col-12">
+                <input type="checkbox" id="thirdDayConfirmCheckbox" disabled> 我已確定第三天行程
+            </div>
+        </div>
+
+        <!-- 景點照片 -->
+        <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
+            <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
+                <div class="row justify-content-center">
+                    <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
+                    <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                    <div class="col-md-8" style="background-color: #f8e8ff;">
+                        <ul id="gallery" class="gallery list-unstyled">
+                                @if (Model != null && Model.Spot != null)
+                                {
+                                    @foreach (var spot in Model.Spot)
+                                {
+                                string imgPath = "~/景點圖片/" + spot.SpotCity + "/" + spot.SpotName + ".jpg";
+                                <li class="ui-widget-content ui-corner-tr" data-city="@spot.SpotCity.ToLower()">
+                                    <h5 class="ui-widget-header">@spot.SpotName</h5>
+                                    <img src="@Url.Content(imgPath)" id="@spot.SpotId" alt="@spot.SpotName" width="96" height="72">
+                                    <br>
+                                    <a href="@Url.Content(imgPath)" title="查看較大的圖片" class="ui-icon ui-icon-zoomin">查看較大</a>
+                                </li>
+                                 }
+                                }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-1"></div>
+ 
+    </div>
+   
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+
+
+<!-- 找導遊按鈕 -->
+        <div class="row m-3">
+            <div class="col-1"></div>
+            <div class="col-12 col-md-4 col-sm-12">
+                <input class="form-check-input" type="checkbox" value="" id="confirmCheckbox" disabled>
+                <label class="form-check-label" for="confirmCheckbox">
+                    我已確定行程，可開始尋找導遊
+                </label>
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-8"></div>
+            <button class="btn btn-primary btn-block col-3 col-lg-2 col-md-3  shadow" id="findbtn">尋找導遊</button>
+            <div class="col-2"></div>
+        </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<script>
+        
+        
+                
+    $(function () {
+        // 選日期
+        $("#datepicker").datepicker({
+            minDate: 0,
+            dateFormat: 'yy-mm-dd'
+        });
+
+
+        //------------------------------------------假資料 假設是由資料庫轉過來的-----------------------------------------------------------------------------
+
+        
+
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+        // 清除行程表的函數
+        function clearSchedule() {
+            $('#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night, #second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night, #third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night').empty();
+        }
+
+
+        // 初始化可拖動功能的函數
+        function initializeDraggable() {
+            $("#gallery li").draggable({
+                cancel: "a.ui-icon",
+                revert: "invalid",
+                containment: "document",
+                helper: "clone",
+                cursor: "move"
+            });
+
+            $("#gallery").droppable({
+                accept: ".ui-draggable",
+                classes: {
+                    "ui-droppable-active": "ui-state-highlight"
+                },
+                drop: function (event, ui) {
+                    recycleImage(ui.draggable);
+                }
+            });
+
+            var $dayAreas = {
+                firstDay: $("#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night"),
+                secondDay: $("#second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night"),
+                thirdDay: $("#third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night")
+            };
+
+            var dropAreasStatus = {
+                firstDay: {},
+                secondDay: {},
+                thirdDay: {}
+            };
+
+            $.each($dayAreas, function (day, areas) {
+                areas.each(function () {
+                    dropAreasStatus[day][this.id] = false;
+                });
+
+                areas.droppable({
+                    accept: "#gallery > li",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: function (event, ui) {
+                        handleDrop.call(this, event, ui, day);
+                    }
+                });
+            });
+
+            function checkDayAreasFilled(day) {
+                return Object.values(dropAreasStatus[day]).every(status => status);
+            }
+
+            function handleDrop(event, ui, day) {
+                var $dropArea = $(this);
+                var $existingItem = $dropArea.find("li");
+
+                if ($existingItem.length) {
+                    recycleImage($existingItem);
+                }
+
+                deleteImage(ui.draggable, $dropArea);
+
+                dropAreasStatus[day][$dropArea.attr("id")] = true;
+
+                if (checkDayAreasFilled(day)) {
+                    $("#" + day + "ConfirmCheckbox").prop("disabled", false);
+                }
+            }
+
+            function deleteImage($item, $dropArea) {
+                var recycleIcon = "<a href='#' title='回收此圖片' class='ui-icon ui-icon-refresh'>回收圖片</a>";
+                $item.fadeOut(function () {
+                    $item.find("a.ui-icon-arrowrefresh-1-s").remove();
+                    $item.append(recycleIcon).appendTo($dropArea).fadeIn();
+
+                    $item.find(".ui-icon-refresh").on("click", function () {
+                        recycleImage($item);
+                    });
+                });
+            }
+
+            function recycleImage($item) {
+                var trashIcon = "<a href='#' title='刪除此圖片' class='ui-icon ui-icon-arrowrefresh-1-s'>刪除圖片</a>";
+                $item.fadeOut(function () {
+                    $item.find("a.ui-icon-refresh").remove().end()
+                        .append(trashIcon)
+                        .appendTo("#gallery").fadeIn(function () {
+                            $item.find('img').css('height', $item.data('original-height'));
+                        });
+
+                    $item.draggable({
+                        revert: true,
+                        containment: "document",
+                        cursor: "move",
+                        helper: "original"
+                    });
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            initializeDraggable();
+
+            $("#locationSelect").on("change", function () {
+                var selectedCity = this.value.toLowerCase();
+                var galleryItems = $("#gallery li");
+
+                galleryItems.each(function () {
+                    var $item = $(this);
+                    if (selectedCity === "" || $item.data("city") === selectedCity) {
+                        $item.show();
+                    } else {
+                        $item.hide();
+                    }
+                });
+            });
+
+            function clearSchedule() {
+                $('#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night, #second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night, #third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night').empty();
+            }
+
+            $('#locationSelect').change(clearSchedule);
+
+            $("#gallery").on("click", "li", function (event) {
+                var $item = $(this),
+                    $target = $(event.target);
+
+                if ($target.is("a.ui-icon-arrowrefresh-1-s")) {
+                    deleteImage($item);
+                } else if ($target.is("a.ui-icon-zoomin")) {
+                    viewLargerImage($target);
+                } else if ($target.is("a.ui-icon-refresh")) {
+                    recycleImage($item);
+                }
+                return false;
+            });
+
+            function viewLargerImage($link) {
+                var src = $link.attr("href"),
+                    title = $link.siblings("img").attr("alt"),
+                    $modal = $("img[src$='" + src + "']");
+
+                if ($modal.length) {
+                    $modal.dialog("open");
+                } else {
+                    var img = $("<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />")
+                        .attr("src", src).appendTo("body");
+                    setTimeout(function () {
+                        img.dialog({
+                            title: title,
+                            width: 400,
+                            modal: true
+                        });
+                    }, 1);
+                }
+            }
+        });
+
+
+        // ---------------------------------------------
+        document.getElementById('themeSelect').addEventListener('change', function () {
+            const value = this.value;
+            const firstDayContainer = document.getElementById('firstDayContainer');
+            const secondDayContainer = document.getElementById('secondDayContainer');
+            const thirdDayContainer = document.getElementById('thirdDayContainer');
+            const day1Button = document.getElementById('day1');
+            const day2Button = document.getElementById('day2');
+            const day3Button = document.getElementById('day3');
+
+            // Reset all containers and buttons
+            [firstDayContainer, secondDayContainer, thirdDayContainer].forEach(container => container.style.display = 'none');
+            [day1Button, day2Button, day3Button].forEach(button => {
+                button.classList.add('disabled');
+                button.disabled = true;
+            });
+
+            if (value === '1') {
+                firstDayContainer.style.display = 'block';
+                day1Button.classList.remove('disabled');
+                day1Button.disabled = false;
+            } else if (value === '2') {
+                [firstDayContainer, secondDayContainer].forEach(container => container.style.display = 'block');
+                [day1Button, day2Button].forEach(button => {
+                    button.classList.remove('disabled');
+                    button.disabled = false;
+                });
+            } else if (value === '3') {
+                [firstDayContainer, secondDayContainer, thirdDayContainer].forEach(container => container.style.display = 'block');
+                [day1Button, day2Button, day3Button].forEach(button => {
+                    button.classList.remove('disabled');
+                    button.disabled = false;
+                });
+            }
+        });
+        
+            const dataToSend = {
+                itinerary: {},
+                itineraryDetail: []
+            };
+           
+            let date2, date3;
+
+        $("#firstDayConfirmCheckbox").change(function () {
+            if ($(this).is(":checked")) {
+                    
+                    let dateObj = new Date($("#datepicker").val());
+                    let date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
+
+                    $("#first-day-morning li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date1,
+                            VisitOrder: 1
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#first-day-afternoon li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date1,
+                            VisitOrder: 2
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#first-day-evening li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date1,
+                            VisitOrder: 3
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#first-day-night li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date1,
+                            VisitOrder: 4
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+                console.log(dataToSend);
+                $("#firstDayConfirmCheckbox").addClass("disabled");
+            }
+        });
+
+            $("#secondDayConfirmCheckbox").change(function () {
+                if ($(this).is(":checked")) {
+
+                    let date1 = $("#datepicker").val();
+                    if (date1) {
+                        let dateObj = new Date(date1);
+                        date2 = new Date(dateObj);
+                        date2.setDate(dateObj.getDate() + 1);
+                        date2 = $.datepicker.formatDate('yy-mm-dd', date2);
+                    }
+                    $("#second-day-morning li").each(function () {
+
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date2,
+                            VisitOrder: 1
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#second-day-afternoon li").each(function () {
+
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date2,
+                            VisitOrder: 2
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#second-day-evening li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date2,
+                            VisitOrder: 3
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#second-day-night li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date2,
+                            VisitOrder: 4
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+                    console.log(JSON.stringify(dataToSend));
+                    $("#secondDayConfirmCheckbox").addClass("disabled");
+                }
+            });
+
+            $("#thirdDayConfirmCheckbox").change(function () {
+                if ($(this).is(":checked")) {
+
+                    let date1 = $("#datepicker").val();
+                    if (date1) {
+                        let dateObj = new Date(date1);
+                        date3 = new Date(dateObj);
+                        date3.setDate(dateObj.getDate() + 2);
+                        date3 = $.datepicker.formatDate('yy-mm-dd', date3);
+                    }
+                    $("#third-day-morning li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date3,
+                            VisitOrder: 1
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#third-day-afternoon li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date3,
+                            VisitOrder: 2
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#third-day-evening li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date3,
+                            VisitOrder: 3
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+
+                    $("#third-day-night li").each(function () {
+                        var itineraryDetail = {
+                            SpotID: $(this).find("img").attr("id"),
+                            ItineraryDate: date3,
+                            VisitOrder: 4
+                        };
+                        dataToSend.itineraryDetail.push(itineraryDetail);
+                    });
+                    console.log(dataToSend);
+                    $("#thirdDayConfirmCheckbox").addClass("disabled");
+                }
+
+            });
+
+        $("#confirmCheckbox").change(function () {
+                    let dateObj = new Date($("#datepicker").val());
+                    let date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
+            if ($(this).is(":checked")) {
+                let DayInName;
+                if ($("#themeSelect").val() == "1") {
+                    DayInName = "一日遊"
+                } else if ($("#themeSelect").val() == "2") {
+                    DayInName = "二日遊"
+                } else { DayInName = "三日遊" };
+                dataToSend.itinerary = {
+                        ItineraryName: $("#locationSelect").val() + DayInName + "暢玩行程",
+                        ItineraryStartDate: date1,
+                        ItineraryPeopleNo: $("#peopleSelect").val()
+                };
+                
+                console.log(dataToSend);
+                    // Send to DB----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/CreateItinerary",
+                        data: JSON.stringify(dataToSend),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            console.log("Success", response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
+                            console.error("Response Text: ", xhr.responseText);
+                        }
+                    });
+
+                    var newOrder = {
+                        MemberId: 0,
+                        ItineraryId: 0,
+                        OrderDate: date1,
+                        OrderNumber: "",
+                        OrderStatus : "尚未出發",
+                        OrderMatchStatus : "媒合中",
+                        OrderTotalPrice : 0
+                    };
+                    console.log(newOrder);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/CreateOrder",
+                        data: JSON.stringify(newOrder),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            alert("訂單已成功創建！");
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error creating order:", xhr.responseText);
+                            alert("創建訂單時出錯。");
+                        }
+                    });
+
+                    // Send to DB----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+                    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            }
+        });
+        // 送出按鈕
+        document.getElementById("findbtn").addEventListener("click", function () {
+            const confirmCheckbox = document.getElementById("confirmCheckbox");
+            const firstDayConfirmCheckbox = document.getElementById("firstDayConfirmCheckbox");
+            const secondDayConfirmCheckbox = document.getElementById("secondDayConfirmCheckbox");
+            const thirdDayConfirmCheckbox = document.getElementById("thirdDayConfirmCheckbox");
+
+            if (!confirmCheckbox.checked) {
+                alert("你需要勾選《我確定行程》");
+                return;
+            }
+
+            // 判断主题选择
+            const themeSelectValue = document.getElementById('themeSelect').value;
+
+                function redirectToTouristGuide() {
+                    var selectedCity = document.getElementById("locationSelect").value;
+                    if (selectedCity) {
+                        window.location.href = '/Home/TouristGuide?selectedCity=' + encodeURIComponent(selectedCity);
+                    } else {
+                        alert("請選擇一個地點");
+                    }
+                }
+
+                if (themeSelectValue === '3') {
+                    // 第三天选择，需要所有复选框都选中
+                    if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定前三天的行程》");
+                    }
+                } else if (themeSelectValue === '2') {
+                    // 第二天选择，只需要前两天复选框选中
+                    if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定前兩天的行程》");
+                    }
+                } else if (themeSelectValue === '1') {
+                    // 第一天选择，只需要第一天复选框选中
+                    if (firstDayConfirmCheckbox.checked) {
+                        redirectToTouristGuide();
+                    } else {
+                        alert("你需要勾選《我已確定第一天的行程》");
+                    }
+                } else {
+                    alert("請選擇一個有效的主題");
+                }
+            
+        });
+
+
+
+        // 地點人數日期 幾天都要選過 才可以啟用核取方塊
+        const locationSelect = document.getElementById('locationSelect');
+        const peopleSelect = document.getElementById('peopleSelect');
+        const daysSelect = document.getElementById('themeSelect');
+        const confirmCheckbox = document.getElementById('confirmCheckbox');
+        const datepicker = document.getElementById('datepicker');
+
+        function updateCheckboxState() {
+            const locationValue = locationSelect.value;
+            const peopleValue = peopleSelect.value;
+            const daysValue = daysSelect.value;
+            const departureDate = datepicker.value;
+
+            if (locationValue === '' || peopleValue === '' || daysValue === '' || departureDate === '') {
+                confirmCheckbox.disabled = true;
+                confirmCheckbox.checked = false;
+            } else {
+                confirmCheckbox.disabled = false;
+                confirmCheckbox.checked = false;
+            }
+        }
+
+        locationSelect.addEventListener('change', updateCheckboxState);
+        peopleSelect.addEventListener('change', updateCheckboxState);
+        daysSelect.addEventListener('change', updateCheckboxState);
+        datepicker.addEventListener('change', updateCheckboxState);
+
+        // 初始化手風琴
+        var acc = document.getElementsByClassName("accordion");
+        var panels = document.getElementsByClassName("panel");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                if (this.classList.contains("disabled")) {
+                    alert("請先選擇出遊天數");
+                    return;
+                }
+
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                    this.classList.remove("active");
+                } else {
+                    for (var j = 0; j < panels.length; j++) {
+                        panels[j].style.maxHeight = null;
+                        panels[j].previousElementSibling.classList.remove("active");
+                    }
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    this.classList.add("active");
+                }
+            });
+        }
+
+        // 出遊天數選擇
+        document.getElementById('themeSelect').addEventListener('change', function () {
+            var days = parseInt(this.value, 10);
+            for (i = 1; i <= 3; i++) {
+                var dayButton = document.getElementById('day' + i);
+                var dayPanel = document.getElementById('panel' + i);
+                if (i <= days) {
+                    dayButton.style.display = 'block';
+                    dayPanel.style.display = 'block';
+                    dayButton.classList.remove("disabled");
+                    dayButton.disabled = false;
+                } else {
+                    dayButton.style.display = 'none';
+                    dayPanel.style.display = 'none';
+                    dayButton.classList.add("disabled");
+                    dayButton.disabled = true;
+                }
+            }
+        });
+
+        // 讓行程不會跑掉
+        var day1Button = document.getElementById("day1");
+        var day2Button = document.getElementById("day2");
+        var day3Button = document.getElementById("day3");
+        day1Button.addEventListener("click", scrollToTop);
+        day2Button.addEventListener("click", scrollToTop);
+        day3Button.addEventListener("click", scrollToTop);
+
+        function scrollToTop() {
+            var accordionContainer = document.getElementById("accordionContainer");
+            var topPosition = accordionContainer.offsetTop - 100;
+            window.scrollTo({
+                top: topPosition,
+                behavior: 'smooth'
+            });
+        }
+        // 定義調整字體大小的函式
+        function adjustFontSize(size) {
+            // 調整根元素的字體大小
+            document.documentElement.style.fontSize = size;
+        }
+
+        // 獲取按鈕元素
+        var bigBtn = document.getElementById('big');
+        var smallBtn = document.getElementById('sm');
+
+        // 添加點擊事件監聽器，調整字體大小
+        bigBtn.addEventListener('click', function () {
+            adjustFontSize('20px'); // 設置大字體大小
+        });
+
+        smallBtn.addEventListener('click', function () {
+            adjustFontSize('16px'); // 設置小字體大小
+        });
+
+    });
+
+
+
+    $(document).ready(function () {
+        $(".navbar-toggler").click(function () {
+            $("#navbarNav").toggleClass("show");
+        });
+    });
+
+    
+    //
+    // $(function () {
+    //     // 設置可拖曳項目
+    //     $(".gallery li").draggable({
+    //         helper: "clone",
+    //         revert: "invalid"
+    //     });
+
+    //     // 設置放置區域
+    //     $(".ui-widget-content").droppable({
+    //         accept: ".gallery li",
+    //         drop: function (event, ui) {
+    //             var $this = $(this);
+    //             var item = ui.helper.clone();
+    //             $this.append(item);
+
+    //             // 調用更新行程函數
+    //             updateItinerary();
+    //         }
+    //     });
+    // });
+
+    
+
+        
+</script>
+</body>
+

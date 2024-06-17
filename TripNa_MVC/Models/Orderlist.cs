@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace TripNa_MVC.Models;
 
 public partial class Orderlist
 {
-    internal Coupon Coupon;
-
     public int OrderId { get; set; }
 
+    internal Coupon Coupon;
+    internal Spot Spots;
     public int MemberId { get; set; }
 
     public int? GuiderId { get; set; }
@@ -16,11 +18,9 @@ public partial class Orderlist
 
     public int ItineraryId { get; set; }
 
-    public int? OrderNumber { get; set; }
+    public string? OrderNumber { get; set; }
 
     public DateTime OrderDate { get; set; }
-
-    public byte? OrderPeopleNo { get; set; }
 
     public string OrderStatus { get; set; } = null!;
 
@@ -29,12 +29,12 @@ public partial class Orderlist
     public decimal OrderTotalPrice { get; set; }
 
     public virtual Guider? Guider { get; set; }
-
+   
     public virtual ICollection<GuiderAnswer> GuiderAnswers { get; set; } = new List<GuiderAnswer>();
 
-    public virtual Itinerary Itinerary { get; set; } = null!;
+    public virtual Itinerary? Itinerary { get; set; } = null!;
 
-    public virtual Member Member { get; set; } = null!;
+    public virtual Member? Member { get; set; } = null!;
 
     public virtual ICollection<MemberQuestion> MemberQuestions { get; set; } = new List<MemberQuestion>();
 

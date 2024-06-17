@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "LOGIN TripNa";
-
+    var alertMessage = TempData["alertMessage"] as string;
 }
 <style>
     .border-custom {
@@ -77,6 +77,14 @@
 
 
 <script>
+    $(document).ready(function () {
+    @if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <text>
+                alert('@Html.Raw(Html.Encode(alertMessage))');
+        </text>
+    }
+                    });
     //全域變數 紀錄驗證碼
     var code = "";
     //

@@ -1,0 +1,49 @@
+﻿@model TripNa_MVC.Models.Spot
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Spot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SpotId" />
+            <div class="form-group">
+                <label asp-for="SpotName" class="control-label"></label>
+                <input asp-for="SpotName" class="form-control" />
+                <span asp-validation-for="SpotName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotCity" class="control-label"></label>
+                <input asp-for="SpotCity" class="form-control" />
+                <span asp-validation-for="SpotCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotBrief" class="control-label"></label>
+                <input asp-for="SpotBrief" class="form-control" />
+                <span asp-validation-for="SpotBrief" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpotIntro" class="control-label"></label>
+                <input asp-for="SpotIntro" class="form-control" />
+                <span asp-validation-for="SpotIntro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
