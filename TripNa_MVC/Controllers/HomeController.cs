@@ -7,11 +7,18 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using TripNa_MVC.Models;
+
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Globalization;
+
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
+
 
 namespace TripNa_MVC.Controllers
 {
@@ -32,7 +39,7 @@ namespace TripNa_MVC.Controllers
         }
 
          
-        //¶À¯Eºûªº¤£­n°Ê-------------------------------------------------------------------------------------------------
+        //é»ƒæµ©ç¶­çš„ä¸è¦å‹•-------------------------------------------------------------------------------------------------
            
         public IActionResult CreateItinerary()
             {
@@ -40,9 +47,9 @@ namespace TripNa_MVC.Controllers
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
             {
-                TempData["alertMessage"] = "½Ğ¥ıµn¤J©Î¬Oµù¥U·|­û!!";
+                TempData["alertMessage"] = "è«‹å…ˆç™»å…¥æˆ–æ˜¯è¨»å†Šæœƒå“¡!!";
                 Console.WriteLine(TempData["alertMessage"]);
-                return RedirectToAction("Login", "Home"); // ¦pªG·|¸Ü¤¤¨S¦³¥Î¤á«H®§¡A­«©w¦V¨ìµn¿ı­¶­±
+                return RedirectToAction("Login", "Home"); // å¦‚æœæœƒè©±ä¸­æ²’æœ‰ç”¨æˆ¶ä¿¡æ¯ï¼Œé‡å®šå‘åˆ°ç™»éŒ„é é¢
             }
 
 
@@ -50,7 +57,7 @@ namespace TripNa_MVC.Controllers
             {
                 Itinerary = new Itinerary(),
                 Spot = _context.Spots.ToList(),
-                ItineraryDetail = new List<ItineraryDetailViewModel>() // ªì©l¤Æµø¹Ï¼Ò«¬ªºÄİ©Ê
+                ItineraryDetail = new List<ItineraryDetailViewModel>() // åˆå§‹åŒ–è¦–åœ–æ¨¡å‹çš„å±¬æ€§
             };
 
             var spot = from o in _context.Spots
@@ -60,22 +67,22 @@ namespace TripNa_MVC.Controllers
             var spotsList = spot.ToList();
             
 
-            // Àò¨ú©Ò¦³ SpotCity ¨Ã¥h­«
+            // ç²å–æ‰€æœ‰ SpotCity ä¸¦å»é‡
             var cities = _context.Spots
                 .Select(s => s.SpotCity)
                 .Distinct()
                 .ToList();
 
-            // ±N cities ¶Ç»¼¨ì View
+            // å°‡ cities å‚³éåˆ° View
             ViewBag.Cities = cities;
 
             
             return View(viewModel);
         }
 
-        //¶À¯Eºûªº¤£­n°Ê-------------------------------------------------------------------------------------------------
+        //é»ƒæµ©ç¶­çš„ä¸è¦å‹•-------------------------------------------------------------------------------------------------
 
-        // ®}®x°a¥[ªº---------------------------
+        // å¾åº­è»’åŠ çš„---------------------------
        
         [HttpPost]
         public async Task<IActionResult> CreateItinerary([FromBody] ItineraryViewModel dataToSend)
@@ -99,13 +106,13 @@ namespace TripNa_MVC.Controllers
 
                 if (dataToSend.Itinerary == null)
                 {
-                    dataToSend.Itinerary = new Itinerary(); // ªì©l¤Æ Itinerary ¹ï¶H
+                    dataToSend.Itinerary = new Itinerary(); // åˆå§‹åŒ– Itinerary å°è±¡
                 }
 
-                // ½T«O dataToSend.ItineraryDetail ¤£¬°ªÅ
+                // ç¢ºä¿ dataToSend.ItineraryDetail ä¸ç‚ºç©º
                 if (dataToSend.ItineraryDetail == null)
                 {
-                    dataToSend.ItineraryDetail = new List<ItineraryDetailViewModel>(); // ªì©l¤Æ ItineraryDetail ¦Cªí
+                    dataToSend.ItineraryDetail = new List<ItineraryDetailViewModel>(); // åˆå§‹åŒ– ItineraryDetail åˆ—è¡¨
                 }
                 _context.Add(dataToSend.Itinerary);
                 await _context.SaveChangesAsync();
@@ -149,7 +156,7 @@ namespace TripNa_MVC.Controllers
 
                 if (newOrder == null)
                 {
-                    newOrder = new Orderlist(); // ªì©l¤Æ Orderlist ¦Cªí
+                    newOrder = new Orderlist(); // åˆå§‹åŒ– Orderlist åˆ—è¡¨
                 }
                
 
@@ -165,10 +172,10 @@ namespace TripNa_MVC.Controllers
                     return BadRequest("DayCount is missing in TempData.");
                 }
 
-                if (TempData["DayCount"].ToString() == "¤@")
+                if (TempData["DayCount"].ToString() == "ä¸€")
                 {
                     orderTotalPirce = 2000M;
-                } else if (TempData["DayCount"].ToString() == "¤G")
+                } else if (TempData["DayCount"].ToString() == "äºŒ")
                 {
                     orderTotalPirce = 3800M;
                 } else
@@ -192,14 +199,14 @@ namespace TripNa_MVC.Controllers
                 if (newOrder != null )
                 {
                     Console.WriteLine("Preparing to create a new order.");
-                    // ³]¸m­q³æ¤é´Á©Mª¬ºA
+                    // è¨­ç½®è¨‚å–®æ—¥æœŸå’Œç‹€æ…‹
 
                     newOrder.MemberId = member.MemberId; 
                     newOrder.ItineraryId = (int)TempData["ItineraryID"];
                     newOrder.OrderDate = DateTime.Parse(orderDate);
                     newOrder.OrderNumber = orderNumber;
-                    newOrder.OrderStatus = "©|¥¼¥Xµo";
-                    newOrder.OrderMatchStatus = "´C¦X¤¤";
+                    newOrder.OrderStatus = "å°šæœªå‡ºç™¼";
+                    newOrder.OrderMatchStatus = "åª’åˆä¸­";
                     newOrder.OrderTotalPrice = orderTotalPirce;
 
                     _context.Orderlists.Add(newOrder);
@@ -214,7 +221,7 @@ namespace TripNa_MVC.Controllers
             }
             catch (Exception ex)
             {
-                // ¿ù»~³B²z
+                // éŒ¯èª¤è™•ç†
                 Console.WriteLine("Exception: " + ex.Message);
                 return StatusCode(500, "Internal server error");
             }
@@ -254,11 +261,11 @@ namespace TripNa_MVC.Controllers
 
             if (!string.IsNullOrEmpty(gender))
             {
-                if (gender.ToLower() == "¨k¥Í")
+                if (gender.ToLower() == "ç”·ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "M");
                 }
-                else if (gender.ToLower() == "¤k¥Í")
+                else if (gender.ToLower() == "å¥³ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "F");
                 }
@@ -275,35 +282,35 @@ namespace TripNa_MVC.Controllers
                 DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
                 if (experience == 0)
                 {
-                    guiders = guiders.Where(g => g.GuiderStartDate >= DateOnly.FromDateTime(DateTime.Now.AddMonths(-6))); // ·s¤â¾É¹Cªº±ø¥ó¡A³o¸Ì°²³]¤Ö©ó6­Ó¤ë
+                    guiders = guiders.Where(g => g.GuiderStartDate >= DateOnly.FromDateTime(DateTime.Now.AddMonths(-6))); // æ–°æ‰‹å°éŠçš„æ¢ä»¶ï¼Œé€™è£¡å‡è¨­å°‘æ–¼6å€‹æœˆ
                 }
                 else if (experience == 5)
                 {
-                    guiders = guiders.Where(g => g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5))); // 5¦~¥H¤Wªº±ø¥ó
+                    guiders = guiders.Where(g => g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5))); // 5å¹´ä»¥ä¸Šçš„æ¢ä»¶
                 }
                 else
                 {
-                    guiders = guiders.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // «ü©w¦~¸ê
+                    guiders = guiders.Where(g => g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1)); // æŒ‡å®šå¹´è³‡
                 }
             }
             if (experience.HasValue && !string.IsNullOrEmpty(gender)) {
                 DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
-                if (experience == 0 && gender?.ToLower() == "¨k¥Í")
+                if (experience == 0 && gender?.ToLower() == "ç”·ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
                 }
-                else if (experience == 5 && gender?.ToLower() == "¨k¥Í")
+                else if (experience == 5 && gender?.ToLower() == "ç”·ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
                 }
-                else if (experience == 0 && gender?.ToLower() == "¤k¥Í")
+                else if (experience == 0 && gender?.ToLower() == "å¥³ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-6)));
                 }
-                else if (experience == 5 && gender?.ToLower() == "¤k¥Í")
+                else if (experience == 5 && gender?.ToLower() == "å¥³ç”Ÿ")
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "F" && g.GuiderStartDate <= DateOnly.FromDateTime(DateTime.Now.AddYears(-5)));
-                } else if (gender?.ToLower() == "¨k¥Í" && experience != 0 && experience != 5)
+                } else if (gender?.ToLower() == "ç”·ç”Ÿ" && experience != 0 && experience != 5)
                 {
                     guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
                 }
@@ -317,7 +324,7 @@ namespace TripNa_MVC.Controllers
             {
                 DateOnly cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-experience.Value));
                 string genderLower = gender.ToLower();
-                if (genderLower == "¨k¥Í")
+                if (genderLower == "ç”·ç”Ÿ")
                 {
                     if (experience == 0)
                     {
@@ -332,7 +339,7 @@ namespace TripNa_MVC.Controllers
                         guiders = guiders.Where(g => g.GuiderGender == "M" && g.GuiderStartDate <= cutoffDate && g.GuiderStartDate > cutoffDate.AddYears(-1));
                     }
                 }
-                else if (genderLower == "¤k¥Í")
+                else if (genderLower == "å¥³ç”Ÿ")
                 {
                     if (experience == 0)
                     {
@@ -392,7 +399,7 @@ namespace TripNa_MVC.Controllers
             return Ok();
         }
 
-		// ®}®x°a¥[ªº---------------------------
+		// å¾åº­è»’åŠ çš„---------------------------
 
 		public IActionResult Spot(string memberEmail)
         {
@@ -419,7 +426,7 @@ namespace TripNa_MVC.Controllers
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Home/Login"; // µn¤J­¶­±¸ô®|
+                    options.LoginPath = "/Home/Login"; // ç™»å…¥é é¢è·¯å¾‘
                 });
 
             services.AddAuthorization(options =>
@@ -442,7 +449,7 @@ namespace TripNa_MVC.Controllers
             if (string.IsNullOrEmpty(memberId))
             {
 
-                ViewData["Message"] = "½Ğ¥ıµn¤J";
+                ViewData["Message"] = "è«‹å…ˆç™»å…¥";
                 //return Redirect("/home/Login");
                 return View(spotsList);
             }
@@ -471,8 +478,8 @@ namespace TripNa_MVC.Controllers
 
             if (result == null)
             {
-                ViewData["Message"] = "±b¸¹©Î±K½X¿é¤J¿ù»~";
-                return View(); // µn¤J¥¢±Ñ¾É¦^­¶­±
+                ViewData["Message"] = "å¸³è™Ÿæˆ–å¯†ç¢¼è¼¸å…¥éŒ¯èª¤";
+                return View(); // ç™»å…¥å¤±æ•—å°å›é é¢
             }
             //return Ok(result);
             var memberName = result.MemberName;
@@ -486,6 +493,121 @@ namespace TripNa_MVC.Controllers
 
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(string memberEmail)
+        {
+            if (!string.IsNullOrEmpty(memberEmail))
+            {
+                // Check if memberEmail exists in the database
+                var query = from o in _context.Members
+                            where o.MemberEmail == memberEmail
+                            select o;
+
+                var result = query.FirstOrDefault();
+               
+                if (result != null)
+                {
+                    // Member found! Proceed with password reset logic...
+                    // (Generate password reset token, send email, etc.)
+
+                    // å¯„é€é©—è­‰ç¢¼åˆ°é›»å­éƒµä»¶
+                    string verificationCode = GenerateVerificationCode();
+                    TempData["VerificationCode"] = verificationCode;
+                    TempData["MemberEmail"] = memberEmail;
+
+                    Console.WriteLine(verificationCode);
+                    await SendVerificationEmail(memberEmail, verificationCode);
+                    ViewData["Message"] = "å·²å¯„é€é©—è­‰ç¢¼åˆ°æ‚¨çš„ä¿¡ç®±ã€‚";
+
+                }
+                else
+                {
+                    ViewData["Message"] = "ä¿¡ç®±è¼¸å…¥éŒ¯èª¤ï¼Œè«‹ç¢ºèªæ­¤ä¿¡ç®±ç‚ºè¨»å†Šæ™‚è¼¸å…¥çš„ä¿¡ç®±ã€‚";
+                    return View();
+                }
+            }
+            else
+            {
+                // Invalid or empty email address
+                ModelState.AddModelError("memberEmail", "Please enter a valid email address.");
+            }
+            
+            return Redirect("/home/EmailVertification");
+        }
+        private string GenerateVerificationCode()
+        {
+            // ç”Ÿæˆ6ä½æ•¸é©—è­‰ç¢¼
+            return new Random().Next(100000, 999999).ToString();
+        }
+
+        private async Task SendVerificationEmail(string email, string verificationCode)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "TripNa é©—è­‰ç¢¼",
+                Body = $"æ‚¨çš„é©—è­‰ç¢¼æ˜¯ {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(email);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        private async Task ReSendVerificationEmail()
+        {
+            string verificationCode = GenerateVerificationCode();
+            TempData["VerificationCode"] = verificationCode;
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("missingyou520x@gmail.com"),
+                Subject = "TripNa é©—è­‰ç¢¼",
+                Body = $"æ‚¨çš„é©—è­‰ç¢¼æ˜¯ {verificationCode}",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(TempData["MemberEmail"].ToString());
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+            public IActionResult EmailVertification()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailVertification(string newPassword)
+        {
+
+            var memberEmail = TempData["MemberEmail"]?.ToString();
+            
+
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == memberEmail);
+
+            // æ›´æ–°å¯†ç¢¼
+            member.MemberPassword = newPassword;
+            await _context.SaveChangesAsync();
+
+            return Redirect("/home/Login");
+        }
 
         public IActionResult Logout()
         {
@@ -514,7 +636,7 @@ namespace TripNa_MVC.Controllers
 
                 if (existingMember != null)
                 {
-                    ViewData["Message"] = "¦¹±b¸¹¤w¦s¦b";
+                    ViewData["Message"] = "æ­¤å¸³è™Ÿå·²å­˜åœ¨";
                     return View();
                 }
 

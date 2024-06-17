@@ -31,4 +31,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\導遊\證照\" />
+    <Folder Include="wwwroot\導遊\大頭照\" />
+  </ItemGroup>
+
 </Project>

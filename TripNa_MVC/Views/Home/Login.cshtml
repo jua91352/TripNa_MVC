@@ -45,7 +45,7 @@
 
             <input type="password" class="form-control" id="memberPassword"
                    placeholder="密碼" name="memberPassword" required>
-            <p class="form-text mb-5"><a class="text-decoration-none" href="ResetPW.html">忘記密碼?</a></p>
+            <p class="form-text mb-5"><a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="ResetPassword">忘記密碼?</a></p>
 
             <div class="row">
                 <div class="col-sm-6">
@@ -164,8 +164,23 @@
 
     createCode();
 
+    $(document).ready(function () {
+        // 頁面加載時檢查本地存儲中是否有保存的電子郵件地址
+        if (localStorage.getItem('memberEmail')) {
+            $('#memberEmail').val(localStorage.getItem('memberEmail'));
+            $('input[name="remember"]').prop('checked', true);
+        }
+
+        // 提交表單時保存電子郵件地址到本地存儲
+        $('form').submit(function () {
+            if ($('input[name="remember"]').is(':checked')) {
+                localStorage.setItem('memberEmail', $('#memberEmail').val());
+            } else {
+                localStorage.removeItem('memberEmail');
+            }
+        });
+    });
+
     // --------------- Demo  --------------------
-    // $("#memberEmail").on("click", function () { $("#memberEmail").val("demo@gmail.com") });
-    // $("#MemberPassword").on("click", function () { $("#MemberPassword").val("123456") });
     $("#inputCode").on("click", function () { $("#inputCode").val(code) });
 </script>

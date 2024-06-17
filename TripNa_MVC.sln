@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripNa_MVC", "TripNa_MVC\TripNa_MVC.csproj", "{EFDAA500-5B4D-494C-B75C-A0B1FE310130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripNa_MVC", "TripNa_MVC\TripNa_MVC.csproj", "{EFDAA500-5B4D-494C-B75C-A0B1FE310130}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

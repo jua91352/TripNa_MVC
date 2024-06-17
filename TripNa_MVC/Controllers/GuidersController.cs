@@ -12,11 +12,19 @@ namespace TripNa_MVC.Controllers
     public class GuidersController : Controller
     {
         private readonly TripNaContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public GuidersController(TripNaContext context)
+        public GuidersController(TripNaContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
+
+        private readonly string _folder;
+        private readonly static Dictionary<string, string> _contentTypes = new Dictionary<string, string>
+        {
+            {".jpg", "image/jpg"}
+        };
 
 
         public IActionResult SignUp()
@@ -33,14 +41,14 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
-
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider)
+        public async Task<IActionResult> SignUp([Bind("GuiderId,GuiderNickname,GuiderGender,GuiderArea,GuiderStartDate,GuiderIntro")] Guider guider, IFormFile guiderImage, IFormFile guiderVert)
+
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             if (string.IsNullOrEmpty(memberEmail))
@@ -102,17 +110,55 @@ namespace TripNa_MVC.Controllers
 
 
 
+       
+                var memberEmail = HttpContext.Session.GetString("memberEmail");
 
 
+                var memberContext = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+
+                if (memberContext != null)
+                {
+
+                    _context.Add(guider);
+                    await _context.SaveChangesAsync();
+                    memberContext.GuiderId = guider.GuiderId;
+                    await _context.SaveChangesAsync();
+
+                    string guiderImageFileName = $"{guider.GuiderNickname}{guider.GuiderId}.jpg";
+                    string guiderVertFileName = $"{guider.GuiderNickname}{guider.GuiderId}_cert.jpg"; // 導遊證文件名
 
 
+                    // 保存正面照片
+                    if (guiderImage != null && guiderImage.Length > 0)
+                    {
+                        var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "導遊/大頭照", guiderImageFileName);
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await guiderImage.CopyToAsync(stream);
+                        }
+                    }
 
+                    // 保存導遊證
+                    if (guiderVert != null && guiderVert.Length > 0)
+                    {
+                        var vertPath = Path.Combine(_hostingEnvironment.WebRootPath, "導遊/證照", guiderVertFileName);
+                        using (var stream = new FileStream(vertPath, FileMode.Create))
+                        {
+                            await guiderVert.CopyToAsync(stream);
+                        }
+                    }
 
+                }
 
+                return Redirect("/members/membercenter");
+            }
+            
+            return View("home");
+        }
 
+        
 
-
-
+       
         // GET: Guiders
         public async Task<IActionResult> Index()
         {

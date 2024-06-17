@@ -190,6 +190,9 @@ namespace TripNa_MVC.Controllers
             var model = new UserCoupon
             {
 
+                CouponCode = x.CouponCode,
+                ItineraryName = x.ItineraryName
+
                 Coupon = result.Select(x => new Coupon
                 {
                     CouponCode = x.CouponCode,

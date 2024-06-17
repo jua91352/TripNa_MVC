@@ -9,46 +9,236 @@
 
 <h4>Guider</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="GuiderNickname" class="control-label"></label>
-                <input asp-for="GuiderNickname" class="form-control" />
-                <span asp-validation-for="GuiderNickname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuiderGender" class="control-label"></label>
-                <input asp-for="GuiderGender" class="form-control" />
-                <span asp-validation-for="GuiderGender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuiderArea" class="control-label"></label>
-                <input asp-for="GuiderArea" class="form-control" />
-                <span asp-validation-for="GuiderArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuiderStartDate" class="control-label"></label>
-                <input asp-for="GuiderStartDate" class="form-control" />
-                <span asp-validation-for="GuiderStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuiderIntro" class="control-label"></label>
-                <input asp-for="GuiderIntro" class="form-control" />
-                <span asp-validation-for="GuiderIntro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<style>
+    body {
+      font-family: "Noto Serif TC", serif;
+      background-color: #dee0fb;
+    }
+
+    header {
+      background-color: #e8eafe;
+    }
+
+    footer {
+      background-color: #4e5482;
+      color: #fefefe;
+      text-align: center;
+      padding: 10px;
+      margin-bottom: 0;
+    }
+
+    .border-custom {
+      border: 1px solid lightgray;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 10px #d6d6d6;
+      background-color: rgb(245, 244, 244);
+    }
+
+    #code {
+      cursor: pointer;
+      font-family: Arial;
+      font-style: italic;
+      font-weight: bold;
+      border: 0;
+      letter-spacing: 2px;
+      color: blue;
+      background-color: red;
+      padding: 4px;
+      width: 100%;
+      height: auto;
+      text-align: center
+    }
+
+    .navbar-nav>li>a{
+      margin-left: 10px;
+      color:#dee0fb ;
+     }
+     .navbar-nav{
+       margin-right: 2rem;
+      background-color: #4e5482;
+      padding: .3rem 1rem;
+      border-radius: 30px;
+      box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.3), 4px 1px 2px 3px #4e5482 inset;
+     }
+  </style>
+
+<body>
+
+  <div class="row mb-5 m-3 mt-5">
+    <div class="container mt-5 col-sm-6 border-custom">
+      <h1 class="mb-1 text-center">TripNa Guider</h1>
+      <h4 class="mb-4 text-center">成為導遊</h4>
+      <form>
+
+        <input type="text" class="form-control mb-4" id="guiderEmail" placeholder="會員信箱" required disabled value="@ViewBag.MemberEmail">
+        
+        <input type="text" class="form-control mb-4" id="guiderNickname" placeholder="請輸入您的暱稱/綽號" required>
+
+
+        <select class="form-select mb-4" id="guiderGender" name="guiderGender" required>
+          <option value="default" selected disabled hidden>請選擇生理性別</option>
+          <option value="male">男性</option>
+          <option value="female">女性</option>
+        </select>
+
+
+        <p class="form-text-5">請勾選服務地區:</p>
+
+        <input type="radio" class="form-check-input" id="northArea" name="area" value="northArea">
+        <label for="northArea" class="form-check-label">北部地區</label>
+
+        <input type="radio" class="form-check-input" id="centralArea" name="area" value="centralArea">
+        <label for="centralArea" class="form-check-label">中部地區</label>
+
+        <input type="radio" class="form-check-input" id="southArea" name="area" value="southArea">
+        <label for="southArea" class="form-check-label">南部地區</label>
+
+        <input type="radio" class="form-check-input" id="eastArea" name="area" value="eastArea">
+        <label for="eastArea" class="form-check-label mb-4">東部地區</label>
+
+        <input type="radio" class="form-check-input" id="outerArea" name="area" value="outerArea">
+        <label for="outerArea" class="form-check-label mb-4">離島地區</label>
+
+
+        <input type="date" class="form-control" id="guiderStartDate" required>
+        <p class="form-text mb-4">&#10148;請輸入成為導遊的起始日期</p>
+
+        <input type="file" class="form-control" name="guiderImage" accept="image/*" id="guiderImage" required>
+        <p class="form-text mb-4">&#10148;請上傳近期且清晰的正面照片</p>
+
+        <input type="file" class="form-control" name="guiderVert" accept="image/*" id="guiderVert" required>
+        <p class="form-text mb-4">&#10148;請上傳清晰的導遊證/領隊證</p>
+
+        <textarea class="form-control" id="guiderIntro" rows="5" placeholder="請輸入導遊簡介" style="resize: none"></textarea>
+        <p class="form-text mb-4">&#10148;簡介可在會員中心頁面修改</p>
+
+        <!-- 驗證碼 -->
+
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="inputCode" placeholder="請輸入驗證碼，不分大小寫">
+            <p class="form-text mb-4">&#10148;若看不清楚可點擊圖片重新產生驗證碼</p>
+          </div>
+          <div class="col-sm-3">
+            <p id="code"></p>
+            <!-- <a href="#" id="recode"></a> -->
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" id="validate">成 為 導 遊</button>
+        </div>
+    </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+  </div>
+
+
+
+
+  <script>
+    //全域變數 紀錄驗證碼
+    var code = "";
+    //
+    var checkCode = document.getElementById("code");
+
+    //顏色組
+    function randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    var fontColor = function randomColor(min, max) {
+      let r = randomNum(min, max);
+      let g = randomNum(min, max);
+      let b = randomNum(min, max);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    var bgColor = function randomColor(min, max) {
+      let r = randomNum(min, max);
+      let g = randomNum(min, max);
+      let b = randomNum(min, max);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    var ls = ["-2px", "-1px", "0px", "1px", "2px", "3px", "4px", "5px", "6px",];
+
+    var iColor;
+
+    //隨機設定顏色組合
+    function randColor() {
+      iColor = Math.floor(Math.random() * (ls.length));
+      return iColor;
+    }
+    function createCode() {
+      var ci = randColor()
+      console.log(ci);
+      checkCode.style['color'] = fontColor(0, 255);
+      checkCode.style['background-color'] = bgColor(0, 255);
+      checkCode.style['letter-spacing'] = ls[ci];
+
+      // alert (ci);
+      code = "";
+      var codeLength = 4;//驗證碼的長度	
+      var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//隨機數 
+      for (var i = 0; i < codeLength; i++) {
+        var index = Math.floor(Math.random() * 36);//取得隨機數的索引（0~35） 
+        code += random[index];//根據索引取得隨機數加到code上 
+      }
+      checkCode.innerHTML = code;//把code值賦給驗證碼
+      console.log(code);
+    }
+
+    // //更新驗證碼
+    // var recode = document.getElementById('recode');
+    // recode.addEventListener("click", function (e) {
+    //   createCode();
+    //   document.getElementById("input").value = "";//清空文字框
+    //   e.preventDefault();
+    // });
+
+    //點擊更新驗證碼
+    checkCode.addEventListener("click", function (e) {
+      createCode();
+      document.getElementById("inputCode").value = "";//清空文字框
+      e.preventDefault();
+    });
+
+    //驗證
+    var validate = document.getElementById('validate');
+    validate.addEventListener("click", function (e) {
+      var inputCode = document.getElementById("inputCode").value.toUpperCase(); //取得輸入的驗證碼並轉化為大寫 
+      if (inputCode.length <= 0) { //若輸入的驗證碼長度為0 
+        alert("請輸入驗證碼！"); //則彈出請輸入驗證碼 
+      }
+      else if (inputCode !== code) { //若輸入的驗證碼與產生的驗證碼不一致時 
+        alert("驗證碼輸入錯誤"); //則彈出驗證碼輸入錯誤 
+        createCode();//重新整理驗證碼 
+      }
+      else { //輸入正確時 
+        if ($("#guiderNickname").val() == "" || $("#guiderGender").text() == "" || $("#guiderStartDate").val() == "" || $("#guiderImage").val() == "" || $("#guiderVert").val() == "") {
+          alert("資料填寫不完整!");
+          //$("#validate").submit();
+        } else {
+          alert("註冊成功!");
+          
+        }
+      }
+    });
+    createCode();
+
+
+    // --------------- Demo  --------------------
+    $("#guiderNickname").on("click", function () { $("#guiderNickname").val("浩浩") });
+    $("#guiderStartDate").on("click", function () { $("#guiderStartDate").val("2023-10-27") });
+    $("#guiderIntro").on("click", function () { $("#guiderIntro").val("我對台灣的歷史、文化和美食有著深厚的了解，並且熟悉許多隱藏的寶藏景點，能夠帶您遠離傳統觀光路線，深入體驗當地真正的生活方式。作為您的導遊，我將全心全意地為您服務，確保您的旅行充滿愉快和難忘的回憶。如果您有任何問題或特別的需求，請隨時告訴我，我將竭誠為您提供幫助。希望能與您一同探索這個美麗的地方，讓我們開始這段精彩的旅程吧！") });
+
+    $("#inputCode").on("click", function () { $("#inputCode").val(code) });
+
+
+  </script>
+</body>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
