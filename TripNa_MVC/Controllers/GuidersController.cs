@@ -270,22 +270,7 @@ namespace TripNa_MVC.Controllers
             // 檢查並更新照片
          
             string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
-            // 更新正面照片
-            if (guiderImage != null && guiderImage.Length > 0)
-            {
-                Console.WriteLine("------------------------------------- 更改照片 ----------------------------------------");
-                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
-                if (!Directory.Exists(imagePath))
-                {
-                    Directory.CreateDirectory(imagePath);
-                }
-                var fullImagePath = Path.Combine(imagePath, guiderImageFileName);
-                using (var stream = new FileStream(fullImagePath, FileMode.Create))
-                {
-                    await guiderImage.CopyToAsync(stream);
-                }
-                isUpdated = true;
-            }
+            
 
             if (originalNickname != guider.GuiderNickname || originalArea != guider.GuiderArea || isUpdated)
             {
@@ -301,6 +286,25 @@ namespace TripNa_MVC.Controllers
 
                     // 移動圖片到新的路徑
                     System.IO.File.Move(oldImagePath, newImagePath);
+                }
+            }
+            else
+            {
+                // 更新正面照片
+                if (guiderImage != null && guiderImage.Length > 0)
+                {
+                    Console.WriteLine("------------------------------------- 更改照片 ----------------------------------------");
+                    var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
+                    if (!Directory.Exists(imagePath))
+                    {
+                        Directory.CreateDirectory(imagePath);
+                    }
+                    var fullImagePath = Path.Combine(imagePath, guiderImageFileName);
+                    using (var stream = new FileStream(fullImagePath, FileMode.Create))
+                    {
+                        await guiderImage.CopyToAsync(stream);
+                    }
+                    isUpdated = true;
                 }
             }
             // 如果有任何欄位被修改過，就儲存變更
