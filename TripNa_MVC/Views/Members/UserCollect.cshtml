@@ -7,7 +7,7 @@
     ViewData["Title"] = "UserCollect";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string memberId = hca.HttpContext.Session.GetString("memberId");
-
+    var groupedSpots = Model.FavoriteSpots.GroupBy(s => s.Spot.SpotCity);
 }
 <br>
 <br>
@@ -97,62 +97,51 @@
                 else
                 {
 
-                    foreach (var spot in Model.FavoriteSpots)
-                {
 
-                   
+               @foreach (var group in groupedSpots)
+               {
+                   <h2>@group.Key</h2>
+
 
                     <table class="table table-hover bg-light rounded shadow table align-middle"  id="collectList">
- 
-                    <tr>
 
-                        @{
-                                 
-                            string img =@spot.Spot.SpotName+".jpg";
-                        }
+                            @foreach (var spot in group)
+                            {
+                                string img = spot.Spot.SpotName + ".jpg";
+                                <tr>
+                                    <td class="text-center" style="width: 200px;">
+                                        <img src="~/景點圖片/@spot.Spot.SpotCity/@img" alt="" width="150px" height="150px" style="object-fit:cover">
+                                    </td>
+                                    <td>
+                                        <strong>@spot.Spot.SpotName</strong> - @spot.Spot.SpotIntro
+                                    </td>
+                                    <td style="width: 50px">
+                                        <form asp-action="UserCollect">
+                                            <input type="hidden" name="spotId" value="@spot.Spot.SpotId" />
+                                            <input type="hidden" name="spotName" value="@spot.Spot.SpotName" />
+                                            <input type="hidden" name="spotCity" value="@spot.Spot.SpotCity" />
+                                            <input type="hidden" name="spotIntro" value="@spot.Spot.SpotIntro" />
+                                            <input type="hidden" name="memberId" value="@spot.MemberId" />
+                                            <input type="hidden" name="FavoriteSpotId" value="@spot.FavoriteSpotId" />
 
-                            <td class="text-center" style="width: 200px;">
-
-                                    <img src="~/景點圖片/@spot.Spot.SpotCity/@img" alt="" width="150px" height="150px" style="object-fit:cover">
-                               
-                            </td>
-
-
-                            <td>
-                                    地點: @spot.Spot.SpotName
-                                <br>
-                                    介紹: @spot.Spot.SpotIntro
-                            </td>
-
-                            <form asp-action="UserCollect">
-                            <td style="width: 50px">
-                                    <input type="hidden" name="spotId" value="@spot.Spot.SpotId" />
-                                    <input type="hidden" name="spotName" value="@spot.Spot.SpotName" />
-                                    <input type="hidden" name="spotCity" value="@spot.Spot.SpotCity" />
-                                    <input type="hidden" name="spotIntro" value="@spot.Spot.SpotIntro" />
-                                    <input type="hidden" name="memberId" value="@spot.MemberId" />
-                                    <input type="hidden" name="FavoriteSpotId" value="@spot.FavoriteSpotId" />
-
-                               
-                                <a class="delete-btn" href="javascript:void(0);"
-                                       data-spot-id="@spot.SpotId" data-spot-name="@spot.Spot.SpotName"
-                                       data-spot-city="@spot.Spot.SpotCity" data-spot-intro="@spot.Spot.SpotIntro"
-                                       data-member-id="@spot.MemberId" data-id="@spot.FavoriteSpotId">
-                                    
-                                    <img src="~/_img/bin.png" alt="" width="20px" height="20px">
-                                </a>
-                            </td>
-
-                            </form>
-                    </tr>
+                                            <a class="delete-btn" href="javascript:void(0);"
+                                               data-spot-id="@spot.SpotId" data-spot-name="@spot.Spot.SpotName"
+                                               data-spot-city="@spot.Spot.SpotCity" data-spot-intro="@spot.Spot.SpotIntro"
+                                               data-member-id="@spot.MemberId" data-id="@spot.FavoriteSpotId">
+                                                <img src="~/_img/bin.png" alt="" width="20px" height="20px">
+                                            </a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                     </table>
                                          
                     }
+
+
                 }
               
                     
-                
-
             }
 
 
