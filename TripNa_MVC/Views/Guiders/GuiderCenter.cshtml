@@ -47,7 +47,7 @@
     <br>
 
 
-    <div class="text-end">   
+    <div class="text-end">
         <a asp-action="Guiderintroduce" asp-controller="Guiders" style="text-decoration: none;">
             <span class="bi bi-eye" style="color: #545454; font-size: 18px;"></span>
             <span style="color: #4e5482 ">檢視自介</span>
@@ -55,133 +55,133 @@
     </div>
 
 
-    <form method="post" asp-action="GuiderCenter" asp-controller="Guiders">
+    <form method="post" asp-action="GuiderCenter" enctype="multipart/form-data" asp-controller="Guiders">
 
-    <div class="row">
+        <div class="row">
 
-        <div class="col-sm-2">
-        </div>          
-
-        <div class="col-sm-4 text-center">
-
-            @foreach (var item in Model)
-            {
-              <img id="display_img" src="~/導遊/大頭照/@item.Guider.GuiderArea/@item.Guider.GuiderNickname@p" style="border-radius: 50%;object-fit: cover;" height="150px " width="150px">
-
-            <br>
-            <br>
-            <label class="btn " style="background-color: #4e5482 ;color: #e8eafe;">
-                <input id="upload_img" style="display:none;" type="file">
-                <i class="fa fa-photo"></i> 上傳圖片
-            </label>
-
-            }
-
-            <br>
-            <br>
-
-
-              @foreach (var item in Model)
-            {
-            <div style='background-color: #e8eafe'>
-            
-                <br>
-
-                <b style="font-size: 15px;">導遊證</b>
-                <br>
-
-                    <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@p" height="190px " width="300px" style="object-fit: cover;">
-
-                <br>
-                <br>
-                
+            <div class="col-sm-2">
             </div>
 
-            }
-        </div>
+            <div class="col-sm-4 text-center">
 
-        <div class="col-sm-4">
+                @foreach (var item in Model)
+                {
+                    <img id="display_img" src="~/導遊/大頭照/@item.Guider.GuiderArea/@item.Guider.GuiderNickname@p" style="border-radius: 50%;object-fit: cover;" height="150px " width="150px">
 
-             @foreach (var item in Model)
-            {
+                    <br>
+                    <br>
+                    <label class="btn" style="background-color: #4e5482 ;color: #e8eafe;">
+                        <input id="upload_img" style="display:none;" type="file" name="guiderImage">
+                        <i class="fa fa-photo"></i> 上傳圖片
+                    </label>
 
-                <div style='padding-top:10px; padding-left:10px; padding-bottom:10px;'>
+                }
+
+                <br>
+                <br>
+
+
+                @foreach (var item in Model)
+                {
+                    <div style='background-color: #e8eafe'>
+
+                        <br>
+
+                        <b style="font-size: 15px;">導遊證</b>
+                        <br>
+
+                        <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@p" height="190px " width="300px" style="object-fit: cover;">
+
+                        <br>
+                        <br>
+
+                    </div>
+
+                }
+            </div>
+
+            <div class="col-sm-4">
+
+                @foreach (var item in Model)
+                {
+
+                    <div style='padding-top:10px; padding-left:10px; padding-bottom:10px;'>
 
                         <label for="GuiderNickname">暱稱</label>
-                <br>
+                        <br>
 
                         <input type="text" id="TouristGuideName" name="GuiderNickname" value="@item.Guider.GuiderNickname" style="resize:none; height: 30px ; width:90%;" />
 
-                <br>
+                        <br>
 
-                <label for="GuiderStartDate">服務起始日</label>
+                        <label for="GuiderStartDate">服務起始日</label>
 
-                <br>
+                        <br>
 
-                <input type="text" id="ServerDate" name="GuiderStartDate" style="resize:none; height: 30px ; width:90% ;" value="@item.Guider.GuiderStartDate.ToString("yyyy/MM/dd") " disabled="disabled" />
-               
-                <br>
+                        <input type="text" id="ServerDate" name="GuiderStartDate" style="resize:none; height: 30px ; width:90% ;" value="@item.Guider.GuiderStartDate.ToString("yyyy/MM/dd") " disabled="disabled" />
+
+                        <br>
 
                         <label for="GuiderArea">地區</label>
-                    <br>
+                        <br>
                         <input type="radio" name="GuiderArea" value="北部地區" @(item.Guider.GuiderArea == "北部地區" ? "checked" : "")>北部
                         <input type="radio" name="GuiderArea" value="中部地區" @(item.Guider.GuiderArea == "中部地區" ? "checked" : "")>中部
                         <input type="radio" name="GuiderArea" value="南部地區" @(item.Guider.GuiderArea == "南部地區" ? "checked" : "")>南部
                         <input type="radio" name="GuiderArea" value="東部地區" @(item.Guider.GuiderArea == "東部地區" ? "checked" : "")>東部
                         <input type="radio" name="GuiderArea" value="離島地區" @(item.Guider.GuiderArea == "離島地區" ? "checked" : "")>離島
 
-                <br>
-                <label for="Gender">性別</label>
-                <br>
-                    <input type="text" id="Gender" name="Gender" style="resize:none; height: 30px ; width:90% ;" disabled="disabled" value="@(item.Guider.GuiderGender=="F"? "女":"男")">
+                        <br>
+                        <label for="Gender">性別</label>
+                        <br>
+                        <input type="text" id="Gender" name="Gender" style="resize:none; height: 30px ; width:90% ;" disabled="disabled" value="@(item.Guider.GuiderGender=="F"? "女":"男")">
 
-                <br>
+                        <br>
 
                         <label for="GuiderIntro">自我介紹</label>
-                <br>
+                        <br>
 
                         <textarea id="Introduce" name="GuiderIntro" style="resize:none; height: 250px; width:90% ;">@item.Guider.GuiderIntro</textarea>
-                <br>
-                <br>
+                        <br>
+                        <br>
+
+                    </div>
+                }
 
             </div>
-            }
 
-          </div>
+            <div class="text-center">
+                <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">完成修改並儲存✓</button>
+            </div>
 
-        <div class="text-center">
-            <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">完成修改並儲存✓</button>
         </div>
+    </form>
 
-     </div>
-	</form>
-
-<br>
-<br>
-<br>
-<br>
-<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
 
-<script>
+    <script>
 
-    document.getElementById('upload_img').addEventListener('change', function (event) {
-        var file = event.target.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('display_img').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+        document.getElementById('upload_img').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('display_img').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
 
         document.querySelector("form").addEventListener("submit", function (event) {
-          
-           
-                alert("修改成功！");
-            
+
+
+            alert("修改成功！");
+
         });
 
 

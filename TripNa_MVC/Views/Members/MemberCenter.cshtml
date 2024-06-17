@@ -91,13 +91,13 @@
             {
                 <form method="post" asp-action="MemberCenter" asp-controller="Members">
 
-                    <div id="userData"
+                    <div id="userData" style=" font-size:20px"
                          @* style='border:1px solid #3A326D ; padding-top:10px; padding-left:10px; padding-bottom:10px; *@ >
 
 
                         <label for="memberName">姓名</label>
                         <br>
-                        <input type="text" id="memberName" name="memberName" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="memberName" name="memberName" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberName">
 
 
@@ -105,20 +105,20 @@
 
                         <label for="userEmail">E-mail</label>
                         <br>
-                        <input type="text" id="MemberEmail" name="MemberEmail" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="MemberEmail" name="MemberEmail" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberEmail" readonly>
 
                         <br>
 
                         <label for="userPhone">行動電話</label>
                         <br>
-                        <input type="text" id="MemberPhone" name="MemberPhone" style="resize:none; height: 30px ; width:90% ;"
+                        <input type="text" id="MemberPhone" name="MemberPhone" style="resize:none; height: 40px ; width:90% ;"
                                value="@Model.MemberPhone">
 
                         <br>
                         <label for="  ">生日</label>
                         <br>
-                        <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 30px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
+                        <input type="text" id="MemberBirthDate" name="MemberBirthDate" style="resize:none; height: 40px ; width:90% ;" value="@(Model.MemberBirthDate.ToString("yyyy/MM/dd")) " disabled="disabled">
 
                         <br>
                         <br>
@@ -131,13 +131,13 @@
                         <div class="block" id="fullContent" style="display:none;">
                             <label asp-for="MemberPassword">重設密碼(不修改則不需輸入)</label>
                             <br>
-                            <input type="password" id="MemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <input type="password" id="MemberPassword" name="MemberPassword" style="resize:none; height: 40px ; width:90% ;" value="">
                             <br>
                             <label asp-for="MemberPassword">請再輸入一次密碼</label>
                             <br>
                             @*                             <input type="text" asp-for="MemberPassword" class="form-control" />
                         *@
-                            <input type="password" id="ReMemberPassword" name="MemberPassword" style="resize:none; height: 30px ; width:90% ;" value="">
+                            <input type="password" id="ReMemberPassword" name="MemberPassword" style="resize:none; height: 40px ; width:90% ;" value="">
                             <br>
                         </div>
 

@@ -374,7 +374,12 @@ h3 {
                <input type="hidden" name="TotalAmount" id="totalAmountInput" value="">
                <input type="hidden" name="TradeDesc" value="自訂行程">
                <input type="hidden" name="ItemName" value="@neworder.Itinerary.ItineraryName">
+
                <input type="hidden" name="ReturnURL" value="http://localhost:5226/members/PaySuccess">
+
+               <input type="hidden" name="ClientBackURL" value="http://localhost:5226/Members/PaySuccess">
+
+
                <input type="hidden" name="ChoosePayment" value="ALL">
                <input type="hidden" name="EncryptType" value="1"> 
                <input type="hidden" name="CheckMacValue"  value="">
@@ -560,6 +565,7 @@ function generateCheckMacValue(params, hashKey, hashIV) {
         TradeDesc: form.elements['TradeDesc'].value,
         ItemName: form.elements['ItemName'].value,
         ReturnURL: form.elements['ReturnURL'].value,
+        ClientBackURL: form.elements['ClientBackURL'].value,
         ChoosePayment: form.elements['ChoosePayment'].value,
         EncryptType: form.elements['EncryptType'].value
     };

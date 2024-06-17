@@ -274,6 +274,7 @@ namespace TripNa_MVC.Controllers
                                join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
                                from c in couponGroup.DefaultIfEmpty() // left join
                                where o.MemberId == member.MemberId
+                               orderby o.OrderDate descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
@@ -749,6 +750,11 @@ namespace TripNa_MVC.Controllers
 
         public ActionResult PaySuccess()
         {
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
+            if (string.IsNullOrEmpty(memberEmail))
+            {
+                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            }
             return View();
         }
 

@@ -32,8 +32,8 @@
 
     .block #OrderListTatble tr td img {
         object-fit: cover;
-        height: 100px;
-        height: 100px;
+        height: 125px;
+        height: 125px;
     }
 
     body #myscore {
@@ -107,7 +107,7 @@
 
 
 
-    <table id="listtable" class="table table-striped table-hover">
+    <table id="listtable" class="table table-striped table-hover" style="font-size: 20px; ">
 
         
 
@@ -229,16 +229,7 @@
 
                             </td>
 
-                           @*   </form>
-
-
-                             <form asp-controller="Guiders" asp-action="GuiderMatchDetails" id="orderForm" method="post">
-                                <input type="hidden" name="OrderID" value="@orderId" />
-                                <input type="hidden" name="MemberID" value="@GuiderId" />
-                                <input type="hidden" name="GuiderID" value="@orders.First().Member.MemberId" />
-                                <input type="hidden" name="ItineraryID" value="@orders.First().ItineraryId" />
-                                @orders.First().ItineraryId
- *@
+                         
 
                     </tr>
 
@@ -271,7 +262,7 @@
                                 {
                                    <td class="text-center  align-middle  ">
                                     <br>
-                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="125px " width="125px">
                                     <br>
                                     <p>@order.Spots.SpotName</p>
                                     </td>                         
@@ -300,7 +291,7 @@
                                 {
                                    <td class="text-center  align-middle  ">
                                     <br>
-                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="125px " width="125px">
                                     <br>
                                     <p>@order.Spots.SpotName</p>
                                     </td>                         
@@ -325,7 +316,7 @@
                                 {
                                    <td class="text-center  align-middle  ">
                                     <br>
-                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="100px " width="100px">
+                                    <img src="~/景點圖片/@order.Spots.SpotCity/@order.Spots.SpotName@p" height="125px " width="125px">
                                     <br>
                                     <p>@order.Spots.SpotName</p>
                                     </td>                         

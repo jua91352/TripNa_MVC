@@ -161,72 +161,14 @@ namespace TripNa_MVC.Controllers
 
 
 
-
-  //      [HttpPost]
-  //      public IActionResult GuiderCenter(Guider updatedGuider)
-  //      {
-  //          var memberEmail = HttpContext.Session.GetString("memberEmail");
-
-  //          if (string.IsNullOrEmpty(memberEmail))
-  //          {
-  //              return RedirectToAction("Login", "Home");
-  //          }
-
-  //          var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-
-  //          var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == member.GuiderId);
-
-  //          Console.WriteLine(member.GuiderId+ "----------------------------------------------");
-		//	Console.WriteLine(guider.GuiderNickname + "----------------------------------------------");
-		//	Console.WriteLine("----------------------------------------------" + updatedGuider.GuiderNickname + "----------------------------------------------");
-
-
-  //          if( member.GuiderId == null)
-  //          {
-  //              return Redirect("/Members/MemberCenter"); // 如果該使用者沒有，重定向到會員中心頁面
-  //          }
-
-
-  //          // 更新會員的資訊
-  //          // 檢查 GuiderNickname 是否被修改過
-  //          if (updatedGuider.GuiderNickname != null && updatedGuider.GuiderNickname != guider.GuiderNickname)
-		//	{
-		//		guider.GuiderNickname = updatedGuider.GuiderNickname;
-		//	}
-
-		//	// 檢查 GuiderArea 是否被修改過
-		//	if (updatedGuider.GuiderArea != null && updatedGuider.GuiderArea != guider.GuiderArea)
-		//	{
-		//		guider.GuiderArea = updatedGuider.GuiderArea;
-		//	}
-
-		//	// 檢查 GuiderIntro 是否被修改過
-		//	if (updatedGuider.GuiderIntro != null && updatedGuider.GuiderIntro != guider.GuiderIntro)
-		//	{
-		//		guider.GuiderIntro = updatedGuider.GuiderIntro;
-		//	}
-
-		//	// 如果有任何欄位被修改過，就儲存變更
-		//	if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null)
-		//	{
-		//		_context.SaveChanges();
-		//	}
-
-		//	return RedirectToAction("GuiderCenter");
-		//}
-
-
-
-
-
         //NEW 更新導遊
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GuiderCenter(Guider updatedGuider, IFormFile guiderImage)
-            {
+        {
 
-                var memberEmail = HttpContext.Session.GetString("memberEmail");
+            var memberEmail = HttpContext.Session.GetString("memberEmail");
 
             if (string.IsNullOrEmpty(memberEmail))
             {
@@ -245,7 +187,8 @@ namespace TripNa_MVC.Controllers
 
             bool isUpdated = false;
 
-
+            string originalNickname = guider.GuiderNickname;
+            string originalArea = guider.GuiderArea;
 
             // 更新會員的資訊
             // 檢查 GuiderNickname 是否被修改過
@@ -267,56 +210,55 @@ namespace TripNa_MVC.Controllers
             }
 
             // 檢查並更新照片
+
             string guiderImageFileName = $"{guider.GuiderNickname}.jpg";
 
-            // 更新正面照片
-            if (guiderImage != null && guiderImage.Length > 0)
+
+            if (originalNickname != guider.GuiderNickname || originalArea != guider.GuiderArea)
             {
-                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
-                if (!Directory.Exists(imagePath))
+                var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{originalArea}", $"{originalNickname}.jpg");
+                var newImagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}", $"{guider.GuiderNickname}.jpg");
+
+                if (System.IO.File.Exists(oldImagePath))
                 {
-                    Directory.CreateDirectory(imagePath);
+                    if (!Directory.Exists(Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}"));
+                    }
+
+                    // 移動圖片到新的路徑
+                    System.IO.File.Move(oldImagePath, newImagePath);
                 }
-                var fullImagePath = Path.Combine(imagePath, guiderImageFileName);
-                using (var stream = new FileStream(fullImagePath, FileMode.Create))
-                {
-                    await guiderImage.CopyToAsync(stream);
-                }
-                isUpdated = true;
             }
-
-
+            else
+            {
+                // 更新正面照片
+                if (guiderImage != null && guiderImage.Length > 0)
+                {
+                    Console.WriteLine("------------------------------------- 更改照片 ----------------------------------------");
+                    var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, $"導遊/大頭照/{guider.GuiderArea}");
+                    if (!Directory.Exists(imagePath))
+                    {
+                        Directory.CreateDirectory(imagePath);
+                    }
+                    var fullImagePath = Path.Combine(imagePath, guiderImageFileName);
+                    using (var stream = new FileStream(fullImagePath, FileMode.Create))
+                    {
+                        await guiderImage.CopyToAsync(stream);
+                    }
+                    isUpdated = true;
+                }
+            }
             // 如果有任何欄位被修改過，就儲存變更
             if (guider.GuiderNickname != null || guider.GuiderArea != null || guider.GuiderIntro != null || isUpdated)
             {
                 _context.SaveChanges();
             }
 
-           
+
 
             return RedirectToAction("GuiderCenter");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -486,6 +428,7 @@ namespace TripNa_MVC.Controllers
             var orderDetails = from o in _context.Orderlists
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                where o.GuiderId == member.GuiderId
+                               orderby o.OrderDate descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
