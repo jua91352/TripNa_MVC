@@ -135,6 +135,8 @@
 }
 
 
+
+
 #car {
     top: 8px;
     left: 49%;
@@ -168,7 +170,7 @@
     font-size: 2.2rem;
     color: #444165;
     font-weight: 500;
-    border-bottom: 1px solid #605f72;
+    border-bottom: 1px solid #d9d9e1;
 }
 
 #topic {
@@ -335,6 +337,8 @@ clip-path: polygon(0 0,100% 0,100% 90%,0 100%);*/
     }
 
 .back {
+    margin-left: 10px;
+    margin-top: 20px;
     color: black;
     text-decoration: none;
     background-color: #747acc52;
@@ -380,9 +384,9 @@ clip-path: polygon(0 0,100% 0,100% 90%,0 100%);*/
 
 #regionCollapse {
     padding: 10px;
-    margin-right: 200px;
+    margin-right: 60px;
     background-color: rgb(255, 255, 255, 0.63);
-    height: 280px;
+    height: 320px;
 }
 
 

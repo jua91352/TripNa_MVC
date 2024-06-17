@@ -109,7 +109,7 @@
 				</section> *@
 
 
-				<div class="container">
+		@* 		<div class="container"> *@
 
 
 
@@ -120,11 +120,12 @@
 					@* 導覽卡片＝＝＝＝＝＝＝＝＝＝＝＝ --> *@
 
 
-					<div id="food-guide" style="margin-top:5rem;">
+	<div id="food-guide" style="margin-top:3rem;width: 90%;    margin: 3rem auto;;">
 						<!-- 這裡放置美食導覽的內容 -->
 
-						<div class="guide-content">
-							<h2>美食導覽</h2>
+			<div class="guide-content" style="padding-top:125px">
+				<h2 style="top:111px">美食導覽</h2>
+			<img src="/_img/S4_Travelling_by_Сar-removebg-preview.png" alt="Alternate Text" width="350px" height="300px" style="position:absolute;top:-60px;left:30px;">
 
 							<br />  <br />
 
@@ -136,7 +137,7 @@
 
 								<form asp-action="Index" method="get">
 									<div class="form-actions no-color" style="margin-left:20px;">
-										<p style="width:auto;">
+							<p style="width:auto; margin-top: 30px;">
 											<input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="開始探索美食" id="search" />
 											<input type="submit" value="搜尋" class="back" /> |
 											<a asp-action="Index" class="backserch">回到美食總覽</a>
@@ -208,7 +209,9 @@
 
 
 								<div class="main" style="position:relative;">
-									<h3 style="margin-left:30px;">餐廳列表</h3>
+									<h2 style="margin-left:30px;">餐廳列表</h2>
+					<img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="100px" height="100px" style="position:absolute;left:147px;top:-28px;">
+					<img src="/_img/sleeping-dog-with-cloud.png" alt="Alternate Text" style="position:absolute;bottom: -110px;left: 598px;" width="300px" height="300px">
 
 									<div class="btn" style="position:absolute; right:30px;top:0;margin:10px">
 
@@ -343,10 +346,7 @@
 			}
 
 			// 模擬登入函數
-			function login() {
-				// 在實際應用中，這應該重定向到登入頁面或顯示登入對話框
-				alert("重定向到登入頁面...");
-			}
+		
 
 			const heartIcons = document.querySelectorAll('.heart-icon');
 
@@ -354,15 +354,15 @@
 				heartIcon.addEventListener('click', function () {
 					if (isUserLoggedIn()) {
 						// 用戶已登入，切換愛心狀態
-						this.classList.toggle('filled');
+						// this.classList.toggle('filled');
 
 						// 在這裡你可以發送 AJAX 請求到後端，保存收藏狀態
 						const restaurantId = this.dataset.restaurantId;
-						const isFavorite = this.classList.contains('filled');
+						// const isFavorite = this.classList.contains('filled');
 						console.log(`餐廳 ID ${restaurantId} 收藏狀態: ${isFavorite}`);
 					} else {
 						// 用戶未登入，顯示警告並提供登入選項
-						const wantToLogin = confirm("您需要登入才能收藏餐廳。是否現在登入？");
+						const wantToLogin = confirm("您需要先登入");
 						if (wantToLogin) {
 							login();
 						}

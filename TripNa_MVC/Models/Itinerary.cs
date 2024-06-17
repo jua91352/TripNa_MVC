@@ -9,13 +9,13 @@ public partial class Itinerary
 
     public string ItineraryName { get; set; } = null!;
 
-    public DateTime ItineraryStartDate { get; set; }
+    public DateOnly ItineraryStartDate { get; set; }
 
     public short ItineraryPeopleNo { get; set; }
 
+    public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
     public virtual ICollection<ItineraryDetail> ItineraryDetails { get; set; } = new List<ItineraryDetail>();
 
     public virtual ICollection<Orderlist> Orderlists { get; set; } = new List<Orderlist>();
-
 }

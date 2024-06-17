@@ -43,21 +43,21 @@ public partial class TripNaContext : DbContext
 
     public virtual DbSet<Spot> Spots { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=.;Database=TripNa;Integrated Security=True;Encrypt=False;");
+	public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.;Database=TripNa;Integrated Security=True;Encrypt=False;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cityarea>(entity =>
         {
-            entity.HasKey(e => e.City).HasName("PK__Cityarea__AEC4A06C98C0F91A");
+            entity.HasKey(e => e.City).HasName("PK__Cityarea__AEC4A06C78F55774");
 
             entity.ToTable("Cityarea");
 
-            entity.Property(e => e.City)
-                .HasMaxLength(6)
-                .IsFixedLength();
+            entity.Property(e => e.City).HasMaxLength(6);
             entity.Property(e => e.Area)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -66,7 +66,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Coupon>(entity =>
         {
-            entity.HasKey(e => e.CouponId).HasName("PK__Coupon__384AF1DAB3A5F936");
+            entity.HasKey(e => e.CouponId).HasName("PK__Coupon__384AF1DAA208AFC9");
 
             entity.ToTable("Coupon");
 
@@ -75,8 +75,12 @@ public partial class TripNaContext : DbContext
                 .HasMaxLength(8)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.CouponFrom).HasMaxLength(24);
+            entity.Property(e => e.ItineraryId).HasColumnName("ItineraryID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+
+            entity.HasOne(d => d.Itinerary).WithMany(p => p.Coupons)
+                .HasForeignKey(d => d.ItineraryId)
+                .HasConstraintName("FK_ItineraryCoupon");
 
             entity.HasOne(d => d.Member).WithMany(p => p.Coupons)
                 .HasForeignKey(d => d.MemberId)
@@ -85,7 +89,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<FavoriteSpot>(entity =>
         {
-            entity.HasKey(e => e.FavoriteSpotId).HasName("PK__Favorite__C41C17BF2557FDF6");
+            entity.HasKey(e => e.FavoriteSpotId).HasName("PK__Favorite__C41C17BF29A994E6");
 
             entity.ToTable("FavoriteSpot");
 
@@ -106,14 +110,12 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Guider>(entity =>
         {
-            entity.HasKey(e => e.GuiderId).HasName("PK__Guider__164D9141220EB95A");
+            entity.HasKey(e => e.GuiderId).HasName("PK__Guider__164D9141616A7006");
 
             entity.ToTable("Guider");
 
             entity.Property(e => e.GuiderId).HasColumnName("GuiderID");
-            entity.Property(e => e.GuiderArea)
-                .HasMaxLength(8)
-                .IsFixedLength();
+            entity.Property(e => e.GuiderArea).HasMaxLength(8);
             entity.Property(e => e.GuiderGender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
@@ -124,7 +126,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<GuiderAnswer>(entity =>
         {
-            entity.HasKey(e => e.AnswerId).HasName("PK__GuiderAn__D48250247AC03063");
+            entity.HasKey(e => e.AnswerId).HasName("PK__GuiderAn__D4825024D8BFD7A1");
 
             entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
             entity.Property(e => e.AnswerContent).HasMaxLength(200);
@@ -145,7 +147,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Itinerary>(entity =>
         {
-            entity.HasKey(e => e.ItineraryId).HasName("PK__Itinerar__361216A6C0B85528");
+            entity.HasKey(e => e.ItineraryId).HasName("PK__Itinerar__361216A6D6E3BCE4");
 
             entity.ToTable("Itinerary");
 
@@ -155,7 +157,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<ItineraryDetail>(entity =>
         {
-            entity.HasKey(e => e.ItineraryDetailsId).HasName("PK__Itinerar__581D8EBBC434194A");
+            entity.HasKey(e => e.ItineraryDetailsId).HasName("PK__Itinerar__581D8EBBD842DEDA");
 
             entity.Property(e => e.ItineraryDetailsId).HasColumnName("ItineraryDetailsID");
             entity.Property(e => e.ItineraryId).HasColumnName("ItineraryID");
@@ -172,24 +174,27 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Member>(entity =>
         {
-            entity.HasKey(e => e.MemberId).HasName("PK__Member__0CF04B3818787C8E");
+            entity.HasKey(e => e.MemberId).HasName("PK__Member__0CF04B38E6C43842");
 
             entity.ToTable("Member");
 
-            entity.HasIndex(e => e.MemberEmail, "UQ__Member__3F37B77A9697F65B").IsUnique();
+            entity.HasIndex(e => e.MemberEmail, "UQ__Member__3F37B77AEF984B1D").IsUnique();
 
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.GuiderId).HasColumnName("GuiderID");
             entity.Property(e => e.MemberEmail).HasMaxLength(100);
             entity.Property(e => e.MemberName).HasMaxLength(30);
             entity.Property(e => e.MemberPassword).HasMaxLength(100);
-            entity.Property(e => e.MemberPhone)
-                .HasMaxLength(12)
-                .IsFixedLength();
+            entity.Property(e => e.MemberPhone).HasMaxLength(12);
+
+            entity.HasOne(d => d.Guider).WithMany(p => p.Members)
+                .HasForeignKey(d => d.GuiderId)
+                .HasConstraintName("FK_MemberGuider");
         });
 
         modelBuilder.Entity<MemberQuestion>(entity =>
         {
-            entity.HasKey(e => e.QuestionId).HasName("PK__MemberQu__0DC06F8C07ADF3C5");
+            entity.HasKey(e => e.QuestionId).HasName("PK__MemberQu__0DC06F8CFB435405");
 
             entity.Property(e => e.QuestionId).HasColumnName("QuestionID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
@@ -210,21 +215,22 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Orderlist>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Orderlis__C3905BAF5E990CEC");
+            entity.HasKey(e => e.OrderId).HasName("PK__Orderlis__C3905BAF18049EDF");
 
             entity.ToTable("Orderlist");
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.CouponId).HasColumnName("CouponID");
             entity.Property(e => e.GuiderId).HasColumnName("GuiderID");
             entity.Property(e => e.ItineraryId).HasColumnName("ItineraryID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.OrderMatchStatus)
-                .HasMaxLength(6)
-                .IsFixedLength();
-            entity.Property(e => e.OrderStatus)
-                .HasMaxLength(8)
-                .IsFixedLength();
+            entity.Property(e => e.OrderMatchStatus).HasMaxLength(6);
+            entity.Property(e => e.OrderStatus).HasMaxLength(8);
             entity.Property(e => e.OrderTotalPrice).HasColumnType("money");
+
+            entity.HasOne(d => d.Coupon).WithMany(p => p.Orderlists)
+                .HasForeignKey(d => d.CouponId)
+                .HasConstraintName("FK_OrderlistCoupon");
 
             entity.HasOne(d => d.Guider).WithMany(p => p.Orderlists)
                 .HasForeignKey(d => d.GuiderId)
@@ -243,7 +249,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity.HasKey(e => e.RatingId).HasName("PK__Rating__FCCDF85C41AA3276");
+            entity.HasKey(e => e.RatingId).HasName("PK__Rating__FCCDF85CA62C9E1A");
 
             entity.ToTable("Rating");
 
@@ -271,10 +277,11 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Restaurant>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Restaura__3214EC27A163DA16");
+            entity.HasKey(e => e.Id).HasName("PK__Restaura__3214EC27E273AE8D");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Address).HasMaxLength(200);
+            entity.Property(e => e.CityOrderIndex).HasComputedColumnSql("(case left([LocationName],(3)) when '基隆市' then (1) when '台北市' then (2) when '新北市' then (3) when '桃園市' then (4) when '台中市' then (5) when '彰化縣' then (6) when '南投縣' then (7) when '台南市' then (8) when '高雄市' then (9) when '屏東縣' then (10) when '宜蘭縣' then (11) when '花蓮縣' then (12) when '台東縣' then (13) else (999) end)", true);
             entity.Property(e => e.FoodType).HasMaxLength(50);
             entity.Property(e => e.LocationName)
                 .HasMaxLength(100)
@@ -286,7 +293,7 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<SelectGuider>(entity =>
         {
-            entity.HasKey(e => new { e.OrderId, e.MemberId, e.GuiderId }).HasName("PK__SelectGu__1349128D0E4957B2");
+            entity.HasKey(e => new { e.OrderId, e.MemberId, e.GuiderId }).HasName("PK__SelectGu__1349128D283E4045");
 
             entity.ToTable("SelectGuider");
 
@@ -312,15 +319,13 @@ public partial class TripNaContext : DbContext
 
         modelBuilder.Entity<Spot>(entity =>
         {
-            entity.HasKey(e => e.SpotId).HasName("PK__Spot__61645FE7DB8F3C4E");
+            entity.HasKey(e => e.SpotId).HasName("PK__Spot__61645FE7D70228A6");
 
             entity.ToTable("Spot");
 
             entity.Property(e => e.SpotId).HasColumnName("SpotID");
             entity.Property(e => e.SpotBrief).HasMaxLength(100);
-            entity.Property(e => e.SpotCity)
-                .HasMaxLength(6)
-                .IsFixedLength();
+            entity.Property(e => e.SpotCity).HasMaxLength(6);
             entity.Property(e => e.SpotIntro).HasMaxLength(300);
             entity.Property(e => e.SpotName).HasMaxLength(30);
         });

@@ -19,10 +19,11 @@ public partial class Member
 
     public int? GuiderId { get; set; }
 
-
     public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
     public virtual ICollection<FavoriteSpot> FavoriteSpots { get; set; } = new List<FavoriteSpot>();
+
+    public virtual Guider? Guider { get; set; }
 
     public virtual ICollection<MemberQuestion> MemberQuestions { get; set; } = new List<MemberQuestion>();
 
