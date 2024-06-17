@@ -17,7 +17,7 @@ public partial class Member
 
     public string MemberPassword { get; set; } = null!;
 
-    //public int? GuiderId { get; set; }
+    public int? GuiderId { get; set; }
 
     public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
