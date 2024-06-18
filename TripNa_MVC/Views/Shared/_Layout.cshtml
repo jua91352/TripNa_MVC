@@ -91,7 +91,11 @@
             border-color: #ffffff !important; /* 自定義邊框顏色 */
         }
 
-
+        .main-content {
+            max-width: 1200px; /* 根據您的需求設定最大寬度 */
+            margin: 0 auto; /* 將內容置中 */
+            padding: 20px; /* 根據您的需求設定內邊距 */
+        }
 
         div.scroll-container {
             background-color: #333;
@@ -175,7 +179,7 @@
 
 
 
-<div class="container">
+<div class="container" style="min-width:100%">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>

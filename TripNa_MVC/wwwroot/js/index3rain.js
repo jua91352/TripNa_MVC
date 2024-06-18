@@ -399,13 +399,60 @@ $(function () {
                 let targetCity = city[index];
                 console.log(targetCity);
                 setInfomation(targetCity);
+                getFile(targetCity);
             });
             setInfomation("臺北市");
         },
         1000
     )
 
-    //讀取景點圖片
+    function getFile(targetCity) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var data = xhr.responseText;
+            var temp = JSON.parse(data);
+            var yiLanArray = temp[targetCity];
+            console.log(yiLanArray);
+            const extractContent = (path) => {
+                const match = path.match(/\/([^\/]+)\.jpg$/);
+                return match ? match[1] : null;
+            };
+            const extractedContents = yiLanArray.map(extractContent).filter(content => content !== null);
+
+            $('#divResult').html(temp);
+
+            const range = (start, stop, step) => Array.from({ length: Math.ceil((stop - start) / step) }, (_, i) => start + (i * step));
+
+            let innerHtml = ``;
+            let indicatorsHtml = ``;
+            for (let i of range(0, yiLanArray.length, 3)) {
+                innerHtml += `<div class="carousel-item ${i === 0 ? "active" : ""}">
+                  <div class="row">
+                      <div class="p-2 col-4 md h-100 position-relative">
+                          <img src="/景點圖片${yiLanArray[i]}" class="d-block w-33" alt="${extractedContents[i]}">                  
+                          <p style="background-color: aliceblue;">${extractedContents[i]}</p>
+                      </div>
+                      ${i + 1 < yiLanArray.length ? `
+                      <div class="p-2 col-4 md h-100 position-relative">
+                          <img src="/景點圖片${yiLanArray[i + 1]}" class="d-block w-33" alt="${extractedContents[i + 1]}">          
+                          <p style="background-color: aliceblue;">${extractedContents[i + 1]}</p>
+                      </div>` : ""}
+                      ${i + 2 < yiLanArray.length ? `
+                      <div class="p-2 col-4 md h-100 position-relative">
+                          <img src="/景點圖片${yiLanArray[i + 2]}" class="d-block w-33" alt="${extractedContents[i + 2]}">         
+                          <p style="background-color: aliceblue;">${extractedContents[i + 2]}</p>
+                      </div>` : ""}
+                  </div>
+              </div>`;
+                indicatorsHtml += `<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="${i / 3}" ${i === 0 ? 'class="active" aria-current="true"' : ''} aria-label="Slide ${i / 3 + 1}"></button>`;
+            }
+            $(".carousel-inner").html(innerHtml);
+            $(".carousel-indicators").html(indicatorsHtml);
+        }
+
+        xhr.open('GET', '/景點圖片/paths.json');
+        xhr.send();
+    }
  
 
 

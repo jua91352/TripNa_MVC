@@ -19,8 +19,15 @@ namespace TripNa_MVC.Controllers
         {
             _logger = logger;
             _context = context;
-
         }
+
+
+        //加個這個會導到首頁
+        public IActionResult show()
+        {
+            return View();
+        }
+
 
         public IActionResult Index()
         {

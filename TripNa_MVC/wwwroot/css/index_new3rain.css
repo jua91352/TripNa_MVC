@@ -6,26 +6,27 @@ header {
     /* padding: 10px; */
     height: 90px;
 }
-.navbar-nav>li>a{
+
+.navbar-nav > li > a {
     margin-left: 10px;
-    color:#dee0fb ;
-   }
-   .navbar-nav{
-     margin-right: 2rem;
+    color: #dee0fb;
+}
+
+.navbar-nav {
+    margin-right: 2rem;
     background-color: #4e5482;
     padding: .3rem 1rem;
     border-radius: 30px;
     box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.3), 4px 1px 2px 3px #4e5482 inset;
-   }
+}
 /* body */
 body {
-    width:100%;
-    margin:0;
-    padding:0;
-    /*background-color: #dee0fb;*/
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #dee0fb;
     font-family: "Noto Serif TC", serif;
-    overflow:auto;
-    
+    overflow: auto;
 }
 /* weather info */
 .position-relative {
@@ -41,12 +42,12 @@ body {
     cursor: pointer;
     outline: none;
     position: absolute; /* 确保按钮在图像上 */
-    top: 10px;         /* 根据需要调整位置 */
-    right: 10px;       /* 根据需要调整位置 */
+    top: 10px; /* 根据需要调整位置 */
+    right: 10px; /* 根据需要调整位置 */
 }
 
 
-.position-relative:hover  {
+.position-relative:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
 /* --------------page top 晴天娃娃 start-------------*/
@@ -56,7 +57,6 @@ body {
     display: block;
     /* 塊級元素 */
     right: 20px;
-
     bottom: 20px;
     /* top right bottom left */
     width: 100px;
@@ -71,25 +71,6 @@ body {
     z-index: 5;
     font-size: large;
     /* border: 1px solid red; */
-
-}
-
-.background-color canvas {
-    z-index: 20;
-    opacity: 0.5;
-    /* border: 1px solid red; */
-    /* height: 700px; */
-}
-
-#taiwans {
-    z-index: 20;
-}
-
-.rainboy {
-    position: relative;
-    top: -300px;
-    left: 1400px;
-    height: 300px;
 }
 
 .page-top p {
@@ -98,7 +79,6 @@ body {
     display: block;
     /* 塊級元素 */
     right: 40px;
-
     bottom: 100px;
     /* top right bottom left */
     width: 50px;
@@ -128,38 +108,37 @@ div[class^="p-"] {
     background-color: rgba(8, 30, 86, 0.232);
     border: 1px solid rgb(93, 17, 72);
     border-radius: 10px;
+}
 
+.p-2 {
+    /*width: 100%;*/ /* 确保图片容器占据父容器的宽度 */
+    text-align: center; /* 将图片居中显示 */
 }
-.p-2 img{
-    border-radius: 5px 5px 0px 0px ;
-}
-.p-2 p{
-    border-radius: 0px 0px 5px 5px;
-}
+
+    .p-2 img {
+        border-radius: 5px 5px 0px 0px;
+        max-width: 100%; /* 确保图片不超出其容器的宽度 */
+        height: auto; /* 根据比例缩放图片的高度 */
+        /*display: inline-block;*/ /* 让图片以行内块级元素显示，使其水平排列 */
+    }
+
+    .p-2 p {
+        border-radius: 0px 0px 5px 5px;
+    }
+
 .weather-icon {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
-
-    img {
-        height: 90% !important;
-    }
 }
 /* weatherinfo table */
-.table {
-    border: 2px solid red;
-}
 
-.table td {
-    text-align: justify;
-    /* 填满整个单元格 */
-}
 /*------------- 背景雲 start--------------*/
 
 .cloud-container {
-  /*  float: left;*/
+    /*  float: left;*/
     position: absolute;
     height: 900px;
     top: 50px;
@@ -178,17 +157,15 @@ div[class^="p-"] {
     top: -650px;
     /* overflow: hidden; */
     /* z-index: 6; */
-
 }
 
-.cloud img {
-    /* position: relative; */
-    /* top: -150px; */
-    width: 100%;
-    opacity: 0.5;
-    /* z-index: 5; */
-
-}
+    .cloud img {
+        /* position: relative; */
+        /* top: -150px; */
+        width: 100%;
+        opacity: 0.5;
+        /* z-index: 5; */
+    }
 
 @keyframes moveCloud {
     0% {
@@ -209,10 +186,32 @@ div[class^="p-"] {
 }
 
 
+
+
+/* container */
+.weatherinfo {
+    position: absolute;
+    height: 600px;
+    /*   float: right;*/
+
+    color: lightblue;
+    width: 800px;
+    /* border: 2px solid red; */
+    z-index: 3;
+    top: 50px;
+    left: 500px;
+    /* color: aqua; */
+    text-align: center;
+    display: none;
+    font-size: smaller;
+    z-index: 20;
+}
+
+
 /*------------- 背景雲 end--------------*/
 
 /* img slider start */
-.carousel-indicators{
+.carousel-indicators {
     top: 250px;
 }
 
@@ -228,15 +227,19 @@ div[class^="p-"] {
 .carousel-control-prev:hover, .carousel-control-next:hover {
     background-color: rgba(0, 0, 0, 0.5); /* 增加背景色以指示悬停状态 */
 }
+
 .container {
     position: relative;
     width: 100%;
     /* max-width: 1000px; */
     margin: auto;
     overflow: hidden;
+    display: flex;
 }
 
-
+#info9 {
+    height: 100%;
+}
 
 .prev,
 .next {
@@ -259,59 +262,62 @@ div[class^="p-"] {
     border-radius: 3px 0 0 3px;
 }
 
-.prev:hover,
-.next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
+    .prev:hover,
+    .next:hover {
+        /*  background-color: rgba(0, 0, 0, 0.8);*/
+    }
 
 .carousel-inner img {
-        max-width: 100%;
-        height: 200px;
-        margin: auto;
-    }
-    .text-col {
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: black;
-    }
-    .carousel-item {
-        position: relative;
-        padding-left: 15px; /* 添加左右内边距 */
-        padding-right: 15px; /* 添加左右内边距 */
-    }
-    
+    max-width: 100%;
+    height: 200px;
+    /*  margin: auto;*/
+}
+
+.text-col {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: black;
+}
+
+.carousel-item {
+    height: 100%;
+    position: relative;
+    padding-left: 15px; /* 添加左右内边距 */
+    padding-right: 15px; /* 添加左右内边距 */
+}
+
     .carousel-item img {
         width: 100%;
     }
-    
+
     .carousel-item p {
         background-color: aliceblue;
         transition: background-color 0.3s;
+        width: 100%;
     }
-    
-    .carousel-item p:hover {
-        background-color: lightgray; /* 修改为你想要的反白颜色 */
-    }
+
+        .carousel-item p:hover {
+            background-color: lightgray; /* 修改为你想要的反白颜色 */
+        }
 
 
 /* img slider end */
 /* 背景101圖 */
 
 .bgi {
-    margin:0;
+    margin: 0;
     position: relative;
     top: 0px;
     left: 0;
     bottom: 0px;
     right: 0;
-  
 }
 
     .bgi img {
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
         position: relative;
         /* top: 50px; */
         min-height: 100%;
@@ -326,56 +332,38 @@ img {
 }
 /* SVG 台灣 */
 .county {
-    fill: #ebf0e4;
-    stroke: blue;
-    stroke-width: 0.4px;
+    fill: #436fff;
+    stroke: rgb(255, 255, 255);
+    stroke-width: 1.5px;
 }
 
-.county:hover {
-    fill: lightgray;
-}
+    .county:hover {
+        fill: rgba(0, 83, 171, 0.8);
+        transform: translateY(-5px);
+        filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+    }
 
 
-
-/* container */
-.weatherinfo{
-    position: absolute;
-    height: 600px;
- /*   float: right;*/
-
-    color:lightblue;
-    width: 800px;
-    /* border: 2px solid red; */
-    z-index: 3;
-    top: 50px;
-    left: 500px;
-    /* color: aqua; */
-    text-align: center;
-    display: none;
-    font-size: smaller;
-    z-index: 20;
-  
-}
 
 
 
 /* ---------------API INFO---------------- */
 
-.icon-umbrella img{
+.icon-umbrella img {
     width: 30px;
     height: 30px;
 }
+
 .temp {
     text-align: center; /* 将文字内容水平居中 */
     /* font-size: smaller; */
 }
 
-/* 如果需要将垂直方向上的内容也居中，您可以使用以下样式 */
-.temp i, .temp sup {
-    vertical-align: middle; /* 将垂直方向上的内容居中 */
-    /* font-size: smaller; */
-
-}
+    /* 如果需要将垂直方向上的内容也居中，您可以使用以下样式 */
+    .temp i, .temp sup {
+        vertical-align: middle; /* 将垂直方向上的内容居中 */
+        /* font-size: smaller; */
+    }
 
 .hamburger-menu {
     position: absolute;
@@ -389,42 +377,21 @@ img {
 .hamburger-icon {
     font-size: 30px;
     user-select: none; /* 禁用文本选择 */
-
 }
 
-.note {
-    display: none;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    width: 200px;
-    background-color: #f8f9fa;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    color: #4e5482;
-    border-radius: 10px;
-}
 
-#note-content p {
-    margin: 5px 0;
 
-}
-
-.hamburger-menu:hover .note {
-    display: block;
-}
 
 
 footer {
-
-    /*background-color: #4e5482;*/
+    background-color: #4e5482;
     color: #fefefe;
     text-align: center;
     padding: 10px;
     margin-bottom: 0;
 }
-.background-color canvas{
+
+.background-color canvas {
     z-index: 20;
     opacity: 0.5;
     /* border: 1px solid red; */
