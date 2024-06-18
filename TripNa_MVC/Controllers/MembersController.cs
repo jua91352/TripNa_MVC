@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TripNa_MVC.Models;
@@ -363,11 +364,13 @@ namespace TripNa_MVC.Controllers
                                     o.OrderMatchStatus,
                                     CouponCode = c.CouponCode ?? string.Empty,
                                     g.GuiderNickname,
+                                    g.GuiderId,
                                     i.ItineraryName,
                                     i.ItineraryPeopleNo,
                                     m.MemberName,
                                     m.MemberEmail,
                                     m.MemberPhone,
+                                    m.MemberId,
                                     ItineraryDetails = j,
                                     Spot = s,
                                     o.ItineraryId,
@@ -423,7 +426,8 @@ namespace TripNa_MVC.Controllers
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
-                        GuiderArea = o.GuiderArea
+                        GuiderArea = o.GuiderArea,
+                        GuiderId = o.GuiderId
                     },
                     Rating = new Rating
                     {
@@ -434,7 +438,9 @@ namespace TripNa_MVC.Controllers
                     {
                         MemberName = o.MemberName,
                         MemberEmail = o.MemberEmail,
-                        MemberPhone = o.MemberPhone
+                        MemberPhone = o.MemberPhone,
+                        MemberId = o.MemberId
+
                     },
                     Spots = o.Spot,
                     ItineraryDetail = new ItineraryDetail
@@ -443,8 +449,6 @@ namespace TripNa_MVC.Controllers
                         VisitOrder = o.VisitOrder
                     }
                 }).ToList(),
-
-
                 MemberId = member.MemberId,
                 OrderId = orderID
             };
@@ -629,6 +633,69 @@ namespace TripNa_MVC.Controllers
             return Ok("問題提交成功。");
 
         }
+
+
+
+
+        [HttpPost]
+        public IActionResult SaveRating([FromBody] MemberRating dataToSend)
+        {
+            try
+            {
+                // 創建一個新的評價實體
+                var rating = new Rating
+                {
+                    RatingStars = dataToSend.RatingStars,
+                    RatingComment = dataToSend.RatingComment,
+                    MemberId = dataToSend.MemberId,
+                    GuiderId = dataToSend.GuiderId,
+                    OrderId = dataToSend.OrderId
+                };
+
+                Console.WriteLine("-------------------MemberId: " + dataToSend.MemberId);
+                Console.WriteLine("-------------------OrderId: " + dataToSend.OrderId);
+                Console.WriteLine("-------------------GuiderId: " + dataToSend.GuiderId);
+                Console.WriteLine("--------------------RatingComment: " + dataToSend.RatingComment);
+                Console.WriteLine("---------------------RatingStars: " + dataToSend.RatingStars);
+
+                // 添加評價到 DbContext
+                _context.Ratings.Add(rating);
+
+                // 保存到資料庫
+                _context.SaveChanges();
+
+                Console.WriteLine("Creating rating: " + Newtonsoft.Json.JsonConvert.SerializeObject(rating));
+
+                return Ok("評價提交成功");
+            }
+            catch (DbUpdateException ex)
+            {
+                // 處理資料庫更新相關的異常
+                Console.WriteLine("DbUpdateException: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "資料庫更新異常：" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "伺服器錯誤：" + ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
 
 
         //判斷該會員是否真的有該筆優惠券
