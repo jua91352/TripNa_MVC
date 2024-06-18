@@ -328,10 +328,11 @@ namespace TripNa_MVC.Controllers
 
                     _context.ItineraryDetails.Add(itineraryDetail);
                 }
+                await _context.SaveChangesAsync();
+
 
                 TempData["ItineraryID"] = dataToSend.Itinerary.ItineraryId;
                 TempData["DayCount"] = dataToSend.Itinerary.ItineraryName.Substring(2, 1);
-                await _context.SaveChangesAsync();
                 // Consider returning a success message or redirecting to a confirmation view
                 return Ok("Itinerary created successfully!"); // Or a more specific success message
             }
@@ -362,7 +363,7 @@ namespace TripNa_MVC.Controllers
                 var memberEmail = HttpContext.Session.GetString("memberEmail");
                 var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
                 string orderDate = DateTime.UtcNow.Date.ToString("yyyy-MM-dd");
-                string orderNumber = DateTime.UtcNow.Date.ToString("MMdd") + member.MemberId.ToString("00") + TempData["ItineraryID"].ToString();
+                string orderNumber = DateTime.UtcNow.Date.ToString("yyMMdd") + member.MemberId.ToString("00") + TempData["ItineraryID"].ToString();
                 decimal orderTotalPirce = 0;
 
                 if (TempData["DayCount"] == null)

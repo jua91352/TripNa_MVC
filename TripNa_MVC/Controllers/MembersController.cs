@@ -274,7 +274,7 @@ namespace TripNa_MVC.Controllers
                                join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
                                from c in couponGroup.DefaultIfEmpty() // left join
                                where o.MemberId == member.MemberId
-                               orderby o.OrderDate descending //按訂單日期降序排序
+                               orderby o.OrderNumber descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,

@@ -118,7 +118,7 @@
             <p class="text-center">目前沒有訂單</p>
             <div class="text-center" style=" margin-right:10px; ">
 
-                    <a class="btn" asp-area="" asp-controller="Home" asp-action="Privacy"
+                   <a class="btn" asp-area="" asp-controller="Home" asp-action="CreateItinerary"
                    style="width: 150px; background-color: #4e5482 ;color: #e8eafe;">前往自訂行程→</a>
                 <br>
                 <br>
@@ -180,32 +180,32 @@
                     @foreach (var order in Model.Orders)
                     {
                         <tr id="trContent align-middle">
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle">
                                 @order.OrderNumber
 
                         </td>
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle">
 
                                 @(order.OrderDate.ToString("yyyy/MM/dd"))
                         </td>
 
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle" >
                                 @(order.Itinerary.ItineraryStartDate.ToString("yyyy/MM/dd"))
 
                         </td>
 
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle" >
                             NT$@order.OrderTotalPrice.ToString("N0")
                         </td>
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle">
                                 @order.OrderStatus
                         </td>
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle">
                                 @order.OrderMatchStatus
                         </td>
 
@@ -218,7 +218,7 @@
                            }
                            else
                           {
-                            <td class="text-center align-middle" width="70px">
+                            <td class="text-center align-middle" width="80px">
                                 <a asp-area="" asp-controller="Members" asp-action="MemberQA" asp-route-orderID="@order.OrderId"
                                    onclick="doscore(@order.OrderId)">
                                     <span class="bi bi-chat-text-fill" style="color: #545454; font-size: 20px;"></span>
@@ -233,7 +233,7 @@
 
                         </td>
 
-                            <td class="text-center align-middle" width="100px">
+                            <td class="text-center align-middle" width="150px">
                                 <a asp-area="" asp-controller="Members" asp-action="UserOrderDetails" asp-route-orderID="@order.OrderId"
                                    onclick="doscore(@order.OrderId)">
                                     <button type="button" class="btn" style="background-color: #4e5482; color: #e8eafe;">查看訂單</button>

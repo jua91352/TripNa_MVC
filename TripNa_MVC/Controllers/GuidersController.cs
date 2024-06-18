@@ -428,7 +428,7 @@ namespace TripNa_MVC.Controllers
             var orderDetails = from o in _context.Orderlists
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                where o.GuiderId == member.GuiderId
-                               orderby o.OrderDate descending //按訂單日期降序排序
+                               orderby o.OrderNumber descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
