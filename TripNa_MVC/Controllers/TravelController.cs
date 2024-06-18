@@ -27,7 +27,7 @@ namespace TripNa_MVC.Controllers
 
         public IActionResult weather()
         {
-			var items = _context.Restaurants.ToList();
+			var items = _context.Restaurant.ToList();
 			return View(items);
         }
 
@@ -65,7 +65,7 @@ namespace TripNa_MVC.Controllers
 
 
 
-            var students = from s in _context.Restaurants
+            var students = from s in _context.Restaurant
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -86,7 +86,7 @@ namespace TripNa_MVC.Controllers
 			ViewData["SearchCount"] = searchCount;
 
 			// 計算總數
-			int totalCount = (from t in _context.Restaurants
+			int totalCount = (from t in _context.Restaurant
 							  select t).Count();
 			ViewData["TotalCount"] = totalCount;
 
@@ -96,7 +96,7 @@ namespace TripNa_MVC.Controllers
             switch (sortOrder)
             {
                 case "name_desc":
-                    //students = students.OrderByDescending(s => s.CityOrderIndex);
+                    students = students.OrderByDescending(s => s.CityOrderIndex);
                     break;
                 case "Date":
                     students = students.OrderBy(s => s.FoodType);
@@ -105,11 +105,11 @@ namespace TripNa_MVC.Controllers
                     students = students.OrderByDescending(s => s.FoodType);
                     break;
                 default:
-                    //students = students.OrderBy(s => s.CityOrderIndex);
+                    students = students.OrderBy(s => s.CityOrderIndex);
                     break;
             }
 
-            var restaurants = _context.Restaurants.AsQueryable();
+            var restaurants = _context.Restaurant.AsQueryable();
 
             // 根據選擇的 FoodType 進行篩選
             if (!string.IsNullOrEmpty(selectfood))
@@ -151,10 +151,10 @@ namespace TripNa_MVC.Controllers
 
 
 
-            var regions = _context.Restaurants.Select(r => r.LocationName).Distinct().ToList();
+            var regions = _context.Restaurant.Select(r => r.LocationName).Distinct().ToList();
             ViewBag.Regions = regions;
 
-            var foodtype = _context.Restaurants.Select(r => r.FoodType).Distinct().ToList();
+            var foodtype = _context.Restaurant.Select(r => r.FoodType).Distinct().ToList();
             ViewBag.FoodType = foodtype;
 
             int pageSize = 12;
@@ -187,7 +187,7 @@ namespace TripNa_MVC.Controllers
 		[HttpPost]
 		public IActionResult GetFilteredRestaurants(List<string> regions, List<string> foodType)
 		{
-			IQueryable<Restaurant> filteredRestaurants = _context.Restaurants;
+			IQueryable<Restaurant> filteredRestaurants = _context.Restaurant;
 
 
 			if ((foodType.Count > 0) && (regions.Count == 0))
