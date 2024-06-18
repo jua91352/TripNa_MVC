@@ -904,7 +904,7 @@ namespace TripNa_MVC.Controllers
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
                                 where o.GuiderId == member.GuiderId && o.OrderId == orderID
                                 from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                 join s in _context.Spots on j.SpotId equals s.SpotId
