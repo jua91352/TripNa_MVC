@@ -10,7 +10,9 @@
     <head>
 	<meta charset="UTF-8" />
 	<link href="~/css/Information.css" rel="stylesheet" />
-
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"></script>
 	</head>
 
 
@@ -153,12 +155,12 @@
 
 								<div class="sidebar">
 									<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" id="locabtn">依縣市排序</a>
-									<button class="btn btn-light " type="button" data-bs-toggle="collapse" data-bs-target="#regionCollapse" aria-expanded="false" aria-controls="regionCollapse" style="width:100px;margin-bottom:5px;" id="filter">
+									<button class="btn btn-light " type="button" data-bs-toggle="collapse" data-bs-target="#regionCollapsefood" aria-expanded="false" aria-controls="regionCollapsefood" style="width:100px;margin-bottom:5px;" id="filter">
 										<img src="~/images/篩選 (2).png" alt="Alternate Text" width="20px" height="20px" style="margin-right:5px;" />  篩選
 									</button>
-									<div class="collapse" id="regionCollapse" style="position:relative;">
+									<div class="collapse" id="regionCollapsefood" style="position:relative;height: 440px;">
 										<p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇區域</p>
-										<ul id="selectedregion">
+										<ul id="selectedregion" style="width:98%;">
 											@* ------------------------------------------------------------------- *@
 											@foreach (var region in ViewBag.Regions)
 											{
@@ -176,7 +178,7 @@
 										@* -----------------------------------選擇食物類型------------------------------- *@
 
 										<p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇類型</p>
-										<ul id="selectedregion">
+						<ul id="selectedregion" style="width:98%;">
 											@foreach (var foodtype in ViewBag.FoodType)
 											{
 												<li id="liStyle">
@@ -477,11 +479,11 @@
 			$("#filter").click(function () {
 				$(this).hide();
 				$("#locabtn").hide();
-				$("#regionCollapse").show();
+				$("#regionCollapsefood").show();
 			});
 
 			$("#cancel").click(function () {
-				$("#regionCollapse").toggle();
+				$("#regionCollapsefood").toggle();
 				$("#filter").toggle();
 				$("#locabtn").toggle();
 			});
