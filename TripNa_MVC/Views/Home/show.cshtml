@@ -8,6 +8,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 字體相關 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>@ViewData["Title"]</title>
     <style>
         body, html {
@@ -15,6 +22,7 @@
             padding: 0;
             overflow: hidden; /* 隱藏滾動條 */
             height: 100vh;
+            font-family: "Noto Serif TC", serif;
         }
 
         .container {
@@ -41,7 +49,7 @@
             top: 30%;
             left: 10px;
             transform: translate(-50%, -50%);
-            font-size: 68px;
+            font-size: 50px;
             max-width: 40%;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -58,7 +66,7 @@
             top: 50%;
             right: 10px;
             transform: translate(-50%, -50%);
-            font-size: 24px;
+            font-size: 18px;
             max-width: 30%;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -67,6 +75,7 @@
             opacity: 0;
             transition: opacity 1s ease-out, transform 2s ease-out;
             transform: translateX(100%);
+            
         }
 
         .video-background {
@@ -113,9 +122,15 @@
                 <br />
                 <p style="font-size:18px">台灣的山岳景觀壯麗雄偉，中央山脈縱貫南北，提供了無數的登山步道和壯觀的景色。阿里山的雲海和日出是遊客必訪的勝地，玉山則是東北亞最高峰，吸引著無數登山愛好者。此外，太魯閣國家公園以其壯麗的峽谷景觀和大理石峽谷聞名，成為台灣的自然奇觀之一。</p>
             </div>
-            <div class="additional-text">
-                滑鼠滾動
+            <div class="additional-text" style="text-align: center;">
+                <div style="position: relative; display: inline-block;">
+                    <img src="@Url.Content("/_img/show/mouse.png")" alt="Alternate Text" style="width:50px;height:50px; position: absolute; top: 20%; left: 50%; transform: translateX(-50%);" />
+                    <span style="display: block;">滾動滑鼠滾輪</span>
+                </div>
             </div>
+
+
+            
         </div>
 
         <div class="section">
@@ -158,6 +173,17 @@
             const scrollBar = document.querySelector('.scroll-bar'); // 取得滾動條元素
             let count = 0; // 初始化計數器，用於追踪當前section
             const sectionWidth = window.innerWidth; // 獲取窗口的寬度，作為每個section的寬度
+
+            // 初始化第一個section的顯示
+            sections[0].style.opacity = 1;
+            const firstText = sections[0].querySelector('.text');
+            firstText.style.opacity = 1;
+            firstText.style.transform = 'translateX(0)';
+            const firstAdditionalText = sections[0].querySelector('.additional-text');
+            if (firstAdditionalText) {
+                firstAdditionalText.style.opacity = 1;
+                firstAdditionalText.style.transform = 'translateX(0)';
+            }
 
             // 定義滾動動畫
             function animateScroll(delta) {

@@ -1,15 +1,9 @@
 /* header */
-header {
-    margin: 0;
-    padding: 0;
-    background-color: #e8eafe;
-    /* padding: 10px; */
-    height: 90px;
-}
-
 .navbar-nav > li > a {
     margin-left: 10px;
     color: #dee0fb;
+    font-size: 1.2rem;
+    animation: fadeIn 2s ease-in-out;
 }
 
 .navbar-nav {
@@ -18,15 +12,36 @@ header {
     padding: .3rem 1rem;
     border-radius: 30px;
     box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.3), 4px 1px 2px 3px #4e5482 inset;
+    animation: fadeIn 1s ease-in-out;
+}
+
+
+footer {
+    color: #fefefe;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 0;
+    animation: fadeIn 3s ease-in-out;
+}
+
+.text-muted {
+    color: #dee0fb !important;
+    /* 淡紫色文本顏色 */
+}
+
+.bg-body-tertiary {
+    background-color: #4e5482 !important; /* 自定義背景顏色 */
+}
+
+.btn-primary {
+    background-color: #717ccd !important; /* 自定義背景顏色 */
+    border-color: #ffffff !important; /* 自定義邊框顏色 */
 }
 /* body */
 body {
-    width: 100%;
-    margin: 0;
-    padding: 0;
     background-color: #dee0fb;
     font-family: "Noto Serif TC", serif;
-    overflow: auto;
+    animation: fadeIn 1.5s ease-in-out;
 }
 /* weather info */
 .position-relative {
@@ -88,43 +103,33 @@ body {
     line-height: 50px;
     /* 行高 150% 180%*/
     text-decoration: none;
-    color: yellow;
+    color: rgb(247, 241, 255);
     border-radius: 50%;
     z-index: 5;
     font-size: large;
-    border: 1px solid red;
-    background-color: rgba(6, 42, 140, 0.7);
+    border: 1px solid rgb(255, 236, 236);
+    background-color: rgb(106, 3, 240);
 }
 /* --------------page top 晴天娃娃 end-------------*/
 
 
 
-div[class^="d-"] {
+/* div[class^="d-"] {
     background-color: yellow;
     border: 1px solid blue;
-}
+} */
 
 div[class^="p-"] {
-    background-color: rgba(8, 30, 86, 0.232);
-    border: 1px solid rgb(93, 17, 72);
-    border-radius: 10px;
+    background-color: #4e5482;
 }
 
-.p-2 {
-    /*width: 100%;*/ /* 确保图片容器占据父容器的宽度 */
-    text-align: center; /* 将图片居中显示 */
+.p-2 img {
+    border-radius: 5px 5px 0px 0px;
 }
 
-    .p-2 img {
-        border-radius: 5px 5px 0px 0px;
-        max-width: 100%; /* 确保图片不超出其容器的宽度 */
-        height: auto; /* 根据比例缩放图片的高度 */
-        /*display: inline-block;*/ /* 让图片以行内块级元素显示，使其水平排列 */
-    }
-
-    .p-2 p {
-        border-radius: 0px 0px 5px 5px;
-    }
+.p-2 p {
+    border-radius: 0px 0px 5px 5px;
+}
 
 .weather-icon {
     height: 100%;
@@ -132,13 +137,26 @@ div[class^="p-"] {
     align-items: center;
     justify-content: center;
     margin: auto;
+    img
+
+{
+    height: 90% !important;
+}
+
 }
 /* weatherinfo table */
+.table {
+    border: 2px solid rgb(0, 0, 0);
+}
 
+    .table td {
+        text-align: justify;
+        /* 填满整个单元格 */
+    }
 /*------------- 背景雲 start--------------*/
 
 .cloud-container {
-    /*  float: left;*/
+    float: left;
     position: absolute;
     height: 900px;
     top: 50px;
@@ -184,31 +202,22 @@ div[class^="p-"] {
     filter: brightness(80%) saturate(120%) hue-rotate(180deg);
     /* 调整亮度、饱和度和色相 */
 }
-
-
-
-
-/* container */
-.weatherinfo {
-    position: absolute;
-    height: 600px;
-    /*   float: right;*/
-
-    color: lightblue;
-    width: 800px;
-    /* border: 2px solid red; */
-    z-index: 3;
-    top: 50px;
-    left: 500px;
-    /* color: aqua; */
-    text-align: center;
-    display: none;
-    font-size: smaller;
-    z-index: 20;
-}
-
-
 /*------------- 背景雲 end--------------*/
+
+
+
+/* ----------------------------淡出淡入----------------------------------- */
+/* 動畫 */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 /* img slider start */
 .carousel-indicators {
@@ -234,12 +243,9 @@ div[class^="p-"] {
     /* max-width: 1000px; */
     margin: auto;
     overflow: hidden;
-    display: flex;
 }
 
-#info9 {
-    height: 100%;
-}
+
 
 .prev,
 .next {
@@ -264,13 +270,13 @@ div[class^="p-"] {
 
     .prev:hover,
     .next:hover {
-        /*  background-color: rgba(0, 0, 0, 0.8);*/
+        background-color: rgba(0, 0, 0, 0.8);
     }
 
 .carousel-inner img {
     max-width: 100%;
     height: 200px;
-    /*  margin: auto;*/
+    margin: auto;
 }
 
 .text-col {
@@ -282,7 +288,6 @@ div[class^="p-"] {
 }
 
 .carousel-item {
-    height: 100%;
     position: relative;
     padding-left: 15px; /* 添加左右内边距 */
     padding-right: 15px; /* 添加左右内边距 */
@@ -295,7 +300,6 @@ div[class^="p-"] {
     .carousel-item p {
         background-color: aliceblue;
         transition: background-color 0.3s;
-        width: 100%;
     }
 
         .carousel-item p:hover {
@@ -307,34 +311,33 @@ div[class^="p-"] {
 /* 背景101圖 */
 
 .bgi {
-    margin: 0;
     position: relative;
-    top: 0px;
+    top: 5px;
     left: 0;
     bottom: 0px;
     right: 0;
 }
 
     .bgi img {
-        margin: 0;
-        padding: 0;
         position: relative;
         /* top: 50px; */
         min-height: 100%;
         /* height: 100%; */
         width: 100%;
-        height: 900px;
-        background-size: cover;
     }
 
 img {
     margin: 0;
 }
+
+
+
 /* SVG 台灣 */
 .county {
     fill: #436fff;
     stroke: rgb(255, 255, 255);
     stroke-width: 1.5px;
+    transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease; /* 添加過渡效果 */
 }
 
     .county:hover {
@@ -343,8 +346,35 @@ img {
         filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
     }
 
+    .county:active {
+        transform: translateY(-2px); /* 稍微減少移動距離，保持按下的效果 */
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2)); /* 陰影效果變小，讓它看起來像是按下去的效果 */
+    }
 
 
+
+
+/* container */
+.weatherinfo {
+    position: absolute;
+    height: 600px;
+    width: 800px;
+    float: right;
+    color: rgb(255, 255, 255);
+    /* border: 2px solid red; */
+    z-index: 3;
+    /* top: 150px;
+    left: 900px; */
+    /* color: aqua; */
+    text-align: center;
+    display: none;
+    font-size: smaller;
+    z-index: 20;
+}
+
+.weatherinfo {
+    clear: both;
+}
 
 
 /* ---------------API INFO---------------- */
@@ -367,7 +397,7 @@ img {
 
 .hamburger-menu {
     position: absolute;
-    top: -12px;
+    top: -10px;
     /* right: -270px; */
     /* top: -265px; */
     z-index: 1000;
@@ -379,8 +409,27 @@ img {
     user-select: none; /* 禁用文本选择 */
 }
 
+.note {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 200px;
+    background-color: #e4e3e3;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    color: #5c0087;
+    border-radius: 10px;
+}
 
+#note-content p {
+    margin: 5px 0;
+}
 
+.hamburger-menu:hover .note {
+    display: block;
+}
 
 
 footer {
@@ -398,12 +447,8 @@ footer {
     /* height: 700px; */
 }
 
-.Taiwans {
-    position: absolute;
-    left: -200px;
-    top: 57px;
+#taiwans {
     z-index: 20;
-    /*  background-color:antiquewhite;*/
 }
 
 .rainboy {
