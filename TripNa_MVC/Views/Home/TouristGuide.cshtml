@@ -1,0 +1,187 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model IEnumerable<TripNa_MVC.Models.Guider>
+@{
+    ViewData["Title"] = "TouristGuide";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <!--自訂-->
+    <link rel="stylesheet" href="~/css/Privacy.css">
+</head>
+@functions {
+    public static string CalculateExperience(DateOnly startDate)
+    {
+        DateTime currentDate = DateTime.Now;
+        TimeOnly timePart = TimeOnly.MinValue;
+        DateTime dateTime = startDate.ToDateTime(timePart);
+        TimeSpan experience = currentDate - dateTime;
+        int years = experience.Days / 365;
+        int months = (experience.Days % 365) / 30;
+        if (years > 0)
+        {
+            return $"{years}年";
+        }
+        else if (months > 0)
+        {
+            return $"{months}個月";
+        }
+        else
+        {
+            return "新手導遊";
+        }
+    }
+}
+
+<style>
+    /* 新增 CSS */
+    .fixed-btn {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+        border: 3px solid #73AD21;
+    }
+</style>
+<div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px; margin-top: 5%;">
+    我們為您推薦的導遊
+</div>
+<div class="row">
+    <div class="col-4"></div>
+    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
+    <div class="col-4"></div>
+</div>
+<div class="row justify-content-center" style="width: 100%;" id="select">
+    <div class="col-auto">
+        <select class="form-select" id="gender" onchange="filterGuiders()">
+            <option value="" disabled selected hidden>性別不限</option>
+            <option value="男生">男生</option>
+            <option value="女生">女生</option>
+            <option value="">不限</option>
+        </select>
+    </div>
+    <!-- 評價 -->
+    <div class="col-auto">
+        <select class="form-select" id="rating" onchange="filterGuiders()">
+            <option value="" disabled selected hidden>評價不限</option>
+            <option value="5">5星</option>
+            <option value="4">4星</option>
+            <option value="3">3星</option>
+            <option value="">不限</option>
+        </select>
+    </div>
+    <!-- 服務經驗 -->
+    <div class="col-auto">
+        <select class="form-select" id="experience" onchange="filterGuiders()">
+            <option value="" disabled selected hidden>服務年資不限</option>
+            <option value="0">0年 (新手導遊)</option>
+            <option value="1">1年</option>
+            <option value="2">2年</option>
+            <option value="3">3年</option>
+            <option value="4">4年</option>
+            <option value="5">5年以上</option>
+            <option value="">不限</option>
+        </select>
+    </div>
+</div>
+<br>
+
+<div id="card-container">
+    @foreach (var guider in Model)
+    {
+        string imgPath = "~/導遊/大頭照/" + guider.GuiderNickname + ".jpg";
+
+        <div style="width: 60%; margin: 0 auto" id="card">
+            <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative" style="align-items: center;">
+                <img src="~/導遊/大頭照/YOOOOOOOOOOOOOOOO.jpg" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
+                <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
+                <p class="card-text col-7">
+                    姓名:@guider.GuiderNickname<br>
+                    性別:@guider.GuiderGender<br>
+                    服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
+                    評價:@(guider.GuiderRating.HasValue ? guider.GuiderRating.Value.ToString("F2") : "尚無評價")<br>
+                    地區:@guider.GuiderArea<br>
+                    簡介:@guider.GuiderIntro<br>
+                </p>
+                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)">
+            </div>
+        </div>
+    }
+</div>
+<br>
+<div class="row justify-content-center m-3">
+    <div class="col-8"></div>
+        <button type="button" class="btn btn-primary col-1 text-center rounded shadow m-3" onclick="submitSelectedGuiders()">下單去</button>
+    <div class="col-2"></div>
+	</div>
+
+<br>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        var selectedGender = '@ViewBag.SelectedGender';
+        var selectedRating = '@ViewBag.SelectedRating';
+        var selectedExperience = '@ViewBag.SelectedExperience';
+        if (selectedGender) {
+            console.log(selectedGender);
+            document.getElementById("gender").value = selectedGender;
+        }
+        if (selectedRating) {
+            console.log(selectedRating);
+            document.getElementById("rating").value = selectedRating;
+        }
+        if (selectedExperience) {
+            console.log(selectedExperience);
+            document.getElementById("experience").value = selectedExperience;
+        }
+    });
+    // 篩選
+    var url = "@Url.Action("TouristGuide", "Home")";
+    function filterGuiders() {
+        var gender = document.getElementById("gender").value;
+        var rating = document.getElementById("rating").value;
+        var experience = document.getElementById("experience").value;
+        var params = [];
+        if (gender) {
+            params.push("gender=" + gender);
+        }
+        if (rating) {
+            params.push("rating=" + rating);
+        }
+        if (experience) {
+            params.push("experience=" + experience);
+        }
+        if (params.length > 0) {
+            url += "?" + params.join("&");
+        }
+        window.location.href = url;
+    }
+
+    var selectedGuiderIds = [];
+
+    function selectGuider(guiderId, isChecked) {
+        if (isChecked) {
+            selectedGuiderIds.push(guiderId);
+        } else {
+            selectedGuiderIds = selectedGuiderIds.filter(id => id !== guiderId);
+        }
+        console.log("Selected Guider Ids:", selectedGuiderIds);
+    }
+
+    function submitSelectedGuiders() {
+
+        $.ajax({
+            url: ("/Home/SubmitSelectedGuiders"),
+            type: 'POST',
+            data: {
+                guiderIds: selectedGuiderIds
+            },
+            success: function (response) {
+                console.log('Successfully updated guider selection.');
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating guider selection:', error);
+            }
+        });
+    }
+
+</script>

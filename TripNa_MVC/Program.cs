@@ -1,5 +1,7 @@
 using TripNa_MVC.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddSession();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var connectionString = builder.Configuration.GetConnectionString("TripNaContext");
 builder.Services.AddDbContext<TripNaContext>(x => x.UseSqlServer(connectionString));
+
+builder.Services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
+
 
 
 

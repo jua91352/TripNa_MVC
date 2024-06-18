@@ -343,45 +343,44 @@ namespace TripNa_MVC.Controllers
             {
                 // GuiderID 不為空,不能註冊
             }
-
-            var orderDetails =( from o in _context.Orderlists
-                               join m in _context.Members on o.MemberId equals m.MemberId
+            var orderDetails = (from o in _context.Orderlists
+                                join m in _context.Members on o.MemberId equals m.MemberId
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                               join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                               join c in _context.Coupons on o.MemberId equals c.MemberId
-                               join r in _context.Ratings on o.MemberId equals r.MemberId
-                               where  o.MemberId == member.MemberId  && o.OrderId == orderID
-                               from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
-                               join s in _context.Spots on j.SpotId equals s.SpotId
-                               select new
-                               {
-                                   o.OrderNumber,
-                                   o.OrderDate,
-                                   i.ItineraryStartDate,
-                                   o.OrderTotalPrice,
-                                   o.OrderStatus,
-                                   o.OrderMatchStatus,
-                                   c.CouponCode,
-                                   g.GuiderNickname,
-                                   i.ItineraryName,
-                                   i.ItineraryPeopleNo,
-                                   m.MemberName,
-                                   m.MemberEmail,
-                                   m.MemberPhone,
-                                   ItineraryDetails = j,
-                                   Spot = s,
-                                   o.ItineraryId,
-                                   a.VisitOrder,
-                                   g.GuiderArea,
-                                   o.OrderId,
-                                   r.RatingComment,
-                                   r.RatingStars,
-                               });
+                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+                                from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
+                                from r in _context.Ratings.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
+                                where o.MemberId == member.MemberId && o.OrderId == orderID
+                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                                join s in _context.Spots on j.SpotId equals s.SpotId
+                                select new
+                                {
+                                    o.OrderNumber,
+                                    o.OrderDate,
+                                    i.ItineraryStartDate,
+                                    o.OrderTotalPrice,
+                                    o.OrderStatus,
+                                    o.OrderMatchStatus,
+                                    CouponCode = c.CouponCode ?? string.Empty,
+                                    g.GuiderNickname,
+                                    i.ItineraryName,
+                                    i.ItineraryPeopleNo,
+                                    m.MemberName,
+                                    m.MemberEmail,
+                                    m.MemberPhone,
+                                    ItineraryDetails = j,
+                                    Spot = s,
+                                    o.ItineraryId,
+                                    a.VisitOrder,
+                                    g.GuiderArea,
+                                    o.OrderId,
+                                    RatingComment = r.RatingComment ?? string.Empty,
+                                    RatingStars = r.RatingStars == null ? (byte)0 : r.RatingStars
+                                });
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
-           
+
             if (orderDetailsList == null)
             {
                 return NotFound();

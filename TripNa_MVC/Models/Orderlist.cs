@@ -38,9 +38,9 @@ public partial class Orderlist
 
     public virtual ICollection<GuiderAnswer> GuiderAnswers { get; set; } = new List<GuiderAnswer>();
 
-    public virtual Itinerary Itinerary { get; set; } = null!;
+    public virtual Itinerary? Itinerary { get; set; } = null!;
 
-    public virtual Member Member { get; set; } = null!;
+    public virtual Member? Member { get; set; } = null!;
 
     public virtual ICollection<MemberQuestion> MemberQuestions { get; set; } = new List<MemberQuestion>();
 
