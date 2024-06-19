@@ -66,7 +66,7 @@
             top: 50%;
             right: 10px;
             transform: translate(-50%, -50%);
-            font-size: 18px;
+            font-size: 20px;
             max-width: 30%;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -124,7 +124,7 @@
             </div>
             <div class="additional-text" style="text-align: center;">
                 <div style="position: relative; display: inline-block;">
-                    <img src="@Url.Content("/_img/show/mouse.png")" alt="Alternate Text" style="width:50px;height:50px; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 10px;" />
+                    <img src="@Url.Content("/_img/show/mouse.png")" alt="Alternate Text" style="width:50px;height:50px; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); margin-top: 30px;" />
                     <span style="display: block;">滾動滑鼠滾輪</span>
                 </div>
             </div>
@@ -142,6 +142,7 @@
                 <br />
                 <p style="font-size:18px">台灣四面環海，擁有多樣的海洋景觀。東海岸的太平洋浪濤洶湧，適合衝浪和潛水。不論是都市還是鄉村，當地居民都樂於分享他們的文化和故事。</p>
             </div>
+
         </div>
         <div class="section" style="background-image: url('@Url.Content("/_img/show/人.jpg")');">
             <div class="text">
@@ -159,8 +160,17 @@
         </div>
         <div class="section" style="background-image: url('@Url.Content("/_img/show/首頁.jpg")');">
             <div class="text">趣哪TripNa</div>
-            <a class="btn" asp-controller="Home" asp-action="Index">前往首頁→</a>
-            
+            <div class="additional-text" style="text-align: center;">
+                <div style="position: relative; display: inline-block;">
+                    <a class="btn" asp-controller="Home" asp-action="Index"
+                       style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease; cursor: pointer;"
+                       onmouseover="this.style.backgroundColor='#0056b3';"
+                       onmouseout="this.style.backgroundColor='#007bff';">
+                        前往首頁→
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="scroll-indicator">

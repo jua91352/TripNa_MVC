@@ -218,7 +218,7 @@
 
 
     <!-- 與導遊溝通的地方 -->
-    <h1 class="text-center">訂單問與答</h1>
+    <h1 class="text-center">訂單問與答  @order.Guider.GuiderId</h1>
 
 
     @foreach (var qa in Model.Questions)
@@ -295,6 +295,7 @@
                 $("#submitBtn").click(function () {
                     var question = $("#questionInput").val();
                     var orderId = @Model.OrderId; // 獲取訂單 ID
+                    var guiderId = @order.Guider.GuiderId; // 獲取導遊 ID
 
                     if (question.trim() === "") {
                         alert("請輸入問題內容。");
@@ -304,7 +305,7 @@
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("SubmitQuestion", "Members")",
-                        data: { question: question, orderId: orderId },
+                        data: { question: question, orderId: orderId, guiderId: guiderId },
                         success: function (response) {
                             alert(response);
                             $("#questionInput").val(""); // 清空輸入框

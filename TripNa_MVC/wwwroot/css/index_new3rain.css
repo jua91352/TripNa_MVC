@@ -312,7 +312,6 @@ div[class^="p-"] {
 
 .bgi {
     position: relative;
-    top: 5px;
     left: 0;
     bottom: 0px;
     right: 0;
@@ -325,7 +324,6 @@ div[class^="p-"] {
         /* height: 100%; */
         width: 100%;
     }
-
 img {
     margin: 0;
 }
@@ -356,6 +354,9 @@ img {
 
 /* container */
 .weatherinfo {
+    position:absolute;
+    top:200px;
+    left:900px;
     position: absolute;
     height: 600px;
     width: 800px;
@@ -448,6 +449,8 @@ footer {
 }
 
 #taiwans {
+    top:200px;
+    position:absolute;
     z-index: 20;
 }
 

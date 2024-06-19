@@ -387,6 +387,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\_img\xml\" />
     <Folder Include="wwwroot\導遊\證照\離島地區\" />
     <Folder Include="wwwroot\導遊\證照\北部地區\" />
     <Folder Include="wwwroot\導遊\證照\南部地區\" />
