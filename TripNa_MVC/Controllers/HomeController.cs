@@ -34,6 +34,12 @@ namespace TripNa_MVC.Controllers
 
         }
 
+        //加個這個會導到首頁
+        public IActionResult show()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();
