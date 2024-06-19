@@ -9,6 +9,7 @@
     int day = 0;
     string p = ".jpg";   
     int ratingStars = order.Rating.RatingStars;
+    int ThisorderID = ViewData["orderID"] != null ? (int)ViewData["orderID"] : 0;
 
 }
 
@@ -308,12 +309,11 @@
 
         <h2>已媒合 尚未出發</h2>
 
-       @*   *@
 
 
-    }
-    //已經評論過了 
-    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars==0)
+    }  
+
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars == 0)
     {
 
 
@@ -362,7 +362,7 @@
 
 
     }
-    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars != 0)
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && @order.OrderId == @ThisorderID)
     {
 
         <div id="scorezone">
@@ -450,6 +450,7 @@
             "MemberId": parseInt(memberId),
             "OrderId": parseInt(orderId),
             "GuiderId": parseInt(guiderId),
+            "GuiderId1": parseInt(guiderId),
             "RatingComment": write.value,
             "RatingStars": parseInt(currentRating),
         };

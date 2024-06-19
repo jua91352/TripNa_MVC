@@ -9,7 +9,7 @@
 	<html>
     <head>
 	<meta charset="UTF-8" />
-	<link href="~/css/Information.css" rel="stylesheet" />
+	<link href="/css/information.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"></script>
@@ -158,13 +158,13 @@
 									<button class="btn btn-light " type="button" data-bs-toggle="collapse" data-bs-target="#regionCollapsefood" aria-expanded="false" aria-controls="regionCollapsefood" style="width:100px;margin-bottom:5px;" id="filter">
 										<img src="~/images/篩選 (2).png" alt="Alternate Text" width="20px" height="20px" style="margin-right:5px;" />  篩選
 									</button>
-									<div class="collapse" id="regionCollapsefood" style="position:relative;height: 440px;">
+					<div class="collapse regionCollapsefood" id="regionCollapsefood" style="position:relative; max-height:350px !important;height:100% !important; background-color: rgb(255, 255, 255, 0.63) !important;">
 										<p style="background-color:#cdcfee4f; padding:5px;width:98%;">選擇區域</p>
-										<ul id="selectedregion" style="width:98%;">
+						<ul id="selectedregion" style="width:98%;" class="d-flex justify-content-start flex-wrap">
 											@* ------------------------------------------------------------------- *@
 											@foreach (var region in ViewBag.Regions)
 											{
-												<li id="liStyle">
+												<li id="liStyle" style="min-width: 125px;">
 													<input type="checkbox" name="selectedRegions" value="@region" id="region-@region" class="region-checkbox" />
 													<label for="region-@region">@region</label>
 												</li>
