@@ -356,6 +356,9 @@ img {
 
 /* container */
 .weatherinfo {
+    position:absolute;
+    top:100px;
+    left:900px;
     position: absolute;
     height: 600px;
     width: 800px;
@@ -448,6 +451,8 @@ footer {
 }
 
 #taiwans {
+    top:100px;
+    position:absolute;
     z-index: 20;
 }
 
