@@ -18,7 +18,7 @@ public partial class Coupon
 
     //public string CouponFrom { get; set; } = null!;
 
-    public DateTime CouponDueDate { get; set; }
+    public DateOnly CouponDueDate { get; set; }
 
     public virtual Member? Member { get; set; }
 }
