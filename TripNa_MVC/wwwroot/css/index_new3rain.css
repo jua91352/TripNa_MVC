@@ -1,0 +1,459 @@
+/* header */
+.navbar-nav > li > a {
+    margin-left: 10px;
+    color: #dee0fb;
+    font-size: 1.2rem;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.navbar-nav {
+    margin-right: 2rem;
+    background-color: #4e5482;
+    padding: .3rem 1rem;
+    border-radius: 30px;
+    box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.3), 4px 1px 2px 3px #4e5482 inset;
+    animation: fadeIn 1s ease-in-out;
+}
+
+
+footer {
+    color: #fefefe;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 0;
+    animation: fadeIn 3s ease-in-out;
+}
+
+.text-muted {
+    color: #dee0fb !important;
+    /* 淡紫色文本顏色 */
+}
+
+.bg-body-tertiary {
+    background-color: #4e5482 !important; /* 自定義背景顏色 */
+}
+
+.btn-primary {
+    background-color: #717ccd !important; /* 自定義背景顏色 */
+    border-color: #ffffff !important; /* 自定義邊框顏色 */
+}
+/* body */
+body {
+    background-color: #dee0fb;
+    font-family: "Noto Serif TC", serif;
+    animation: fadeIn 1.5s ease-in-out;
+}
+/* weather info */
+.position-relative {
+    position: relative;
+}
+
+/*----------- image-收藏紐 start--------------*/
+.heart {
+    font-size: 50px;
+    color: red;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: absolute; /* 确保按钮在图像上 */
+    top: 10px; /* 根据需要调整位置 */
+    right: 10px; /* 根据需要调整位置 */
+}
+
+
+.position-relative:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+/* --------------page top 晴天娃娃 start-------------*/
+.page-top img {
+    position: fixed;
+    /* 固定定位 */
+    display: block;
+    /* 塊級元素 */
+    right: 20px;
+    bottom: 20px;
+    /* top right bottom left */
+    width: 100px;
+    height: 100px;
+    /* background-color: black; */
+    text-align: center;
+    line-height: 50px;
+    /* 行高 150% 180%*/
+    text-decoration: none;
+    color: white;
+    border-radius: 50%;
+    z-index: 5;
+    font-size: large;
+    /* border: 1px solid red; */
+}
+
+.page-top p {
+    position: fixed;
+    /* 固定定位 */
+    display: block;
+    /* 塊級元素 */
+    right: 40px;
+    bottom: 100px;
+    /* top right bottom left */
+    width: 50px;
+    height: 50px;
+    /* background-color: black; */
+    text-align: center;
+    line-height: 50px;
+    /* 行高 150% 180%*/
+    text-decoration: none;
+    color: rgb(247, 241, 255);
+    border-radius: 50%;
+    z-index: 5;
+    font-size: large;
+    border: 1px solid rgb(255, 236, 236);
+    background-color: rgb(106, 3, 240);
+}
+/* --------------page top 晴天娃娃 end-------------*/
+
+
+
+/* div[class^="d-"] {
+    background-color: yellow;
+    border: 1px solid blue;
+} */
+
+div[class^="p-"] {
+    background-color: #4e5482;
+}
+
+.p-2 img {
+    border-radius: 5px 5px 0px 0px;
+}
+
+.p-2 p {
+    border-radius: 0px 0px 5px 5px;
+}
+
+.weather-icon {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    img
+
+{
+    height: 90% !important;
+}
+
+}
+/* weatherinfo table */
+.table {
+    border: 2px solid rgb(0, 0, 0);
+}
+
+    .table td {
+        text-align: justify;
+        /* 填满整个单元格 */
+    }
+/*------------- 背景雲 start--------------*/
+
+.cloud-container {
+    float: left;
+    position: absolute;
+    height: 900px;
+    top: 50px;
+    /* border: 2px solid red; */
+    /* 设置容器的高度 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    /* z-index: 5; */
+}
+
+.cloud {
+    position: relative;
+    /* 相对定位 */
+    animation: moveCloud 15s infinite alternate;
+    /* 添加动画效果 */
+    top: -650px;
+    /* overflow: hidden; */
+    /* z-index: 6; */
+}
+
+    .cloud img {
+        /* position: relative; */
+        /* top: -150px; */
+        width: 100%;
+        opacity: 0.5;
+        /* z-index: 5; */
+    }
+
+@keyframes moveCloud {
+    0% {
+        transform: translateY(0);
+        /* 云朵初始位置 */
+    }
+
+    100% {
+        transform: translateY(100px);
+        /* 云朵滚动的最大距离 */
+    }
+}
+
+.colored-cloud {
+    /* 亮度 飽和 色調旋轉  */
+    filter: brightness(80%) saturate(120%) hue-rotate(180deg);
+    /* 调整亮度、饱和度和色相 */
+}
+/*------------- 背景雲 end--------------*/
+
+
+
+/* ----------------------------淡出淡入----------------------------------- */
+/* 動畫 */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* img slider start */
+.carousel-indicators {
+    top: 250px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%; /* 调整控制按钮的宽度 */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* 增加背景色以指示悬停状态 */
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    /* max-width: 1000px; */
+    margin: auto;
+    overflow: hidden;
+}
+
+
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+    .prev:hover,
+    .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+.carousel-inner img {
+    max-width: 100%;
+    height: 200px;
+    margin: auto;
+}
+
+.text-col {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: black;
+}
+
+.carousel-item {
+    position: relative;
+    padding-left: 15px; /* 添加左右内边距 */
+    padding-right: 15px; /* 添加左右内边距 */
+}
+
+    .carousel-item img {
+        width: 100%;
+    }
+
+    .carousel-item p {
+        background-color: aliceblue;
+        transition: background-color 0.3s;
+    }
+
+        .carousel-item p:hover {
+            background-color: lightgray; /* 修改为你想要的反白颜色 */
+        }
+
+
+/* img slider end */
+/* 背景101圖 */
+
+.bgi {
+    position: relative;
+    top: 5px;
+    left: 0;
+    bottom: 0px;
+    right: 0;
+}
+
+    .bgi img {
+        position: relative;
+        /* top: 50px; */
+        min-height: 100%;
+        /* height: 100%; */
+        width: 100%;
+    }
+
+img {
+    margin: 0;
+}
+
+
+
+/* SVG 台灣 */
+.county {
+    fill: #436fff;
+    stroke: rgb(255, 255, 255);
+    stroke-width: 1.5px;
+    transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease; /* 添加過渡效果 */
+}
+
+    .county:hover {
+        fill: rgba(0, 83, 171, 0.8);
+        transform: translateY(-5px);
+        filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .county:active {
+        transform: translateY(-2px); /* 稍微減少移動距離，保持按下的效果 */
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2)); /* 陰影效果變小，讓它看起來像是按下去的效果 */
+    }
+
+
+
+
+/* container */
+.weatherinfo {
+    position: absolute;
+    height: 600px;
+    width: 800px;
+    float: right;
+    color: rgb(255, 255, 255);
+    /* border: 2px solid red; */
+    z-index: 3;
+    /* top: 150px;
+    left: 900px; */
+    /* color: aqua; */
+    text-align: center;
+    display: none;
+    font-size: smaller;
+    z-index: 20;
+}
+
+.weatherinfo {
+    clear: both;
+}
+
+
+/* ---------------API INFO---------------- */
+
+.icon-umbrella img {
+    width: 30px;
+    height: 30px;
+}
+
+.temp {
+    text-align: center; /* 将文字内容水平居中 */
+    /* font-size: smaller; */
+}
+
+    /* 如果需要将垂直方向上的内容也居中，您可以使用以下样式 */
+    .temp i, .temp sup {
+        vertical-align: middle; /* 将垂直方向上的内容居中 */
+        /* font-size: smaller; */
+    }
+
+.hamburger-menu {
+    position: absolute;
+    top: -10px;
+    /* right: -270px; */
+    /* top: -265px; */
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.hamburger-icon {
+    font-size: 30px;
+    user-select: none; /* 禁用文本选择 */
+}
+
+.note {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 200px;
+    background-color: #e4e3e3;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    color: #5c0087;
+    border-radius: 10px;
+}
+
+#note-content p {
+    margin: 5px 0;
+}
+
+.hamburger-menu:hover .note {
+    display: block;
+}
+
+
+footer {
+    background-color: #4e5482;
+    color: #fefefe;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 0;
+}
+
+.background-color canvas {
+    z-index: 20;
+    opacity: 0.5;
+    /* border: 1px solid red; */
+    /* height: 700px; */
+}
+
+#taiwans {
+    z-index: 20;
+}
+
+.rainboy {
+    position: relative;
+    top: -300px;
+    left: 1400px;
+    height: 300px;
+}

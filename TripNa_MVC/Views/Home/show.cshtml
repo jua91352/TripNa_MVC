@@ -1,0 +1,283 @@
+﻿@{
+    ViewData["Title"] = "Show";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 字體相關 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>@ViewData["Title"]</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* 隱藏滾動條 */
+            height: 100vh;
+            font-family: "Noto Serif TC", serif;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            transition: transform 1s ease-out;
+            z-index: 0;
+        }
+
+        .section {
+            flex: 0 0 100vw;
+            height: 100vh;
+            position: relative;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1.5s ease-out;
+        }
+
+        .text {
+            position: absolute;
+            top: 30%;
+            left: 10px;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            max-width: 40%;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 1s ease-out, transform 2s ease-out;
+            line-height: 1.5;
+            transform: translateX(-100%);
+        }
+
+        .additional-text {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            max-width: 30%;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 1s ease-out, transform 2s ease-out;
+            transform: translateX(100%);
+            
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .scroll-bar {
+            height: 100%;
+            width: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: width 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section" style="opacity: 1;">
+            <video class="video-background" autoplay muted loop>
+                <source src="@Url.Content("/_img/show/首頁.mp4")" type="video/mp4">
+            </video>
+            <div class="text">
+                台灣．山河
+                <br />
+                Taiwan Mountain
+                <br />
+                <p style="font-size:18px">台灣的山岳景觀壯麗雄偉，中央山脈縱貫南北，提供了無數的登山步道和壯觀的景色。阿里山的雲海和日出是遊客必訪的勝地，玉山則是東北亞最高峰，吸引著無數登山愛好者。此外，太魯閣國家公園以其壯麗的峽谷景觀和大理石峽谷聞名，成為台灣的自然奇觀之一。</p>
+            </div>
+            <div class="additional-text" style="text-align: center;">
+                <div style="position: relative; display: inline-block;">
+                    <img src="@Url.Content("/_img/show/mouse.png")" alt="Alternate Text" style="width:50px;height:50px; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 10px;" />
+                    <span style="display: block;">滾動滑鼠滾輪</span>
+                </div>
+            </div>
+
+
+            
+        </div>
+
+        <div class="section">
+            <video class="video-background" autoplay muted loop>
+                <source src="@Url.Content("/_img/show/海.mp4")" type="video/mp4">
+            </video>
+            <div class="text">
+                海．景
+                <br />
+                <p style="font-size:18px">台灣四面環海，擁有多樣的海洋景觀。東海岸的太平洋浪濤洶湧，適合衝浪和潛水。不論是都市還是鄉村，當地居民都樂於分享他們的文化和故事。</p>
+            </div>
+        </div>
+        <div class="section" style="background-image: url('@Url.Content("/_img/show/人.jpg")');">
+            <div class="text">
+                人‧溫度
+                <br />
+                <p style="font-size:18px">台灣人民熱情友善，以熱情待客和真誠的微笑著稱。吸引著無數的遊客前來觀賞。澎湖列島以其美麗的海蝕地形和清澈的海水著稱，是浮潛和水上活動的絕佳地點。這些海洋景觀展現了台灣自然的另一種美麗。</p>
+            </div>
+        </div>
+        <div class="section" style="background-image: url('@Url.Content("/_img/show/文化.jpg")');">
+            <div class="text">
+                文．化
+                <br />
+                <p style="font-size:18px">台灣人民熱情友善，以熱情待客和真誠的微笑著稱。不論是都市還是鄉村，當地居民都樂於分享他們的文化和故事。</p>
+            </div>
+        </div>
+        <div class="section" style="background-image: url('@Url.Content("/_img/show/首頁.jpg")');">
+            <div class="text">趣哪TripNa</div>
+            <a class="btn" asp-controller="Home" asp-action="Index">前往首頁→</a>
+            
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <div class="scroll-bar"></div>
+    </div>
+
+    <script>
+        // 等到DOM內容加載完畢後執行
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container'); // 取得容器元素
+            const sections = document.querySelectorAll('.section'); // 取得所有的section元素
+            const scrollBar = document.querySelector('.scroll-bar'); // 取得滾動條元素
+            let count = 0; // 初始化計數器，用於追踪當前section
+            const sectionWidth = window.innerWidth; // 獲取窗口的寬度，作為每個section的寬度
+
+            // 初始化第一個section的顯示
+            sections[0].style.opacity = 1;
+            const firstText = sections[0].querySelector('.text');
+            firstText.style.opacity = 1;
+            firstText.style.transform = 'translateX(0)';
+            const firstAdditionalText = sections[0].querySelector('.additional-text');
+            if (firstAdditionalText) {
+                firstAdditionalText.style.opacity = 1;
+                firstAdditionalText.style.transform = 'translateX(0)';
+            }
+
+            // 定義滾動動畫
+            function animateScroll(delta) {
+                // 根據滾動方向更新計數器
+                if (delta > 0) {
+                    count = Math.min(count + 1, sections.length - 1); // 向右滾動
+                } else {
+                    count = Math.max(count - 1, 0); // 向左滾動
+                }
+
+                const move = -count * sectionWidth; // 計算位移距離
+                container.style.transform = `translateX(${move}px)`; // 更新容器的位移
+                updateScrollBar(); // 更新滾動條
+
+                // 設置當前section的透明度為1
+                sections[count].style.opacity = 1;
+
+                // 延遲500ms後顯示文字內容
+                setTimeout(() => {
+                    const text = sections[count].querySelector('.text');
+                    text.style.opacity = 1;
+                    text.style.transform = 'translateX(0)';
+
+                    const additionalText = sections[count].querySelector('.additional-text');
+                    if (additionalText) {
+                        additionalText.style.opacity = 1;
+                        additionalText.style.transform = 'translateX(0)';
+                    }
+                }, 500);
+            }
+
+            // 處理滑鼠滾輪事件
+            function handleMouseWheel(event) {
+                event.preventDefault(); // 阻止預設的滾動行為
+
+                let delta = event.deltaY || event.detail || -event.wheelDelta; // 獲取滾動距離
+                const scrollThreshold = 100; // 定義滾動閾值
+
+                // 根據滾動距離更新計數器
+                if (delta > scrollThreshold) {
+                    count = Math.min(count + 1, sections.length - 1); // 向右滾動
+                } else if (delta < -scrollThreshold) {
+                    count = Math.max(count - 1, 0); // 向左滾動
+                }
+
+                const move = -count * sectionWidth; // 計算位移距離
+                container.style.transform = `translateX(${move}px)`; // 更新容器的位移
+                updateScrollBar(); // 更新滾動條
+
+                // 重置所有section的狀態
+                sections.forEach((section, index) => {
+                    section.style.opacity = index === count ? 1 : 0; // 只有當前section設置為透明
+                    const text = section.querySelector('.text');
+                    text.style.opacity = 0;
+                    text.style.transform = 'translateX(-100%)';
+
+                    const additionalText = section.querySelector('.additional-text');
+                    if (additionalText) {
+                        additionalText.style.opacity = 0;
+                        additionalText.style.transform = 'translateX(100%)';
+                    }
+                });
+
+                // 延遲500ms後顯示當前section的文字內容
+                setTimeout(() => {
+                    const text = sections[count].querySelector('.text');
+                    text.style.opacity = 1;
+                    text.style.transform = 'translateX(0)';
+
+                    const additionalText = sections[count].querySelector('.additional-text');
+                    if (additionalText) {
+                        additionalText.style.opacity = 1;
+                        additionalText.style.transform = 'translateX(0)';
+                    }
+                }, 500);
+            }
+
+            // 更新滾動條的長度
+            function updateScrollBar() {
+                const scrollPercentage = (count / (sections.length - 1)) * 100; // 計算滾動百分比
+                scrollBar.style.width = `${scrollPercentage}%`; // 設置滾動條的寬度
+            }
+
+            // 監聽滑鼠滾輪事件
+            if ("onmousewheel" in window) {
+                window.onmousewheel = handleMouseWheel; // 用於大多數瀏覽器
+            } else {
+                window.addEventListener("mousewheel", handleMouseWheel, false); // 用於WebKit內核的瀏覽器
+                window.addEventListener("DOMMouseScroll", handleMouseWheel, false); // 用於Firefox瀏覽器
+            }
+        });
+    </script>
+
+</body>
+</html>
