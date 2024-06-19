@@ -1,4 +1,6 @@
-﻿namespace TripNa_MVC.Models
+﻿using QAINSERT.Models;
+
+namespace TripNa_MVC.Models
 {
     public class OrderDetail
     {
@@ -18,9 +20,11 @@
 
         public List<ItineraryDetail> ItineraryDetails { get; set; }
         public int OrderId { get; set; }
-        public List<MemberQuestion> MemberQuestions { get; set; }
-        public List<GuiderAnswer> GuiderAnswers { get; set; }
-        public List<QuestionAnswer> Questions { get; set; }
+        //public List<MemberQuestion> MemberQuestions { get; set; }
+        public List<Qa> Questions { get; set; }
+
+        //public List<GuiderAnswer> GuiderAnswers { get; set; }
+        //public List<QuestionAnswer> Questions { get; set; }
 
         public List<SelectGuider> SelectGuiders { get; set; }
 

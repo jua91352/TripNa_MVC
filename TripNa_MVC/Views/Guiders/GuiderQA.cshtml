@@ -202,18 +202,36 @@
     {
         <div id="userQA">
             <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
-
             <span style="font-size: 22px;">@order.Member.MemberName:</span>
             <div style="font-size: 22px;">@qa.QuestionContent</div>
             <span style="font-size: 16px; color: #545454;">@qa.QuestionTime</span>
+            @if (qa.AnswerContent == null)
+            {
+                <a href="javascript:;" onclick="toggleReplyBox(this)">回覆</a>
+                <span style="font-size: 12px; color: #a2a2a2;">@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                <div id="hide22_@qa.Qaid" style="display: none;">
+                    <span class="bi bi-send" style="font-size: 22px;"></span>
+                    <span style="font-size: 22px;">@order.Guider.GuiderNickname:</span>
+                    <br>
+                    <textarea type="text" placeholder="請在此輸入您的回覆..." id="answerInput_@qa.Qaid" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-10 text-center"></div>
+                        <div class="col-sm-2 text-end d-inline">
+                            <button onclick="hideReplyBox(this)" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">取消</button>
+                            <button id="submitBtn_@qa.Qaid" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-        <br>
-        if (@qa.QuestionTime < qa.AnswerTime)
+
+        @if (@qa.QuestionTime < qa.AnswerTime)
         {
             <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
                 <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
                 <span style="font-size: 22px;">導遊-@order.Guider.GuiderNickname:</span>
-                <div style ="font-size: 22px;">@qa.AnswerContent</div>
+                <div style="font-size: 22px;">@qa.AnswerContent</div>
                 <span style="font-size: 16px; color: #545454;">@qa.AnswerTime</span>
             </div>
             <br>
@@ -222,7 +240,8 @@
 
 
 
-    <div>
+
+ @*    <div>
         <span class="bi bi-send" style="font-size: 22px;"></span>
         <span style="font-size: 22px;">@order.Guider.GuiderNickname:</span>
         <br>
@@ -248,9 +267,11 @@
 
         </div>
 
-    </div>
-    <br>
-    <br>
+    </div> *@
+
+
+
+
     <br>
     <br>
     <br>
@@ -259,10 +280,37 @@
 
     @section Scripts {
         <script>
+      
+
+            function toggleReplyBox(elem) {
+                var hideElem = elem.nextElementSibling.nextElementSibling;
+                if (hideElem.style.display === 'none') {
+                    hideElem.style.display = '';
+                } else {
+                    hideElem.style.display = 'none';
+                }
+            }
+
+            function hideReplyBox(elem) {
+                elem.parentElement.parentElement.parentElement.style.display = 'none';
+            }
+
             $(function () {
                 $("#submitBtn").click(function () {
+
                     var answer = $("#answerInput").val();
-                    var orderId = @Model.OrderId; // 獲取訂單 ID
+
+                    const DataUpdate = {
+                        "OrderId": @Model.OrderId,
+                        "MemberId": @order.Member.MemberId,
+                        "GuiderId": @order.Guider.GuiderId,
+                        "AnswerContent": answer,
+                        "AnswerTime": "",
+                    };
+
+                    console.log(DataUpdate);
+
+                    // var orderId = @Model.OrderId; // 獲取訂單 ID
 
                     if (answer.trim() === "") {
                         alert("請輸入回覆內容。");
@@ -270,9 +318,9 @@
                     }
 
                     $.ajax({
-                        type: "POST",
+                        type: "PUT",
                         url: "@Url.Action("SubmitAnswer", "Guiders")",
-                        data: { answer: answer, orderId: orderId },
+                        data: JSON.stringify(DataUpdate),
                         success: function (response) {
                             alert(response);
                             $("#answerInput").val(""); // 清空輸入框
@@ -285,6 +333,31 @@
                     });
                 });
             });
+
+
+
+           
+
+            // $.ajax({
+            //     method: "PUT",
+            //     url: "/Guiders/MatchDetails",
+            //     data: JSON.stringify(dataToSend),
+            //     contentType: "application/json",
+            //     success: function (data) {
+            //         alert("接單成功!");
+            //         location.reload(); // 重新加載當前頁面
+            //     },
+            //     error: function (xhr, status, error) {
+            //         console.log(xhr);
+            //         console.log(status);
+            //         console.log(error);
+            //     }
+            // });
+
+
+
+
+
 
 
 
