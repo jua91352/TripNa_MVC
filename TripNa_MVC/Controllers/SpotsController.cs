@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 using TripNa_MVC.Models;
 
 namespace TripNa_MVC.Controllers
@@ -12,10 +13,12 @@ namespace TripNa_MVC.Controllers
     public class SpotsController : Controller
     {
         private readonly TripNaContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public SpotsController(TripNaContext context)
+        public SpotsController(TripNaContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Spots
@@ -91,17 +94,37 @@ ViewData["CurrentFilter"] = searchString;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot)
+        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot, IFormFile spotImage)
         {
+            if (spotImage != null && spotImage.Length > 0)
+            {
+                string spotImageFileName = $"{spot.SpotName}.jpg";
+                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "Images/Spots", spot.SpotCity, spotImageFileName);
+                string directoryPath = Path.GetDirectoryName(imagePath);
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await spotImage.CopyToAsync(stream);
+                }
+
+                // 设置 SpotImagePath 的值
+                //spot.SpotImagePath = $"/Images/Spots/{spot.SpotCity}/{spotImageFileName}";
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(spot);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(spot);
         }
-
         // GET: Spots/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
