@@ -463,146 +463,6 @@ namespace TripNa_MVC.Controllers
             return View(model);
         }
 
-
-        //public IActionResult MemberQA(int orderID)
-        //{
-        //    var memberEmail = HttpContext.Session.GetString("memberEmail");
-        //    if (string.IsNullOrEmpty(memberEmail))
-        //    {
-        //        return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
-        //    }
-
-        //    var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-        //    var orderDetails = (from o in _context.Orderlists
-        //                        join m in _context.Members on o.MemberId equals m.MemberId
-        //                        from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
-        //                       join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-        //                        join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-        //                        from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
-        //                        where o.MemberId == member.MemberId && o.OrderId == orderID
-        //                        from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
-        //                        join s in _context.Spots on j.SpotId equals s.SpotId
-        //                        select new
-        //                        {
-        //                            o.OrderNumber,
-        //                            o.OrderDate,
-        //                            i.ItineraryStartDate,
-        //                            o.OrderTotalPrice,
-        //                            o.OrderStatus,
-        //                            o.OrderMatchStatus,
-        //                            c.CouponCode,
-        //                            g.GuiderNickname,
-        //                            i.ItineraryName,
-        //                            i.ItineraryPeopleNo,
-        //                            m.MemberName,
-        //                            m.MemberEmail,
-        //                            m.MemberPhone,
-        //                            ItineraryDetails = j,
-        //                            Spot = s,
-        //                            o.ItineraryId,
-        //                            a.VisitOrder,
-        //                            g.GuiderArea,
-        //                            o.OrderId
-        //                        });
-
-
-        //    // 將查詢結果轉換為列表
-        //    var orderDetailsList = orderDetails.ToList();
-
-        //    if (orderDetailsList == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-
-        //    var questions = from q in _context.MemberQuestions
-        //                    from ga in _context.GuiderAnswers.Where(g => g.OrderId == (int?)q.OrderId).DefaultIfEmpty()
-        //                    where q.MemberId == member.MemberId && q.OrderId == orderID
-        //                    //.Where(q => q.OrderId == orderID)
-        //                    select new
-        //                    {
-        //                        q.QuestionContent,
-        //                        q.QuestionTime,
-        //                        ga.AnswerContent,
-        //                        ga.AnswerTime
-        //                    };
-
-
-
-
-
-
-
-        //    int questionCount = _context.MemberQuestions
-        //                       .Where(mq => mq.OrderId == orderID)
-        //                       .Count();
-
-        //    // 顯示結果
-        //    Console.WriteLine($"OrderID = {orderID} 的 QuestionContent 筆數為: {questionCount}");
-
-        //    //將問答筆數傳給HTML
-        //    ViewData["QuestionCount"] = questionCount;
-
-
-        //    // 構建 OrderDetail
-        //    var model = new OrderDetail
-        //    {
-
-        //        Orders = orderDetailsList.Select(o => new Orderlist
-        //        {
-
-        //            OrderNumber = o.OrderNumber,
-        //            OrderDate = o.OrderDate,
-        //            OrderTotalPrice = o.OrderTotalPrice,
-        //            OrderStatus = o.OrderStatus,
-        //            OrderMatchStatus = o.OrderMatchStatus,
-        //            OrderId = o.OrderId,
-        //            Itinerary = new Itinerary
-        //            {
-        //                ItineraryStartDate = o.ItineraryStartDate,
-        //                ItineraryName = o.ItineraryName,
-        //                ItineraryPeopleNo = o.ItineraryPeopleNo,
-        //                ItineraryDetails = new List<ItineraryDetail> { o.ItineraryDetails }
-        //            },
-        //            Coupon = new Coupon
-        //            {
-        //                CouponCode = o.CouponCode
-        //            },
-        //            Guider = new Guider
-        //            {
-        //                GuiderNickname = o.GuiderNickname,
-        //                GuiderArea = o.GuiderArea
-        //            },
-        //            Member = new Member
-        //            {
-        //                MemberName = o.MemberName,
-        //                MemberEmail = o.MemberEmail,
-        //                MemberPhone = o.MemberPhone
-        //            },
-
-        //            Spots = o.Spot,                    
-        //            ItineraryDetail = new ItineraryDetail
-        //            {
-        //                ItineraryId = o.ItineraryId,
-        //                VisitOrder = o.VisitOrder
-        //            }
-        //        }).ToList(),
-        //        Questions = questions.Select(q => new QuestionAnswer
-        //        {
-        //            QuestionContent = q.QuestionContent,
-        //            QuestionTime = (DateTime)q.QuestionTime,
-        //            AnswerContent = q.AnswerContent,
-        //            AnswerTime = q.AnswerTime
-        //        }).ToList(),              
-        //        MemberId = member.MemberId,
-        //        OrderId = orderID
-        //    };
-
-        //    return View(model);
-        //}
-
-
-
         public IActionResult MemberQA(int orderID)
         {
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -738,8 +598,6 @@ namespace TripNa_MVC.Controllers
 
 
 
-
-
         [HttpPost]
         public IActionResult SubmitQuestion(string question, int orderId, int guiderId)
         {
@@ -775,7 +633,6 @@ namespace TripNa_MVC.Controllers
             return Ok("問題提交成功。");
 
         }
-
 
 
 
@@ -823,12 +680,6 @@ namespace TripNa_MVC.Controllers
                 return StatusCode(500, "伺服器錯誤：" + ex.Message);
             }
         }
-
-
-
-
-
-
 
 
 

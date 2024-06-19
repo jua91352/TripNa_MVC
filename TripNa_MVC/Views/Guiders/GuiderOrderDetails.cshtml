@@ -8,7 +8,9 @@
     int groupSize = 4;
     int day = 0;
     string p = ".jpg";
+
     int ratingStars = order.Rating.RatingStars;
+    int ThisorderID = ViewData["orderID"] != null ? (int)ViewData["orderID"] : 0;
 
 }
 
@@ -16,8 +18,8 @@
 
     .block #OrderListTatble tr td img {
         object-fit: cover;
-        height: 100px;
-        height: 100px;
+        height: 125px;
+        height: 125px;
     }
 
     body #myscore {
@@ -28,7 +30,7 @@
 
 
     #star {
-        font-size: 20px;
+        font-size: 30px;
         margin: 0;
     }
 
@@ -84,7 +86,7 @@
     <br>
     <br>
 
-    <table id="listtable" class="table table-striped table-hover">
+    <table id="listtable" class="table table-striped table-hover" style="font-size: 20px;">
 
         <thead>
             <tr id="trTitle">
@@ -127,7 +129,7 @@
 
                 <tr id="trContent">
                     <td class="text-center  align-middle  ">
-                        <a href="javascript:"
+                        <a style="text-decoration: none; color:black" href="javascript:"
                            onclick="document.all.fullContent.style.display=(document.all.fullContent.style.display=='none')?'':'none';document.all.smallContent.style.display=(document.all.smallContent.style.display=='none')?'':'none'">
                             @order.Itinerary.ItineraryName▼
                         </a>
@@ -193,7 +195,7 @@
 
     <div class="block" id="fullContent" style="display:none;">
 
-        <table id="OrderListTatble" class="table table-striped ">
+        <table id="OrderListTatble" class="table table-striped" style="font-size: 20px;">
             @for (int i = 0; i < Math.Sqrt(orderCount); i += groupSize)
             {
                 day++;
@@ -204,7 +206,7 @@
                         string g = ".jpg";
                         <td class="text-center">
                             <br>
-                            <img src="~/景點圖片/@(Model.Orders[j].Itinerary.ItineraryName.Substring(0, 2))/@Model.Orders[j].Spots.SpotName@g" height="100px " width="100px">
+                            <img src="~/景點圖片/@(Model.Orders[j].Itinerary.ItineraryName.Substring(0, 2))/@Model.Orders[j].Spots.SpotName@g" height="125px " width="125px">
                             <br>
                             <p>@Model.Orders[j].Spots.SpotName</p>
                             <br>
@@ -221,10 +223,63 @@
     <!-- 查看評價的地方 -->
     @if (order.OrderMatchStatus == "媒合中")
     {
+        @* <h3 class="text-center">媒合中 目前還不能評論 @orderCount</h3> *@
 
     }
+
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars == 0)
+    {
+
+
+        @* <h2>訂單完成 但會員還沒評價</h2> *@
+
+    }
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && @order.OrderId == @ThisorderID)
+    {
+
+        <div id="scorezone">
+            <h2 class="text-center">本次收到的評價</h2>
+            <div id="myscore">
+                <br>
+
+                <span style="margin-left: 10px ; font-size: 20px;">@(order.Member.MemberName)評價：</span>
+
+
+                <span id="star">
+                    @for (int i = 0; i < ratingStars; i++)
+                    {
+                        <span  class="rank-rated">&#128970;</span>
+                    }
+
+                </span>
+                <span style="font-size: 20px; ">@ratingStars 顆星</span>
+                <br>
+                <br>
+
+                <div style="resize:none; height: 105px ; width:100% ; background-color: #cacde4;color: #3A326D ;padding-top:15px">
+                    <span style="margin-left: 10px ;font-size: 20px; ">
+                      
+                        @order.Rating.RatingComment
+                    </span>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    }
+
+
+
+
+
+
+
+
     //會員已經評論過了
-    else
+   @*  else
     {
         <div id="scorezone">
             <h3 class="text-center">本次收到的評價</h3>
@@ -256,7 +311,7 @@
 
 
         </div>
-    }
+    } *@
 
 
 

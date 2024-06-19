@@ -31,7 +31,7 @@
 
 
     #star {
-        font-size: 20px;
+        font-size: 30px;
         margin: 0;
     }
 
@@ -301,13 +301,13 @@
     <!-- 評價導遊的地方 -->
     @if (order.OrderMatchStatus == "媒合中")
     {
-        <h3 class="text-center">媒合中 目前還不能評論 @orderCount</h3>
+        @* <h3 class="text-center">媒合中 目前還不能評論 @orderCount</h3> *@
     }
     else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "尚未出發")
     {
 
 
-        <h2>已媒合 尚未出發</h2>
+        @* <h2>已媒合 尚未出發</h2> *@
 
 
 
@@ -317,33 +317,34 @@
     {
 
 
-        <h2 >訂單完成 但還沒評價 應該要秀出可以評價的畫面</h2>
+       @*  <h2 >訂單完成 但還沒評價 應該要秀出可以評價的畫面</h2>
 
        @order.Member.MemberId;
         @order.Guider.GuiderId;
-        @order.OrderId;
+        @order.OrderId; *@
 
 
         <div id="scorezone">
-            <h3 class="text-center">評價導遊</h3>
+            <h2 class="text-center">評價導遊</h2>
             <div id="myscore">
                 <br>
-                <span style="margin: 10px;">導遊評價：</span>
+                <span style="margin: 10px ; font-size: 20px;">導遊評價：</span>
 
                 <span id="star">
 
-                    <span class="rank-not-rated" data-rating="1">&#128970;</span>
-                    <span class="rank-not-rated" data-rating="2">&#128970;</span>
-                    <span class="rank-not-rated" data-rating="3">&#128970;</span>
-                    <span class="rank-not-rated" data-rating="4">&#128970;</span>
-                    <span class="rank-not-rated" data-rating="5">&#128970;</span>
-                    <span id="score" style="color: #3A326D; font-size: 15px;"></span>
+                    <span  class="rank-not-rated" data-rating="1">&#128970;</span>
+                    <span  class="rank-not-rated" data-rating="2">&#128970;</span>
+                    <span  class="rank-not-rated" data-rating="3">&#128970;</span>
+                    <span  class="rank-not-rated" data-rating="4">&#128970;</span>
+                    <span  class="rank-not-rated" data-rating="5">&#128970;</span>
+
                 </span>
+                <span id="score" style="color: #3A326D; font-size: 20px;"></span>
                 <br>
                 <br>
 
                 <textarea type="text" placeholder="輸入您的評價" id="write"
-                          style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ;"></textarea>
+                          style="resize:none; height: 105px ; width:100% ; background-color: #cacde4;color: #3A326D ; font-size: 20px"></textarea>
             </div>
 
 
@@ -369,22 +370,22 @@
             <h2 class="text-center">本次導遊評價</h2>
             <div id="myscore">
                 <br>
-                <span style="margin: 10px;">導遊評價：</span>
+                <span style="margin: 10px;font-size: 20px;">導遊評價：</span>
 
 
                 <span id="star">
                     @for (int i = 0; i < ratingStars; i++)
                     {
-                        <span class="rank-rated">&#128970;</span>
+                        <span style="font-size: 20px;" class="rank-rated">&#128970;</span>
                     }
 
                 </span>
-                <span>@ratingStars 顆星</span>
+                <span style="font-size: 20px; ">@ratingStars 顆星</span>
                 <br>
                 <br>
 
-                <div style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">
-                    <span style="margin: 10px;">
+                <div style="resize:none; height: 105px ; width:100% ; background-color: #cacde4;color: #3A326D ;padding-top:15px" >
+                    <span style="margin: 10px ; font-size: 20px; ">
                         @order.Rating.RatingComment
                     </span>
                 </div>
@@ -466,7 +467,7 @@
             success: function (response) {
                 console.log("評價保存成功!");
                 alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
-                //         location.reload(); // 重新加載當前頁面
+                location.reload(); // 重新加載當前頁面
 
             },
             error: function (xhr, status, error) {
