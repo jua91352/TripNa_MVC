@@ -94,27 +94,28 @@ ViewData["CurrentFilter"] = searchString;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot, IFormFile spotImage)
+        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot, IFormFile photo)
         {
-            if (spotImage != null && spotImage.Length > 0)
-            {
-                string spotImageFileName = $"{spot.SpotName}.jpg";
-                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "Images/Spots", spot.SpotCity, spotImageFileName);
-                string directoryPath = Path.GetDirectoryName(imagePath);
 
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+
+            string spotImageFileName = $"{spot.SpotName}.jpg";
+           
+            if (photo != null && photo.Length > 0)
+            {
+                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "Images/Spots", spotImageFileName);
+                //string directoryPath = Path.GetDirectoryName(imagePath);
 
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
-                    await spotImage.CopyToAsync(stream);
+                    await photo.CopyToAsync(stream);
                 }
-
-                // 设置 SpotImagePath 的值
-                //spot.SpotImagePath = $"/Images/Spots/{spot.SpotCity}/{spotImageFileName}";
             }
+
+
+            //using (var stream = new FileStream(imagePath, FileMode.Create))
+            //{
+            //    await photo.CopyToAsync(stream);
+            //}
 
             if (ModelState.IsValid)
             {

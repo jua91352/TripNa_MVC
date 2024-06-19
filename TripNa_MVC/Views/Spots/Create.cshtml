@@ -35,20 +35,12 @@
                 <span asp-validation-for="SpotIntro" class="text-danger"></span>
             </div>
 
-             @*    <div class="form-group">
-                    <label asp-for="SpotName" class="control-label">景點名稱</label>
-                    <input asp-for="SpotName" class="form-control" />
-                    <span asp-validation-for="/景點圖片/SpotName" class="text-danger"></span>
-                </div>
- *@
-
             <div class="form-group">
                 <input type="submit" value="新增" class="btn btn-primary" style="margin:20px 0;" />
             </div>
         </form>
     </div>
 </div>
-
 
     <form method="post" enctype="multipart/form-data" asp-action="Create">
         <div>
@@ -59,6 +51,8 @@
     </form>
 
 
+    <input type="file" class="form-control" name="guiderImage" accept="image/*" id="guiderImage" required>
+    <p class="form-text mb-4">&#10148;請上傳近期且清晰的正面照片</p>
 
 <div>
         <a asp-action="Index" class="btn btn-primary">回到景點管理</a>
