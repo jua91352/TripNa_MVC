@@ -335,6 +335,12 @@ namespace TripNa_MVC.Controllers
 
             var MemberId = _context.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
 
+            //將orderID傳給HTML
+            ViewData["orderID"] = orderID;
+
+
+
+
             if (member != null && member.GuiderId == null)
             {
                 // GuiderID 為空,可以註冊
@@ -350,7 +356,7 @@ namespace TripNa_MVC.Controllers
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
                                 from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
-                                from r in _context.Ratings.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
+                                from r in _context.Ratings.Where(x => x.OrderId == orderID).DefaultIfEmpty()
                                 where o.MemberId == member.MemberId && o.OrderId == orderID
                                 from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                 join s in _context.Spots on j.SpotId equals s.SpotId
