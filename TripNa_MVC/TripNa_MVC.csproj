@@ -374,6 +374,7 @@
     <None Include="wwwroot\images\相機膠捲.webp" />
     <None Include="wwwroot\images\車軌.webp" />
     <None Include="wwwroot\_img\coupon.svg" />
+    <None Include="wwwroot\_img\index\雨傘.svg" />
     <None Include="wwwroot\_img\likelist.svg" />
     <None Include="wwwroot\_img\mydata.svg" />
     <None Include="wwwroot\_img\myorder.svg" />
