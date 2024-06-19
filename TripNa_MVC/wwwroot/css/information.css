@@ -389,16 +389,35 @@ clip-path: polygon(0 0,100% 0,100% 90%,0 100%);*/
     height: 320px;
 }
 
+#regionCollapsefood {
+    padding: 10px;
+    margin-right: 60px;
+    background-color: rgb(255, 255, 255, 0.63);
+    height: 440px;
+}
 
-    #regionCollapse > p {
+    #regionCollapsefood > p {
         margin-left: 5px;
     }
+
+
+#regionCollapse > p {
+    margin-left: 5px;
+}
 
 #selectedregion {
     list-style-type: none;
     display: flex;
     cursor: pointer;
+    background-color: #cdcfee1c;
+    border: 2px solid #979de652;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
 }
+
+
+
 
 #selectedregion-spot {
     list-style-type: none;

@@ -37,7 +37,7 @@ public partial class TripNaContext : DbContext
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
-    public virtual DbSet<Restaurant> Restaurants { get; set; }
+    public virtual DbSet<Restaurant> Restaurant { get; set; }
 
     public virtual DbSet<SelectGuider> SelectGuiders { get; set; }
 

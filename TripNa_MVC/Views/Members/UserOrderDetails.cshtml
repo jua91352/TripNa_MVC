@@ -34,6 +34,9 @@
         margin: 0;
     }
 
+    #star:hover {
+        cursor: pointer;
+    }
 
     .rank-rated {
         color: #f6be00;
@@ -297,10 +300,30 @@
     <!-- 評價導遊的地方 -->
     @if (order.OrderMatchStatus == "媒合中")
     {
-        <h3 class="text-center">目前還不能評論 @orderCount</h3>
+        <h3 class="text-center">媒合中 目前還不能評論 @orderCount</h3>
     }
     else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "尚未出發")
     {
+
+
+        <h2>已媒合 尚未出發</h2>
+
+       @*   *@
+
+
+    }
+    //已經評論過了 
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars==0)
+    {
+
+
+        <h2 >訂單完成 但還沒評價 應該要秀出可以評價的畫面</h2>
+
+       @order.Member.MemberId;
+        @order.Guider.GuiderId;
+        @order.OrderId;
+
+
         <div id="scorezone">
             <h3 class="text-center">評價導遊</h3>
             <div id="myscore">
@@ -330,7 +353,7 @@
                 <div class="col-10 text-center"></div>
 
                 <div class="col-2 text-end">
-                    <button id="submitBtn " class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
+                    <button id="submitBtn " onclick="submitData( '@order.Member.MemberId' , '@order.OrderId','@order.Guider.GuiderId')" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
 
                 </div>
 
@@ -339,9 +362,9 @@
 
 
     }
-    //已經評論過了 
-    else
+    else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars != 0)
     {
+
         <div id="scorezone">
             <h2 class="text-center">本次導遊評價</h2>
             <div id="myscore">
@@ -349,13 +372,13 @@
                 <span style="margin: 10px;">導遊評價：</span>
 
 
-               <span id="star">
+                <span id="star">
                     @for (int i = 0; i < ratingStars; i++)
                     {
                         <span class="rank-rated">&#128970;</span>
                     }
 
-                </span>  
+                </span>
                 <span>@ratingStars 顆星</span>
                 <br>
                 <br>
@@ -363,8 +386,8 @@
                 <div style="resize:none; height: 120px ; width:100% ; background-color: #cacde4;color: #3A326D ; ">
                     <span style="margin: 10px;">
                         @order.Rating.RatingComment
-                        </span>
-                </div> 
+                    </span>
+                </div>
 
             </div>
 
@@ -382,3 +405,127 @@
 <br>
 <br>
 <br>
+
+
+
+    <script>
+
+       
+        let currentRating = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const stars = document.querySelectorAll('#star span');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    const rating = this.getAttribute('data-rating');
+                    currentRating = rating;
+
+                    stars.forEach(s => {
+                        if (s.getAttribute('data-rating') <= rating) {
+                            s.classList.remove('rank-not-rated');
+                            s.classList.add('rank-rated');
+                        } else {
+                            s.classList.remove('rank-rated');
+                            s.classList.add('rank-not-rated');
+                        }
+                    });
+                    $("#score").text("(" + currentRating + "顆星)");
+                    // console.log("當前評分: " + currentRating);
+                });
+            });
+        });
+
+
+    // 綁定輸入的評價 並且顯示到alert上面 以便確認有綁定
+
+    var write = document.getElementById("write");
+
+    function submitData(memberId, orderId, guiderId) {
+
+        alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
+
+        console.log(memberId + orderId + guiderId);
+        const dataToSend = {
+            "MemberId": parseInt(memberId),
+            "OrderId": parseInt(orderId),
+            "GuiderId": parseInt(guiderId),
+            "RatingComment": write.value,
+            "RatingStars": parseInt(currentRating),
+        };
+
+        console.log("Sending data:", dataToSend); // 添加這行來檢查發送的數據
+
+
+        // 使用 AJAX 發送 POST 請求到 C# 後端
+        $.ajax({
+            type: "POST",
+            url: "/Members/SaveRating",
+            data: JSON.stringify(dataToSend),
+            contentType: "application/json",
+            success: function (response) {
+                console.log("評價保存成功!");
+                alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
+                //         location.reload(); // 重新加載當前頁面
+
+            },
+            error: function (xhr, status, error) {
+                console.error("評價保存失敗:", error);
+                console.log("Response:", xhr.responseText); // 添加這行來檢查伺服器返回的錯誤信息
+                console.log("Status:", status);
+                console.log("Error:", error);
+            }
+
+        });
+
+
+
+
+
+        // alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
+
+        
+
+       
+    }
+
+
+
+
+
+
+
+
+
+    // var RatingStars = currentRating
+    // var str = write.value;
+    // var memberId = @order.Member.MemberId;
+    // var guiderId = @order.Guider.GuiderId;
+    // var orderId = @order.OrderId;
+
+
+    // const dataToSend = {
+    //     "MemberId": @order.Member.MemberId,
+    //     "orderId": @order.OrderId,
+    //     "guiderId": @order.Guider.GuiderId,
+    //     "ratingComment": write.value,
+    //     "ratingStars": currentRating,
+    // };
+
+    // $.ajax({
+    //     method: "POST",
+    //     url: "/Models/SaveRating",
+    //     data: JSON.stringify(dataToSend),
+    //     contentType: "application/json",
+    //     success: function (data) {
+    //         alert("接單成功!");
+    //         location.reload(); // 重新加載當前頁面
+    //     },
+    //     error: function (xhr, status, error) {
+    //         console.log(xhr);
+    //         console.log(status);
+    //         console.log(error);
+    //     }
+    // });
+
+    </script>

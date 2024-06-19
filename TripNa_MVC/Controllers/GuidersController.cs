@@ -428,7 +428,7 @@ namespace TripNa_MVC.Controllers
             var orderDetails = from o in _context.Orderlists
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                where o.GuiderId == member.GuiderId
-                               orderby o.OrderDate descending //按訂單日期降序排序
+                               orderby o.OrderNumber descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
@@ -904,7 +904,7 @@ namespace TripNa_MVC.Controllers
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                 join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
                                 where o.GuiderId == member.GuiderId && o.OrderId == orderID
                                 from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                 join s in _context.Spots on j.SpotId equals s.SpotId

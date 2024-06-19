@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TripNa_MVC.Models;
@@ -274,7 +275,7 @@ namespace TripNa_MVC.Controllers
                                join c in _context.Coupons on o.CouponId equals c.CouponId into couponGroup
                                from c in couponGroup.DefaultIfEmpty() // left join
                                where o.MemberId == member.MemberId
-                               orderby o.OrderDate descending //按訂單日期降序排序
+                               orderby o.OrderNumber descending //按訂單日期降序排序
                                select new
                                {
                                    o.OrderNumber,
@@ -362,17 +363,19 @@ namespace TripNa_MVC.Controllers
                                     o.OrderStatus,
                                     o.OrderMatchStatus,
                                     CouponCode = c.CouponCode ?? string.Empty,
-                                    g.GuiderNickname,
+                                    GuiderNickname = g.GuiderNickname ?? string.Empty,
+                                    GuiderId = g == null ? 0 : g.GuiderId,
+                                    GuiderArea = g.GuiderArea ?? string.Empty,
                                     i.ItineraryName,
                                     i.ItineraryPeopleNo,
                                     m.MemberName,
                                     m.MemberEmail,
                                     m.MemberPhone,
+                                    m.MemberId,
                                     ItineraryDetails = j,
                                     Spot = s,
                                     o.ItineraryId,
                                     a.VisitOrder,
-                                    g.GuiderArea,
                                     o.OrderId,
                                     RatingComment = r.RatingComment ?? string.Empty,
                                     RatingStars = r.RatingStars == null ? (byte)0 : r.RatingStars
@@ -423,7 +426,8 @@ namespace TripNa_MVC.Controllers
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
-                        GuiderArea = o.GuiderArea
+                        GuiderArea = o.GuiderArea,
+                        GuiderId = o.GuiderId
                     },
                     Rating = new Rating
                     {
@@ -434,7 +438,9 @@ namespace TripNa_MVC.Controllers
                     {
                         MemberName = o.MemberName,
                         MemberEmail = o.MemberEmail,
-                        MemberPhone = o.MemberPhone
+                        MemberPhone = o.MemberPhone,
+                        MemberId = o.MemberId
+
                     },
                     Spots = o.Spot,
                     ItineraryDetail = new ItineraryDetail
@@ -443,8 +449,6 @@ namespace TripNa_MVC.Controllers
                         VisitOrder = o.VisitOrder
                     }
                 }).ToList(),
-
-
                 MemberId = member.MemberId,
                 OrderId = orderID
             };
@@ -467,7 +471,7 @@ namespace TripNa_MVC.Controllers
                                 from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
                                 join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
+                                from c in _context.Coupons.Where(x => x.MemberId == o.MemberId).DefaultIfEmpty()
                                 where o.MemberId == member.MemberId && o.OrderId == orderID
                                 from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
                                 join s in _context.Spots on j.SpotId equals s.SpotId
@@ -516,6 +520,11 @@ namespace TripNa_MVC.Controllers
                                 ga.AnswerContent,
                                 ga.AnswerTime
                             };
+
+
+
+
+
 
 
             int questionCount = _context.MemberQuestions
@@ -624,6 +633,69 @@ namespace TripNa_MVC.Controllers
             return Ok("問題提交成功。");
 
         }
+
+
+
+
+        [HttpPost]
+        public IActionResult SaveRating([FromBody] MemberRating dataToSend)
+        {
+            try
+            {
+                // 創建一個新的評價實體
+                var rating = new Rating
+                {
+                    RatingStars = dataToSend.RatingStars,
+                    RatingComment = dataToSend.RatingComment,
+                    MemberId = dataToSend.MemberId,
+                    GuiderId = dataToSend.GuiderId,
+                    OrderId = dataToSend.OrderId
+                };
+
+                Console.WriteLine("-------------------MemberId: " + dataToSend.MemberId);
+                Console.WriteLine("-------------------OrderId: " + dataToSend.OrderId);
+                Console.WriteLine("-------------------GuiderId: " + dataToSend.GuiderId);
+                Console.WriteLine("--------------------RatingComment: " + dataToSend.RatingComment);
+                Console.WriteLine("---------------------RatingStars: " + dataToSend.RatingStars);
+
+                // 添加評價到 DbContext
+                _context.Ratings.Add(rating);
+
+                // 保存到資料庫
+                _context.SaveChanges();
+
+                Console.WriteLine("Creating rating: " + Newtonsoft.Json.JsonConvert.SerializeObject(rating));
+
+                return Ok("評價提交成功");
+            }
+            catch (DbUpdateException ex)
+            {
+                // 處理資料庫更新相關的異常
+                Console.WriteLine("DbUpdateException: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "資料庫更新異常：" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "伺服器錯誤：" + ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
 
 
         //判斷該會員是否真的有該筆優惠券

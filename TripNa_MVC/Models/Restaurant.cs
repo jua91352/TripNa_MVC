@@ -20,4 +20,6 @@ public partial class Restaurant
     public string? Phone { get; set; }
 
     public string Region { get; set; } = null!;
+
+	public int CityOrderIndex { get; set; }
 }
