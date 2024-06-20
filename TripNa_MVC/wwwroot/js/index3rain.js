@@ -429,17 +429,17 @@ $(function () {
                 innerHtml += `<div class="carousel-item ${i === 0 ? "active" : ""}">
                   <div class="row">
                       <div class="p-2 col-4 md h-100 position-relative">
-                          <img src="/景點圖片${yiLanArray[i]}" class="d-block w-33" alt="${extractedContents[i]}">                  
+                          <img src="${yiLanArray[i]}" class="d-block w-33" alt="${extractedContents[i]}">                  
                           <p style="background-color: aliceblue;">${extractedContents[i]}</p>
                       </div>
                       ${i + 1 < yiLanArray.length ? `
                       <div class="p-2 col-4 md h-100 position-relative">
-                          <img src="/景點圖片${yiLanArray[i + 1]}" class="d-block w-33" alt="${extractedContents[i + 1]}">          
+                          <img src="${yiLanArray[i + 1]}" class="d-block w-33" alt="${extractedContents[i + 1]}">          
                           <p style="background-color: aliceblue;">${extractedContents[i + 1]}</p>
                       </div>` : ""}
                       ${i + 2 < yiLanArray.length ? `
                       <div class="p-2 col-4 md h-100 position-relative">
-                          <img src="/景點圖片${yiLanArray[i + 2]}" class="d-block w-33" alt="${extractedContents[i + 2]}">         
+                          <img src="${yiLanArray[i + 2]}" class="d-block w-33" alt="${extractedContents[i + 2]}">         
                           <p style="background-color: aliceblue;">${extractedContents[i + 2]}</p>
                       </div>` : ""}
                   </div>
