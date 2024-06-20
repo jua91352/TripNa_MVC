@@ -202,24 +202,9 @@ namespace TripNa_MVC.Controllers
 
             // 檢查是否已經收藏過該景點
             var favoriteSpot = _context.FavoriteSpots.FirstOrDefault(fs => fs.SpotId == spotId && fs.MemberId == member.MemberId);
-
-            //if (isFavorite)
-            //{
-            //    // 取消收藏
-            //    if (favoriteSpot != null)
-            //    {
-            //        _context.FavoriteSpots.Remove(favoriteSpot);
-            //        _context.SaveChanges();
-            //        return Json(new { success = true, message = "取消收藏成功" });
-            //    }
-            //    else
-            //    {
-            //        return Json(new { success = false, message = "該景點未被收藏" });
-            //    }
-            //}
-            //else
-            //{
-            // 添加收藏
+            
+            Console.WriteLine(isFavorite+"**********************");
+ViewBag.IsFavorite = isFavorite;
             if (favoriteSpot == null)
             {
                 var newFavoriteSpot = new FavoriteSpot
@@ -236,16 +221,48 @@ namespace TripNa_MVC.Controllers
             {
                 return Json(new { success = false, message = "該景點已被收藏" });
             }
-            //}
+            
+
+
         }
 
-        //NA+-----------------------------------------------------------
+
+		[HttpGet]
+		public IActionResult Isfavorite(int spotId)
+		{
+			// 獲取當前用戶的 ID
+			var memberEmail = HttpContext.Session.GetString("memberEmail");
+			if (string.IsNullOrEmpty(memberEmail))
+			{
+				return Json(new { success = false, message = "您需要先登錄" });
+				//return Redirect("/Members/MemberCenter");
+			}
+
+			var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+			if (member == null)
+			{
+				Console.WriteLine($"未找到電子郵件為 {memberEmail} 的用戶");
+				return NotFound();
+			}
+
+			// 檢查是否已經收藏過該景點
+			var favoriteSpot = _context.FavoriteSpots.FirstOrDefault(fs => fs.SpotId == spotId && fs.MemberId == member.MemberId);
+			bool isFavorite = favoriteSpot != null;
+
+			ViewBag.IsFavorite = isFavorite;
+            Console.WriteLine(isFavorite + "*********************************");
+            //var x = _context.FavoriteSpots;
+			return View();
+
+		}
+
+		//NA+-----------------------------------------------------------
 
 
 
-        //黃浩維的不要動-------------------------------------------------------------------------------------------------
+		//黃浩維的不要動-------------------------------------------------------------------------------------------------
 
-        public IActionResult CreateItinerary()
+		public IActionResult CreateItinerary()
         {
 
             var memberEmail = HttpContext.Session.GetString("memberEmail");
