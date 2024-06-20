@@ -6,7 +6,9 @@
     string p = ".jpg";
     int ratingCount = ViewData["ratingCount"] != null ? (int)ViewData["ratingCount"] : 0;
     int orderCount = ViewData["orderCount"] != null ? (int)ViewData["orderCount"] : 0;
-    double ratingAvg = ViewData["ratingAvg"] != null ? (double)ViewData["ratingAvg"] : 0.0;
+    // double ratingAvg = ViewData["ratingAvg"] != null ? (double)ViewData["ratingAvg"] : 0.0;
+    double ratingAvg = ViewData["ratingAvg"] != null ? Math.Round((double)ViewData["ratingAvg"], 1) : 0.0;
+
     var g = Model.Guiders.FirstOrDefault();
 }
 

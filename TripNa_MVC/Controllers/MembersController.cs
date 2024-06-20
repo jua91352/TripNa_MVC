@@ -684,33 +684,25 @@ namespace TripNa_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateCoupon(object couponData)
-        {
-            var x = couponData;
-            return Content("ok");
-            /*
-            //var memberEmail = HttpContext.Session.GetString("memberEmail");
-            //if (string.IsNullOrEmpty(memberEmail))
-            //{
-            //    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
-            //}
-            //var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+        public IActionResult CreateCoupon(Coupon couponData)
+        {                    
                 DateTime currentDate = DateTime.Now;
                 // 將日期往後推移 6 個月
                 DateTime couponDueDateWithTime = currentDate.AddMonths(6);
                 // 獲取不包含時間部分的 DateOnly 值
                 DateOnly couponDueDate = DateOnly.FromDateTime(couponDueDateWithTime);
+
             if (couponData == null)
             {
                 return StatusCode(500, "伺服器錯誤：couponData 為 null");
-            //    couponData = new Coupon
-            //    {
-            //        MemberId = couponData.MemberId,
-            //        ItineraryId = couponData.ItineraryId,
-            //        CouponDueDate = couponDueDate,
-            //        CouponCode= couponData.CouponCode
-            //    };
+              
             }
+            else {
+                Console.WriteLine(couponData.MemberId);
+                Console.WriteLine(couponData.CouponCode);
+
+            }
+
             try
             {
                 // 獲取當前日期
@@ -746,8 +738,62 @@ namespace TripNa_MVC.Controllers
                 return StatusCode(500, "伺服器錯誤：" + ex.Message);
             }
 
-            */
+           
         }
+
+        [HttpPost]
+        public IActionResult CreateOrderCoupon(int orderId, int ItineraryId)
+        {
+
+            var existingOrder = _context.Orderlists.Find(orderId);
+            var couponRecord = _context.Coupons.FirstOrDefault(c => c.ItineraryId == ItineraryId);
+
+            //if (orderCouponData == null)
+            //{
+            //    return StatusCode(500, "伺服器錯誤：orderCouponData 為 null");
+
+            //}
+
+            var couponId = couponRecord.CouponId;
+            existingOrder.CouponId = couponId;
+
+
+            try
+            {
+                _context.Entry(existingOrder).State = EntityState.Modified;
+                _context.SaveChanges();
+                return Ok("成功");
+            }
+
+
+            //try
+            //{
+
+            //    orderCouponData.CouponDueDate = couponDueDate;
+            //    // 添加評價到 DbContext
+            //    _context.Orderlists.Add(orderCouponData);
+            //    // 保存到資料庫
+            //    _context.SaveChanges();
+            //    Console.WriteLine("Creating cp: " + Newtonsoft.Json.JsonConvert.SerializeObject(orderCouponData));
+            //    return Ok("儲存優惠碼成功");
+            //}
+            catch (DbUpdateException ex)
+            {
+                // 處理資料庫更新相關的異常
+                Console.WriteLine("DbUpdateException: " + ex.Message);
+                return StatusCode(500, "資料庫更新異常：" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);                
+                return StatusCode(500, "伺服器錯誤：" + ex.Message);
+            }
+
+        }
+
+
+
+
 
 
         //判斷該會員是否真的有該筆優惠券
