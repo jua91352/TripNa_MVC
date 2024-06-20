@@ -2,11 +2,12 @@
  @model TripNa_MVC.Models.OrderDetail
 
 @{
-     ViewData["Title"] = "MemberCheckOut";
-     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "MemberCheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
     var neworder = Model.Orders.FirstOrDefault();
     var cooupon = Model.MemberCoupons.ToList();
+    var num = cooupon.Count();
 
     string p = ".jpg";  
     var groupedOrders = Model.Orders.GroupBy(o => o.OrderId);
@@ -73,7 +74,7 @@
   top: 50%;
   left: 50%;
   box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
+  border-radius: 5px;
   background: #fff;
 }
 
@@ -91,19 +92,22 @@ h3 {
 
 }
 
+
+
+
 .close-btn {
   width: 65px;
   height: 65px;
   display: inline-block;
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 15px;
   border-radius: 100%;
-  background: #d75f70;
+  /* background: #d75f70; */
   font-weight: bold;
   text-decoration: none;
-  color: #fff;
-  font-size: 35px;
+  color:#4e5482;
+  font-size:55px;
   text-align: center;
 
 }
@@ -327,23 +331,39 @@ h3 {
 
         <div class="popup-wrap" id="letmeopen">
         <div class="popup-box transform-out">
-          <h2>選擇優惠券</h2>
 
 
-          
-@foreach ( var c in cooupon)
-{
-    <h3 class="text-center" style="color: #4e5482;">
-            優惠碼: <span>@c.CouponCode</span>
-     <span class="bi bi-clipboard" id="copyimg" onclick="copyCode(this)" style="cursor: pointer;"></span>        
-    
-    </h3>
+    @if ( num == 0 )
+    {
+                     <div class="text-center">
+                     <span class="bi bi-ticket-perforated"style="font-size:250px ;margin-top:20px ; color: #4e5482"></span>
+                     <h2 class="text-center">您目前還沒有優惠券</h2>
+                     <br />
+                    </div>
+     }
+    else
+    {
+              <h2>選擇優惠券</h2>
 
-      <h3 class="text-center" style="color: #4e5482;">期限:@c.CouponDueDate</h3>
+                
+                @foreach ( var c in cooupon)
+         {
 
-          }
 
-          <a class="close-btn popup-close" href="#">x</a>
+
+              <h3 class="text-center" style="color: #4e5482;">
+                      優惠碼: <span>@c.CouponCode</span>
+               <span class="bi bi-clipboard" id="copyimg" onclick="copyCode(this)" style="cursor: pointer;"></span>        
+              
+              </h3>
+              
+                <h3 class="text-center" style="color: #4e5482;">期限:@c.CouponDueDate</h3>
+
+         }
+
+
+  }
+          <a class="close-btn popup-close" href="#">&times;</a>
 
         </div>
       </div>
