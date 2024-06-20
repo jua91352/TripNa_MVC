@@ -697,12 +697,7 @@ namespace TripNa_MVC.Controllers
                 return StatusCode(500, "伺服器錯誤：couponData 為 null");
               
             }
-            else {
-                Console.WriteLine(couponData.MemberId);
-                Console.WriteLine(couponData.CouponCode);
-
-            }
-
+           
             try
             {
                 // 獲取當前日期
@@ -748,11 +743,6 @@ namespace TripNa_MVC.Controllers
             var existingOrder = _context.Orderlists.Find(orderId);
             var couponRecord = _context.Coupons.FirstOrDefault(c => c.ItineraryId == ItineraryId);
 
-            //if (orderCouponData == null)
-            //{
-            //    return StatusCode(500, "伺服器錯誤：orderCouponData 為 null");
-
-            //}
 
             var couponId = couponRecord.CouponId;
             existingOrder.CouponId = couponId;
@@ -765,18 +755,6 @@ namespace TripNa_MVC.Controllers
                 return Ok("成功");
             }
 
-
-            //try
-            //{
-
-            //    orderCouponData.CouponDueDate = couponDueDate;
-            //    // 添加評價到 DbContext
-            //    _context.Orderlists.Add(orderCouponData);
-            //    // 保存到資料庫
-            //    _context.SaveChanges();
-            //    Console.WriteLine("Creating cp: " + Newtonsoft.Json.JsonConvert.SerializeObject(orderCouponData));
-            //    return Ok("儲存優惠碼成功");
-            //}
             catch (DbUpdateException ex)
             {
                 // 處理資料庫更新相關的異常
