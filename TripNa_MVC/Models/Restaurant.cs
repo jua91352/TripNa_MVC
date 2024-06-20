@@ -21,5 +21,5 @@ public partial class Restaurant
 
     public string Region { get; set; } = null!;
 
-	public int CityOrderIndex { get; set; }
+    public int CityOrderIndex { get; set; }
 }

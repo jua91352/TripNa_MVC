@@ -33,13 +33,14 @@
 }
 
 <style>
-    /* 新增 CSS */
-    .fixed-btn {
+    #fixedButton {
         position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 300px;
-        border: 3px solid #73AD21;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1000;
+        width: 150px;
+        background-color: #4e5482;
+        color: #e8eafe;
     }
 </style>
 <div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px; margin-top: 5%;">
@@ -89,12 +90,15 @@
     @foreach (var guider in Model)
     {
         string imgPath = "~/導遊/大頭照/" + guider.GuiderNickname + ".jpg";
-
-        <div style="width: 60%; margin: 0 auto" id="card">
+       @*  <div style="width: 60%; margin: 0 auto" id="card">
             <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative" style="align-items: center;">
                 <img src="~/導遊/大頭照/YOOOOOOOOOOOOOOOO.jpg" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
                 <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
-                <p class="card-text col-7">
+                <p class="card-text col-7"> *@
+        <div style="width: 60%; margin: 0 auto;" id="card">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
+                <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" style="height: auto; width: 150px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 12px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+                <p style="margin-left: 1rem;" class="card-text col-7">
                     姓名:@guider.GuiderNickname<br>
                     性別:@guider.GuiderGender<br>
                     服務年資:@CalculateExperience(guider.GuiderStartDate)<br>
@@ -102,7 +106,9 @@
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)">
+
+                <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked, '@guider.GuiderNickname')">
+                @* <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)"> *@
             </div>
         </div>
     }
@@ -116,11 +122,8 @@
     <a class="btn  btn-primary col-1 text-center rounded shadow m-3" onclick="submitSelectedGuiders()" asp-area="" asp-controller="Members" asp-action="MemberCheckOut"
        style="width: 150px; background-color: #4e5482 ;color: #e8eafe;">下單去</a>
 
-@* 
-        <button type="button" class="btn btn-primary col-1 text-center rounded shadow m-3" onclick="submitSelectedGuiders()">下單去</button> *@
-    <div class="col-2"></div>
-	</div>
 
+	</div>
 <br>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -128,6 +131,7 @@
         var selectedGender = '@ViewBag.SelectedGender';
         var selectedRating = '@ViewBag.SelectedRating';
         var selectedExperience = '@ViewBag.SelectedExperience';
+        
         if (selectedGender) {
             console.log(selectedGender);
             document.getElementById("gender").value = selectedGender;
@@ -164,14 +168,17 @@
     }
 
     var selectedGuiderIds = [];
+    var guiderInfo = "";
 
-    function selectGuider(guiderId, isChecked) {
+    function selectGuider(guiderId, isChecked, guiderNickname) {
         if (isChecked) {
             selectedGuiderIds.push(guiderId);
+            guiderInfo += guiderNickname + '\n';
         } else {
             selectedGuiderIds = selectedGuiderIds.filter(id => id !== guiderId);
         }
         console.log("Selected Guider Ids:", selectedGuiderIds);
+        
     }
 
     function submitSelectedGuiders() {
@@ -184,11 +191,35 @@
             },
             success: function (response) {
                 console.log('Successfully updated guider selection.');
+                alert('您選擇的導遊為:\n'+ guiderInfo);
             },
             error: function (xhr, status, error) {
                 console.error('Error updating guider selection:', error);
             }
         });
+
+        
     }
+
+    window.onscroll = function () {
+        adjustButtonPosition();
+    };
+    
+
+    window.onscroll = function () {
+        var button = document.getElementById("fixedButton");
+        var scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        var windowHeight = window.innerHeight;
+        var documentHeight = document.body.scrollHeight;
+        var offset = 100; // 距離底部多少時開始跟隨滾動
+
+        if (documentHeight - (scrollPosition + windowHeight) < offset) {
+            button.style.position = "absolute";
+            button.style.bottom = offset + "px";
+        } else {
+            button.style.position = "fixed";
+            button.style.bottom = "10px";
+        }
+    };
 
 </script>

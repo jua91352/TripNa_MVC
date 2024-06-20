@@ -448,7 +448,184 @@
 
 								<script>
 
+			function decodeHtmlEntities(str) { /* ... */ }
 
+			var restaurants = [
+			@foreach (var restaurant in Model)
+			{
+				string imgName = Uri.EscapeDataString(restaurant.RestaurantName) + ".jpg";
+				@:{
+				@:name: "@Html.Raw(restaurant.LocationName)",
+				@:foodType: "@Html.Raw(restaurant.RestaurantName)",
+				@:imageUrl: "@Url.Content("~/images/" + imgName)"
+				@:},
+			}
+									];
+
+			var currentIndex = 0;
+			var carouselElement = document.getElementById("locationCarousel");
+			var locationElement = document.getElementById("currentLocation");
+			var foodTypeElement = document.getElementById("currentFoodType");
+			var imageElement = document.getElementById("currentImage");
+			var paginationElement = document.getElementById("pagination");
+
+			// 創建分頁選擇器
+			function createPagination() {
+				paginationElement.innerHTML = '';
+				var totalDots = 5; // 總共顯示的點數（包括當前點）
+				var sideDotsCount = Math.floor(totalDots / 2); // 當前點兩側的點數
+
+				for (let i = 0; i < restaurants.length; i++) {
+					if (
+						i === 0 || // 第一個點
+						i === restaurants.length - 1 || // 最後一個點
+						(i >= currentIndex - sideDotsCount && i <= currentIndex + sideDotsCount) // 當前點附近的點
+					) {
+						var dot = document.createElement('span');
+						dot.classList.add('pagination-dot');
+						dot.dataset.index = i;
+						paginationElement.appendChild(dot);
+					} else if (
+						i === currentIndex - sideDotsCount - 1 ||
+						i === currentIndex + sideDotsCount + 1
+					) {
+						var ellipsis = document.createElement('span');
+
+						//分頁中間的省略號
+						ellipsis.textContent = '';
+						ellipsis.classList.add('pagination-ellipsis');
+						paginationElement.appendChild(ellipsis);
+					}
+				}
+			}
+
+			// 更新分頁指示器
+			function updatePagination() {
+				var dots = paginationElement.getElementsByClassName('pagination-dot');
+				for (let i = 0; i < dots.length; i++) {
+					dots[i].classList.toggle('active', parseInt(dots[i].dataset.index) === currentIndex);
+				}
+			}
+
+			function showRestaurant() {
+				carouselElement.classList.add("fade-out");
+				setTimeout(() => {
+					// 解碼並顯示 LocationName 和 FoodType
+					locationElement.innerHTML = restaurants[currentIndex].name;
+					foodTypeElement.innerHTML = restaurants[currentIndex].foodType;
+					// 設定餐廳圖片
+					imageElement.src = restaurants[currentIndex].imageUrl;
+					imageElement.alt = decodeHtmlEntities(restaurants[currentIndex].name) + " 餐廳圖片";
+
+					// 更新分頁
+					createPagination(); // 每次切換都重新創建分頁
+					updatePagination();
+
+					currentIndex = (currentIndex + 1) % restaurants.length;
+					carouselElement.classList.remove("fade-out");
+				}, 500);
+			}
+
+			// 預載圖片
+			restaurants.forEach(restaurant => {
+				let img = new Image();
+				img.src = restaurant.imageUrl;
+			});
+
+			// 初始化
+			showRestaurant();
+			setInterval(showRestaurant, 5000);
+
+			// 解碼 HTML 實體的函數保持不變
+			function decodeHtmlEntities(str) { /* ... */ }
+
+			var restaurants = [
+			@foreach (var restaurant in Model)
+			{
+				string imgName = Uri.EscapeDataString(restaurant.RestaurantName)  + ".jpg";
+				@:{
+				@:name: "@Html.Raw(restaurant.LocationName)",
+				@:foodType: "@Html.Raw(restaurant.RestaurantName)",
+				@:imageUrl: "@Url.Content("~/images/" + imgName)"
+				@:},
+			}
+									];
+
+			var currentIndex = 0;
+			var carouselElement = document.getElementById("locationCarousel");
+			var locationElement = document.getElementById("currentLocation");
+			var foodTypeElement = document.getElementById("currentFoodType");
+			var imageElement = document.getElementById("currentImage");
+			var paginationElement = document.getElementById("pagination");
+
+			// 創建分頁選擇器
+			function createPagination() {
+				paginationElement.innerHTML = '';
+				var totalDots = 5; // 總共顯示的點數（包括當前點）
+				var sideDotsCount = Math.floor(totalDots / 2); // 當前點兩側的點數
+
+				for (let i = 0; i < restaurants.length; i++) {
+					if (
+						i === 0 || // 第一個點
+						i === restaurants.length - 1 || // 最後一個點
+						(i >= currentIndex - sideDotsCount && i <= currentIndex + sideDotsCount) // 當前點附近的點
+					) {
+						var dot = document.createElement('span');
+						dot.classList.add('pagination-dot');
+						dot.dataset.index = i;
+						paginationElement.appendChild(dot);
+					} else if (
+						i === currentIndex - sideDotsCount - 1 ||
+						i === currentIndex + sideDotsCount + 1
+					) {
+						var ellipsis = document.createElement('span');
+
+						//分頁中間的省略號
+						ellipsis.textContent = '';
+						ellipsis.classList.add('pagination-ellipsis');
+						paginationElement.appendChild(ellipsis);
+					}
+				}
+			}
+
+			// 更新分頁指示器
+			function updatePagination() {
+				var dots = paginationElement.getElementsByClassName('pagination-dot');
+				for (let i = 0; i < dots.length; i++) {
+					dots[i].classList.toggle('active', parseInt(dots[i].dataset.index) === currentIndex);
+				}
+			}
+
+			function showRestaurant() {
+				carouselElement.classList.add("fade-out");
+				setTimeout(() => {
+					// 解碼並顯示 LocationName 和 FoodType
+					locationElement.innerHTML = restaurants[currentIndex].name;
+					foodTypeElement.innerHTML = restaurants[currentIndex].foodType;
+					// 設定餐廳圖片
+				
+					imageElement.src = restaurants[currentIndex].imageUrl;
+					// console.log(imageElement.src)
+					imageElement.alt = decodeHtmlEntities(restaurants[currentIndex].name) + "餐廳圖片";
+
+					// 更新分頁
+					createPagination(); // 每次切換都重新創建分頁
+					updatePagination();
+
+					currentIndex = (currentIndex + 1) % restaurants.length;
+					carouselElement.classList.remove("fade-out");
+				}, 500);
+			}
+
+			// 預載圖片
+			restaurants.forEach(restaurant => {
+				let img = new Image();
+				img.src = restaurant.imageUrl;
+			});
+
+			// 初始化
+			showRestaurant();
+			setInterval(showRestaurant, 5000);
 
 
 

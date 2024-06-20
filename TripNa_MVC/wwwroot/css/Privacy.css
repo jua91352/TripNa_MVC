@@ -1,4 +1,5 @@
-﻿/* 標題 */
+﻿﻿
+/* 標題 */
 .nav-center {
     text-align: center;
     font-size: 1.2rem;
@@ -153,13 +154,13 @@ button {
 }
 
 #findbtn {
-    animation: fadeIn s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 /* 手風琴樣式 */
 .accordion {
     background-color: #4e5482;
-    color: #bdbdbd;
+    color: #fff;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -178,19 +179,12 @@ button {
 
 .panel {
     padding: 0 0px;
-    background-color: white;
+    background-color: #a78bcd;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
+    transition: max-height 0.1s ease-out;
 }
 
-.container {
-    max-height: 300px;
+#mark {
     overflow-y: auto;
 }
-
-  
-
-
-    
-
