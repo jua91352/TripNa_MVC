@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using TripNa_MVC.Models;
 using static NuGet.Packaging.PackagingConstants;
 using static TripNa_MVC.Models.GuiderRating;
+using QAINSERT.Models;
 
 namespace TripNa_MVC.Controllers
 {
@@ -789,40 +790,44 @@ namespace TripNa_MVC.Controllers
 
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            var orderDetails =  from o in _context.Orderlists
-                                join m in _context.Members on o.MemberId equals m.MemberId
-                                from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
-                                join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
-                                join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
-                                join c in _context.Coupons on o.MemberId equals c.MemberId
-                                join r in _context.Ratings on o.MemberId equals r.MemberId
-                                where o.GuiderId == member.GuiderId && o.OrderId == orderID
-                                from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
-                                join s in _context.Spots on j.SpotId equals s.SpotId
-                                select new
-                                {
-                                    o.OrderNumber,
-                                    o.OrderDate,
-                                    i.ItineraryStartDate,
-                                    o.OrderTotalPrice,
-                                    o.OrderStatus,
-                                    o.OrderMatchStatus,
-                                    c.CouponCode,
-                                    g.GuiderNickname,
-                                    i.ItineraryName,
-                                    i.ItineraryPeopleNo,
-                                    m.MemberName,
-                                    m.MemberEmail,
-                                    m.MemberPhone,
-                                    ItineraryDetails = j,
-                                    Spot = s,
-                                    o.ItineraryId,
-                                    a.VisitOrder,
-                                    g.GuiderArea,
-                                    o.OrderId,
-                                    r.RatingComment,
-                                    r.RatingStars,
-                                };
+            var orderDetails = from o in _context.Orderlists
+                               join m in _context.Members on o.MemberId equals m.MemberId
+                               from g in _context.Guiders.Where(x => x.GuiderId == (int?)o.GuiderId).DefaultIfEmpty()
+                               join i in _context.Itineraries on o.ItineraryId equals i.ItineraryId
+                               join a in _context.ItineraryDetails on o.ItineraryId equals a.ItineraryId
+                               join c in _context.Coupons on o.MemberId equals c.MemberId into tempCoupon
+                               from c in tempCoupon.DefaultIfEmpty()
+                                   //join r in _context.Ratings on o.MemberId equals r.MemberId
+                               from r in _context.Ratings.Where(x => x.OrderId == orderID).DefaultIfEmpty()
+                               where o.GuiderId == member.GuiderId && o.OrderId == orderID
+                               from j in _context.ItineraryDetails.Where(x => x.ItineraryId == i.ItineraryId)
+                               join s in _context.Spots on j.SpotId equals s.SpotId
+                               select new
+                               {
+                                   o.OrderNumber,
+                                   o.OrderDate,
+                                   i.ItineraryStartDate,
+                                   o.OrderTotalPrice,
+                                   o.OrderStatus,
+                                   o.OrderMatchStatus,
+                                   CouponCode = c.CouponCode ?? string.Empty,
+                                   g.GuiderNickname,
+                                   g.GuiderId,
+                                   i.ItineraryName,
+                                   i.ItineraryPeopleNo,
+                                   m.MemberName,
+                                   m.MemberEmail,
+                                   m.MemberPhone,
+                                   m.MemberId,
+                                   ItineraryDetails = j,
+                                   Spot = s,
+                                   o.ItineraryId,
+                                   a.VisitOrder,
+                                   g.GuiderArea,
+                                   o.OrderId,
+                                   RatingComment = r.RatingComment ?? string.Empty,
+                                   RatingStars = r.RatingStars == null ? (byte)0 : r.RatingStars
+                               };
 
             // 將查詢結果轉換為列表
             var orderDetailsList = orderDetails.ToList();
@@ -831,6 +836,9 @@ namespace TripNa_MVC.Controllers
             {
                 return NotFound();
             }
+
+            //將orderID傳給HTML
+            ViewData["orderID"] = orderID;
 
             // 構建 OrderDetail
             var model = new OrderDetail
@@ -860,7 +868,8 @@ namespace TripNa_MVC.Controllers
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
-                        GuiderArea = o.GuiderArea
+                        GuiderArea = o.GuiderArea,
+                        GuiderId = o.GuiderId 
                     },
                     Rating = new Rating
                     {
@@ -871,7 +880,8 @@ namespace TripNa_MVC.Controllers
                     {
                         MemberName = o.MemberName,
                         MemberEmail = o.MemberEmail,
-                        MemberPhone = o.MemberPhone
+                        MemberPhone = o.MemberPhone,
+                        MemberId = o.MemberId
                     },
                     Spots = o.Spot,
                     ItineraryDetail = new ItineraryDetail
@@ -918,11 +928,13 @@ namespace TripNa_MVC.Controllers
                                     o.OrderMatchStatus,
                                     c.CouponCode,
                                     g.GuiderNickname,
+                                    g.GuiderId,
                                     i.ItineraryName,
                                     i.ItineraryPeopleNo,
                                     m.MemberName,
                                     m.MemberEmail,
                                     m.MemberPhone,
+                                    m.MemberId,
                                     ItineraryDetails = j,
                                     Spot = s,
                                     o.ItineraryId,
@@ -941,22 +953,21 @@ namespace TripNa_MVC.Controllers
                 return NotFound();
             }
 
-            var questions = from ga in _context.GuiderAnswers
-                            join g in _context.Guiders on ga.GuiderId equals g.GuiderId
-                            from q in _context.MemberQuestions.Where(g => g.OrderId == (int?)ga.OrderId).DefaultIfEmpty()
-                            where g.GuiderId == member.GuiderId && q.OrderId == orderID
+            var questions = from q in _context.Qas
+                            where q.GuiderId == member.GuiderId && q.OrderId == orderID
+                            //.Where(q => q.OrderId == orderID)
                             select new
                             {
+                                q.Qaid,
                                 q.QuestionContent,
                                 q.QuestionTime,
-                                ga.AnswerContent,
-                                ga.AnswerTime
+                                q.AnswerContent,
+                                q.AnswerTime
                             };
 
             int answerCount = _context.GuiderAnswers
                                .Where(a => a.OrderId == orderID)
                                .Count();
-
 
             // 顯示結果
             Console.WriteLine($"OrderID = {orderID} 的 AnswerCount 筆數為: {answerCount}");
@@ -988,11 +999,13 @@ namespace TripNa_MVC.Controllers
                     Guider = new Guider
                     {
                         GuiderNickname = o.GuiderNickname,
-                        GuiderArea = o.GuiderArea
+                        GuiderArea = o.GuiderArea,
+                        GuiderId = o.GuiderId
                     },
                     Member = new Member
                     {
-                        MemberName = o.MemberName
+                        MemberName = o.MemberName,
+                        MemberId = o.MemberId,
                     },
 
                     Spots = o.Spot,
@@ -1002,8 +1015,8 @@ namespace TripNa_MVC.Controllers
                         VisitOrder = o.VisitOrder
                     }
                 }).ToList(),
-                Questions = questions.Select(q => new QuestionAnswer
-                {
+                Questions = questions.Select(q => new Qa
+                {   Qaid = q.Qaid,
                     QuestionContent = q.QuestionContent,
                     QuestionTime = (DateTime)q.QuestionTime,
                     AnswerContent = q.AnswerContent,
@@ -1017,40 +1030,36 @@ namespace TripNa_MVC.Controllers
         }
 
 
+
         [HttpPost]
-        public IActionResult SubmitAnswer(string answer, int orderId)
+        public IActionResult SubmitAnswer(int qaid, int orderid, string answerContent, int guiderId)
         {
-            // 檢查輸入資料的有效性
-            if (string.IsNullOrWhiteSpace(answer))
+
+            var qa = _context.Qas.FirstOrDefault(q => q.Qaid == qaid && q.OrderId == orderid);
+
+            if (qa == null)
             {
-                return BadRequest("問題內容不能為空白。");
+                return NotFound();
             }
 
-            var memberEmail = HttpContext.Session.GetString("memberEmail");
-            if (string.IsNullOrEmpty(memberEmail))
+            qa.AnswerContent = answerContent;
+            qa.Qaid = qaid;
+            qa.OrderId = orderid;
+            qa.AnswerTime = DateTime.Now;
+            qa.GuiderId = guiderId;
+
+            try
             {
-                return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+                _context.Entry(qa).State = EntityState.Modified;
+                 _context.SaveChanges();
+                return Ok("成功");
             }
-            var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
-            var guider = member.GuiderId;
-
-            Console.WriteLine("------------------"+ guider + "------------------");
-
-
-            // 建立新的 GuiderAnswer 實體並儲存到資料庫
-            var newAnswer = new GuiderAnswer
+            catch (Exception ex)
             {
-                GuiderId = (int)guider,
-                OrderId = orderId,
-                AnswerContent = answer,
-                AnswerTime = DateTime.Now
-            };
-
-
-            _context.GuiderAnswers.Add(newAnswer);
-            _context.SaveChanges();
-
-            return Ok("回覆提交成功。");
+                Console.WriteLine("Exception: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+                return StatusCode(500, "更新錯誤");
+            }
 
         }
 
@@ -1060,7 +1069,5 @@ namespace TripNa_MVC.Controllers
 
 
 
-
-
     }
-}
+    }

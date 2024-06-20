@@ -17,4 +17,5 @@ public partial class MemberRating
 
     public byte RatingStars { get; set; }
 
+
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using QAINSERT.Models;
 
 namespace TripNa_MVC.Models;
 
@@ -34,6 +35,7 @@ public partial class TripNaContext : DbContext
     public virtual DbSet<MemberQuestion> MemberQuestions { get; set; }
 
     public virtual DbSet<Orderlist> Orderlists { get; set; }
+    public virtual DbSet<Qa> Qas { get; set; }
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
@@ -243,6 +245,24 @@ public partial class TripNaContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MemberOrderlist");
         });
+        modelBuilder.Entity<Qa>(entity =>
+        {
+            entity.HasKey(e => new { e.Qaid, e.OrderId });
+
+            entity.ToTable("QA");
+
+            entity.Property(e => e.Qaid)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("QAID");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.AnswerContent).HasMaxLength(200);
+            entity.Property(e => e.AnswerTime).HasColumnType("datetime");
+            entity.Property(e => e.GuiderId).HasColumnName("GuiderID");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.QuestionContent).HasMaxLength(200);
+            entity.Property(e => e.QuestionTime).HasColumnType("datetime");
+        });
+
 
         modelBuilder.Entity<Rating>(entity =>
         {
