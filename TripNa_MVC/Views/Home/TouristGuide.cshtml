@@ -43,13 +43,13 @@
         color: #e8eafe;
     }
 </style>
-<div class="nav-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px; margin-top: 5%;">
+<div class="nav-center text-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
     我們為您推薦的導遊
 </div>
 <div class="row">
-    <div class="col-4"></div>
-    <p class="col-4 text-center">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
-    <div class="col-4"></div>
+
+    <p class="col-12 text-center p-3">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
+
 </div>
 <div class="row justify-content-center" style="width: 100%;" id="select">
     <div class="col-auto">
@@ -89,12 +89,7 @@
 <div id="card-container">
     @foreach (var guider in Model)
     {
-        string imgPath = "~/導遊/大頭照/" + guider.GuiderNickname + ".jpg";
-       @*  <div style="width: 60%; margin: 0 auto" id="card">
-            <div class="d-flex row justify-content-center m-3 p-3 bg-light rounded shadow position-relative" style="align-items: center;">
-                <img src="~/導遊/大頭照/YOOOOOOOOOOOOOOOO.jpg" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
-                <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" class="card-img-top rounded shadow" style="height: 100%; width: 150px;">
-                <p class="card-text col-7"> *@
+        string imgPath = "~/導遊/大頭照/"+"/"+@guider.GuiderArea+"/"+ guider.GuiderNickname + ".jpg";
         <div style="width: 60%; margin: 0 auto;" id="card">
             <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
                 <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" style="height: auto; width: 150px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 12px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
@@ -106,7 +101,6 @@
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                123
                 <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked)">
                 @* <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)"> *@
             </div>
