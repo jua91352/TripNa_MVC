@@ -16,6 +16,10 @@ using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Data;
+using static System.Net.WebRequestMethods;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+
 
 
 
@@ -202,24 +206,9 @@ namespace TripNa_MVC.Controllers
 
             // 檢查是否已經收藏過該景點
             var favoriteSpot = _context.FavoriteSpots.FirstOrDefault(fs => fs.SpotId == spotId && fs.MemberId == member.MemberId);
-
-            //if (isFavorite)
-            //{
-            //    // 取消收藏
-            //    if (favoriteSpot != null)
-            //    {
-            //        _context.FavoriteSpots.Remove(favoriteSpot);
-            //        _context.SaveChanges();
-            //        return Json(new { success = true, message = "取消收藏成功" });
-            //    }
-            //    else
-            //    {
-            //        return Json(new { success = false, message = "該景點未被收藏" });
-            //    }
-            //}
-            //else
-            //{
-            // 添加收藏
+            
+            Console.WriteLine(isFavorite+"**********************");
+ViewBag.IsFavorite = isFavorite;
             if (favoriteSpot == null)
             {
                 var newFavoriteSpot = new FavoriteSpot
@@ -236,16 +225,48 @@ namespace TripNa_MVC.Controllers
             {
                 return Json(new { success = false, message = "該景點已被收藏" });
             }
-            //}
+            
+
+
         }
 
-        //NA+-----------------------------------------------------------
+
+		[HttpGet]
+		public IActionResult Isfavorite(int spotId)
+		{
+			// 獲取當前用戶的 ID
+			var memberEmail = HttpContext.Session.GetString("memberEmail");
+			if (string.IsNullOrEmpty(memberEmail))
+			{
+				return Json(new { success = false, message = "您需要先登錄" });
+				//return Redirect("/Members/MemberCenter");
+			}
+
+			var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+			if (member == null)
+			{
+				Console.WriteLine($"未找到電子郵件為 {memberEmail} 的用戶");
+				return NotFound();
+			}
+
+			// 檢查是否已經收藏過該景點
+			var favoriteSpot = _context.FavoriteSpots.FirstOrDefault(fs => fs.SpotId == spotId && fs.MemberId == member.MemberId);
+			bool isFavorite = favoriteSpot != null;
+
+			ViewBag.IsFavorite = isFavorite;
+            Console.WriteLine(isFavorite + "*********************************");
+            //var x = _context.FavoriteSpots;
+			return View();
+
+		}
+
+		//NA+-----------------------------------------------------------
 
 
 
-        //黃浩維的不要動-------------------------------------------------------------------------------------------------
+		//黃浩維的不要動-------------------------------------------------------------------------------------------------
 
-        public IActionResult CreateItinerary()
+		public IActionResult CreateItinerary()
         {
 
             var memberEmail = HttpContext.Session.GetString("memberEmail");
@@ -582,7 +603,7 @@ namespace TripNa_MVC.Controllers
             var memberEmail = HttpContext.Session.GetString("memberEmail");
             var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
 
-            var lastOrder = _context.Orderlists
+			var lastOrder = _context.Orderlists
             .Where(o => o.MemberId == member.MemberId)
             .OrderByDescending(o => o.OrderId)
             .FirstOrDefault();
@@ -603,15 +624,45 @@ namespace TripNa_MVC.Controllers
                 };
                 _context.SelectGuiders.Add(selectedGuider);
 
-            }
+                var guider = _context.Guiders.FirstOrDefault(g => g.GuiderId == guiderId);
+				var guiderMember = _context.Members.FirstOrDefault(m => m.GuiderId == guiderId);
+                var guiderEmail = guiderMember?.MemberEmail;
 
+				var itinerary = _context.Itineraries.FirstOrDefault(i => i.ItineraryId == lastOrder.ItineraryId);
+				var itineraryName = itinerary.ItineraryName;
+				var itineraryStartDate = itinerary.ItineraryStartDate;
+                var memberName = member.MemberName;
+
+				MailToSelectedGuiders(guiderEmail, itineraryName, itineraryStartDate, memberName);
+
+            }
             _context.SaveChanges();
             return Ok();
         }
+		private async Task MailToSelectedGuiders(string email, string itineraryName, DateTime itineraryStartDate, string memberName)
+		{
+            string url = "http://localhost:5226/Guiders/GuiderMatchDetails";
+			var smtpClient = new SmtpClient("smtp.gmail.com")
+			{
+				Port = 587,
+				Credentials = new NetworkCredential("missingyou520x@gmail.com", "qdvnaopcicwvjpst"),
+				EnableSsl = true,
+			};
 
-        // 徐庭軒加的---------------------------
+			var mailMessage = new MailMessage
+			{
+				From = new MailAddress("missingyou520x@gmail.com"),
+				Subject = "訂單媒合邀約",
+				Body = $"您已收到 {itineraryName} 訂單 (出發日{itineraryStartDate}) 的媒合邀約，訂購人為{memberName}，請前往 {url} 查看邀約!",
+				IsBodyHtml = true,
+			};
+			mailMessage.To.Add(email);
 
-        public void ConfigureServices(IServiceCollection services)
+			await smtpClient.SendMailAsync(mailMessage);
+		}
+		// 徐庭軒加的---------------------------(行程)
+
+		public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddJsonOptions(options =>
             {

@@ -578,18 +578,6 @@ footer {
     height: 16px;
 }
 
-/*.favorite-btn {*/
-/* 未收藏狀態的樣式 */
-/*background-color: #ccc;
-    color: white;
-}
-
-    .favorite-btn.favorited {*/
-/* 已收藏狀態的樣式 */
-/*background-color: #ccc;
-        color: #b54e4e;
-    }*/
-
 
 .favorite-btn {
     /* 未收藏狀態的樣式 */

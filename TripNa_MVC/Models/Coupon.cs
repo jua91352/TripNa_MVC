@@ -5,7 +5,7 @@ namespace TripNa_MVC.Models;
 
 public partial class Coupon
 {
-    public virtual Itinerary Itinerary { get; set; } = null!;
+    public virtual Itinerary? Itinerary { get; set; } = null!;
 
     public int CouponId { get; set; }
 
