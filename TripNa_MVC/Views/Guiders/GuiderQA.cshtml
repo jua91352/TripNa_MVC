@@ -199,7 +199,19 @@
 
         if( @qas == 0)
         {
+            <br />
+            <div >
+                <div style='background-color: #e8eafe ' class="d-flex row justify-content-center m-1 rounded shadow ">
 
+                    <div class="text-center">
+                   
+                    <span class="bi bi-chat-square-dots" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+                    <h4 class="text-center">目前會員沒有提問</h4>
+                    <br />
+                    </div>
+
+                </div>
+            </div>
         }
         else
         {
@@ -207,57 +219,86 @@
        
 
     <!-- 與會員溝通的地方 -->
-    <h1 class="text-center">訂單問與答 @qas</h1>
+
+            <br />
+            <div>
+
+                <div style='background-color: #e8eafe ' class="d-flex row justify-content-center m-1 rounded shadow ">
 
 
-    @foreach (var qa in Model.Questions)
-    {
-        <div id="userQA">
-            <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
-            <span style="font-size: 22px;">@order.Member.MemberName:</span>
-            <div style="font-size: 22px;">@qa.QuestionContent</div>
-            <span style="font-size: 16px; color: #545454;">@qa.QuestionTime</span>
-            @if (qa.AnswerContent == null)
-            {
-                <a href="javascript:;" onclick="toggleReplyBox(this)">回覆</a>
-                <span style="font-size: 12px; color: #a2a2a2;">@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</span>
-                <div id="hide22_@qa.Qaid" style="display: none;">
-                    <br>
-                    <span class="bi bi-send" style="font-size: 22px;"></span>
-                    <span style="font-size: 22px;">@order.Guider.GuiderNickname:</span>
-                    <br>
-                    <textarea type="text" placeholder="請在此輸入您的回覆..." id="answerInput_@qa.Qaid" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-10 text-center"></div>
-                        <div class="col-sm-2 text-end d-inline">
-                            <button onclick="hideReplyBox(this)" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">取消</button>
-                            <button id="submitBtn_@qa.Qaid" class="btn" style="background-color: #4e5482 ;color: #e8eafe;" onclick="submitAnswer('@qa.Qaid', '@Model.OrderId','@order.Guider.GuiderId')">送出留言</button>
 
+                    <div class="text-center">
 
-                        </div>
+                        <br />
+                        <h1 class="text-center" >訂單問與答</h1>
+
+                        <br />
                     </div>
-                </div>
-            }
-        </div>
-        <br>
 
-        @if (@qa.QuestionTime < qa.AnswerTime)
-        {
-            <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
-                <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
-                <span style="font-size: 22px;">導遊-@order.Guider.GuiderNickname:</span>
-                <div style="font-size: 22px;">@qa.AnswerContent</div>
-                <span style="font-size: 16px; color: #545454;">@qa.AnswerTime</span>
+                    <div style="margin-left:30px ;margin-right:30px">
+
+                    @foreach (var qa in Model.Questions)
+                    {
+                        <div id="userQA">
+                            <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
+                            <span style="font-size: 22px;">@order.Member.MemberName:</span>
+                            <div style="font-size: 22px;">@qa.QuestionContent</div>
+                            <span style="font-size: 16px; color: #545454;">@qa.QuestionTime</span>
+                            @if (qa.AnswerContent == null)
+                            {
+                                <a href="javascript:;" onclick="toggleReplyBox(this)">回覆</a>
+                                <span style="font-size: 12px; color: #a2a2a2;">@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                                <div id="hide22_@qa.Qaid" style="display: none;">
+                                    <br>
+                                    <span class="bi bi-send" style="font-size: 22px;"></span>
+                                    <span style="font-size: 22px;">@order.Guider.GuiderNickname:</span>
+                                    <br>
+                                    <textarea type="text" placeholder="請在此輸入您的回覆..." id="answerInput_@qa.Qaid" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-8 text-center"></div>
+                                        <div class="col-sm-4 text-end d-inline">
+                                            <button onclick="hideReplyBox(this)" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">取消</button>
+                                            <button id="submitBtn_@qa.Qaid" class="btn" style="background-color: #4e5482 ;color: #e8eafe;" onclick="submitAnswer('@qa.Qaid', '@Model.OrderId','@order.Guider.GuiderId')">送出留言</button>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <br>
+
+                        @if (@qa.QuestionTime < qa.AnswerTime)
+                        {
+                            <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
+                                <span class="bi bi-send" style="color: #545454; font-size: 20px;"></span>
+                                <span style="font-size: 22px;">導遊-@order.Guider.GuiderNickname:</span>
+                                <div style="font-size: 22px;">@qa.AnswerContent</div>
+                                <span style="font-size: 16px; color: #545454;">@qa.AnswerTime</span>
+                            </div>
+                            <br>
+                        }
+
+
+                    }
+
+                        <br />
+                    </div>
+
+
+
+
+
+
+                </div>
             </div>
-            <br>
-                }
-                
-            
-            
-            
-            
-            }
+
+
+
+    // <h1 class="text-center" >訂單問與答 @qas</h1>
+
+
 
 
 
