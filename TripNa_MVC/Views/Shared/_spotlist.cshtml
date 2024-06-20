@@ -42,7 +42,7 @@ else
 				@* <p class="card-text" style="background-color:#4e5482;color:white; width:80px;height:20px;text-align:center;border-radius:5px;position:absolute;bottom:38%;font-weight:700;margin-left:5px;">@restaurant.FoodType</p> *@
 				<div class="card-body" style="overflow:auto;">
 
-					@if (ViewBag.IsFavorite ==true)
+				@* 	@if (ViewBag.IsFavorite ==true)
 					{
 						<span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn favorited" data-spot-id="@spots.SpotId">&#10084;</span>
 					}
@@ -50,9 +50,9 @@ else
 					{
 						<span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
 					}
+ *@
 
-
-					@* <span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span> *@
+					<span onclick="SOPTLIKE(this)" class="heart-icon align-self-end favorite-btn" data-spot-id="@spots.SpotId">&#10084;</span>
 
 					<div class="d-flex align-items-center">
 						<h4 class="card-title" style="font-weight:800; font-size:1.2rem; margin-right: 0;margin-left: 28px;">@spots.SpotName</h4>
@@ -186,26 +186,26 @@ else
 	}
 
 
-	$.ajax({
-		url: '/Home/Isfavorite',
-		type: 'GET',
-		data: {
-			spotId: spotId
-		},
-		success: function (response) {
-			if (response.success) {
-				alert(response)
+	// $.ajax({
+	// 	url: '/Home/Isfavorite',
+	// 	type: 'GET',
+	// 	data: {
+	// 		spotId: spotId
+	// 	},
+	// 	success: function (response) {
+	// 		if (response.success) {
+	// 			alert(response)
 
-			} else {
-				// 處理錯誤
-				alert(response.message);
-			}
-		},
-		error: function (xhr, status, error) {
-			// 處理錯誤
-			console.error(error);
-		}
-	});
+	// 		} else {
+	// 			// 處理錯誤
+	// 			alert(response.message);
+	// 		}
+	// 	},
+	// 	error: function (xhr, status, error) {
+	// 		// 處理錯誤
+	// 		console.error(error);
+	// 	}
+	// });
 		
 
 

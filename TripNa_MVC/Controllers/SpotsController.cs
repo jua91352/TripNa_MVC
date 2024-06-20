@@ -94,22 +94,22 @@ ViewData["CurrentFilter"] = searchString;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot, IFormFile photo)
+        public async Task<IActionResult> Create([Bind("SpotId,SpotName,SpotCity,SpotBrief,SpotIntro")] Spot spot/*, IFormFile photo*/)
         {
 
 
-            string spotImageFileName = $"{spot.SpotName}.jpg";
+            //string spotImageFileName = $"{spot.SpotName}.jpg";
            
-            if (photo != null && photo.Length > 0)
-            {
-                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "Images/Spots", spotImageFileName);
-                //string directoryPath = Path.GetDirectoryName(imagePath);
+            //if (photo != null && photo.Length > 0)
+            //{
+            //    var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "Images/Spots", spotImageFileName);
+            //    //string directoryPath = Path.GetDirectoryName(imagePath);
 
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    await photo.CopyToAsync(stream);
-                }
-            }
+            //    using (var stream = new FileStream(imagePath, FileMode.Create))
+            //    {
+            //        await photo.CopyToAsync(stream);
+            //    }
+            //}
 
 
             //using (var stream = new FileStream(imagePath, FileMode.Create))
