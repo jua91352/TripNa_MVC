@@ -56,6 +56,26 @@
         left: 1400px;
         height: 300px;
     }
+
+
+    .btn_weather{
+        font-weight: 700;
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: white;
+        background-image: linear-gradient(135deg, #413a3b67, #978a9b);
+        padding: 9px;
+        /* margin-top: 36px; */
+        justify-content: center;
+        border-radius: 10px;
+        text-align: center;
+        position: absolute;
+        right: 258px;
+        bottom: -81px;
+    
+    }
+
+
 </style>
 
 <!-- 頁首 END -->
@@ -407,10 +427,13 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button> *@
+
+                
+
+
             </div>
             <!-- Hamburger Menu -->
-
-
+            <a asp-action="weather" asp-controller="Travel" class="btn_weather">點此查看詳細旅遊資訊</a>
 
 
 

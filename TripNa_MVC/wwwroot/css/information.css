@@ -602,3 +602,17 @@ footer {
         background-color: #d86f6f;
         color: #f2c3c3;
     }
+
+.btn_weather {
+    padding: 8px;
+    margin-right: 30px;
+    background-color: rgb(255, 255, 255, 0.26);
+    text-decoration: none;
+    color: #8c8aa3;
+    border-radius: 5px;
+    border: 2px solid #747acc52;
+}
+.btn_weather:hover{
+
+    color:#747acc52;
+}
