@@ -6,12 +6,68 @@
     string p = ".jpg";
 }
 
-<br>
-<br>
-<br>
-<br>
-<div class="container">
+<style>
 
+    #GuiderData {
+        background-color: whitesmoke;
+        border: 4px solid whitesmoke;
+        padding-top: 45px;
+        padding-left: 25px;
+        padding-bottom: 60px;
+        margin-bottom: 46px;
+        width: 80%;
+        box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.4);
+        border-radius: 10px;
+        /* margin-left: 105px; */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .left-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+    }
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-section {
+        flex: 2;
+        padding-left: 20px;
+    }
+
+    #pic{
+        width: 80%;
+        border-radius: 10px;
+        background-color: #e8eafe;
+        box-shadow: 0px 10px 5px -2px rgba(0,0,0,0.4);
+        /* text-align:center; */
+    }
+
+    #pic > img {
+        height:70%;
+        width:85%;
+        object-fit: cover;
+    }
+
+</style>
+
+<br>
+<br>
+
+<div class="container" style="background-color: lavender;">
+    <br>
+    <br>
     <div>
         <h1 class="text-center">TripNa Guider Member Center</h1>
 
@@ -38,16 +94,18 @@
 
     </div>
 
+    <br>
+
     <hr style='background-color:#3A326D; height:1px; border:none;'>
 
 
     <br>
     <br>
     <br>
-    <br>
+   
 
 
-    <div class="text-end">
+    <div class="text-end" style="margin-right:30px">
         <a asp-action="Guiderintroduce" asp-controller="Guiders" style="text-decoration: none;">
             <span class="bi bi-eye" style="color: #545454; font-size: 18px;"></span>
             <span style="color: #4e5482 ">檢視自介</span>
@@ -57,20 +115,20 @@
 
     <form method="post" asp-action="GuiderCenter" enctype="multipart/form-data" asp-controller="Guiders">
 
-        <div class="row">
+        <div class="row" id="GuiderData">
 
-            <div class="col-sm-2">
-            </div>
+           @*  <div class="col-sm-2">
+            </div> *@
 
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-5 text-center left-section">
+                <div class="content-wrapper">
 
                 @foreach (var item in Model)
                 {
-                    <img id="display_img" src="~/導遊/大頭照/@item.Guider.GuiderArea/@item.Guider.GuiderNickname@p" style="border-radius: 50%;object-fit: cover;" height="150px " width="150px">
+                    <img id="display_img" src="~/導遊/大頭照/@item.Guider.GuiderArea/@item.Guider.GuiderNickname@p" style="border-radius: 50%;object-fit: cover;" height="190px " width="190px">
 
-                    <br>
-                    <br>
-                    <label class="btn" style="background-color: #4e5482 ;color: #e8eafe;">
+
+                    <label class="btn" style="background-color: #4e5482 ;color: #e8eafe; margin-top:10px">
                         <input id="upload_img" style="display:none;" type="file" name="guiderImage">
                         <i class="fa fa-photo"></i> 上傳圖片
                     </label>
@@ -78,19 +136,18 @@
                 }
 
                 <br>
-                <br>
+            
 
 
                 @foreach (var item in Model)
                 {
-                    <div style='background-color: #e8eafe'>
+                    <div id="pic" class="text-center">
 
+
+                        <b style="font-size: 18px;">導遊證</b>
                         <br>
 
-                        <b style="font-size: 15px;">導遊證</b>
-                        <br>
-
-                        <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@p" height="190px " width="300px" style="object-fit: cover;">
+                        <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@p" >
 
                         <br>
                         <br>
@@ -99,8 +156,9 @@
 
                 }
             </div>
+            </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-7 right-section">
 
                 @foreach (var item in Model)
                 {
@@ -152,10 +210,13 @@
             <div class="text-center">
                 <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">完成修改並儲存✓</button>
             </div>
-
         </div>
     </form>
+     
+    <br>
+    <br>
 
+</div>
     <br>
     <br>
     <br>

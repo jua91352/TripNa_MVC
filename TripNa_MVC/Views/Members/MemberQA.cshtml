@@ -9,6 +9,8 @@
     int day = 0;
     string p = ".jpg";
 
+    int qas = Model.Questions.Count;
+
     int questionCount = ViewData["QuestionCount"] != null ? (int)ViewData["QuestionCount"] : 0;
 
 }
@@ -20,7 +22,7 @@
         height: 125px;
     }
 
- 
+  
 </style>
 
 <br>
@@ -216,71 +218,164 @@
     </div>
 
 
-
-    <!-- 與導遊溝通的地方 -->
-    <h1 class="text-center">訂單問與答  @order.Guider.GuiderId</h1>
-
-
-    @foreach (var qa in Model.Questions)
+@{    if( @qas == 0)
     {
-        <div id="userQA">
-            <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
-            <span style="font-size: 22px;">@order.Member.MemberName:</span>
-            <div  style="font-size: 22px;">@qa.QuestionContent</div>
-            <span style="font-size: 16px; color: #545454;">@qa.QuestionTime</span>
-        </div>
-        <br>
-        if (@qa.QuestionTime < qa.AnswerTime)
-        {
-            <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
-                <span class="bi bi-send" style=" font-size: 22px;"></span>
-                <span style="font-size: 22px;">導遊-@order.Guider.GuiderNickname:</span>
-                <div style="font-size: 22px;">@qa.AnswerContent</div>
-                <span style="font-size: 16px; color: #545454;">@qa.AnswerTime</span>
-            </div>
-            <br>
-        }
-    }
+    <br />
+    <div>
+                <div style='background-color: #e8eafe ' class="d-flex row justify-content-center m-1 rounded shadow ">
+                  <div class="text-center">
+                    <br />
+                        <h1 class="text-center">訂單問與答</h1>
+                    <br />
+                </div>
+              
 
-
-
-
-
-
-
-    <br>
-
-    <div >
-        <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
-        <span style="font-size: 22px;">@order.Member.MemberName:</span>
-        <br>
-
-
-
-        <textarea type="text" placeholder="請在此輸入您的問題..." id="questionInput" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
-
-        <br>
-        <br>
-
-
-        <div class="row">
-
-            <div class="col-sm-10 text-center"></div>
-
-
-            <div class="col-sm-2 text-end d-inline">
-                <button onclick="show22()" class="btn"
-                        style="background-color: #4e5482 ;color: #e8eafe;">
-                    取消
-                </button>
-
-                <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
-
+            <div class="text-center">
+               <span class="bi bi-chat-square-dots" style="font-size:110px ;margin-top:20px ; color: #4e5482"></span>
+               <h4 class="text-center">您目前還沒有提問</h4>
+                <br />
             </div>
 
-        </div>
+                    <div style="margin-left:30px ;margin-right:30px">
+
+                        <div>
+                            <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
+                            <span style="font-size: 22px;">@order.Member.MemberName:</span>
+                            <br>
+                            <textarea type="text" placeholder="請在此輸入您的問題..." id="questionInput" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 text-center"></div>
+                                <div class="col-sm-4 text-end d-inline">
+                                    
+                                    <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <br />
+        <br />
+                    
+                    </div>
 
     </div>
+    }
+    else
+    {
+
+            <br />
+            <div>
+
+                <div style='background-color: #e8eafe ' class="d-flex row justify-content-center m-1 rounded shadow ">
+
+
+
+                    <div class="text-center">
+
+                        <br />
+                        <h1 class="text-center">訂單問與答</h1>
+
+                        <br />
+                    </div>
+
+                    <div style="margin-left:30px ;margin-right:30px">
+
+                        @foreach (var qa in Model.Questions)
+                        {
+                            <div id="userQA">
+                                <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
+                                <span style="font-size: 22px;">@order.Member.MemberName:</span>
+                                <div style="font-size: 22px;">@qa.QuestionContent</div>
+                                <span style="font-size: 16px; color: #545454;">@qa.QuestionTime</span>
+                            </div>
+                            <br>
+                            if (@qa.QuestionTime < qa.AnswerTime)
+                            {
+                                <div id="userQA" style="padding-left: 15px; border-left:1px solid #545454">
+                                    <span class="bi bi-send" style=" font-size: 22px;"></span>
+                                    <span style="font-size: 22px;">導遊-@order.Guider.GuiderNickname:</span>
+                                    <div style="font-size: 22px;">@qa.AnswerContent</div>
+                                    <span style="font-size: 16px; color: #545454;">@qa.AnswerTime</span>
+                                </div>
+                                <br>
+                            }
+                        }
+
+
+                        <br>
+                        <div>
+                            <span class="bi bi-person-circle" style=" font-size: 22px;"></span>
+                            <span style="font-size: 22px;">@order.Member.MemberName:</span>
+                            <br>
+                            <textarea type="text" placeholder="請在此輸入您的問題..." id="questionInput" style="resize:none; height: 110px; width:100%;font-size: 22px"></textarea>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 text-center"></div>
+                                <div class="col-sm-4 text-end d-inline">
+                                    <button id="submitBtn" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出留言</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <br />
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // <!-- 與導遊溝通的地方 -->
+    // <h1 class="text-center">訂單問與答  @qas @order.Guider.GuiderId</h1>
+
+
+    
+
+        }
+
+}
+
+
+    
+    
+    
     <br>
     <br>
     <br>

@@ -15,6 +15,7 @@ using QAINSERT.Models;
 using TripNa_MVC.Models;
 using XAct;
 using XSystem.Security.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TripNa_MVC.Controllers
 {
@@ -340,8 +341,6 @@ namespace TripNa_MVC.Controllers
             ViewData["orderID"] = orderID;
 
 
-
-
             if (member != null && member.GuiderId == null)
             {
                 // GuiderID 為空,可以註冊
@@ -418,7 +417,7 @@ namespace TripNa_MVC.Controllers
                     OrderStatus = o.OrderStatus,
                     OrderMatchStatus = o.OrderMatchStatus,
                     OrderId = o.OrderId,
-  
+
                     Itinerary = new Itinerary
                     {
                         ItineraryStartDate = o.ItineraryStartDate,
@@ -636,13 +635,14 @@ namespace TripNa_MVC.Controllers
 
 
 
+
         [HttpPost]
         public IActionResult SaveRating([FromBody] Rating dataToSend)
         {
             try
             {
                 // 創建一個新的評價實體
-                
+
 
                 Console.WriteLine("-------------------MemberId: " + dataToSend.MemberId);
                 Console.WriteLine("-------------------OrderId: " + dataToSend.OrderId);
@@ -682,6 +682,72 @@ namespace TripNa_MVC.Controllers
         }
 
 
+
+        [HttpPost]
+        public IActionResult CreateCoupon(object couponData)
+        {
+            var x = couponData;
+            return Content("ok");
+            /*
+            //var memberEmail = HttpContext.Session.GetString("memberEmail");
+            //if (string.IsNullOrEmpty(memberEmail))
+            //{
+            //    return RedirectToAction("Login", "Home"); // 如果會話中沒有用戶信息，重定向到登錄頁面
+            //}
+            //var member = _context.Members.FirstOrDefault(m => m.MemberEmail == memberEmail);
+                DateTime currentDate = DateTime.Now;
+                // 將日期往後推移 6 個月
+                DateTime couponDueDateWithTime = currentDate.AddMonths(6);
+                // 獲取不包含時間部分的 DateOnly 值
+                DateOnly couponDueDate = DateOnly.FromDateTime(couponDueDateWithTime);
+            if (couponData == null)
+            {
+                return StatusCode(500, "伺服器錯誤：couponData 為 null");
+            //    couponData = new Coupon
+            //    {
+            //        MemberId = couponData.MemberId,
+            //        ItineraryId = couponData.ItineraryId,
+            //        CouponDueDate = couponDueDate,
+            //        CouponCode= couponData.CouponCode
+            //    };
+            }
+            try
+            {
+                // 獲取當前日期
+                Console.WriteLine("-------------------MemberId: " + couponData.MemberId);
+                Console.WriteLine("-------------------ItineraryId: " + couponData.ItineraryId);
+                Console.WriteLine("-------------------CouponCode: " + couponData.CouponCode);
+                Console.WriteLine("-------------------CouponDueDate: " + couponDueDate);
+                couponData.CouponDueDate = couponDueDate;
+                // 添加評價到 DbContext
+                _context.Coupons.Add(couponData);
+                // 保存到資料庫
+                _context.SaveChanges();
+                Console.WriteLine("Creating cp: " + Newtonsoft.Json.JsonConvert.SerializeObject(couponData));
+                return Ok("儲存優惠碼成功");
+            }
+            catch (DbUpdateException ex)
+            {
+                // 處理資料庫更新相關的異常
+                Console.WriteLine("DbUpdateException: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "資料庫更新異常：" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                return StatusCode(500, "伺服器錯誤：" + ex.Message);
+            }
+
+            */
+        }
 
 
         //判斷該會員是否真的有該筆優惠券

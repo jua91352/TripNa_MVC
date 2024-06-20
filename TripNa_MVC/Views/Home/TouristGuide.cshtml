@@ -106,8 +106,8 @@
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                123
-                <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked)">
+
+                <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked, '@guider.GuiderNickname')">
                 @* <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)"> *@
             </div>
         </div>
@@ -131,6 +131,7 @@
         var selectedGender = '@ViewBag.SelectedGender';
         var selectedRating = '@ViewBag.SelectedRating';
         var selectedExperience = '@ViewBag.SelectedExperience';
+        
         if (selectedGender) {
             console.log(selectedGender);
             document.getElementById("gender").value = selectedGender;
@@ -167,14 +168,17 @@
     }
 
     var selectedGuiderIds = [];
+    var guiderInfo = "";
 
-    function selectGuider(guiderId, isChecked) {
+    function selectGuider(guiderId, isChecked, guiderNickname) {
         if (isChecked) {
             selectedGuiderIds.push(guiderId);
+            guiderInfo += guiderNickname + '\n';
         } else {
             selectedGuiderIds = selectedGuiderIds.filter(id => id !== guiderId);
         }
         console.log("Selected Guider Ids:", selectedGuiderIds);
+        
     }
 
     function submitSelectedGuiders() {
@@ -187,11 +191,14 @@
             },
             success: function (response) {
                 console.log('Successfully updated guider selection.');
+                alert('您選擇的導遊為:\n'+ guiderInfo);
             },
             error: function (xhr, status, error) {
                 console.error('Error updating guider selection:', error);
             }
         });
+
+        
     }
 
     window.onscroll = function () {
