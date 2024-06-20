@@ -78,7 +78,7 @@
         <div class="col-lg-1 "></div>
         <div id="accordionContainer" class="col-lg-6 col-md-6 col-sm-6 col-7" style="top: 150px; bottom:100px;">
             <button type="button" class="accordion disabled" id="day1" disabled>第一天的景點安排</button>
-            <div class="panel" id="panel1">
+            <div class="panel" id="panel1" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
                 <div class="row justify-content-center m-3 text-center">
                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -106,7 +106,7 @@
 
 
                 <button type="button" class="accordion disabled" id="day2" disabled>第二天的景點安排</button>
-            <div class="panel" id="panel2">
+            <div class="panel" id="panel2" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
                 <div class="row justify-content-center m-3 text-center">
                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -133,7 +133,7 @@
 
 
                 <button type ="button" class="accordion disabled" id="day3" disabled>第三天的景點安排</button>
-            <div class="panel" id="panel3">
+            <div class="panel" id="panel3" style="border-radius: 10px;backdrop-filter: blur(10px);background-color: #f8e8ff;">
                 <div class="row justify-content-center m-3 text-center">
                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <h4 class="ui-widget-header"><span class="ui-icon ui-icon-calendar"></span>早上</h4>
@@ -161,11 +161,11 @@
 
         <!-- 景點照片 -->
         <div class="col-lg-4 col-md-5 col-sm-6 col-5" style="position: sticky; top: 200px;bottom:150px;">
-            <div class="container rounded-3" id="mark" style="background-color: #4e5482; height: 250px;">
+            <div class="container" id="mark" style="background-color: #4e5482; height:300px;border-radius: 20px;">
                 <div class="row justify-content-center">
                     <p class="text-white m-3" style="font-size: 20px;">操作方法:</p>
-                    <p class="text-white m-3">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
-                    <div class="col-md-8" style="background-color: #f8e8ff;">
+                    <p class="text-white m-3" style="font-size: 16px;">拖曳放置您要的景點，最後點擊「確定行程」前去尋找導遊</p>
+                    <div class="col-9" style="background-color: #f8e8ff; border-radius: 15px;">
                         <ul id="gallery" class="gallery list-unstyled">
                                 @if (Model != null && Model.Spot != null)
                                 {
@@ -215,10 +215,8 @@
 <br>
 <br>
 <br>
-<script>
-        
-        
-                
+
+<script>       
     $(function () {
         // 選日期
         $("#datepicker").datepicker({

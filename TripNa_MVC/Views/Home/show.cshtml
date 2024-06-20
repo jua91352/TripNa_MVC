@@ -25,6 +25,72 @@
             font-family: "Noto Serif TC", serif;
         }
 
+        .btn {
+            position: relative;
+            color: white;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            padding: 12px 20px;
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .btn:before {
+                content: "";
+                position: absolute;
+          
+                left: 0;
+                display: block;
+                border-radius: 28px;
+                background: rgba(255, 171, 157, 0.5);
+                width: 56px;
+                height: 56px;
+                transition: all 0.3s ease;
+            }
+
+            .btn span {
+                position: relative;
+                z-index: 1;
+            }
+
+            .btn svg {
+                position: relative;
+                top: 0;
+                margin-left: 10px;
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke: white;
+                stroke-width: 2;
+                transform: translateX(-5px);
+                transition: all 0.3s ease;
+            }
+
+            .btn:hover:before {
+                width: 100%;
+                background: #FFAB9D;
+            }
+
+            .btn:hover svg {
+                transform: translateX(0);
+            }
+
+            .btn:hover,
+            .btn:focus {
+                color: whitesmoke;
+            }
+
+            .btn:active {
+                color:floralwhite;
+                transform: scale(0.96);
+            }
+
         .container {
             display: flex;
             height: 100vh;
@@ -50,7 +116,7 @@
             left: 10px;
             transform: translate(-50%, -50%);
             font-size: 50px;
-            max-width: 40%;
+            max-width: 20%;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             padding: 10px 20px;
@@ -116,9 +182,9 @@
                 <source src="@Url.Content("/_img/show/首頁.mp4")" type="video/mp4">
             </video>
             <div class="text">
-                台灣．山河
+                台灣．生態之旅
                 <br />
-                Taiwan Mountain
+                Taiwan
                 <br />
                 <p style="font-size:18px">台灣的山岳景觀壯麗雄偉，中央山脈縱貫南北，提供了無數的登山步道和壯觀的景色。阿里山的雲海和日出是遊客必訪的勝地，玉山則是東北亞最高峰，吸引著無數登山愛好者。此外，太魯閣國家公園以其壯麗的峽谷景觀和大理石峽谷聞名，成為台灣的自然奇觀之一。</p>
             </div>
@@ -140,36 +206,50 @@
             <div class="text">
                 海．景
                 <br />
+                ocean view
+                <br />
                 <p style="font-size:18px">台灣四面環海，擁有多樣的海洋景觀。東海岸的太平洋浪濤洶湧，適合衝浪和潛水。不論是都市還是鄉村，當地居民都樂於分享他們的文化和故事。</p>
             </div>
 
         </div>
         <div class="section" style="background-image: url('@Url.Content("/_img/show/人.jpg")');">
             <div class="text">
-                人‧溫度
+                人‧情‧味
                 <br />
-                <p style="font-size:18px">台灣人民熱情友善，以熱情待客和真誠的微笑著稱。吸引著無數的遊客前來觀賞。澎湖列島以其美麗的海蝕地形和清澈的海水著稱，是浮潛和水上活動的絕佳地點。這些海洋景觀展現了台灣自然的另一種美麗。</p>
+                Human touch
+                <br />
+                <p style="font-size:18px">台灣的人情味充滿了生動的熱情和真誠。無論是在繁華的市場還是寧靜的街巷，你都能感受到滿滿的溫暖和友善。攤販熱情地推薦拿手的小吃，捷運上陌生人自動讓座，這些細微舉動彰顯了台灣人的待人誠懇態度。社區裡的鄰里彼此關心、無私幫助，更是這份人情味最生動的寫照。</p>
             </div>
         </div>
         <div class="section" style="background-image: url('@Url.Content("/_img/show/文化.jpg")');">
             <div class="text">
                 文．化
-                <br />
-                <p style="font-size:18px">台灣人民熱情友善，以熱情待客和真誠的微笑著稱。不論是都市還是鄉村，當地居民都樂於分享他們的文化和故事。</p>
+                <br/>  
+                Culture
+                <br/>
+                <p style="font-size:18px">台灣文化彷彿一幅色彩繽紛的畫卷，融合了中華傳統、原住民風情及現代活力。香氣四溢的小吃街、熱鬧的廟會、悠揚的庙会、還有多樣化的藝術表演，無不展現出台灣深厚的宗教信仰和民俗風情。從壯麗的山脈到湛藍的海洋，台灣的自然美景更是讓人心馳神往。這些元素共同編織成了現代台灣獨特而多元的文化繪卷。</p>
             </div>
         </div>
         <div class="section" style="background-image: url('@Url.Content("/_img/show/首頁.jpg")');">
-            <div class="text">趣哪TripNa</div>
+            <div class="text">趣哪TripNa
+                <br />
+                Human touch
+                <br />
+                <p style="font-size:18px">「趣哪 TripNa」的初衷是希望解決規劃旅遊時常常碰到的問題，像是規劃行程的煩惱、交通不便以及資訊不足等等。本網站提供客製化旅行行程並且媒合導遊的全方位旅遊平台。</p>
+            </div>
+            
             <div class="additional-text" style="text-align: center;">
                 <div style="position: relative; display: inline-block;">
-                    <a class="btn" asp-controller="Home" asp-action="Index"
-                       style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease; cursor: pointer;"
-                       onmouseover="this.style.backgroundColor='#0056b3';"
-                       onmouseout="this.style.backgroundColor='#007bff';">
-                        前往首頁→
+                    <a class="btn" asp-controller="Home" asp-action="Index">
+                        <span>前往首頁</span>
+                        <svg width="13px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
                     </a>
                 </div>
             </div>
+
 
         </div>
     </div>

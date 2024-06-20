@@ -85,16 +85,16 @@
     </div> *@
     <section>
         <div class="bgi"
-             style="height:1000px;  background-size: cover;">
+             style="height:1000px;  background-size: cover;background-repeat: no-repeat; background-attachment: fixed; background-position: center;backdrop-filter:blur(10px); /* 模糊效果 */">
             <img src="~/_img/index/背景.jpg" alt="Alternate Text" />
         </div>
     </section>
     <!-- 背景雲朵 -->
-    @*  <div class="cloud-container" id="parallax">
-    <div class="cloud">
-    <img src="~/_img/index/cloud.png" alt="">
+     <div class="cloud-container" id="parallax">
+        <div class="cloud">
+        <img src="~/_img/index/cloud.png" alt="">
     </div>
-    </div> *@
+    </div>
     <!-- SVG台灣圖 -->
     <div class="Taiwans">
         <svg width="750" height="600" style="position: absolute;" id="taiwans"></svg>
@@ -303,7 +303,7 @@
         </div>
         <!-- TABLE START 熱門景點 -->
         <div class="p-2 col md-auto h-50 position-relative">
-            <div class="container" id="info9">
+            <div class="container" id="info9" style="background-color:aliceblue">
                 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
