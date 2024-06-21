@@ -101,9 +101,9 @@
 		<!-- ------------------------------天氣資訊內容 ------------------------------------------->
 		<div class="col-12 m-3" style="width:90%;position:absolute">
 
-	<h1 class="weather-head">天氣資訊</h1>
+	<h1 class="weather-head">旅遊資訊</h1>
 			<div class="dropdown btn-group">
-	<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1557px;z-index:auto;" /></a>
+	<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1590px;z-index:auto;" /></a>
 
 			
 
@@ -124,7 +124,7 @@
 			<br>
 
 			<div id="weather-table" class="row row-cols-3 ">
-				<table class="table table-hover table align-middle rounded" style="margin-top: 10px; margin-bottom: 0; background-image:linear-gradient(360deg, #ffffff59, #06092c40);color:white; backdrop-filter: blur(12px);">
+				<table class="table table-hover table align-middle rounded" style="margin-top: 10px; margin-bottom: 0; background-image:linear-gradient(360deg, #30303054, #e1dddd6b);color:white; backdrop-filter: blur(14px);">
 					<thead class="th" scope="" style="border-bottom-width:0 !important; ">
 					</thead>
 					<tbody>
@@ -188,7 +188,7 @@
 
 				<div class="col-12 col-md-6">
 					<!-- 第二張卡片的 HTML 代碼 -->
-				<div class="Eqk " style="margin-left:20px;width:32rem;margin-top:26rem;background-color:transparent;">
+				<div class="Eqk " style="margin-left:20px;width:32rem;margin-top:26rem;background-color:transparent;border-radius:20px;">
 					</div>
 					<button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#demo" id="btnGetOpenData">
 						近期地震資訊
@@ -206,7 +206,8 @@
 				</div>
 			
 			</div>
-		<img src="/_img/S6_Where_to_go_for_spring_sun-removebg-preview.png" alt="Alternate Text" width="370px" height="400px" style="position:absolute;top:829;left:500px;" />
+		<img src="/_img/S6_Where_to_go_for_spring_sun-removebg-preview.png" alt="Alternate Text" width="370px" height="400px" style="position:absolute;top: 1522px;
+    left: 1176px;" />
 		</div>
 
 	
@@ -661,7 +662,7 @@
 
 											function cityinfo(selectedCity, selectedCityIndex) {
 												
-												$(".weather-head").text(selectedCity +"的天氣資訊")
+												$(".weather-head").text(selectedCity +"的旅遊資訊")
 												$('#loca').empty();
 												$("#loca").append(`<p class="m-0 p-0">${selectedCity}</p>`)
 												console.log('選擇的地區:', selectedCity);
