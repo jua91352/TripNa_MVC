@@ -43,13 +43,12 @@
         color: #e8eafe;
     }
 </style>
+
 <div class="nav-center text-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
     我們為您推薦的導遊
 </div>
 <div class="row">
-
     <p class="col-12 text-center p-3">搜尋結果共有 @ViewBag.GuiderCount 筆</p>
-
 </div>
 <div class="row justify-content-center" style="width: 100%;" id="select">
     <div class="col-auto">
@@ -89,7 +88,7 @@
 <div id="card-container">
     @foreach (var guider in Model)
     {
-        string imgPath = "~/導遊/大頭照/"+"/"+@guider.GuiderArea+"/"+ guider.GuiderNickname + ".jpg";
+        string imgPath = "~/導遊/大頭照/" + "/" + @guider.GuiderArea + "/" + guider.GuiderNickname + ".jpg";
         <div style="width: 60%; margin: 0 auto;" id="card">
             <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
                 <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" style="height: auto; width: 150px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 12px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
@@ -102,26 +101,20 @@
                     簡介:@guider.GuiderIntro<br>
                 </p>
                 <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked)">
-                @* <input type="checkbox" class="form-check-input m-2 p-2 rounded shadow position-absolute bottom-0 end-0" id="selectGuider" onclick="selectGuider('@guider.GuiderId', this.checked)"> *@
             </div>
         </div>
     }
 </div>
 <br>
-<div class="row justify-content-center m-3">
-    <div class="col-8"></div>
 
+<a id="fixedButton" class="btn btn-primary text-center rounded shadow" onclick="submitSelectedGuiders()" asp-area="" asp-controller="Members" asp-action="MemberCheckOut">
+    下單去
+</a>
 
-
-    <a class="btn  btn-primary col-1 text-center rounded shadow m-3" onclick="submitSelectedGuiders()" asp-area="" asp-controller="Members" asp-action="MemberCheckOut"
-       style="width: 150px; background-color: #4e5482 ;color: #e8eafe;">下單去</a>
-
-
-	</div>
 <br>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        
         var selectedGender = '@ViewBag.SelectedGender';
         var selectedRating = '@ViewBag.SelectedRating';
         var selectedExperience = '@ViewBag.SelectedExperience';
@@ -172,7 +165,6 @@
     }
 
     function submitSelectedGuiders() {
-
         $.ajax({
             url: ("/Home/SubmitSelectedGuiders"),
             type: 'POST',
@@ -187,26 +179,4 @@
             }
         });
     }
-
-    window.onscroll = function () {
-        adjustButtonPosition();
-    };
-    
-
-    window.onscroll = function () {
-        var button = document.getElementById("fixedButton");
-        var scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-        var windowHeight = window.innerHeight;
-        var documentHeight = document.body.scrollHeight;
-        var offset = 100; // 距離底部多少時開始跟隨滾動
-
-        if (documentHeight - (scrollPosition + windowHeight) < offset) {
-            button.style.position = "absolute";
-            button.style.bottom = offset + "px";
-        } else {
-            button.style.position = "fixed";
-            button.style.bottom = "10px";
-        }
-    };
-
 </script>
