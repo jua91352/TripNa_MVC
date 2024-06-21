@@ -13,39 +13,13 @@
 
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/rating.css">
 
+</head>
 
 <style>
 
-    .block #OrderListTatble tr td img {
-        object-fit: cover;
-        height: 125px;
-        height: 125px;
-    }
-
-    body #myscore {
-        border-style: initial;
-        height: 200px;
-        border: 1px solid #3A326D;
-    }
-
-
-    #star {
-        font-size: 30px;
-        margin: 0;
-    }
-
-    #star:hover {
-        cursor: pointer;
-    }
-
-    .rank-rated {
-        color: #f6be00;
-    }
-
-    .rank-not-rated {
-        color: #a2a2a2;
-    }
 
 </style>
 <br>
@@ -295,7 +269,6 @@
 
 
 
-
     <br>
 
     <!-- 評價導遊的地方 -->
@@ -316,6 +289,47 @@
     else if (order.OrderMatchStatus == "已媒合" && order.OrderStatus == "訂單完成" && ratingStars == 0)
     {
 
+
+        <div class="text-center">
+            <button id="popupButton" class="btn text-end" style="background-color: #4e5482; font-size:25px ;margin:20px;color: #e8eafe;">評價導遊<i class="bi bi-star-fill"></i></button>
+        </div>
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <div class="cont">
+                    <h2>評價導遊</h2>
+                    <div id="scorezone">
+                        <div id="myscore">
+                            <span style="font-size: 20px;">導遊評價：</span>
+                            <span id="star">
+                                <span class="rank-not-rated" data-rating="1">&#128970;</span>
+                                <span class="rank-not-rated" data-rating="2">&#128970;</span>
+                                <span class="rank-not-rated" data-rating="3">&#128970;</span>
+                                <span class="rank-not-rated" data-rating="4">&#128970;</span>
+                                <span class="rank-not-rated" data-rating="5">&#128970;</span>
+                            </span>
+                            <span id="score" style="color: #3A326D; font-size: 20px;"></span>
+                            <textarea id="write" placeholder="輸入您的評價"></textarea>
+
+                        </div>
+                        <br>
+                        <br>
+
+                        <div id="endBtn" class="row">
+                            <div class="text-end">
+                                <button id="submitBtn " onclick="submitData( '@order.Member.MemberId' , '@order.OrderId','@order.Guider.GuiderId' ,'@order.ItineraryDetail.ItineraryId')" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+@* 
 
         <div id="scorezone">
             <h2 class="text-center">評價導遊    @order.ItineraryDetail.ItineraryId  @order.Member.MemberId </h2>
@@ -352,7 +366,7 @@
                 </div>
 
             </div>
-        </div>
+        </div> *@
 
 
     }
@@ -385,9 +399,6 @@
 
             </div>
 
-
-
-
         </div>
     }
 
@@ -401,6 +412,7 @@
 <br>
 
 
+<script src="~/js/rating.js"></script>
 
     <script>
 
@@ -447,12 +459,12 @@
         });
 
 
-    // 綁定輸入的評價 並且顯示到alert上面 以便確認有綁定
+
+    // // 綁定輸入的評價 並且顯示到alert上面 以便確認有綁定
 
     var write = document.getElementById("write");
 
-    function submitData(memberId, orderId, guiderId,ItineraryId) {
-
+    function submitData(memberId, orderId, guiderId, ItineraryId) {
         alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
 
         console.log(memberId + orderId + guiderId + ItineraryId);
@@ -464,8 +476,7 @@
             "RatingStars": parseInt(currentRating),
         };
 
-        console.log("Sending data:", dataToSend); // 添加這行來檢查發送的數據
-
+        console.log("Sending data:", dataToSend);
 
         // 使用 AJAX 發送 POST 請求到 C# 後端
         $.ajax({
@@ -476,54 +487,86 @@
             success: function (response) {
                 console.log("評價保存成功!");
                 alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
-                generateCouponCode(memberId, ItineraryId);
-                // location.reload(); // 重新加載當前頁面
-
+                generateCouponCode(memberId, ItineraryId, orderId);
             },
             error: function (xhr, status, error) {
                 console.error("評價保存失敗:", error);
-                console.log("Response:", xhr.responseText); // 添加這行來檢查伺服器返回的錯誤信息
-                console.log("Status:", status);
-                console.log("Error:", error);
-            }
-
-        });
-
-    }
-
-
-    //把優惠存到資料庫
-    function generateCouponCode(memberId, ItineraryId) {
-        const couponCode = createCouponCode();
-        
-        const couponData = {
-            "MemberId": parseInt(memberId),
-            "ItineraryId": parseInt(ItineraryId),
-            "CouponDueDate": "",
-            "CouponCode": couponCode
-        };
-
-        console.log("Sending data:", couponCode);
-        console.log("Sending data:", couponData); // 添加這行來檢查發送的數據
-
-        // 使用 AJAX 發送 POST 請求到 C# 後端
-        $.ajax({
-            type: "POST",
-            url: "/Members/CreateCoupon",
-            // data: JSON.stringify(couponData),
-            data: couponData,
-            // contentType: "application/json",
-            success: function (response) {
-                console.log("優惠券生成成功!");
-                alert("獲得優惠券代碼: " + couponCode);
-                location.reload(); // 重新加載當前頁面
-            },
-            error: function (xhr, status, error) {
-                console.error("優惠券生成失敗:", error);
                 console.log("Response:", xhr.responseText);
                 console.log("Status:", status);
                 console.log("Error:", error);
             }
         });
+
+        //把優惠存到資料庫
+        function generateCouponCode(memberId, ItineraryId, orderId) {
+            const couponCode = createCouponCode();
+
+            const couponData = {
+                "MemberId": parseInt(memberId),
+                "ItineraryId": parseInt(ItineraryId),
+                "CouponDueDate": "",
+                "CouponCode": couponCode,
+            };
+
+            const orderCouponData = {
+                "OrderId": parseInt(orderId),
+                "MemberId": parseInt(memberId),
+                "ItineraryId": parseInt(ItineraryId),
+                "CouponId": "",
+            };
+
+            console.log("Sending data:", couponCode);
+            console.log("Sending data:", couponData);
+
+            // 使用 AJAX 發送 POST 請求到 C# 後端
+            $.ajax({
+                type: "POST",
+                url: "/Members/CreateCoupon",
+                data: couponData,
+                success: function (response) {
+                    console.log("優惠券生成成功!");
+
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Members/CreateOrderCoupon",
+
+                        data: {
+                            OrderId: @order.OrderId,
+                            ItineraryId: @order.ItineraryDetail.ItineraryId,
+                        },
+                        data: orderCouponData,
+                        success: function (response) {
+                            console.log("訂單和優惠券關聯資訊保存成功!");
+                            alert("獲得優惠券代碼: " + couponCode);
+                            location.reload(); // 重新加載當前頁面
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("訂單和優惠券關聯資訊保存失敗:", error);
+                            console.log("Response:", xhr.responseText);
+                            console.log("Status:", status);
+                            console.log("Error:", error);
+                        }
+                    });
+
+
+
+
+                },
+
+
+
+
+                error: function (xhr, status, error) {
+                    console.error("優惠券生成失敗:", error);
+                    console.log("Response:", xhr.responseText);
+                    console.log("Status:", status);
+                    console.log("Error:", error);
+                }
+            });
+        }
     }
+
     </script>
