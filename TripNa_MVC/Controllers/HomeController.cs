@@ -898,7 +898,7 @@ ViewBag.IsFavorite = isFavorite;
             if (ModelState.IsValid)
             {
                 // Check if the email already exists in the database
-                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberPassword);
+                var existingMember = await _context.Members.FirstOrDefaultAsync(m => m.MemberEmail == member.MemberEmail);
 
                 if (existingMember != null)
                 {

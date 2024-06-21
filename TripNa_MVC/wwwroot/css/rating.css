@@ -115,3 +115,18 @@ body #myscore {
     border: none;
     border-radius: 5px;
 }
+
+#popupButton {
+    background-color: #4e5482;
+    font-size: 20px;
+    margin: 10px;
+    color: #e8eafe;
+    letter-spacing: 5px;
+    opacity: 0.9;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+    #popupButton:hover {
+        background-color: #6a6f9a;
+        opacity: 1;
+    }
