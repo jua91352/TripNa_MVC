@@ -304,7 +304,7 @@ div[class^="p-"] {
     }
 
         .carousel-item p:hover {
-            background-color: lightgray; /* 修改为你想要的反白颜色 */
+            background-color: lightgray;  修改为你想要的反白颜色 
         }
 
 
