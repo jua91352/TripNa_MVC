@@ -93,7 +93,7 @@
 		@* ========================================================== *@
 		<!-- ＝＝＝＝＝＝＝＝＝＝＝＝＝booystrap套版開頭＝＝＝＝＝＝＝＝＝＝＝＝＝＝ -->
 
-		<div id="roadinfo" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%), url('/images/山.jpg');">
+		<div id="roadinfo" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%), url('/images/山.jpg');filter:blur(0);">
 			@* <img src="/images/海.jpg" alt="Alternate Text" /> *@
 
 		</div>
@@ -103,11 +103,11 @@
 
 	<h1 class="weather-head">天氣資訊</h1>
 			<div class="dropdown btn-group">
-	<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1520px;" /></a>
+	<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1557px;z-index:auto;" /></a>
 
 			
 
-				<img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" />
+				@* <img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" /> *@
 				<button type="button" class="btn btn-outline-secondary" id="loca"></button>
 				<button class="btn btn-outline-secondary secondary  dropdown-toggle dropdown-toggle-split" type="button"
 						id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -154,7 +154,7 @@
 		@* <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;top:-95px;left:520px;" /> *@
 			<h2 id="exploration_road">路況資訊&地震資訊</h2>
 
-		<div class="row" style="padding-left: calc(var(--bs-gutter-x)* 1);">
+		<div class="row" style="padding-left: calc(var(--bs-gutter-x)* .001);margin-left:25px;">
 
 				<div class="col-12 col-md-6">
 
@@ -166,16 +166,16 @@
 					<!-- 第一張卡片的 HTML 代碼 -->
 
 
-					<div class="card border-secondary mb-3" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:24.5rem;">
-						<div class="card-header bg border-light" style="font-size: 1.3rem; padding:12px;">
+				<div class="card border-secondary mb-3 bg-transparent" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:24.5rem;">
+					<div class="card-header" style="font-size: 1.3rem; padding:12px;color:white;backdrop-filter: blur(10px);background-image: linear-gradient(175deg, #ffffff59, #3331311f);">
 							國道一號
 						</div>
-					<div class="card-body text-success " id="card-body-1" style="background-color: rgb(140 177 203);opacity: 0.7;">
+					<div class="card-body text-success " id="card-body-1" style="opacity: 0.85;background-image: linear-gradient(175deg, #00000061, #ffffff5c);">
 							@* <img src="/images/車軌.webp" alt="Alternate Text" width="478px"; height="250px"; /> *@
 							<div class="link-display"></div><br>
 							<div class="link" style="color: white; font-weight: bold;font-size: 1.6rem;display:flex;"></div>
 						</div>
-						<div class="card-footer bg-transparent border-success">北向路段</div>
+						<div class="card-footer bg-transparent">北向路段</div>
 					</div>
 
 					<button class="menu-btn">選單</button>
@@ -188,7 +188,7 @@
 
 				<div class="col-12 col-md-6">
 					<!-- 第二張卡片的 HTML 代碼 -->
-					<div class="Eqk" style="margin-left:20px;width:32rem;margin-top:26rem;">
+				<div class="Eqk " style="margin-left:20px;width:32rem;margin-top:26rem;background-color:transparent;">
 					</div>
 					<button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#demo" id="btnGetOpenData">
 						近期地震資訊
@@ -250,7 +250,9 @@
 	
 		<!-- 地震資料顯示DIV欄位 bootstrap套版摺疊 -->
 		<!-- --------------------------------------精選主題卡片 --------------------------------->
-
+		<br>
+			<br>
+	<br>
 
 		<div class="trip" style="padding-left:3%;">
 			<h2 id="exploration">景點探索</h2>
@@ -621,33 +623,6 @@
 			setInterval(showRestaurant, 5000);
 
 
-
-
-
-
-								
-
-									// <!-----------------------------字大小調整------------------------------------------------------?
-
-									$("#big").on("click", function () {
-										let x = $("body").css("font-size");
-										console.log(x)
-										console.log(parseInt(x) + 2 + "px");
-
-										$("body").css("font-size", parseInt(x) + 4 + "px");
-									});
-
-									$("#sm").on("click", function () {
-										let x = $("body").css("font-size");
-										console.log(x)
-
-
-										$("body").css("font-size", parseInt(x) - 4 + "px");
-									});
-
-								
-
-
 									// 天氣資訊JS
 									let city = [];
 									fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWA-C0D27692-4189-4521-80B1-6805AE7B21F5')
@@ -735,14 +710,14 @@
 												}
 												$('.Eqk').empty();
 												$('.Eqk').append(`
-													<div class="card" style="width: 100%; height: 355px; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:1px;">
+																									<div class="card  bg-transparent" style="width: 100%; height: 355px; box-shadow: 0 3px 10px rgb(0,0,0,.5);background-image: linear-gradient(360deg, #ffffff59, #3331311f);backdrop-filter: blur(10px);opacity: 0.85;">
 							  <div class="d-flex flex-column h-100">
-								<div class="bg-light py-3 px-3" style="height: 15%;">
-								  <h4 class="card-title mb-0" style="font-weight:600">${selectedCity}</h4>
+														<div class="bg-transparent  py-3 px-3" style="height: 15%;backdrop-filter: blur(10px);background-image: linear-gradient(175deg, #ffffff59, #3331311f);color:white;">
+								  <h4 class="card-title mb-0">${selectedCity}</h4>
 								</div>
-																	<div class="bg-none py-3 px-3 d-flex justify-content-between align-items-center" style="height: 81%;background-color:rgb(111 164 201);color:white;font-size:1.2rem;font-weight:600; opacity:70% ">
+																							<div class="bg-none py-3 px-3 d-flex justify-content-between align-items-center" style="height: 81%;background-color:rgb(111 164 201);color:white;font-size:1.2rem;font-weight:500;background-image: linear-gradient(360deg, #ffffff59, #0000003b);backdrop-filter: blur(10px);opacity: 0.85; ">
 								  <div class="d-flex flex-column align-items-start">
-																														<h3 class="card-subtitle mb-1 text-muted_1"  style="font-weight:700;color:yellow;text-shadow:0.1em 0.1em 0.1em #333 ;">震度分級燈號：</h3><br>
+																																	<h3 class="card-subtitle mb-1 text-muted_1"  style="font-weight:500;color:white;text-shadow:0.1em 0.1em 0.1em #333 ;">震度分級燈號：</h3><br>
 									<div class="d-flex align-items-center">
 									  <div class="safe me-2"></div>
 																  <h4 class="card-text mb-0" style="font-weight:800;">未達下列標準之地震</h4>
@@ -956,8 +931,9 @@
 									if (TravelSpeed < 60) {
 										cardBody.css('background-color', '#eb0909a8');
 									} else {
-						cardBody.css('background-color', 'rgb(111 164 201)');
-										cardBody.css('opacity', '70%');
+						cardBody.css('background-color', 'rgb(111, 164, 201);');
+										cardBody.css('opacity', '85%');
+					
 									}
 
 					// style = "background-color: rgb(140 177 203);opacity: 0.7;"
