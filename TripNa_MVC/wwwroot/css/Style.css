@@ -65,9 +65,9 @@ body {
 }
 
 #loca {
-    margin-top:20px;
+    margin-top: 20px;
     font-size: 1.2rem;
-    margin-left: 8rem;
+    margin-left:  6rem;
     background-color: #4e5482bb;
     color: white;
 }
@@ -81,21 +81,23 @@ body {
 
 
 .weather-head {
- letter-spacing: 3px;
- padding-top: 24px;
-  padding-bottom: 25px;
-  padding-left: 153px;
-  padding-right: 49px;
+    letter-spacing: 3px;
+    padding-top: 24px;
+    padding-bottom: 25px;
+    padding-left: 153px;
+    padding-right: 49px;
     /* text-align: center; */
-    background-image:linear-gradient(135deg, #ffffff00, #00000026);
+    background-image: linear-gradient(179deg, #ffffff2e, #00000042);
     /* border-bottom: 1px solid rgba(0, 0, 0, 0.7); */
     width: 37%;
     /* margin-bottom: 500px; */
-    margin-left: 29%;
+    margin-left: 30%;
     /* clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%); */
     box-shadow: 0 3px 10px rgb(0, 0, 0, .8);
     /* font-weight: 600; */
     color: #ffffff;
+    backdrop-filter: blur(10px);
+    margin-top: 2rem;
 }
 
 #bread {
@@ -142,6 +144,27 @@ body {
 .card {
     width: 80%;
     margin: 0 10px; /* 調整卡片之間的間距 */
+   
+}
+/*.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+     background-color: none; 
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    color: white;
+}*/
+
+.card-footer {
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    font-size: 20px;
+    color: white;
+    background-image: linear-gradient(181deg, #877e7e42, #ffffff5c);
 }
 
 .text-muted > a {
@@ -954,8 +977,7 @@ footer {
     box-sizing: border-box;
     background-size: cover;
     background-position: center;
-    filter: blur(0);
-    /*opacity:70%;*/
+
 }
 
 .trip {
@@ -1074,7 +1096,7 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 #exploration_road {
-    top: 55px;
+    top: 340px;
     padding-top: 12px;
     padding-bottom: 12px;
     /*margin: 1.5rem auto;*/
@@ -1093,6 +1115,7 @@ tbody, td, tfoot, th, thead, tr{
     margin-left: 32%;
     position: absolute;
     letter-spacing: 2.5px;
+    backdrop-filter: blur(10px);
 }
 
 
@@ -1267,8 +1290,8 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 .link-display {
-    color: yellow;
-    font-weight: bold;
+    color: white;
+    font-weight: 500;
     font-size: 1.8rem;
     margin-top: 20px;
     /*background-color: rgba(255, 255, 255, 0.7);*/

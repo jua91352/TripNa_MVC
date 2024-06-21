@@ -93,7 +93,7 @@
 		@* ========================================================== *@
 		<!-- ＝＝＝＝＝＝＝＝＝＝＝＝＝booystrap套版開頭＝＝＝＝＝＝＝＝＝＝＝＝＝＝ -->
 
-		<div id="roadinfo" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%), url('/images/山.jpg');">
+		<div id="roadinfo" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%), url('/images/山.jpg');filter:blur(0);">
 			@* <img src="/images/海.jpg" alt="Alternate Text" /> *@
 
 		</div>
@@ -107,7 +107,7 @@
 
 			
 
-				<img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" />
+				@* <img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" /> *@
 				<button type="button" class="btn btn-outline-secondary" id="loca"></button>
 				<button class="btn btn-outline-secondary secondary  dropdown-toggle dropdown-toggle-split" type="button"
 						id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -166,16 +166,16 @@
 					<!-- 第一張卡片的 HTML 代碼 -->
 
 
-					<div class="card border-secondary mb-3" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:24.5rem;">
-						<div class="card-header bg border-light" style="font-size: 1.3rem; padding:12px;">
+				<div class="card border-secondary mb-3 bg-transparent" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:24.5rem;">
+					<div class="card-header" style="font-size: 1.3rem; padding:12px;color:white;backdrop-filter: blur(10px);background-image: linear-gradient(175deg, #ffffff59, #3331311f);">
 							國道一號
 						</div>
-					<div class="card-body text-success " id="card-body-1" style="background-color: rgb(140 177 203);opacity: 0.7;">
+					<div class="card-body text-success " id="card-body-1" style="opacity: 0.85;background-image: linear-gradient(175deg, #00000061, #ffffff5c);">
 							@* <img src="/images/車軌.webp" alt="Alternate Text" width="478px"; height="250px"; /> *@
 							<div class="link-display"></div><br>
 							<div class="link" style="color: white; font-weight: bold;font-size: 1.6rem;display:flex;"></div>
 						</div>
-						<div class="card-footer bg-transparent border-success">北向路段</div>
+						<div class="card-footer bg-transparent">北向路段</div>
 					</div>
 
 					<button class="menu-btn">選單</button>
@@ -250,7 +250,9 @@
 	
 		<!-- 地震資料顯示DIV欄位 bootstrap套版摺疊 -->
 		<!-- --------------------------------------精選主題卡片 --------------------------------->
-
+		<br>
+			<br>
+	<br>
 
 		<div class="trip" style="padding-left:3%;">
 			<h2 id="exploration">景點探索</h2>
@@ -621,33 +623,6 @@
 			setInterval(showRestaurant, 5000);
 
 
-
-
-
-
-								
-
-									// <!-----------------------------字大小調整------------------------------------------------------?
-
-									$("#big").on("click", function () {
-										let x = $("body").css("font-size");
-										console.log(x)
-										console.log(parseInt(x) + 2 + "px");
-
-										$("body").css("font-size", parseInt(x) + 4 + "px");
-									});
-
-									$("#sm").on("click", function () {
-										let x = $("body").css("font-size");
-										console.log(x)
-
-
-										$("body").css("font-size", parseInt(x) - 4 + "px");
-									});
-
-								
-
-
 									// 天氣資訊JS
 									let city = [];
 									fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWA-C0D27692-4189-4521-80B1-6805AE7B21F5')
@@ -956,8 +931,9 @@
 									if (TravelSpeed < 60) {
 										cardBody.css('background-color', '#eb0909a8');
 									} else {
-						cardBody.css('background-color', 'rgb(111 164 201)');
-										cardBody.css('opacity', '70%');
+						cardBody.css('background-color', 'rgb(111, 164, 201);');
+										cardBody.css('opacity', '85%');
+					
 									}
 
 					// style = "background-color: rgb(140 177 203);opacity: 0.7;"
