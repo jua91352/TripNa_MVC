@@ -87,66 +87,7 @@
 
 
 			<br><br>
-			<!-- ------------------------------天氣資訊內容 ------------------------------------------->
-			<div class="col-12 m-3">
-
-			<h1 class="weather-head">天氣資訊</h1>
-			<div class="dropdown btn-group">
-				<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1520px;" /></a>
-				<img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" />
-				@* <img src="/_img/車車.png" alt="Alternate Text" width="200px" height="150px" style="position:absolute;bottom:0;left:1000px;" /> *@
-					<button type="button" class="btn btn-outline-secondary" id="loca"></button>
-					<button class="btn btn-outline-secondary secondary  dropdown-toggle dropdown-toggle-split" type="button"
-							id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-						<!-- bootstrap設定按鈕顯示的樣式 -->
-						<span style="display: inline-block; vertical-align: middle;">
-							<span id="site"></span>  <!-- 設定按鈕顯示的文字 -->
-
-
-
-						</span>
-					</button>
-
-				
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="location-dropdown">
-					</div>
-				</div>
-				<br>
-			
-				<div id="weather-table" class="row row-cols-3">
-				
-
-					<table class="table table-bordered table-light table table-striped table-hover table align-middle" style="margin-top: 10px;margin-bottom:0; ">
-						<thead class="th" scope="">
-						</thead>
-
-						<tbody>
-
-							<tr id="time" class="table-primary text-center">
-							</tr>
-
-							<tr id="temp" class="text-center">
-							</tr>
-							<tr id="rain" class="text-center">
-							</tr>
-
-
-							<tr id="img" class="text-center">
-							</tr>
-
-
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-		</div>
-		@* <div class="readMore " style="width: 200px; border-radius: 20px;padding: 12px; margin-left: 2rem;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
-		<a href="https://www.cwa.gov.tw/V8/C/" class="text-center  ">查看更多天氣資訊</a>
-		</div> *@
-
-		<br>
-
+	
 
 
 		@* ========================================================== *@
@@ -156,6 +97,58 @@
 			@* <img src="/images/海.jpg" alt="Alternate Text" /> *@
 
 		</div>
+
+		<!-- ------------------------------天氣資訊內容 ------------------------------------------->
+		<div class="col-12 m-3" style="width:90%;position:absolute">
+
+	<h1 class="weather-head">天氣資訊</h1>
+			<div class="dropdown btn-group">
+	<a href="https://www.cwa.gov.tw/V8/C/"><img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;bottom:-300px;left:1520px;" /></a>
+
+			
+
+				<img src="/images/S4_Space-removebg-preview.png" alt="Alternate Text" width="400px" height="350px" style="position:absolute;bottom:-50px;left:50px;" />
+				<button type="button" class="btn btn-outline-secondary" id="loca"></button>
+				<button class="btn btn-outline-secondary secondary  dropdown-toggle dropdown-toggle-split" type="button"
+						id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+					<!-- bootstrap設定按鈕顯示的樣式 -->
+					<span style="display: inline-block; vertical-align: middle;">
+						<span id="site"></span>  <!-- 設定按鈕顯示的文字 -->
+
+					</span>
+				</button>
+
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="location-dropdown">
+				</div>
+			</div>
+			<br>
+
+			<div id="weather-table" class="row row-cols-3">
+				<table class="table table-hover table align-middle" style="margin-top: 10px; margin-bottom: 0; background-color: transparent;">
+					<thead class="th" scope="" style="border-bottom-width:0 !important; ">
+					</thead>
+					<tbody>
+						<tr id="time" class="text-center" style="background-color: rgba(0, 123, 255, 0.1);">
+						</tr>
+						<tr id="temp" class="text-center">
+						</tr>
+						<tr id="rain" class="text-center">
+						</tr>
+						<tr id="img" class="text-center">
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	@* <div class="readMore " style="width: 200px; border-radius: 20px;padding: 12px; margin-left: 2rem;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
+	<a href="https://www.cwa.gov.tw/V8/C/" class="text-center  ">查看更多天氣資訊</a>
+	</div> *@
+
+	<br>
+
+
+
 
 		<div class="container" style="position:relative;">
 		@* <img src="/_img/S1_Car__1_-removebg-preview.png" alt="Alternate Text" width="200px" height="200px" style="position:absolute;top:-95px;left:520px;" /> *@
@@ -173,7 +166,7 @@
 					<!-- 第一張卡片的 HTML 代碼 -->
 
 
-					<div class="card border-secondary mb-3" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:8.5rem;">
+					<div class="card border-secondary mb-3" style="max-width: 30rem; height: 22rem; box-shadow: 0 3px 10px rgb(0,0,0,.5);border:none;margin-top:24.5rem;">
 						<div class="card-header bg border-light" style="font-size: 1.3rem; padding:12px;">
 							國道一號
 						</div>
@@ -195,7 +188,7 @@
 
 				<div class="col-12 col-md-6">
 					<!-- 第二張卡片的 HTML 代碼 -->
-					<div class="Eqk" style="margin-left:20px;width:32rem;margin-top:10rem;">
+					<div class="Eqk" style="margin-left:20px;width:32rem;margin-top:26rem;">
 					</div>
 					<button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#demo" id="btnGetOpenData">
 						近期地震資訊
