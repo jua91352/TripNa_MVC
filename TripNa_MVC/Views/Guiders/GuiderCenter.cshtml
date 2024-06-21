@@ -4,6 +4,8 @@
     ViewData["Title"] = "GuiderCenter";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string p = ".jpg";
+    string n = ".png";
+
 }
 
 <style>
@@ -147,7 +149,7 @@
                         <b style="font-size: 18px;">導遊證</b>
                         <br>
 
-                        <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@p" >
+                        <img src="~/導遊/證照/領隊@(item.Guider.GuiderGender == "F" ? "女" : "男")@n" >
 
                         <br>
                         <br>
