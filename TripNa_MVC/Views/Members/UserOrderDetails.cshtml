@@ -11,6 +11,13 @@
     int ratingStars = order.Rating.RatingStars;
     int ThisorderID = ViewData["orderID"] != null ? (int)ViewData["orderID"] : 0;
 
+
+    var displayedSpotNames = new HashSet<string>();
+    int spotCount = 0;
+    int currentDay = 1; // 記錄當前天數
+    bool isNewOrder = true; // 標記是否為新訂單
+    string previousItineraryName = string.Empty; // 記錄上一個訂單的行程名稱
+    var displayedDays = new HashSet<string>(); // 記錄已顯示過的天數
 }
 
 <head>
@@ -177,7 +184,73 @@
 
 
 
+    @orderCount
 
+
+
+
+    <div class="block" id="fullContent" style="display:none;">
+        <table id="OrderListTatble" class="table table-striped" style="font-size: 20px;">
+            @{
+                var groupedOrders = Model.Orders.GroupBy(o => o.Itinerary.ItineraryName);
+                foreach (var group in groupedOrders)
+                {
+                    isNewOrder = true;
+                    currentDay = 1;
+                    displayedSpotNames.Clear();
+                    spotCount = 0;
+                    string itineraryType = group.First().Itinerary.ItineraryName.Substring(2, 3);
+                    int maxDays = itineraryType == "一日遊" ? 1 : (itineraryType == "二日遊" ? 2 : 3);
+
+                    for (int d = 1; d <= maxDays; d++)
+                    {
+                        <tr>
+                            <td colspan="3" class="align-middle text-center">Day @d</td>
+                            @{
+                                var daySpots = group.Where(o => !displayedSpotNames.Contains(o.Spots.SpotName))
+                                .Skip((day - 1) * 4)
+                                .Take(4);
+
+                                foreach (var o in daySpots)
+                                {
+                                    <td class="text-center align-middle">
+                                        <br>
+                                        <img src="~/景點圖片/@o.Spots.SpotCity/@o.Spots.SpotName@p" height="125px" width="125px">
+                                        <br>
+                                        <p>@o.Spots.SpotName</p>
+                                    </td>
+                                    displayedSpotNames.Add(o.Spots.SpotName);
+                                    spotCount++;
+                                }
+
+                                // 如果這天的景點不足4個，添加空白單元格
+                                for (int i = daySpots.Count(); i < 4; i++)
+                                {
+                                     
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* 
     <div class="block" id="fullContent" style="display:none;">
 
         <table id="OrderListTatble" class="table table-striped " style="font-size: 20px; ">
@@ -210,7 +283,7 @@
 
 
         </table>
-    </div>
+    </div> *@
 
     <br>
 
@@ -291,7 +364,7 @@
 
 
         <div class="text-center">
-            <button id="popupButton" class="btn text-end" style="background-color: #4e5482; font-size:25px ;margin:20px;color: #e8eafe;">評價導遊<i class="bi bi-star-fill"></i></button>
+            <button id="popupButton" class="btn text-end" >評價導遊<i class="bi bi-star-fill"></i></button>
         </div>
 
         <div id="popup" class="popup">

@@ -16,9 +16,7 @@
 
 
     var displayedSpotNames = new HashSet<string>();
-
     int spotCount = 0;
-
     int currentDay = 1; // 記錄當前天數
     bool isNewOrder = true; // 標記是否為新訂單
     string previousItineraryName = string.Empty; // 記錄上一個訂單的行程名稱
@@ -323,8 +321,6 @@
                                     displayedSpotNames.Add(order.Spots.SpotName);
                                 }
                             }
-
-
             }
 
         </tbody> 
