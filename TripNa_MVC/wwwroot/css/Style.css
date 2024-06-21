@@ -142,13 +142,16 @@ body {
     align-items: center; /* 垂直置中 */
     justify-content: center; /* 水平置中 */
 }
-
-
-.card {
-    width: 80%;
-    margin: 0 10px; /* 調整卡片之間的間距 */
-   
+#CiTy {
+    color: white;
+    text-decoration: none;
 }
+
+
+    .card {
+        width: 80%;
+        margin: 0 10px; /* 調整卡片之間的間距 */
+    }
 /*.card {
     position: relative;
     display: flex;
