@@ -55,7 +55,7 @@
     }
 
     .rank-rated {
-        color: #f6be00;
+        color: #fba833;
     }
 
     .rank-not-rated {
@@ -63,7 +63,7 @@
     }
 
     .rank-half-rated {
-        background: linear-gradient(to right, #f6be00 50%, #eee 50%);
+        background: linear-gradient(to right, #fba833 50%, #eee 50%);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -114,7 +114,7 @@
     <div class="col-7 text-start">
             <h1>@g.GuiderNickname</h1>
 
-            <span class="text-start" style="color: #f6be00;">
+        <span class="text-start" style="color: #fba833;">
                 @ratingAvg
 
                 @for (int i = 1; i <= 5; i++)
@@ -134,7 +134,7 @@
                 }
             </span>
 
-            <span style="color: #a2a2a2;">(@ratingCount)</span>
+            <span >(@ratingCount)</span>
         <br>
        
 
@@ -142,7 +142,7 @@
 
 
 
-            <span class="bi bi-trophy" style="color: #a2a2a2; font-size: 15px;">@(orderCount)次雇用</span>
+            <span class="bi bi-trophy" style="font-size: 15px;">@(orderCount)次雇用</span>
 
 
 
@@ -221,7 +221,7 @@
             {
             <span class="text-start">
                 @item.MemberName
-                <span class="text-start" style="color: #f6be00;">
+                    <span class="text-start" style="color: #fba833;">
                     @item.RatingStars
 
                     @for (int i = 1; i <= 5; i++)

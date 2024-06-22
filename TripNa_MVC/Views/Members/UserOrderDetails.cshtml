@@ -199,21 +199,21 @@
 
                     for (int d = 1; d <= maxDays; d++)
                     {
-                        <tr>
-                            <td colspan="3" class="align-middle text-center">Day @d</td>
-                            @{
+                            <tr>
+                                <td colspan="3" class="align-middle text-center">Day @d</td>
+                                @{
                                 var daySpots = group.Where(o => !displayedSpotNames.Contains(o.Spots.SpotName))
                                 .Skip((day - 1) * 4)
                                 .Take(4);
 
                                 foreach (var o in daySpots)
                                 {
-                                    <td class="text-center align-middle">
-                                        <br>
-                                        <img src="~/景點圖片/@o.Spots.SpotCity/@o.Spots.SpotName@p" height="125px" width="125px">
-                                        <br>
-                                        <p>@o.Spots.SpotName</p>
-                                    </td>
+                                            <td class="text-center align-middle">
+                                                <br>
+                                                <img src="~/景點圖片/@o.Spots.SpotCity/@o.Spots.SpotName@p" height="125px" width="125px">
+                                                <br>
+                                                <p>@o.Spots.SpotName</p>
+                                            </td>
                                     displayedSpotNames.Add(o.Spots.SpotName);
                                     spotCount++;
                                 }
@@ -223,8 +223,8 @@
                                 {
                                      
                                 }
-                            }
-                        </tr>
+                                }
+                            </tr>
                     }
                 }
             }
@@ -291,9 +291,6 @@
 
 
 
-
-    <br>
-
     <!-- 評價導遊的地方 -->
     @if (order.OrderMatchStatus == "媒合中")
     {
@@ -319,7 +316,7 @@
 
         <div id="popup" class="popup">
             <div class="popup-content">
-                <span class="close" onclick="closePopup()">&times;</span>
+                <span class="close" style="color: #4e5482" onclick="closePopup()">&times;</span>
                 <div class="cont">
                     <h2>評價導遊</h2>
                     <div id="scorezone">
@@ -341,6 +338,7 @@
 
                         <div id="endBtn" class="row">
                             <div class="text-end">
+                                <button id="submitBtn " onclick="closePopup()" class="btn" style="background-color: #e8eafe ;color: #4e5482;">取消</button>
                                 <button id="submitBtn " onclick="submitData( '@order.Member.MemberId' , '@order.OrderId','@order.Guider.GuiderId' ,'@order.ItineraryDetail.ItineraryId')" class="btn" style="background-color: #4e5482 ;color: #e8eafe;">送出評價</button>
                             </div>
 
@@ -397,16 +395,18 @@
     {
 
         <div id="scorezone">
-            <h2 class="text-center">本次導遊評價</h2>
+            @* <h2 class="text-center">本次導遊評價</h2> *@
+            <div class="text-center"><img src="~/_img/png/本次評價導遊.png" style="width:270px ; height:80px ; object-fit:cover"  /> </div>
+
             <div id="myscore">
                 <br>
-                <span style="margin: 10px;font-size: 20px;">導遊評價：</span>
+                <span style="margin: 10px;font-size: 20px; ">導遊評價：</span>
 
 
                 <span id="star">
                     @for (int i = 0; i < ratingStars; i++)
                     {
-                        <span style="font-size: 20px;" class="rank-rated">&#128970;</span>
+                        <span style="font-size: 30px;color:#fba833"class="rank-rated">&#128970;</span>
                     }
 
                 </span>
@@ -485,17 +485,27 @@
 
     // // 綁定輸入的評價 並且顯示到alert上面 以便確認有綁定
 
-    var write = document.getElementById("write");
+    // var write = document.getElementById("write");
 
     function submitData(memberId, orderId, guiderId, ItineraryId) {
-        alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
+
+        var writeContent = document.getElementById("write").value.trim();
+        
+        if (currentRating === 0 || writeContent === "") {
+            alert("請填寫您的評價和評分");
+            return; // 阻止繼續執行
+        }
+       
+  
+
+        // alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + writeContent);
 
         console.log(memberId + orderId + guiderId + ItineraryId);
         const dataToSend = {
             "MemberId": parseInt(memberId),
             "OrderId": parseInt(orderId),
             "GuiderId": parseInt(guiderId),
-            "RatingComment": write.value,
+            "RatingComment": writeContent,
             "RatingStars": parseInt(currentRating),
         };
 
@@ -509,8 +519,9 @@
             contentType: "application/json",
             success: function (response) {
                 console.log("評價保存成功!");
-                alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + write.value);
+                alert("給導遊" + currentRating + "顆星" + "\n" + "評價內容:" + writeContent);
                 generateCouponCode(memberId, ItineraryId, orderId);
+
             },
             error: function (xhr, status, error) {
                 console.error("評價保存失敗:", error);
