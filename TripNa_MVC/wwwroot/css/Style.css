@@ -78,16 +78,18 @@ body {
     color: white;
 }
 
-
+.rounded {
+    border-radius: 1.25rem !important;
+}
 
 .weather-head {
     letter-spacing: 3px;
-    padding-top: 24px;
-    padding-bottom: 25px;
+    padding-top: 30px;
+    padding-bottom: 30px;
     padding-left: 153px;
     padding-right: 49px;
     /* text-align: center; */
-    background-image: linear-gradient(179deg, #ffffff2e, #00000042);
+    background-image: linear-gradient(179deg, #ffffff4d, #54545442);
     /* border-bottom: 1px solid rgba(0, 0, 0, 0.7); */
     width: 37%;
     /* margin-bottom: 500px; */
@@ -98,6 +100,7 @@ body {
     color: #ffffff;
     backdrop-filter: blur(10px);
     margin-top: 2rem;
+    border-radius: 10px;
 }
 
 #bread {
@@ -139,13 +142,16 @@ body {
     align-items: center; /* 垂直置中 */
     justify-content: center; /* 水平置中 */
 }
-
-
-.card {
-    width: 80%;
-    margin: 0 10px; /* 調整卡片之間的間距 */
-   
+#CiTy {
+    color: white;
+    text-decoration: none;
 }
+
+
+    .card {
+        width: 80%;
+        margin: 0 10px; /* 調整卡片之間的間距 */
+    }
 /*.card {
     position: relative;
     display: flex;
@@ -980,11 +986,6 @@ footer {
 
 }
 
-.trip {
-    background-image: linear-gradient(135deg,#cf768889,#cdcfeeb0);
-    padding: 60px;
-    margin-top: 200px;
-}
 
 
 #weather-table {

@@ -31,7 +31,7 @@
     body #myscore {
         border-style: initial;
         height: 200px;
-        border: 1px solid #3A326D;
+        /* border: 1px solid #3A326D; */
     }
 
 
@@ -42,7 +42,7 @@
 
 
     .rank-rated {
-        color: #f6be00;
+        color: #fba833;
     }
 
     .rank-not-rated {
@@ -164,7 +164,31 @@
 
 
                     <td class="text-center align-middle">
-                        NT$@order.OrderTotalPrice.ToString("N0")
+
+
+                            @{
+                                var price = order.OrderTotalPrice;
+                                var displayPrice = price;
+
+                                if (price == 2000)
+                                {
+                                    displayPrice = 1500;
+                                }
+                                else if (price == 3800)
+                                {
+                                    displayPrice = 3000;
+                                }
+                                else if (price == 5400)
+                                {
+                                    displayPrice = 4500;
+                                }
+                            }
+                        NT$@displayPrice.ToString("N0")
+
+
+
+
+                       @*  NT$@order.OrderTotalPrice.ToString("N0") *@
 
                     </td>
 

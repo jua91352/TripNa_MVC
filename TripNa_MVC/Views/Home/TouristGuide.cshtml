@@ -42,6 +42,9 @@
         background-color: #4e5482;
         color: #e8eafe;
     }
+
+    
+    
 </style>
 
 <div class="nav-center text-center" id="標題" style="color:#e3e5f4; background-color:#4e5482; font-size: 36px;">
@@ -90,7 +93,7 @@
     {
         string imgPath = "~/導遊/大頭照/" + "/" + @guider.GuiderArea + "/" + guider.GuiderNickname + ".jpg";
         <div style="width: 60%; margin: 0 auto;" id="card">
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
+            <div id="id-@guider.GuiderId" class="guider-card" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative;">
                 <img src="@Url.Content(imgPath)" alt="@guider.GuiderId" style="height: auto; width: 150px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 12px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
                 <p style="margin-left: 1rem;" class="card-text col-7">
                     姓名:@guider.GuiderNickname<br>
@@ -100,7 +103,7 @@
                     地區:@guider.GuiderArea<br>
                     簡介:@guider.GuiderIntro<br>
                 </p>
-                <input type="checkbox" style="margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; bottom: 0; right: 0;" class="form-check-input" onclick="selectGuider('@guider.GuiderId', this.checked)">
+                <input type="checkbox" class="align-middle form-check-input" id="selectCheckbox " style="zoom:125%; margin: 0.5rem; padding: 0.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: absolute; left: 45px;" onclick="selectGuider('@guider.GuiderId', this.checked)">
             </div>
         </div>
     }
@@ -155,6 +158,7 @@
 
     var selectedGuiderIds = [];
 
+    
     function selectGuider(guiderId, isChecked) {
         if (isChecked) {
             selectedGuiderIds.push(guiderId);

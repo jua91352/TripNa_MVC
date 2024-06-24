@@ -23,7 +23,8 @@ body #myscore {
     }
 
 .rank-rated {
-    color: #f6be00;
+    /*color: #f6be00;*/
+    color: #fba833;
 }
 
 .rank-not-rated {
@@ -87,6 +88,7 @@ body #myscore {
     font-size: 40px;
     text-align: center;
     cursor: pointer;
+    /*z-index:99;*/
 }
 
 #scorezone {
@@ -100,7 +102,7 @@ body #myscore {
 }
 
 #star .rank-rated {
-    color: #f6be00;
+    color: #fba833;
 }
 
 #write {
