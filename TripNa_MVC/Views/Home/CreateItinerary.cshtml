@@ -799,7 +799,7 @@
 
         function scrollToTop() {
             var accordionContainer = document.getElementById("accordionContainer");
-            var topPosition = accordionContainer.offsetTop - 100;
+            var topPosition = accordionContainer.offsetTop - 200;
             window.scrollTo({
                 top: topPosition,
                 behavior: 'smooth'
@@ -815,14 +815,7 @@
         var bigBtn = document.getElementById('big');
         var smallBtn = document.getElementById('sm');
 
-        // 添加點擊事件監聽器，調整字體大小
-        bigBtn.addEventListener('click', function () {
-            adjustFontSize('20px'); // 設置大字體大小
-        });
-
-        smallBtn.addEventListener('click', function () {
-            adjustFontSize('16px'); // 設置小字體大小
-        });
+        
 
     });
 

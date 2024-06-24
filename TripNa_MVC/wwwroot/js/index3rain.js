@@ -495,7 +495,7 @@ $(function () {
             }
         })
     }
-    xhr.open('GET', '/_img/xml/F-C0032-005test.xml');
+    xhr.open('GET', '/_img/xml/F-C0032-0051.xml');
     xhr.send();
     $(".weatherinfo").show();
 }
