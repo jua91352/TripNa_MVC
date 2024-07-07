@@ -189,11 +189,6 @@
         <div class="col-lg-1"></div>
  
     </div>
-   
-<!-- -------------------------------------------------------------------------------------------------------- -->
-
-
-
 <!-- 找導遊按鈕 -->
         <div class="row m-3">
             <div class="col-1"></div>
@@ -223,91 +218,19 @@
             minDate: 0,
             dateFormat: 'yy-mm-dd'
         });
-
-
-        //------------------------------------------假資料 假設是由資料庫轉過來的-----------------------------------------------------------------------------
-
-        
-
+        //------------------------------------------假資料 假設是由資料庫轉過來的----------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------------------------------------------------------------------------
+            // 清除行程表的函數
+            function clearSchedule() {
+                $('#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night, #second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night, #third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night').empty();
+            }
 
-
-
-        // 清除行程表的函數
-        function clearSchedule() {
-            $('#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night, #second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night, #third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night').empty();
-        }
-
-
-        // 初始化可拖動功能的函數
-        function initializeDraggable() {
-            $("#gallery li").draggable({
-                cancel: "a.ui-icon",
-                revert: "invalid",
-                containment: "document",
-                helper: "clone",
-                cursor: "move"
-            });
-
-            $("#gallery").droppable({
-                accept: ".ui-draggable",
-                classes: {
-                    "ui-droppable-active": "ui-state-highlight"
-                },
-                drop: function (event, ui) {
-                    recycleImage(ui.draggable);
-                }
-            });
-
-            var $dayAreas = {
-                firstDay: $("#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night"),
-                secondDay: $("#second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night"),
-                thirdDay: $("#third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night")
-            };
-
-            var dropAreasStatus = {
-                firstDay: {},
-                secondDay: {},
-                thirdDay: {}
-            };
-
-            $.each($dayAreas, function (day, areas) {
-                areas.each(function () {
-                    dropAreasStatus[day][this.id] = false;
-                });
-
-                areas.droppable({
-                    accept: "#gallery > li",
-                    classes: {
-                        "ui-droppable-active": "ui-state-highlight"
-                    },
-                    drop: function (event, ui) {
-                        handleDrop.call(this, event, ui, day);
-                    }
-                });
-            });
-
-            function checkDayAreasFilled(day) {
+            // 檢查指定天區域是否全部填滿的函數
+            function checkDayAreasFilled(day, dropAreasStatus) {
                 return Object.values(dropAreasStatus[day]).every(status => status);
             }
 
-            function handleDrop(event, ui, day) {
-                var $dropArea = $(this);
-                var $existingItem = $dropArea.find("li");
-
-                if ($existingItem.length) {
-                    recycleImage($existingItem);
-                }
-
-                deleteImage(ui.draggable, $dropArea);
-
-                dropAreasStatus[day][$dropArea.attr("id")] = true;
-
-                if (checkDayAreasFilled(day)) {
-                    $("#" + day + "ConfirmCheckbox").prop("disabled", false);
-                }
-            }
-
+            // 刪除圖片函數
             function deleteImage($item, $dropArea) {
                 var recycleIcon = "<a href='#' title='回收此圖片' class='ui-icon ui-icon-refresh'>回收圖片</a>";
                 $item.fadeOut(function () {
@@ -320,6 +243,7 @@
                 });
             }
 
+            // 回收圖片函數
             function recycleImage($item) {
                 var trashIcon = "<a href='#' title='刪除此圖片' class='ui-icon ui-icon-arrowrefresh-1-s'>刪除圖片</a>";
                 $item.fadeOut(function () {
@@ -337,45 +261,74 @@
                     });
                 });
             }
-        }
 
-        $(document).ready(function () {
-            initializeDraggable();
+            // 處理放置事件的函數
+            function handleDrop(event, ui, day, dropAreasStatus) {
+                var $dropArea = $(this);
+                var $existingItem = $dropArea.find("li");
 
-            $("#locationSelect").on("change", function () {
-                var selectedCity = this.value.toLowerCase();
-                var galleryItems = $("#gallery li");
+                if ($existingItem.length) {
+                    recycleImage($existingItem);
+                }
 
-                galleryItems.each(function () {
-                    var $item = $(this);
-                    if (selectedCity === "" || $item.data("city") === selectedCity) {
-                        $item.show();
-                    } else {
-                        $item.hide();
-                    }
-                });
-            });
+                deleteImage(ui.draggable, $dropArea);
+                dropAreasStatus[day][$dropArea.attr("id")] = true;
 
-            function clearSchedule() {
-                $('#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night, #second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night, #third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night').empty();
+                if (checkDayAreasFilled(day, dropAreasStatus)) {
+                    $("#" + day + "ConfirmCheckbox").prop("disabled", false);
+                }
             }
 
-            $('#locationSelect').change(clearSchedule);
+            // 初始化可拖動功能的函數
+            function initializeDraggable() {
+                $("#gallery li").draggable({
+                    cancel: "a.ui-icon",
+                    revert: "invalid",
+                    containment: "document",
+                    helper: "clone",
+                    cursor: "move"
+                });
 
-            $("#gallery").on("click", "li", function (event) {
-                var $item = $(this),
-                    $target = $(event.target);
+                $("#gallery").droppable({
+                    accept: ".ui-draggable",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: function (event, ui) {
+                        recycleImage(ui.draggable);
+                    }
+                });
 
-                if ($target.is("a.ui-icon-arrowrefresh-1-s")) {
-                    deleteImage($item);
-                } else if ($target.is("a.ui-icon-zoomin")) {
-                    viewLargerImage($target);
-                } else if ($target.is("a.ui-icon-refresh")) {
-                    recycleImage($item);
-                }
-                return false;
-            });
+                var $dayAreas = {
+                    firstDay: $("#first-day-morning, #first-day-afternoon, #first-day-evening, #first-day-night"),
+                    secondDay: $("#second-day-morning, #second-day-afternoon, #second-day-evening, #second-day-night"),
+                    thirdDay: $("#third-day-morning, #third-day-afternoon, #third-day-evening, #third-day-night")
+                };
 
+                var dropAreasStatus = {
+                    firstDay: {},
+                    secondDay: {},
+                    thirdDay: {}
+                };
+
+                $.each($dayAreas, function (day, areas) {
+                    areas.each(function () {
+                        dropAreasStatus[day][this.id] = false;
+                    });
+
+                    areas.droppable({
+                        accept: "#gallery > li",
+                        classes: {
+                            "ui-droppable-active": "ui-state-highlight"
+                        },
+                        drop: function (event, ui) {
+                            handleDrop.call(this, event, ui, day, dropAreasStatus);
+                        }
+                    });
+                });
+            }
+
+            // 查看放大的圖片函數
             function viewLargerImage($link) {
                 var src = $link.attr("href"),
                     title = $link.siblings("img").attr("alt"),
@@ -395,10 +348,43 @@
                     }, 1);
                 }
             }
-        });
+
+            $(document).ready(function () {
+                initializeDraggable();
+
+                $("#locationSelect").on("change", function () {
+                    var selectedCity = this.value.toLowerCase();
+                    var galleryItems = $("#gallery li");
+
+                    galleryItems.each(function () {
+                        var $item = $(this);
+                        if (selectedCity === "" || $item.data("city") === selectedCity) {
+                            $item.show();
+                        } else {
+                            $item.hide();
+                        }
+                    });
+
+                    clearSchedule();
+                });
+
+                $("#gallery").on("click", "li", function (event) {
+                    var $item = $(this),
+                        $target = $(event.target);
+
+                    if ($target.is("a.ui-icon-arrowrefresh-1-s")) {
+                        deleteImage($item);
+                    } else if ($target.is("a.ui-icon-zoomin")) {
+                        viewLargerImage($target);
+                    } else if ($target.is("a.ui-icon-refresh")) {
+                        recycleImage($item);
+                    }
+                    return false;
+                });
+            });
 
 
-        // ---------------------------------------------
+        // ------------------------------------------------------
         document.getElementById('themeSelect').addEventListener('change', function () {
             const value = this.value;
             const firstDayContainer = document.getElementById('firstDayContainer');
@@ -486,7 +472,6 @@
                 $("#firstDayConfirmCheckbox").addClass("disabled");
             }
         });
-
             $("#secondDayConfirmCheckbox").change(function () {
                 if ($(this).is(":checked")) {
 
@@ -589,7 +574,7 @@
                 }
 
             });
-
+//點進去送訂單----
         $("#confirmCheckbox").change(function () {
                     let dateObj = new Date($("#datepicker").val());
                     let date1 = $.datepicker.formatDate('yy-mm-dd', dateObj);
@@ -674,9 +659,7 @@
                 return;
             }
 
-            // 判断主题选择
-            const themeSelectValue = document.getElementById('themeSelect').value;
-
+            const themeSelectValue = document.getElementById('themeSelect').value
                 function redirectToTouristGuide() {
                     var selectedCity = document.getElementById("locationSelect").value;
                     if (selectedCity) {
@@ -685,23 +668,19 @@
                         alert("請選擇一個地點");
                     }
                 }
-
                 if (themeSelectValue === '3') {
-                    // 第三天选择，需要所有复选框都选中
                     if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked && thirdDayConfirmCheckbox.checked) {
                         redirectToTouristGuide();
                     } else {
                         alert("你需要勾選《我已確定前三天的行程》");
                     }
                 } else if (themeSelectValue === '2') {
-                    // 第二天选择，只需要前两天复选框选中
                     if (firstDayConfirmCheckbox.checked && secondDayConfirmCheckbox.checked) {
                         redirectToTouristGuide();
                     } else {
                         alert("你需要勾選《我已確定前兩天的行程》");
                     }
                 } else if (themeSelectValue === '1') {
-                    // 第一天选择，只需要第一天复选框选中
                     if (firstDayConfirmCheckbox.checked) {
                         redirectToTouristGuide();
                     } else {
@@ -710,12 +689,8 @@
                 } else {
                     alert("請選擇一個有效的主題");
                 }
-            
         });
-
-
-
-        // 地點人數日期 幾天都要選過 才可以啟用核取方塊
+        // 地點人數日期 幾天都要選過 才可以打勾
         const locationSelect = document.getElementById('locationSelect');
         const peopleSelect = document.getElementById('peopleSelect');
         const daysSelect = document.getElementById('themeSelect');
@@ -805,6 +780,7 @@
                 behavior: 'smooth'
             });
         }
+
         // 定義調整字體大小的函式
         function adjustFontSize(size) {
             // 調整根元素的字體大小
@@ -814,45 +790,12 @@
         // 獲取按鈕元素
         var bigBtn = document.getElementById('big');
         var smallBtn = document.getElementById('sm');
-
-        
-
     });
-
-
-
     $(document).ready(function () {
         $(".navbar-toggler").click(function () {
             $("#navbarNav").toggleClass("show");
         });
     });
-
-    
-    //
-    // $(function () {
-    //     // 設置可拖曳項目
-    //     $(".gallery li").draggable({
-    //         helper: "clone",
-    //         revert: "invalid"
-    //     });
-
-    //     // 設置放置區域
-    //     $(".ui-widget-content").droppable({
-    //         accept: ".gallery li",
-    //         drop: function (event, ui) {
-    //             var $this = $(this);
-    //             var item = ui.helper.clone();
-    //             $this.append(item);
-
-    //             // 調用更新行程函數
-    //             updateItinerary();
-    //         }
-    //     });
-    // });
-
-    
-
-        
 </script>
 </body>
 
